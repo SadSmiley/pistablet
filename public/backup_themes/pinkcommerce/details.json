@@ -1,9 +1,0 @@
-{
-	"theme_name":"Pink Commerce",
-	"description":"This page is exlusive",
-	"colors":
-	{
-		"pink" : "/resources/assets/views/css/gray.css",
-		"magenta" : "/resources/assets/views/css/gray.css"
-	}
-}
