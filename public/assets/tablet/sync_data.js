@@ -160,6 +160,7 @@ function sync_data()
    
     function action_web_browser_sync_data(done)
     {
+        alert("Click Now!");
         var all_tbl_name = [];
         all_tbl_name[1] = "tbl_shop";
         all_tbl_name[2] = "tbl_category";
@@ -212,10 +213,12 @@ function sync_data()
         $(".web-to-browser-sync-data").unbind("click");
         $(".web-to-browser-sync-data").bind("click", function()
         {
+            alert("Started");
             var dateNow = getDateNow();
             var key = 0;
             $(all_tbl_name).each(function(a, table_name)
             {
+                alert("Get AJAX");
                 $.ajax({
                     url : "http://digimatest.com/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
                     dataType: "json",
@@ -224,6 +227,7 @@ function sync_data()
                     crossDomain : true,
                     success : function(data)
                     {
+                        alert("Success AJAX");
                         db.transaction(function (tx)
                         {
                             $(data).each(function(a, b)
@@ -251,7 +255,7 @@ function sync_data()
                             /* Done */
                             if (ctr === total) 
                             {
-                                // alert(ctr + " " +total);
+                                alert("Done");
                             }   
                         });
                     }
