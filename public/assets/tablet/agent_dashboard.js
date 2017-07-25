@@ -1,7 +1,5 @@
 var agent_dashboard = new agent_dashboard();
-var db = openDatabase("my168shop", "1.0", "Address Book", 200000); 
-var query = "";
-var dataset_from_browser = null; 
+
 function agent_dashboard()
 {
 	init();
@@ -24,6 +22,7 @@ function agent_dashboard()
             var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
             tx.executeSql(query_check, [], function(tx, results)
             {
+                console.log(results);
                 if(results.rows.length <= 0)
                 {
                     location.href = "login.html";

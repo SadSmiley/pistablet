@@ -22,6 +22,8 @@ function sync_data()
        login_function();
        logout_action();
        check_if_have_login();
+       create_all_table();
+       drop_all_table();
 	}
     function check_if_have_login()
     {
@@ -32,7 +34,7 @@ function sync_data()
             {
                 if(results.rows.length <= 0)
                 {
-                    location.href = "login.html";
+                    // location.href = "login.html";
                 }
                 else
                 {
@@ -156,7 +158,7 @@ function sync_data()
 
     }
    
-    function action_web_browser_sync_data()
+    function action_web_browser_sync_data(done)
     {
         var all_tbl_name = [];
         all_tbl_name[1] = "tbl_shop";
@@ -204,6 +206,9 @@ function sync_data()
         all_tbl_name[43] = "tbl_unit_measurement_multi";
         all_tbl_name[44] = "tbl_user";
 
+        var total = all_tbl_name.length;
+        var ctr = 0;
+
         $(".web-to-browser-sync-data").unbind("click");
         $(".web-to-browser-sync-data").bind("click", function()
         {
@@ -231,18 +236,26 @@ function sync_data()
                                 onError);        
 
                                 percentage = ((a) / data.length) * 100;
+                                $(".progress").removeClass('hide');
                                 $(".progress-bar").css("width", (percentage).toFixed() + "%");
                                 $(".progress-bar").html("Synchronizing data " + (percentage).toFixed() + "%");
                                 $(".progress-bar").attr("aria-valuenow", (percentage).toFixed());
-                                $(".tbl-name-class").html(table_name);       
+                                $(".tbl-name-class").html(table_name);    
                             });
 
                             var query_timestamp = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('"+table_name+"','"+dateNow+"')";
                             createTableName(query_timestamp);
+
+                            ctr++;
+
+                            /* Done */
+                            if (ctr === total) 
+                            {
+                                // alert(ctr + " " +total);
+                            }   
                         });
                     }
                 });
-
             });
         });
     }

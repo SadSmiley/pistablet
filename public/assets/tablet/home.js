@@ -15,7 +15,10 @@ function home()
 	}
 	function document_ready()
 	{
-		check_if_have_login();
+        query_create_all_table(function()
+        {
+            check_if_have_login();
+        });
 	}
 	function check_if_have_login()
 	{
