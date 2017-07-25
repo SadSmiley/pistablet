@@ -1,0 +1,85 @@
+{
+	"home":
+	{
+		"slideshow" :
+		{
+			"label":"Slideshow",
+			"type":"gallery",
+			"default":"default_slides",
+			"size":"12"
+		},
+		"home31" :
+		{
+			"label":"3 Words (1st)",
+			"type":"textbox",
+			"default":"COMPANY",
+			"size":"4"
+		},
+		"home32" :
+		{
+			"label":"3 Words (2nd)",
+			"type":"textbox",
+			"default":"OPPORTUNITY",
+			"size":"4"
+		},
+		"home33" :
+		{
+			"label":"3 Words (3rd)",
+			"type":"textbox",
+			"default":"FREE TRAVEL",
+			"size":"4"
+		},
+		"home-about" :
+		{
+			"label":"Short About",
+			"type":"textarea",
+			"default":"Our company's digital hybrid multi-level marketing strategy offers you long lasting returns at your fingertips. We've engineered our company for your sucess with little risk and boundless potential. A passion for success is all you need to achieve a level of your prosperity you never thought possible.",
+			"size":"12"
+		},
+		"home-featured-image" :
+		{
+			"label":"Short About",
+			"type":"image",
+			"default":"Golden Falcon Marketing digital hybrid multi-level marketing strategy offers you long lasting returns at your fingertips. We've engineered our company for your sucess with little risk and boundless potential. A passion for success is all you need to achieve a level of your prosperity you never thought possible.",
+			"size":"4"
+		},
+		"home-featured-words" :
+		{
+			"label":"Short About",
+			"type":"textarea",
+			"default":"Golden Falcon Marketing digital hybrid multi-level marketing strategy offers you long lasting returns at your fingertips. We've engineered our company for your sucess with little risk and boundless potential. A passion for success is all you need to achieve a level of your prosperity you never thought possible.",
+			"size":"8"
+		}
+	},
+	"about_us":
+	{
+		"mission-title" :
+		{
+			"label":"Mission Title",
+			"type":"textbox",
+			"default":"Company Mission",
+			"size":"12"
+		},
+		"mission-content" :
+		{
+			"label":"Short About",
+			"type":"textarea",
+			"default":"Golden Falcon Marketing digital hybrid multi-level marketing strategy offers you long lasting returns at your fingertips. We've engineered our company for your sucess with little risk and boundless potential. A passion for success is all you need to achieve a level of your prosperity you never thought possible.",
+			"size":"12"
+		},
+		"vision-title" :
+		{
+			"label":"Mission Title",
+			"type":"textbox",
+			"default":"Company Vision",
+			"size":"12"
+		},
+		"vision-content" :
+		{
+			"label":"Short About",
+			"type":"textarea",
+			"default":"Golden Falcon Marketing digital hybrid multi-level marketing strategy offers you long lasting returns at your fingertips. We've engineered our company for your sucess with little risk and boundless potential. A passion for success is all you need to achieve a level of your prosperity you never thought possible.",
+			"size":"12"
+		}
+	}
+}

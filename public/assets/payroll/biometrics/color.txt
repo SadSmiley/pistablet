@@ -1,0 +1,97 @@
+blue:
+0000ff - main color rgb(0, 0, 255)
+00005a - dark color (0, 0, 90)
+0000ac  - mid dark color (0, 0, 172)
+000083 - mid darker color (0, 0, 131)
+0000d5 - mid dark light color (0, 0, 213)
+bebeff  - light color (190, 190, 255)
+5f5fff - mid light color (95, 95, 255)
+8e8eff - mid lighter color (142,142,255)
+3030ff - mid ligth dark color (48,48,255)
+
+red:
+ff0000 - main color rgb(255,0,0)
+5a0000 - dark color (90,0,0)
+ac0000 - mid dark color (172,0,0)
+830000 - mid darker color (131,0 ,0)
+d50000 - mid dark light color (213,0,0)
+ffbebe - light color (255, 190,190)
+ff5f5f - mid light color (255, 95, 95)
+ff8e8e - mid lighter color (255, 142, 142)
+ff3030 mid ligth dark color (255,48,48)
+
+green:
+00ff00 - main color (0,255,0)
+005a00 - dark color (0,90,0)
+00ac00 - mid dark color (0,172,0)
+008300 - mid darker color (0,131,0)
+00d500 - mid dark light color (0,213,0)
+beffbe - light color (190,255,190)
+5fff5f -  mid light color (95,255,95)
+8eff8e - mid lighter color (142,255142)
+30ff30 - mid light dark color (48,255,48)
+
+yellow:
+ffff00 - main color (255,255,0)
+5a5a00 - dark color (90,90,0)
+acac00 - mid dark color (172,172,0)
+838300 - mid darker color (131,131,0)
+d5d500 - mid dark light color (213,213,0)
+ffffbe - ligth color (255,255,190)
+ffff5f - mid light color (255,255,95)
+ffff8e - mid lighter color (255,255,142)
+ffff30 - mid ligth dark color (255,255,48)
+
+violet:
+ff00ff - main color(255,0,255)
+5a005a - dark color (90,0,90)
+ac00ac - mid dark color (172,0,172)
+830083 - mid darker color(131,0,131)
+d500d5 - mid dark light color (213,0,213)
+ffbeff - light color(255,190,255)
+ff5fff - mid light color(255,95,255)
+ff8eff - mid lighter color (255,142,255)
+ff30ff - mid light dark color (255,48,255)
+
+90 = 35%
+172 = 67%
+131 = 51%
+213 = 91%;
+190 = 75%;
+95 = 37%;
+142 = 57%;
+48 = 19%
+
+
+orange:
+ff5a00 - main color (255,127,0)
+5a2c00 - dark color (90,44,0)
+ac5500 - mid dark color (172, 85, 0)
+834100 - mid darker color(131,65,0)
+d57300 - mid dark light color (213, 115, 0)
+ffe1be - ligth color (255,255,190)
+ffa05f - mid light color (255,160,95)
+ffb482 - mid lighter color (255,180,130)
+ff822d - mid ligth dark color (255,130,45)
+
+brown:
+7f3200 - main color(127,50,0)
+200c00 - dark color(32,12,0)
+3f1900 - mid dark color (63,25,0)
+321500 -  mid darker color (50,21,0)
+5b2400 - mid dark light color (91,36,0)
+7f6446 - light color (127,100,70)
+7f5023 - mid light color (127,80,35)
+7f5a34 - mid lighter color (127,90,52)
+7f4611 - mid light dark color (127, 70, 17)
+
+balck and white:
+white : ffffff (255,255,255)
+black: 000000 (0, 0, 0)
+gray: 7f7f7f (127, 127, 127)
+mid dark gray: 3f3f3f (63, 63, 63)
+mid darker gray: 1f1f1f (31, 31, 31)
+mid dark light gray: 5e5e5e (94, 94, 94)
+mid light gray: b4b4b4 (180,180,180)
+mid lighter gray: dddddd (221, 221, 221)
+mid light dark gray: 9e9e9e (158,158,158)

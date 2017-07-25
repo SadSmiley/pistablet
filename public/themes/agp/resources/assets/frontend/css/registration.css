@@ -1,0 +1,98 @@
+.account {
+  text-align: center; }
+  .account .account-bg {
+    background-color: #f6f6f6; }
+  .account .account-header {
+    border-bottom: 1px solid #e2ddd8;
+    background-color: #f6f6f6; }
+    .account .account-header .account-logo {
+      display: inline-block;
+      margin: 10px; }
+      .account .account-header .account-logo .account-logo-img-1 {
+        background-image: url("/resources/assets/rutsen/img/icon/register-icon.png");
+        width: 40px;
+        height: 40px;
+        background-position: 40px 0;
+        display: inline-block;
+        vertical-align: top; }
+      .account .account-header .account-logo .account-logo-img-2 {
+        background-image: url("/resources/assets/rutsen/img/icon/register-icon.png");
+        width: 40px;
+        height: 40px;
+        background-position: 80px 0;
+        display: inline-block;
+        vertical-align: top; }
+      .account .account-header .account-logo .account-logo-img-3 {
+        background-image: url("/resources/assets/rutsen/img/icon/register-icon.png");
+        width: 40px;
+        height: 40px;
+        background-position: 120px 0;
+        display: inline-block;
+        vertical-align: top; }
+      .account .account-header .account-logo .account-logo-img-4 {
+        background-image: url("/resources/assets/rutsen/img/icon/register-icon.png");
+        width: 40px;
+        height: 40px;
+        background-position: 160px 0;
+        display: inline-block;
+        vertical-align: top; }
+      .account .account-header .account-logo .account-logo-img-5 {
+        background-image: url("/resources/assets/rutsen/img/icon/register-icon.png");
+        width: 40px;
+        height: 40px;
+        background-position: 200px 0;
+        display: inline-block;
+        vertical-align: top; }
+      .account .account-header .account-logo .account-logo-img-6 {
+        background-image: url("/resources/assets/rutsen/img/icon/register-icon.png");
+        width: 40px;
+        height: 40px;
+        background-position: 240px 0;
+        display: inline-block;
+        vertical-align: top; }
+      .account .account-header .account-logo .account-logo-text {
+        font-size: 12px;
+        color: #4b628e;
+        display: inline-block;
+        vertical-align: top;
+        padding: 11px 0;
+        font-weight: 600; }
+  .account .account-container .register-header {
+    text-align: left;
+    margin: 20px 0; }
+  .account .account-container .register-sub {
+    color: #8d8b8b;
+    font-size: 16.67px;
+    margin: 20px 0;
+    font-weight: 600; }
+  .account .account-container .register-holder .bday input[type="text"] {
+    width: 77px;
+    display: inline-block; }
+  .account .account-container .register-holder .form-group {
+    text-align: left; }
+    .account .account-container .register-holder .form-group .register-button {
+      font-size: 12.5px;
+      color: white;
+      background-color: #2b628b;
+      padding: 10px 0px 5px;
+      border-bottom: 5px solid #1d5177;
+      text-align: center;
+      width: 130px;
+      margin: auto;
+      cursor: pointer; }
+    .account .account-container .register-holder .form-group .message-ea {
+      font-size: 12.5px;
+      color: #8d8b8b;
+      margin: 20px 0 5px; }
+    .account .account-container .register-holder .form-group label {
+      font-size: 12.5px;
+      color: #8d8b8b;
+      font-weight: normal; }
+    .account .account-container .register-holder .form-group input[type="text"] {
+      background-color: #f2f5f6; }
+    .account .account-container .register-holder .form-group textarea {
+      resize: none;
+      height: 130px;
+      background-color: #f2f5f6; }
+
+/*# sourceMappingURL=registration.css.map */

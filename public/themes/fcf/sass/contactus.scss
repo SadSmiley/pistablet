@@ -1,0 +1,176 @@
+body{
+	font-family: 'Roboto', sans-serif;
+	background-color: transparent;
+	font-size: 14px;
+	color: #747474;
+}
+
+.top-bg-container{
+
+	img{
+		width: 100%;
+	}
+
+	.top-bg-detail-container{
+		position: relative;
+		font-family: 'Fjalla One', sans-serif;
+		color: #fff;
+		font-size: 26px;
+		bottom: 50px;
+		padding-left: 20px;
+		@media screen and (max-width: 620px)
+		{
+				font-size: 16px;
+				bottom: 25px;
+		}
+
+		.title-highlight{
+			color: #ffc10e;
+		}
+	}	
+}
+
+.content{
+	padding: 10px;
+
+	.form-control{
+		height: 40px;
+	    width: 100%;
+	    border-radius: 20px;
+	    color: #979797;
+	    font-size: 12px;
+
+	    @media screen and (max-width: 900px)
+	    {
+	    	display: block;
+	    	margin-top: 10px;
+	    }
+	    @media screen and (max-width: 600px)
+	    {
+	    	display: block;
+	    	margin-top: 10px;
+	    }
+	    @media screen and (max-width: 360px)
+	    {
+	    	display: block;
+	    	margin-top: 10px;
+	    }
+	}
+
+	button 
+	{
+		font-family: 'Fjalla One', sans-serif;
+		font-size: 14px;
+		margin-top: 10px;
+	    border:none;
+	    border-radius: 20px;
+	    padding: 10px 50px 10px 50px;
+	    color: #0f0f0f;
+	    background-color: #ffc10e;
+		
+	}
+	.message {
+	    width: 100%;
+	    border-radius: 20px;
+	    margin-top: 5px;
+	    padding-bottom: 100px;
+	}
+
+	.textfield-container{
+		padding: 10px 0px 10px 0px;
+		color: #979797;
+	}
+
+	.title-container{
+		font-family: 'Fjalla One', sans-serif;
+		color: #0f0f0f;
+		font-size: 26px;
+		padding-bottom: 20px;
+		
+		@media screen and (max-width: 900px)
+		{
+			padding-bottom: 0px;
+		}
+	}
+}
+
+
+table 
+	{
+		tr 
+		{
+			.icon 
+			{
+				vertical-align: center;
+				text-align: center;
+				font-size: 14px;
+				padding-right: 20px;
+				padding-top: 20px;
+				color: #aeaeae;
+			}
+
+			.fa-map-marker 
+			{
+				font-size: 22px;
+			}
+
+			.fa-phone 
+			{
+				font-size: 22px;
+			}
+
+			.fa-fax{
+				font-size: 16px;
+			}
+
+			.fa-clock-o 
+			{
+				font-size: 25px;
+			}
+			.fa-envelope 
+			{
+				font-size: 16px;
+			}
+
+			.par 
+			{
+				padding-top: 20px;
+				font-size: 12.51px;
+
+			}
+		}
+	}
+	.business-hours 
+	{
+		font-family: 'Fjalla One', sans-serif;
+		color: #0f0f0f;
+		font-size: 26px;
+		padding-top: 20px;
+	}
+
+.project-site{
+	padding-top: 20px;
+}
+
+.project-site-content{
+	padding-left: 20px;
+}
+
+.map-title-container{
+	background-color: #ffc10e;
+	color: #0f0f0f;
+	font-family: 'Fjalla One', sans-serif;
+	font-size: 26px;
+	padding: 15px 0px 15px 20px;
+
+}
+
+.google-map
+	{
+		iframe
+		{
+			width: 100%;
+		    height: 650px;
+		}
+	}
+

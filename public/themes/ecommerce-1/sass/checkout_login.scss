@@ -1,0 +1,98 @@
+.main-container
+{
+	margin: 15px auto;
+    background-color: #fff;
+    padding: 15px;
+}
+.form-holder
+{
+	border: 1px solid #dde2e4;
+	.form-header
+	{
+		border: 1px solid #dde2e4;
+		padding: 5px 10px;
+		margin-top: -1px;
+		margin-left: -1px;
+		margin-right: -1px;
+		font-weight: 700;
+		font-size: 16px;
+	}
+	.form-content
+	{
+		max-width: 500px;
+		margin: 25px auto;
+	}
+}
+.checkout-summary
+{
+    .title
+    {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    .order-summary
+    {
+        border: 1px solid #ddd;
+        padding: 10px;
+        .number-in-cart
+        {
+
+        }
+
+        table
+        {
+            width: 100%;
+            color: #777;
+
+            thead
+            {
+                font-weight: bold;
+
+                tr
+                {
+                    td
+                    {
+                        padding: 5px 0;
+                        border-bottom: 1px dashed #ddd;
+                    }
+                }
+            }
+
+            tbody
+            {
+                tr
+                {
+
+                    td
+                    {
+                        padding: 5px 0;
+                        border-bottom: 1px dashed #ddd;
+                    }
+                }
+            }
+        }
+
+        .total
+        {
+            overflow: auto;
+            padding-top: 5px;
+            .total-label
+            {
+                float: right;
+            }
+            .total-price
+            {
+                width: 100px;
+                margin-left: 15px;
+                float: right;
+
+                &.supertotal
+                {
+                    color: #2B628B;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

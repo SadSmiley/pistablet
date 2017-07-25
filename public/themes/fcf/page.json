@@ -1,0 +1,600 @@
+{
+	"home":
+	{
+		"home_slider" :
+		{
+			"label":"Slider Maintenance",
+			"type":"maintenance",
+			"default":"",
+			"field":[
+				{"name":"image", "type":"image"},
+				{"name":"title", "type":"text"},
+				{"name":"subtitle", "type":"text"}
+			],
+			"size":"6"
+		},
+		"home_news_title" :
+		{
+			"label":"News Title",
+			"type":"textbox",
+			"default":"OUR LATEST NEWS",
+			"size":"6"
+		},
+		"home_gallery_title" :
+		{
+			"label":"Gallery Title",
+			"type":"textbox",
+			"default":"GALLERY",
+			"size":"12"
+		},
+		"home_gallery_images" :
+		{
+			"label":"Gallery Images",
+			"type":"gallery",
+			"default":"",
+			"size":"12"
+		},
+		"home_division2_title" :
+		{
+			"label":"Home Division 2 title",
+			"type":"textbox",
+			"default":"KEY COMPONENTS",
+			"size":"12"
+		},
+		"home_division2_img1" :
+		{
+			"label":"Home Division 2 image 1",
+			"type":"image",
+			"default":"/themes/fcf/img/technology.png",
+			"size":"3"
+		},
+		"home_division2_img2" :
+		{
+			"label":"Home Division 2 image 2",
+			"type":"image",
+			"default":"/themes/fcf/img/performance.png",
+			"size":"3"
+		},
+		"home_division2_img3" :
+		{
+			"label":"Home Division 2 image 3",
+			"type":"image",
+			"default":"/themes/fcf/img/innovation.png",
+			"size":"3"
+		},
+		"home_division2_img4" :
+		{
+			"label":"Home Division 2 image 4",
+			"type":"image",
+			"default":"/themes/fcf/img/infrastructure.png",
+			"size":"3"
+		},
+		"home_division2_img1_title" :
+		{
+			"label":"Home Division 2 image 1 title",
+			"type":"textbox",
+			"default":"TECHNOLOGY",
+			"size":"3"
+		},
+		"home_division2_img2_title" :
+		{
+			"label":"Home Division 2 image 2 title",
+			"type":"textbox",
+			"default":"PERFORMANCE",
+			"size":"3"
+		},
+		"home_division2_img3_title" :
+		{
+			"label":"Home Division 2 image 3 title",
+			"type":"textbox",
+			"default":"INNOVATION",
+			"size":"3"
+		},
+		"home_division2_img4_title" :
+		{
+			"label":"Home Division 2 image 4 title",
+			"type":"textbox",
+			"default":"INFRASTRUCTURE",
+			"size":"3"
+		},
+		"home_division2_img1_description" :
+		{
+			"label":"Home Division 2 image 1 description",
+			"type":"textarea",
+			"default":"A surface mine and Run of Mine (ROM) pad.",
+			"size":"3"
+		},
+		"home_division2_img2_description" :
+		{
+			"label":"Home Division 2 image 2 description",
+			"type":"textarea",
+			"default":"Process plant facility of grinding, flotation, BIOX ®, Carbon-in-Leach (CIL) and recovery.",
+			"size":"3"
+		},
+		"home_division2_img3_description" :
+		{
+			"label":"Home Division 2 image 3 description",
+			"type":"textarea",
+			"default":"Residual Storage Impoundment (RSI) to ensure waste materials are properly managed and to maximize reclaim of water for the operation.",
+			"size":"3"
+		},
+		"home_division2_img4_description" :
+		{
+			"label":"Home Division 2 image 4 description",
+			"type":"textarea",
+			"default":"Associated infrastructure including upgrade of the access road, power line, accomodation camp and ancilliary buildings.",
+			"size":"3"
+		}
+	},
+	"about":
+	{
+		"about_banner_img" :
+		{
+			"label":"Top Banner Image",
+			"type":"image",
+			"default":"/themes/fcf/img/about-bg.png",
+			"size":"12"
+		},
+		"about_banner_title_first" :
+		{
+			"label":"Top Banner Title First Word",
+			"type":"textbox",
+			"default":"ABOUT",
+			"size":"6"
+		},
+		"about_banner_title_highlight" :
+		{
+			"label":"Top Banner Title highlight",
+			"type":"textbox",
+			"default":"OUR COMPANY",
+			"size":"6"
+		},
+		"about_company_profile_title" :
+		{
+			"label":"Company Profile Title",
+			"type":"textbox",
+			"default":"COMPANY PROFILE",
+			"size":"4"
+		},
+		"about_company_profile_context" :
+		{
+			"label":"Company Profile Context",
+			"type":"tinymce",
+			"default":"Insert Context Here",
+			"size":"4"
+		},
+		"about_company_profile_context_img1" :
+		{
+			"label":"Company Profile Context Image 1",
+			"type":"image",
+			"default":"/themes/fcf/img/full01.jpg",
+			"size":"9"
+		},
+		"about_company_responsibility_title" :
+		{
+			"label":"Company Responsibility Title",
+			"type":"textbox",
+			"default":"COMPANY RESPONSIBILITY",
+			"size":"6"
+		},
+		"about_company_responsibility_context" :
+		{
+			"label":"Company Responsibility context",
+			"type":"tinymce",
+			"default":"Insert Context Here",
+			"size":"6"
+		},
+		"about_company_responsibility_context_img1" :
+		{
+			"label":"Company Responsibility Context Image 1",
+			"type":"image",
+			"default":"/themes/fcf/img/full5.jpg",
+			"size":"3"
+		},
+		"about_company_responsibility_context_img2" :
+		{
+			"label":"Company Responsibility Context Image 2",
+			"type":"image",
+			"default":"/themes/fcf/img/full8.jpg",
+			"size":"3"
+		},
+		"about_company_responsibility_context_img3" :
+		{
+			"label":"Company Responsibility Context Image 3",
+			"type":"image",
+			"default":"/themes/fcf/img/full20.jpg",
+			"size":"3"
+		},
+		"about_company_responsibility_context_img4" :
+		{
+			"label":"Company Responsibility Context Image 4",
+			"type":"image",
+			"default":"/themes/fcf/img/full4.jpg",
+			"size":"3"
+		},
+		"about_environmental_management_title" :
+		{
+			"label":"Environmental Management Title",
+			"type":"textbox",
+			"default":"ENVIRONMENTAL MANAGEMENT",
+			"size":"6"
+		},
+		"about_environmental_management_context" :
+		{
+			"label":"Environmental Management context",
+			"type":"tinymce",
+			"default":"Insert Context Here",
+			"size":"6"
+		},
+		"about_environmental_management_context_img1" :
+		{
+			"label":"Environmental Management Context Image 1",
+			"type":"image",
+			"default":"/themes/fcf/img/full13.jpg",
+			"size":"3"
+		},
+		"about_environmental_management_context_img2" :
+		{
+			"label":"Environmental Management Context Image 2",
+			"type":"image",
+			"default":"/themes/fcf/img/full22.jpg",
+			"size":"3"
+		},
+		"about_environmental_management_context_img3" :
+		{
+			"label":"Environmental Management Context Image 3",
+			"type":"image",
+			"default":"/themes/fcf/img/full15.jpg",
+			"size":"3"
+		},
+		"about_environmental_management_context_img4" :
+		{
+			"label":"Environmental Management Context Image 4",
+			"type":"image",
+			"default":"/themes/fcf/img/full14.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_title" :
+		{
+			"label":"Runruno Livelihood Foundation Title",
+			"type":"textbox",
+			"default":"RUNRUNO LIVELIHOOD FOUNDATION",
+			"size":"6"
+		},
+		"about_livelihood_foundation_context" :
+		{
+			"label":"Runruno Livelihood Foundation context",
+			"type":"tinymce",
+			"default":"Insert Context Here",
+			"size":"6"
+		},
+		"about_livelihood_foundation_context_img1" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 1",
+			"type":"image",
+			"default":"/themes/fcf/img/full10.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_context_img2" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 2",
+			"type":"image",
+			"default":"/themes/fcf/img/full6.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_context_img3" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 3",
+			"type":"image",
+			"default":"/themes/fcf/img/full21.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_context_img4" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 4",
+			"type":"image",
+			"default":"/themes/fcf/img/full12.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_context_img5" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 5",
+			"type":"image",
+			"default":"/themes/fcf/img/full9.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_context_img6" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 6",
+			"type":"image",
+			"default":"/themes/fcf/img/full19.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_context_img7" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 7",
+			"type":"image",
+			"default":"/themes/fcf/img/full18.jpg",
+			"size":"3"
+		},
+		"about_livelihood_foundation_context_img8" :
+		{
+			"label":"Runruno Livelihood Foundation Context Image 8",
+			"type":"image",
+			"default":"/themes/fcf/img/full7.jpg",
+			"size":"3"
+		},
+		"about_awards_title" :
+		{
+			"label":"Awards Title",
+			"type":"textbox",
+			"default":"AWARDS",
+			"size":"6"
+		},
+		"about_awards_context" :
+		{
+			"label":"Awards context",
+			"type":"tinymce",
+			"default":"Insert Context Here",
+			"size":"6"
+		}
+	},
+	"runruno":
+	{
+		"runruno_banner_img" :
+		{
+			"label":"Top Banner Image",
+			"type":"image",
+			"default":"/themes/fcf/img/runruno-bg.png",
+			"size":"12"
+		},
+		"runruno_banner_title" :
+		{
+			"label":"Top Banner Title",
+			"type":"textbox",
+			"default":"RUNRUNO",
+			"size":"12"
+		},
+		"runruno_runruno_title" :
+		{
+			"label":"Runruno Title",
+			"type":"textbox",
+			"default":"RUNRUNO",
+			"size":"6"
+		},
+		"runruno_context" :
+		{
+			"label":"Runruno Context",
+			"type":"tinymce",
+			"default":"Insert Context Here",
+			"size":"6"
+		},
+		"runruno_gold_molybdenum_title" :
+		{
+			"label":"Gold Molybdenum Title",
+			"type":"textbox",
+			"default":"RUNRUNO GOLD-MOLYBDENUM PROJECT ",
+			"size":"6"
+		},
+		"runruno_gold_molybdenum_context" :
+		{
+			"label":"Gold Molybdenum Context",
+			"type":"tinymce",
+			"default":"Insert Context Here",
+			"size":"6"
+		},
+		"runruno_gold_molybdenum_context_img1" :
+		{
+			"label":"Gold Molybdenum Context Image 1",
+			"type":"image",
+			"default":"/themes/fcf/img/rg1.png",
+			"size":"6"
+		},
+		"runruno_gold_molybdenum_context_img2" :
+		{
+			"label":"Gold Molybdenum Context Image 2",
+			"type":"image",
+			"default":"/themes/fcf/img/rg2.png",
+			"size":"6"
+		},
+		"runruno_keypoints_title" :
+		{
+			"label":"Keypoints Title",
+			"type":"textbox",
+			"default":"KEYPOINTS",
+			"size":"6"
+		},
+		"runruno_keypoints_context" :
+		{
+			"label":"Keypoints Context",
+			"type":"tinymce",
+			"default":"Insert Text Here",
+			"size":"6"
+		},
+		"runruno_geology_title" :
+		{
+			"label":"Geology Title",
+			"type":"textbox",
+			"default":"GEOLOGY",
+			"size":"6"
+		},
+		"runruno_geology_context" :
+		{
+			"label":"Geology Context",
+			"type":"tinymce",
+			"default":"Insert Text Here",
+			"size":"6"
+		},
+		"runruno_geology_context_img1" :
+		{
+			"label":"Geology Context Image 1",
+			"type":"image",
+			"default":"/themes/fcf/img/g1.png",
+			"size":"6"
+		},
+		"runruno_geology_context_img2" :
+		{
+			"label":"Geology Context Image 2",
+			"type":"image",
+			"default":"/themes/fcf/img/g2.png",
+			"size":"6"
+		},
+		"runruno_feasibility_study_title" :
+		{
+			"label":"Feasibility Study Title",
+			"type":"textbox",
+			"default":"FEASIBILITY STUDY",
+			"size":"6"
+		},
+		"runruno_feasibility_study_context" :
+		{
+			"label":"Feasibility Study Context",
+			"type":"tinymce",
+			"default":"Insert Text Here",
+			"size":"6"
+		},
+		"runruno_feasibility_study_table_maintenance" :
+		{
+			"label":"Table Maintenance",
+			"type":"maintenance",
+			"default":"",
+			"field":[
+				{"name":"description", "type":"text"},
+				{"name":"item", "type":"text"}
+			],
+			"size":"12"
+		}
+	},
+	"news":
+	{
+		"news_front_img" :
+		{
+			"label":"News Front Image",
+			"type":"image",
+			"default":"/themes/fcf/img/n1.png",
+			"size":"12"
+		},
+		"news_title" :
+		{
+			"label":"News Title",
+			"type":"textbox",
+			"default":"THIS IS THE NEWS TITLE",
+			"size":"12"
+		},
+		"news_context" :
+		{
+			"label":"News Context",
+			"type":"textarea",
+			"default":"Insert Text Here",
+			"size":"6"
+		},
+		"news_author" :
+		{
+			"label":"News Author",
+			"type":"textbox",
+			"default":"FCF Minerals",
+			"size":"6"
+		}
+	},
+	"contactus":
+	{
+		"contactus_banner_img" :
+		{
+			"label":"Top Banner Image",
+			"type":"image",
+			"default":"/themes/fcf/img/contactus-bg.png",
+			"size":"12"
+		},
+		"contactus_banner_title_first_word" :
+		{
+			"label":"Top Banner Title First Word",
+			"type":"textbox",
+			"default":"CONTACT",
+			"size":"6"
+		},
+		"contactus_banner_title_highlight" :
+		{
+			"label":"Top Banner Title Highlight",
+			"type":"textbox",
+			"default":"US",
+			"size":"6"
+		},
+		"contactus_send_msg_title" :
+		{
+			"label":"Send Message Title",
+			"type":"textbox",
+			"default":"GET INTOUCH WITH US",
+			"size":"12"
+		},
+		"contactus_location_title" :
+		{
+			"label":"Location Title",
+			"type":"textbox",
+			"default":"LOCATION",
+			"size":"12"
+		},
+		"contactus_location" :
+		{
+			"label":"Location",
+			"type":"textarea",
+			"default":"22nd Floor, Salcedo Towers, 169 H.V. Dela Costa Street, Salcedo Village, Makati City, Metro Manila, Philippines",
+			"size":"3"
+		},
+		"contactus_phone_number" :
+		{
+			"label":"Phone Number",
+			"type":"textbox",
+			"default":"+63 (0) 2 659 5662",
+			"size":"3"
+		},
+		"contactus_email" :
+		{
+			"label":"Email Address",
+			"type":"textbox",
+			"default":"youremailhere@company.com",
+			"size":"3"
+		},
+		"contactus_fax" :
+		{
+			"label":"Fax Number",
+			"type":"textbox",
+			"default":"+63 (0) 2 846 8507",
+			"size":"3"
+		},
+		"contactus_business_hours_title" :
+		{
+			"label":"Business Hours Title",
+			"type":"textbox",
+			"default":"BUSINESS HOURS",
+			"size":"6"
+		},
+		"contactus_business_hours" :
+		{
+			"label":"Business Hours",
+			"type":"textbox",
+			"default":"Monday - Friday at 9:00am - 6:00pm",
+			"size":"6"
+		},
+		"contactus_project_site_title" :
+		{
+			"label":"Project Site Title",
+			"type":"textbox",
+			"default":"Project Site Address",
+			"size":"6"
+		},
+		"contactus_project_site_content" :
+		{
+			"label":"Project Site Address",
+			"type":"textbox",
+			"default":"Brgy. Runruno, Municipality of Quezon, Nueva Vizcaya, Philippines",
+			"size":"6"
+		},
+		"contactus_location_map" :
+		{
+			"label":"Head Quarters Location",
+			"type":"textbox",
+			"default":"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.6574693261337!2d121.01562731520293!3d14.561569989827394!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c909a1ec69eb%3A0x25b39d0024fa6ae!2sFCF+Minerals+Corporation+%2F+Metal+Exploration+Public+Limied+Company!5e0!3m2!1sen!2sph!4v1475633906034",
+			"size":"12"
+		}
+	}
+}

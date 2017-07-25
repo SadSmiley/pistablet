@@ -1,0 +1,264 @@
+.contact
+{
+    
+    .contact-header
+    {
+        color: white;
+        padding: 30px 0 80px;
+        text-align: center;
+        background-image: url("/resources/assets/frontend/img/contact-header.png");
+        -moz-background-size: cover;
+          -o-background-size: cover;
+             background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 400px;
+        .title
+        {
+            font-size: 25px;
+            border-bottom: 5px solid #707070;
+            padding: 10px 0;
+            max-width: 350px;
+            margin: 20px auto;
+            span
+            {
+                color: #707070;
+                font-weight: bold;
+            }       
+        }
+        .sub
+        {
+            font-size: 18px;
+        }
+        .text
+        {
+            font-size: 25px;
+            color: #4f4f4f;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .icon
+        {
+            position: relative;
+            .holder
+            {
+                display: inline-block;
+                vertical-align: top;
+                overflow: hidden;
+                &:hover .text
+                {
+                    display: block;
+                }
+                .text
+                {
+                    display: none;
+                    position: absolute;
+                    top: 100px;
+                    text-align: center;
+                    margin-right: 100px;
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+            }
+            .fa-phone
+            {
+                &:hover
+                {
+                    background-color: #43B51F;
+                }
+            }
+            .fa-map-marker
+            {
+                &:hover
+                {
+                    background-color: #3498DB;
+                }
+            }
+            .fa-facebook
+            {
+                &:hover
+                {
+                    background-color: #346DA6;
+                }
+            }
+            .fa-twitter
+            {
+                &:hover
+                {
+                    background-color: #4A7FB6;
+                }
+            }
+            .fa-instagram
+            {
+                &:hover
+                {
+                    background-color: #CE6F2D;
+                }
+            }
+            .fa
+            {
+                background-color: #6A6A6A;
+                font-size: 35px;
+                height: 35px;
+                width: 35px;
+                line-height: 35px;
+                padding: 15px;
+                -webkit-box-sizing: content-box;
+                   -moz-box-sizing: content-box;
+                        box-sizing: content-box;
+                -webkit-border-radius: 100%;
+                   -moz-border-radius: 100%;
+                        border-radius: 100%;
+                margin: 30px 10px;
+                cursor: pointer;
+                -webkit-transition: 0.3s all;
+                   -moz-transition: 0.3s all;
+                     -o-transition: 0.3s all;
+                        transition: 0.3s all;
+            }
+        }
+    }
+    .contact-content
+    {
+        overflow: auto;
+        .col-md-6
+        {
+            .field
+            {
+
+                input[type="text"]
+                {
+                    border: 2px solid #e7e7e7;
+                    background-color: #f4f4f4;
+                    width: 100%;
+                    height: 65px;
+                    font-size: 20.83px;
+                    color: #bebebe;
+                    font-weight: 300;
+                    padding: 15px;
+                    margin: 5px 0;
+                }
+                textarea
+                {
+                    resize: none;
+                    height: 215px;
+                    border: 2px solid #e7e7e7;
+                    background-color: #f4f4f4;
+                    width: 100%;
+                    font-size: 20.83px;
+                    color: #bebebe;
+                    font-weight: 300;
+                    padding: 15px;
+                    margin: 15px 0;
+                }
+                button
+                {
+                    color: #1f76b5;
+                    border: 2px solid #1f76b5;
+                    background-color: white;
+                    -webkit-border-radius: 3px;
+                       -moz-border-radius: 3px;
+                            border-radius: 3px;
+                    font-size: 20.83px;
+                    padding: 5px 10px;
+                    font-weight: 300;
+                    -webkit-transition: all 0.3s;
+                       -moz-transition: all 0.3s;
+                         -o-transition: all 0.3s;
+                            transition: all 0.3s;
+                    &:hover
+                    {
+                        background-color: #1f76b5;
+                        color: white;
+                    }
+                    .fa
+                    {
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
+        .left
+        {
+            margin: 10px 0;
+            .field
+            {
+                margin-left: auto;
+                @media screen and (max-width: 991px)
+                {
+                    margin: auto;
+                }
+                input[type="text"]
+                {
+
+                }
+            }
+        }
+        .right
+        {
+            .field
+            {
+                @media screen and (max-width: 991px)
+                {
+                    margin: auto;
+                }
+                input[type="text"]
+                {
+
+                }
+            }
+        }
+    }
+}
+
+.store-content
+{
+    margin-top: 15px;
+    table
+    {
+        table-layout: fixed;
+        width: 100%;
+        text-align: center;
+        td
+        {
+            padding: 10px;
+        }
+        thead
+        {
+            background-color: #6FBE45;
+            color: white;
+            border-top: 1px solid #92CC88;
+            border-left: 1px solid #92CC88;
+            border-right: 1px solid #92CC88;
+            td
+            {
+                padding: 10px 0;
+                border-right: 1px solid #92CC88;
+            }
+            td:last-child
+            {
+                border-right: 0px solid #92CC88;
+            }
+        }
+        tbody
+        {
+            .storename
+            {
+                text-transform: uppercase;
+            }
+            tr:nth-child(even) {background: #EFF5F9}
+            tr:nth-child(odd) {background: #FFF}
+            td
+            {
+                border-right: 1px solid #CED6DB;
+                border-left: 1px solid #CED6DB;
+                border-bottom: 1px solid #CED6DB;
+                word-break: break-all;
+                img
+                {
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+}

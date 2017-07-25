@@ -1,0 +1,82 @@
+.how
+{
+	text-align: center;
+	img
+	{
+		margin: auto;
+	}
+	.how-header
+	{
+		.text
+		{
+			font-size: 44.39px;
+			color: #898989;
+			padding: 40px 0;
+		}
+		.icon
+		{
+			overflow: auto;
+			text-align: center;
+			max-width: 800px;
+			margin: auto;
+			.left
+			{
+				float: left;
+				@media screen and (max-width: 750px)
+				{
+					display: block;
+					float: none;
+					margin: 25px auto;
+				}
+			}
+			.right
+			{
+				float: right;
+				@media screen and (max-width: 750px)
+				{
+					display: block;
+					float: none;
+					margin: 25px auto;
+				}
+			}
+			img
+			{
+				
+			}
+		}
+	}
+	.how-step
+	{
+		max-width: 800px;
+		margin: auto;
+		.title
+		{
+			font-size: 47.99px;
+			color: #898989;
+			font-weight: 300;
+			text-align: left;
+			margin-top: 20px;
+		}
+		.holder
+		{
+			img
+			{
+				width: 100%;
+			}
+		}
+	}
+	.how-transaction
+	{
+		clear: both;
+		.title
+		{
+			color: #898989;
+			font-size: 44.33px;
+			padding: 40px 0;
+		}
+		.containers
+		{
+			
+		}
+	}
+}

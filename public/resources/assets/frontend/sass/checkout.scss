@@ -1,0 +1,393 @@
+.divider2
+{
+    background-image: url("/resources/assets/rutsen/img/divider.png");
+    height: 2px;
+    width: 100%;
+    margin: 60px 0;
+}
+.checkout
+{
+    width: 1000px;
+    margin: auto;
+    margin-top: 30px;
+    overflow: auto;
+    padding-top: 20px;
+    font-family: "open sans", sans-serif;
+    .col-md-8
+    {
+        .checkout-form
+        {
+            .fieldset
+            {
+                margin-bottom: 20px;
+                .error-message
+                {
+                    color: red;
+                    font-size: 11px;
+                    margin-top: 2px;
+                }
+                .birthday
+                {
+                    display: table;
+                    .bdivider
+                    {
+                        display: table-cell;
+                        vertical-align: top;
+                        &.month
+                        {
+                            width: 160px;
+                            padding-right: 10px;
+                        }
+                        &.day
+                        {
+                        }
+                        &.year
+                        {
+                            width: 160px;
+                            padding-left: 10px;
+
+                            select
+                            {
+                            }
+                        }
+                    }
+
+                }
+                .title
+                {
+                    font-size: 20px;
+                    padding: 10px;
+                    &.col-md-12
+                    {
+
+                    }
+                }
+
+
+                .field
+                {
+                    .form-control
+                    {
+
+                    }
+
+                    .form-control
+                    {
+
+                    }
+
+                    .form-control
+                    {
+
+                    }
+                }
+            }
+        }
+    }
+
+    .checkout-summary
+    {
+        .title
+        {
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        .order-summary
+        {
+            border: 1px solid #ddd;
+            padding: 10px;
+            .number-in-cart
+            {
+
+            }
+
+            table
+            {
+                width: 100%;
+                color: #777;
+
+                thead
+                {
+                    font-weight: bold;
+
+                    tr
+                    {
+                        td
+                        {
+                            padding: 5px 0;
+                            border-bottom: 1px dashed #ddd;
+                        }
+                    }
+                }
+
+                tbody
+                {
+                    tr
+                    {
+
+                        td
+                        {
+                            padding: 5px 0;
+                            border-bottom: 1px dashed #ddd;
+                        }
+                    }
+                }
+            }
+
+            .total
+            {
+                overflow: auto;
+                padding-top: 5px;
+                .total-label
+                {
+                    float: right;
+                }
+                .total-price
+                {
+                    width: 100px;
+                    margin-left: 15px;
+                    float: right;
+
+                    &.supertotal
+                    {
+                        color: #2B628B;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/* CHECKOUT PAYMENT */
+.order-sum
+{
+    width: 1000px;
+    margin: auto;
+    font-size: 14px;
+    .submit-order-container
+    {
+        padding-bottom: 30px;
+        padding-top: 30px;
+    }
+    .title
+    {
+        font-size: 20px;
+        padding: 5px 15px;
+        background-color: #2B628B;
+        color: #fff;
+        margin-top: 20px;
+        -webkit-border-top-left-radius: 3px;
+           -moz-border-radius-topleft: 3px;
+                border-top-left-radius: 3px;
+        -webkit-border-top-right-radius: 3px;
+           -moz-border-radius-topright: 3px;
+                border-top-right-radius: 3px;
+    }
+    table
+    {
+        width: 100%;
+        color: #777;
+
+        thead
+        {
+            font-weight: bold;
+
+            tr
+            {
+                td
+                {
+                    padding: 5px 0;
+                    border-bottom: 1px solid #ddd;
+                }
+            }
+        }
+
+        tbody
+        {
+            tr
+            {
+
+                td
+                {
+                    padding: 5px 0;
+                    border-bottom: 1px solid #ddd;
+                }
+            }
+        }
+    }
+    .total
+    {
+        overflow: auto;
+        padding-top: 5px;
+        .total-label
+        {
+            float: right;
+        }
+        .total-price
+        {
+            width: 100px;
+            margin-left: 15px;
+            float: right;
+
+            &.supertotal
+            {
+                color: #2B628B;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.checkout-payment
+{
+    margin-top: 20px;
+    font-size: 18px;
+    padding-bottom: 50px;
+    overflow: auto;
+    .holder
+    {
+        color: #696969;
+        .img
+        {
+            height: 120px;
+            img
+            {
+                width: 200px;
+            }
+        }
+        .name
+        {
+            border-bottom: 1px solid #acacac;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .number
+        {
+            
+        }
+    }
+}
+
+.receipt
+{
+    max-width: 1000px;
+    margin: auto;
+    iframe
+    {
+        width: 100%;
+        border: 1px solid #ddd;
+        margin: 10px;
+        height: 1000px;
+    }
+}
+
+//PAYMENT
+.order-sum
+{
+    .divider
+    {
+        background-image: url("/resources/assets/rutsen/img/Divider-2.png");
+        height: 13px;
+        width: 40%;
+        margin: 0 auto 40px;
+    }
+    text-align: center;
+    .order-header
+    {
+        color: #3a3a3a;
+        font-size: 30px;
+        font-weight: 700;
+        padding-top: 40px;
+        span
+        {
+            color: #2b628b;
+            font-weight: 800;
+        }
+    }
+    .total
+    {
+        color: #434343;
+        font-size: 14px;
+    }
+    .header-button
+    {
+        padding-bottom: 10px;
+    }
+    table
+    {
+        width: 100%;
+        margin-bottom: 20px;
+        thead
+        {
+            background-color: #2b628b;
+            color: white;
+            font-size: 14px;
+            font-weight: 400;
+            tr
+            {
+                td
+                {
+                    width: 2%;
+                    border: 1px solid #21557c;
+                    padding: 8px 0;
+                }
+                td
+                {
+                    &.biggest
+                    {
+                        width: 30%;
+                    }
+                }
+            }
+        }
+        tbody
+        {
+            tr
+            {
+                &:hover
+                {
+                    background-color: #f2f4f6;
+                }
+                td
+                {
+                    width: 2%;
+                    border: 1px solid #dedede;
+                    color: #434343;
+                    font-size: 14px;
+                    padding: 10px 10px;
+                    .image-holder
+                    {
+                        height: 50px;
+                        width: 80px;
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin: 0 25px;
+                        text-align: left;
+                        img
+                        {
+                            max-width: 100%;
+                            max-height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.coupon-popup
+{
+    .coupon-container
+    {
+        padding: 30px;
+    } 
+    .remodal-close
+    {
+        display: none;
+    }
+}
+
+

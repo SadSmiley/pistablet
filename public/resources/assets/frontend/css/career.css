@@ -1,0 +1,199 @@
+.career {
+  text-align: center; }
+  .career .career-header {
+    padding: 20px 0; }
+    .career .career-header .title {
+      font-weight: bold;
+      color: #565656;
+      font-size: 33.33px; }
+      .career .career-header .title span {
+        font-size: 27.83px; }
+    .career .career-header button {
+      font-size: 33.33px;
+      color: #6cab09;
+      font-weight: 300;
+      border: 2px solid #6cab09;
+      background-image: none;
+      padding: 5px 40px;
+      background-color: white;
+      margin-top: 10px;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -o-transition: all 0.5s;
+      transition: all 0.5s; }
+      .career .career-header button:hover {
+        background-color: #6cab09;
+        color: white; }
+    .career .career-header .dots {
+      background-image: url("/resources/assets/frontend/img/dots2.png");
+      height: 10px;
+      width: 300px;
+      margin: 25px auto; }
+    .career .career-header .text {
+      font-size: 22.92px;
+      color: #565656;
+      font-weight: 300;
+      max-width: 700px;
+      margin: auto; }
+  .career .career-job {
+    color: white;
+    background-image: url("/resources/assets/frontend/img/career-header.jpg");
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 25px 0; }
+    .career .career-job .title {
+      font-size: 33.33px;
+      font-weight: bold;
+      display: none; }
+    .career .career-job .containers {
+      text-align: center;
+      margin: auto; }
+      .career .career-job .containers .img {
+        display: inline-block;
+        vertical-align: middle; }
+      .career .career-job .containers .text {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        padding: 0 25px; }
+        .career .career-job .containers .text .title {
+          font-size: 33.33px;
+          line-height: 40px;
+          display: none; }
+        .career .career-job .containers .text .description {
+          font-size: 18.75px;
+          max-width: 450px; }
+  .career .joblist {
+    font-family: "Lato",Arial,"Helvetica Neue",Helvetica,sans-serif; }
+    .career .joblist .job-title {
+      background-color: #6CAB09;
+      color: #FFF;
+      font-weight: 600;
+      font-size: 20px;
+      padding: 5px 0; }
+    .career .joblist .job-content .quote {
+      font-size: 20px;
+      line-height: 25px;
+      font-weight: bold;
+      text-align: center;
+      clear: both;
+      padding: 25px 0;
+      color: #727070; }
+    .career .joblist .job-content .holder {
+      color: #727070;
+      margin: 30px 0; }
+      .career .joblist .job-content .holder .border {
+        background-color: #F2F2F2;
+        padding: 25px; }
+        .career .joblist .job-content .holder .border:hover {
+          background-color: #E2EECE; }
+      .career .joblist .job-content .holder .title {
+        font-size: 25px;
+        margin-bottom: 20px;
+        text-align: center;
+        line-height: 27px;
+        width: 220px;
+        margin: auto; }
+      .career .joblist .job-content .holder .line {
+        background-color: #CCC;
+        width: 100%;
+        height: 1px;
+        margin: 25px 0; }
+      .career .joblist .job-content .holder ul {
+        text-align: left;
+        padding-left: 20px;
+        min-height: 350px; }
+        .career .joblist .job-content .holder ul li {
+          list-style-type: disc;
+          font-size: 100%;
+          line-height: 25px; }
+  .career .career-apply {
+    min-height: 382px;
+    background-image: url("/resources/assets/frontend/img/blue.jpg");
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    text-align: center;
+    padding-bottom: 30px; }
+    .career .career-apply .title {
+      font-size: 30px;
+      color: #FFF;
+      font-weight: bold;
+      padding: 15px 0; }
+    .career .career-apply .container .field {
+      overflow: auto;
+      clear: both; }
+      .career .career-apply .container .field ::-webkit-input-placeholder {
+        color: #ACD0EF; }
+      .career .career-apply .container .field :-moz-placeholder {
+        /* Firefox 18- */
+        color: #ACD0EF; }
+      .career .career-apply .container .field ::-moz-placeholder {
+        /* Firefox 19+ */
+        color: #ACD0EF; }
+      .career .career-apply .container .field :-ms-input-placeholder {
+        color: #ACD0EF; }
+      .career .career-apply .container .field input[type="text"] {
+        margin: 5px 0;
+        font-size: 22px;
+        height: 65px;
+        border: 5px solid #FFF;
+        background: transparent none repeat scroll 0% 0%;
+        color: #FFF;
+        padding: 10px;
+        color: white; }
+      .career .career-apply .container .field textarea {
+        margin: 5px 0;
+        font-size: 22px;
+        height: 65px;
+        border: 5px solid #FFF;
+        background: transparent none repeat scroll 0% 0%;
+        color: #FFF;
+        padding: 10px;
+        color: white;
+        resize: none;
+        height: 140px; }
+      .career .career-apply .container .field .upload {
+        font-size: 22px;
+        height: 60px;
+        border: 5px solid #FFF;
+        text-align: left;
+        background: transparent none repeat scroll 0% 0%;
+        color: #FFF;
+        overflow: hidden;
+        position: relative;
+        margin: 5px 0; }
+        .career .career-apply .container .field .upload:hover {
+          background-color: #88D909;
+          border: 5px solid #88D909; }
+        .career .career-apply .container .field .upload span {
+          position: absolute;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          -moz-transform: translateY(-50%);
+          -o-transform: translateY(-50%);
+          transform: translateY(-50%);
+          top: 50%;
+          left: 20px; }
+      .career .career-apply .container .field input[type="file"] {
+        font-size: 22px;
+        opacity: 0;
+        height: 60px; }
+      .career .career-apply .container .field button {
+        border: 0;
+        margin: 5px 0;
+        width: 150px;
+        height: 70px;
+        float: left;
+        font-size: 22px;
+        background: #3F8EC6;
+        color: #FFF;
+        font-weight: 700; }
+
+/*# sourceMappingURL=career.css.map */

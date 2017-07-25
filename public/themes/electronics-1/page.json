@@ -1,0 +1,322 @@
+{
+	"home":
+	{
+		"home_banner" :
+		{
+			"label":"Banner Image",
+			"type":"image",
+			"default":"",
+			"size":"12"
+		},
+		"home_category_title" :
+		{
+			"label":"Category Title",
+			"type":"textbox",
+			"default":"",
+			"size":"12"
+		},
+
+		"home_mostviewed_title" :
+		{
+			"label":"Most Viewed Title",
+			"type":"textbox",
+			"default":"",
+			"size":"12"
+		},
+
+		"home_newreleases_title" :
+		{
+			"label":"New Releases Title",
+			"type":"textbox",
+			"default":"",
+			"size":"12"
+		},
+
+		"home_small_banner_1" :
+		{
+			"label":"Small Banner 1 Image",
+			"type":"image",
+			"default":"",
+			"size":"6"
+		},
+		"home_small_banner_2" :
+		{
+			"label":"Small Banner 2 Image",
+			"type":"image",
+			"default":"",
+			"size":"6"
+		}
+	},
+
+	"shop":
+	{
+		"shop_banner" :
+		{
+			"label":"Banner Image",
+			"type":"image",
+			"default":"",
+			"size":"12"
+		},
+
+		"shop_menu_tab_title" :
+		{
+			"label":"Menu Tab Title",
+			"type":"textbox",
+			"default":"",
+			"size":"12"
+		},
+
+		"shop_menu_list_1" :
+		{
+			"label":"Menu List 1",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"shop_menu_list_2" :
+		{
+			"label":"Menu List 2",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"shop_menu_list_3" :
+		{
+			"label":"Menu List 3",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"shop_menu_list_4" :
+		{
+			"label":"Menu List 4",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"shop_menu_list_5" :
+		{
+			"label":"Menu List 5",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"shop_menu_list_6" :
+		{
+			"label":"Menu List 6",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+
+		"shop_mostviewed_title" :
+		{
+			"label":"Most Viewed Title",
+			"type":"textbox",
+			"default":"",
+			"size":"12"
+		}
+	},
+
+	"about":
+	{
+		"about_company_image" :
+		{
+			"label":"Company Image",
+			"type":"image",
+			"default":"",
+			"size":"12"
+		},
+
+		"about_welcome_title" :
+		{
+			"label":"Welcome Title",
+			"type":"textbox",
+			"default":"",
+			"size":"3"
+		},
+		"about_company_name_1" :
+		{
+			"label":"Company Name 1",
+			"type":"textbox",
+			"default":"",
+			"size":"3"
+		},
+		"about_company_name_2" :
+		{
+			"label":"Company Name 2",
+			"type":"textbox",
+			"default":"",
+			"size":"3"
+		},
+		"about_company_name_3" :
+		{
+			"label":"Company Name 3",
+			"type":"textbox",
+			"default":"",
+			"size":"3"
+		},
+
+		"about_company_description_1" :
+		{
+			"label":"Company Description 1",
+			"type":"textbox",
+			"default":"",
+			"size":"6"
+		},
+		"about_company_description_2" :
+		{
+			"label":"Company Description 2",
+			"type":"textbox",
+			"default":"",
+			"size":"6"
+		},
+
+		"about_mission_title" :
+		{
+			"label":"Mission Title",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_vision_title" :
+		{
+			"label":"Vision Title",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_core_values_title" :
+		{
+			"label":"Core Values Title",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+
+		"about_mission_description" :
+		{
+			"label":"Mission Description",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_vision_description" :
+		{
+			"label":"Vision Description",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_core_values_description" :
+		{
+			"label":"Core Values Description",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+
+		"about_meet_our_team_title_1" :
+		{
+			"label":"Meet Our Team Title 1",
+			"type":"textbox",
+			"default":"",
+			"size":"6"
+		},
+		"about_meet_our_team_title_2" :
+		{
+			"label":"Meet Our Team Title 2",
+			"type":"textbox",
+			"default":"",
+			"size":"6"
+		},
+
+		"about_employee_1_image" :
+		{
+			"label":"Employee 1 Image",
+			"type":"image",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_1_name" :
+		{
+			"label":"Employee 1 Name",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_1_position" :
+		{
+			"label":"Employee 1 Position",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+
+		"about_employee_2_image" :
+		{
+			"label":"Employee 2 Image",
+			"type":"image",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_2_name" :
+		{
+			"label":"Employee 2 Name",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_2_position" :
+		{
+			"label":"Employee 2 Position",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+
+		"about_employee_3_image" :
+		{
+			"label":"Employee 3 Image",
+			"type":"image",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_3_name" :
+		{
+			"label":"Employee 3 Name",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_3_position" :
+		{
+			"label":"Employee 3 Position",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+
+		"about_employee_4_image" :
+		{
+			"label":"Employee 4 Image",
+			"type":"image",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_4_name" :
+		{
+			"label":"Employee 4 Name",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		},
+		"about_employee_4_position" :
+		{
+			"label":"Employee 4 Position",
+			"type":"textbox",
+			"default":"",
+			"size":"4"
+		}
+	}
+}

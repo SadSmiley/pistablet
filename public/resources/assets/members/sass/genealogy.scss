@@ -1,0 +1,57 @@
+$font-family: "Open Sans", sans-serif !important;
+$background-color: #efefef;
+$blue: #474f71;
+$orange: #f47265;
+$sblue: #40c0c0;
+$gray: #aaafb6;
+$gray2: #9ea7b3;
+$font-color: #77818e;
+
+.genealogy
+{
+	.header
+	{
+		@media screen and (max-width: 768px)
+		{
+			padding: 15px;
+		}
+		.labels
+		{
+			@media screen and (max-width: 768px)
+			{
+				display: none;
+			}
+		}
+		select
+		{
+			color: $font-color;
+			margin: 0 10px;
+			width: 250px;
+			text-align: center;
+			display: inline;
+			border-radius: 0;
+			@media screen and (max-width: 768px)
+			{
+				margin: 0;
+			}
+			@media screen and (max-width: 525px)
+			{
+				width: 100%;
+			}
+		}
+		span
+		{
+			padding: 5px 0;
+		}
+		.pull-right
+		{
+			@media screen and (max-width: 525px)
+			{
+				float: none !important;
+				display: block !important;
+				padding-top: 20px;
+				text-align: center;
+			}
+		}
+	}
+}

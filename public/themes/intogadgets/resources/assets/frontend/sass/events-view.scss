@@ -1,0 +1,122 @@
+.events
+{
+	margin-bottom: 50px;
+	> table
+	{
+
+		tbody
+		{
+			tr
+			{
+				td
+				{
+					vertical-align: top;
+				}
+				.title
+				{
+					font-size: 4.2rem;
+					line-height: 1.19;
+					border-bottom: .1rem solid rgba(0,0,0,.15);
+					padding-bottom: 2rem;
+					padding-top: 1.2rem;
+					margin-bottom: 20px;
+					font-weight: 300;
+				}
+				.main-event
+				{
+					padding-right: 50px;
+					.img
+					{
+						img
+						{
+							width: 100%;
+						}
+					}
+					.desc
+					{
+						margin-top: 25px;
+						margin-bottom: 25px;
+					}
+				}
+				.side-event
+				{
+					width: 300px;
+					background-color: #efefef;
+					.holder
+					{
+						margin-bottom: 15px;
+						width: 90%;
+						margin: 15px auto;
+						&:last-child
+						{
+							margin-bottom: 0;
+						}
+						.side-content
+						{
+							padding: 0 15px;
+							font-size: 16px;
+							font-weight: 400;
+							color: rgba(0,0,0,0.75);
+							vertical-align: top;
+						}
+						.img
+						{
+							width: 100px;
+							vertical-align: top;
+							img
+							{
+								width: 100%;
+							}
+						}
+						&.first
+						{
+							width: 100%;
+							margin: 0;
+							.side-content
+							{
+								padding: 15px 0;
+								font-size: 18px;
+								font-weight: 400;
+								color: #000;
+								border-bottom: 1px solid rgba(0,0,0,0.15);
+								width: 90%;
+								margin: auto;
+							}
+							.img
+							{
+								width: 100%;
+								img
+								{
+									width: 100%;
+								}
+							}
+						}
+					}
+				}
+				@media screen and (max-width: 768px)
+				{
+					.main-event
+					{
+						width: 100%;
+						display: block;
+						padding: 0;
+					}
+					.side-event
+					{
+						width: 100%;
+						display: block;
+					}
+				}
+			}
+		}
+	}	
+	.btn.back
+	{
+		font-size: 1.8rem;
+		line-height: 1.444;
+		padding: 1.5rem 2.5rem;
+		background-color: #333;
+		color: #fff;
+		text-decoration: none;
+	}
+}

@@ -1,0 +1,73 @@
+.sc_services_title
+{
+	color: #2a2a2a;
+	font-size: 25px;
+	font-weight: 700;
+}
+.sc_services_descr
+{
+	font-size: 14.58px;
+	font-weight: 400;
+}
+.sc_form_item
+{
+	input
+	{
+		font-family: inherit;
+	}
+	textarea
+	{
+		font-family: inherit;
+	}
+}
+.lol-header
+{
+	background-image: url('/assets/new_front/img/about-2nd-bg.jpg') !important;
+	height: 370px;
+	.korekara
+	{
+		color: #fff; 
+		font-size: 36.87px; 
+		line-height: 36px; 
+		margin: 0; 
+		margin-bottom: 15px;
+		@media screen and (max-width: 991px)
+		{
+			font-size: 25px;
+		}
+	}
+	.shiawase
+	{
+		color: #fff; 
+		font-size: 66.67px; 
+		font-weight: 600; 
+		line-height: 66px; 
+		margin: 0;
+		@media screen and (max-width: 991px)
+		{
+			font-size: 30px;
+		}
+	}
+}
+
+.mamoru
+{
+	padding: 75px 0;
+	.divider
+	{
+		width: 1px;
+		height: 100%;
+		background-color: #cfcfcf;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+	.sc_services_descr.sc_item_descr
+	{
+		color: #2a2a2a;
+		font-size: 14.58px;
+	}
+}

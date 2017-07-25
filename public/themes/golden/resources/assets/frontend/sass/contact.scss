@@ -1,0 +1,82 @@
+.contact
+{
+    padding: 40px 0;
+    .title
+    {
+        color: #3a3a3a;
+        font-size: 18.75px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    form
+    {
+        label
+        {
+            color: #8c8c8c;
+            font-size: 14.58px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .form-control
+        {
+            box-shadow: none;
+        }
+        textarea
+        {
+            min-height: 150px;
+        }
+        .btn
+        {
+            margin-top: 7.5px;
+            border: 0;
+            background-color: #a37535;
+            border-radius: 0;
+            font-size: 14.59px;
+            color: #fff;
+        }
+    }
+    .info
+    {
+        margin-bottom: 25px;
+        td
+        {
+            vertical-align: middle;
+            padding: 10px 0;
+        }
+        .fa
+        {
+            color: #aeaeae;
+            font-size: 25px;
+            padding-right: 15px;
+            &.fa-envelope
+            {
+                font-size: 15px;
+            }
+        }
+        .text
+        {
+            color: #282828;
+            font-size: 14.58px;
+            font-weight: 500;
+        }
+    }
+}
+
+.map
+{
+    background-color: #3e3e3e;
+    padding: 50px 0;
+    text-align: center;
+    .title
+    {
+        color: #fff;
+        font-weight: 700;
+        font-size: 18.74px;
+        margin-bottom: 20px;
+    }
+    iframe
+    {
+        width: 100%;
+        height: 600px;
+    }
+}

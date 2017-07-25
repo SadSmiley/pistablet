@@ -1,0 +1,56 @@
+.top-content {
+  background-color: #fff;
+  padding-top: 70px; }
+  .top-content .image-holder {
+    text-align: center; }
+    .top-content .image-holder img {
+      max-width: 100%; }
+  .top-content .content-holder .content-title {
+    font-size: 29px;
+    font-weight: 700;
+    margin-bottom: 20px; }
+    .top-content .content-holder .content-title #tech {
+      color: #ff2e34; }
+    .top-content .content-holder .content-title #electronics {
+      color: #9c9c9c; }
+  .top-content .content-holder .content-sub {
+    font-size: 14px;
+    color: #333333;
+    margin-bottom: 20px; }
+
+.strategy {
+  margin-top: 40px; }
+  .strategy .title {
+    text-align: center;
+    color: #333333;
+    font-size: 20px;
+    font-weight: 700; }
+  .strategy .sub-title {
+    font-size: 14px;
+    color: #333333;
+    padding: 20px 20px 20px 40px; }
+
+.our-team {
+  margin-top: 70px;
+  margin-bottom: 70px; }
+  .our-team .title {
+    color: #333333;
+    font-size: 37.39px;
+    font-weight: 700; }
+    .our-team .title span {
+      color: #ff2e34; }
+  .our-team .team-details {
+    padding: 40px; }
+    .our-team .team-details .person-details {
+      text-align: center; }
+      .our-team .team-details .person-details .person-name {
+        font-size: 14px;
+        color: #333333;
+        font-weight: 700;
+        margin-top: 20px; }
+      .our-team .team-details .person-details .person-position {
+        font-size: 13px;
+        color: #9e9e9e;
+        font-weight: 600; }
+
+/*# sourceMappingURL=aboutus.css.map */

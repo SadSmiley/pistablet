@@ -1,0 +1,29 @@
+.register {
+  text-align: center; }
+  .register .title-header {
+    padding: 50px 0;
+    font-weight: 700;
+    font-size: 18px; }
+    .register .title-header span {
+      font-weight: 300;
+      font-size: 14px; }
+  .register .columnz .teybol .form-group {
+    overflow: auto;
+    clear: both; }
+    .register .columnz .teybol .form-group .labelz {
+      text-align: left;
+      margin-bottom: 5px; }
+    .register .columnz .teybol .form-group .inputz {
+      text-align: left; }
+      .register .columnz .teybol .form-group .inputz input[type="radio"] {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0;
+        margin-right: 10px; }
+      .register .columnz .teybol .form-group .inputz span {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0;
+        margin-right: 10px; }
+
+/*# sourceMappingURL=registration.css.map */

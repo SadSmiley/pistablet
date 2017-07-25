@@ -1,0 +1,243 @@
+/*Now the CSS*/ 
+* {margin: 0; padding: 0;}
+
+
+.tree-container
+{
+    background-image: url("../img/bg.jpg");    
+}
+#info
+{
+    position: absolute;
+    top: -17px;
+    right: -230px;
+    width: 200px;
+    border: 1px solid rgba(0,0,0,0.2);
+    background-color: #fff;
+    color: #777;
+    z-index: 1;
+    border-radius: 5px;
+    text-align: left;
+    padding: 10px;
+    display: none;
+}
+#info #photo
+{
+    float: left;
+    border-radius: 100%;
+    border: 1px solid rgba(0,0,0,0.2);
+    margin-right: 10px;
+}
+#info #photo img
+{
+    border-radius: 100%;
+}
+#info #cont
+{
+    margin-top: 7px;
+}
+
+#info:after, .arrow_box:before { right: 100%; border: solid transparent; content: " "; height: 0; width: 0; position: absolute; pointer-events: none; }
+#info:after { border-color: rgba(0, 0, 0, 0); border-right-color: rgba(0,0,0,0.3); border-width: 5px; top: 50%; margin-top: -5px; }
+#info:before { border-color: rgba(0, 0, 0, 0); border-right-color: rgba(0,0,0,0.3); border-width: 6px; top: 50%; margin-top: -6px; }
+
+.tree ul
+{
+    padding-top: 20px; position: relative;
+}
+
+#info-summary
+{
+    font-family: "arial";
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,0.6);
+    margin: 5px;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 2px;
+    width: 300px;
+    
+}
+#info-summary #batch-field
+{
+    overtflow: auto;
+}
+#info-summary #batch-field #label
+{
+    font-weight: bold;
+    font-size: 12px;
+    width: 200px;
+    float: left;
+}
+#info-summary #batch-field #value
+{
+    font-weight: bold;
+    width: 100px;
+    float: left;
+}
+
+.tree li {
+    float: left; text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+    
+}
+.tree li img
+{
+    height: 50px;
+    width: 50px;
+    padding: 5px;
+}
+.tree li .id
+{
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 15px;
+}
+.tree li span img
+{
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+.tree li span
+{
+    background-color: #519FCD;
+    color: #fff;
+    position: relative;
+    -webkit-transition: background-color ease-out 0.5s;
+    -moz-transition: background-color ease-out 0.5s;
+    -o-transition: background-color ease-out 0.5s;
+    transition: background-color ease-out 0.5s;  
+}
+.tree li span:hover
+{
+    background-color: #519FCD;
+    color: #fff;
+}
+.tree li span.PS
+{
+    background-color: #519FCD;
+}
+.tree li span.FS
+{
+    background-color: #CC5351;
+}
+.tree li span.VC
+{
+    background-color: #86CC51;
+}
+.tree li span.SS
+{
+    background-color: #851CB2;
+}
+.tree li span #paid-slot-seal
+{
+    
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 7px 8px;
+    border-radius: 100%;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+.tree li span:hover #info
+{
+    display: block;
+}
+.tree li span:hover #info:hover
+{
+    display: none;
+}
+
+
+/*We will use ::before and ::after to draw the connectors*/
+
+.tree li::before, .tree li::after{
+    content: '';
+    position: absolute; top: 0; right: 50%;
+    border-top: 1px solid #519FCD;
+    width: 50%; height: 20px;
+}
+.tree li::after{
+    right: auto; left: 50%;
+    border-left: 1px solid #519FCD;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+    display: none;
+}
+
+/*Remove space from the top of single children*/
+.tree li:only-child{ padding-top: 0;}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+.tree li:first-child::before, .tree li:last-child::after{
+    border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before{
+    border-right: 1px solid #519FCD;
+    border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+.tree ul ul::before{
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 1px solid #519FCD;
+    width: 0; height: 20px;
+}
+
+.tree li span
+{
+    cursor: pointer;
+    height: 49px;
+    width: 50px;
+    text-decoration: none;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+    opacity: 0.9;
+    border-radius: 100%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+.tree li span:hover
+{
+    opacity: 1.0;
+}
+.loading
+{
+    bottom: -60px;
+    position: absolute;
+    text-align: center;
+}
+.loading img
+{
+    border: none !important;;
+    height: 40px !important;
+    padding: 0px !important;
+    width: 40px !important;  
+    background-color: transparent !important; 
+}
+
+
+
+/*Thats all. I 

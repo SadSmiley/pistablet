@@ -1,0 +1,147 @@
+.opportunity {
+  margin-top: 100px;
+  font-family: "Roboto";
+  .opportunity-header {
+    color: #50576d;
+    font-size: 25px;
+    font-weight: 700;
+  }
+  .opportunity-sub {
+    color: #50576d;
+    font-size: 16.67px;
+    margin-bottom: 100px;
+  }
+  .opportunity-holder {
+    text-align: left;
+    margin: 50px 0;
+    .one {
+      background-color: #009999;
+    }
+    .two {
+      background-color: #003399;
+    }
+    .three {
+      background-color: #660099;
+    }
+    .four {
+      background-color: #990099;
+    }
+    .five {
+      background-color: #990066;
+    }
+    .six {
+      background-color: #cf0019;
+    }
+    .seven {
+      background-color: #f14f15;
+    }
+    .eight {
+      background-color: #fd7e11;
+    }
+    .nine {
+      background-color: #ffba08;
+    }
+    .ten {
+      background-color: #cad217;
+    }
+    .number-holder {
+      display: table-cell;
+      width: 160px;
+      .number {
+        font-size: 50px;
+        line-height: 50px;
+        width: 50px;
+        height: 50px;
+        box-sizing: content-box;
+        padding: 40px;
+        border-radius: 100%;
+        position: relative;
+        border: 15px solid #efefef;
+        font-weight: bold;
+        vertical-align: middle;
+        text-align: center;
+        .content {
+          color: white;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          -moz-transform: translateY(-50%);
+          -webkit-transform: translateY(-50%);
+          left: 0;
+          right: 0;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+    }
+    .text {
+      display: table-cell;
+      vertical-align: middle;
+      color: #50576d;
+      margin: 0 25px;
+      padding: 20px 30px;
+      .name {
+        font-size: 28px;
+        line-height: 28px;
+        font-family: Roboto;
+        font-weight: 300;
+        color: #505558;
+        margin-bottom: 13px;
+      }
+      .description {
+        font-size: 16.67px;
+        font-size: 20px;
+        line-height: 20px;
+        font-family: Roboto;
+        font-weight: 300;
+        color: #505558;
+        margin-bottom: 13px;
+      }
+      .tables table {
+        table-layout: fixed;
+        color: #50576d;
+        margin: 10px 0;
+        text-align: center;
+        font-size: 18px;
+        border-collapse: collapse;
+        border: 1px solid #E2DEDE;
+        tbody tr {
+          &:nth-child(even) {
+            background: #f6f6f6;
+          }
+          &:nth-child(odd) {
+            background: #f0efef;
+          }
+        }
+        thead {
+          background-color: #E1E1E1;
+
+        }
+        th {
+          vertical-align: middle;
+          text-align: center !important;
+        }
+        td {
+          padding: 0 25px;
+          border-right: 2px solid #e2dede;
+          vertical-align: middle;
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .opportunity .opportunity-holder .number-holder {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .opportunity .opportunity-holder .text {
+    display: block;
+  }
+}

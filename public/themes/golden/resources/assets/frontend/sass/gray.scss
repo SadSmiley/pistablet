@@ -1,0 +1,62 @@
+$gray: #7f8c8d;
+
+body .wrapper .header-wrapper .navbar
+{
+	background-color: $gray;
+}
+body .wrapper .header-wrapper .header .header-nav .button-holder .btn.order-now
+{
+	background-color: $gray;
+	border-color: $gray;
+}
+.product .product-holder .product-overlay .name span
+{
+	color: $gray;
+}
+.product .product-holder .product-overlay .btn
+{
+	color: $gray;
+    border: 1px solid $gray;
+}
+.container-body .holder .title span
+{
+	color: $gray;
+}
+body .wrapper .header-wrapper .header .header-nav .logo-holder
+{
+	color: $gray;
+}
+.contact form .btn
+{
+	background-color: $gray;
+}
+.wrap .main .holder .cat
+{
+	color: $gray;
+}
+.blog-content .intro .text-wrap .text .category .text
+{
+	background-color: $gray;
+	color: #fff;
+}
+.lol-title span
+{
+	color: $gray;
+}
+#wrapper p.button input:hover
+{
+	background-color: $gray;
+}
+#wrapper p.button input
+{
+	background-color: $gray;
+}
+#wrapper p.button.register input
+{
+	border-color: $gray;
+	color: $gray;
+}
+#wrapper p.button.register input:hover
+{
+	background-color: $gray !important;
+}

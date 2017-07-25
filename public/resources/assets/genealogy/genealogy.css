@@ -1,0 +1,354 @@
+/*Now the CSS*/ 
+* {margin: 0; padding: 0;}
+
+body
+{
+    cursor: grab;
+}
+.tree-container
+{
+    background-image: url("http://blog.spoongraphics.co.uk/wp-content/uploads/2012/textures/18.jpg");   
+}
+
+
+.tree ul
+{
+    padding-top: 10px; position: relative;
+}
+
+#info-summary
+{
+    font-family: "arial";
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,0.6);
+    margin: 5px;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 2px;
+    width: 300px;
+    
+}
+#info-summary #batch-field
+{
+    overtflow: auto;
+}
+#info-summary #batch-field #label
+{
+    font-weight: bold;
+    font-size: 12px;
+    width: 200px;
+    float: left;
+}
+#info-summary #batch-field #value
+{
+    font-weight: bold;
+    width: 100px;
+    float: left;
+}
+
+.tree li {
+    float: left; text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 10px 5px 0 5px;
+    
+}
+.tree li img
+{
+    height: 50px;
+    width: 50px;
+    padding: 5px;
+}
+.tree li span img
+{
+
+}
+.tree li span
+{
+    background-color: #167AAF;
+    color: #fff;
+    position: relative;
+    -webkit-transition: background-color ease-out 0.5s;
+    -moz-transition: background-color ease-out 0.5s;
+    -o-transition: background-color ease-out 0.5s;
+    transition: background-color ease-out 0.5s;  
+}
+.tree li span:hover
+{
+    background-color: #167AAF;
+    color: #fff;
+}
+
+
+.tree li span:hover #info
+{
+    display: block;
+}
+.tree li span:hover #info:hover
+{
+    display: none;
+}
+
+
+/*We will use ::before and ::after to draw the connectors*/
+
+.tree li::before, .tree li::after{
+    content: '';
+    position: absolute; top: 0; right: 50%;
+    border-top: 1px solid #167AAF;
+    width: 50%; height: 10px;
+}
+.tree li::after{
+    right: auto; left: 50%;
+    border-left: 1px solid #167AAF;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+    display: none;
+}
+
+/*Remove space from the top of single children*/
+.tree li:only-child{ padding-top: 0;}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+.tree li:first-child::before, .tree li:last-child::after{
+    border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before{
+    border-right: 1px solid #167AAF;
+    border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+.tree ul ul::before{
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 1px solid #167AAF;
+    width: 0; height: 10px;
+}
+
+.tree li span
+{
+    cursor: default;
+    width: 100px;
+    line-height: auto;
+    text-decoration: none;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 10px 5px;
+    height: 90px;
+}
+
+.tree li span:hover
+{
+    opacity: 1.0;
+}
+.tree li span.PS
+{
+    background-color: #519FCD;
+}
+.tree li span.FS
+{
+    background-color: #CC5351;
+}
+.tree li span.VC
+{
+    background-color: #86CC51;
+}
+.tree li span.CD
+{
+    background-color: #BF9346;
+}
+.tree li span.load
+{
+    background-color: #519FCD;
+    background-image: url('../img/382.GIF');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+.tree li span .id
+{
+    font-size: 16px;
+    font-weight: bold;
+}
+.tree li span .name
+{
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,0.3);
+    margin: 5px 0;
+    height: 30px;
+    display: table-cell;
+    vertical-align: middle;
+    width: 280px;
+    cursor: pointer;
+    vertical-align: middle;
+    border-radius: 5px;
+    -webkit-transition: background-color ease-out 0.5s;
+    -moz-transition: background-color ease-out 0.5s;
+    -o-transition: background-color ease-out 0.5s;
+    transition: background-color ease-out 0.5s;  
+}
+.tree li span .membership
+{
+    margin-top: 5px;
+}
+.tree li span .name:hover
+{
+    background-color: rgba(0,0,0,0.5);
+}
+.tree li span .button
+{
+    font-size: 40px;
+    background-color: rgba(0,0,0,0.1);
+    padding: 20px 0;
+    box-sizing: border-box;
+    height: 90px;
+    width: 90px;
+    cursor: pointer;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-transition: background-color ease-out 0.5s;
+    -moz-transition: background-color ease-out 0.5s;
+    -o-transition: background-color ease-out 0.5s;
+    transition: background-color ease-out 0.5s;  
+}
+.tree li span .button:hover
+{
+    background-color: rgba(0,0,0,0.2);
+}
+.tree li span .view-downlines
+{
+    height: 20px;
+    width: 20px;
+    
+    display: inline-block;
+    border-radius: 100%;
+    z-index: 1;
+    line-height: 20px;
+    font-size: 16px;
+    margin-bottom: -10px;
+    position: relative;
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.3);
+    -webkit-transition: background-color ease-out 0.5s;
+    -moz-transition: background-color ease-out 0.5s;
+    -o-transition: background-color ease-out 0.5s;
+    transition: background-color ease-out 0.5s;  
+}
+.tree li span .view-downlines:hover
+{
+    background-color: rgba(0,0,0,0.5);
+}
+.tree li span .view-downlines.active
+{
+    background-color: #000;
+}
+.tree li span .button:hover
+{
+}
+.loading
+{
+    bottom: -60px;
+    position: absolute;
+    text-align: center;
+}
+.loading img
+{
+    border: none !important;;
+    height: 40px !important;
+    padding: 0px !important;
+    width: 40px !important;  
+    background-color: transparent !important; 
+}
+.remodal-wrapper
+{
+    cursor: default;
+}
+.form
+{
+    text-align: center;
+    cursor: default;
+}
+.form .fieldset
+{
+    margin-bottom: 10px;
+    font-size: 12px;
+    width: 300px;
+    display: inline-block;
+    text-align: left;
+}
+.form .fieldset .label
+{
+    margin-bottom: 3px;
+}
+.form .fieldset .field
+{
+}
+.form .fieldset .field input[type=text], input[type=password], select
+{
+    width: 90%;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.form .fieldset .field select
+{
+    width: 97%;
+}
+.form button
+{
+    width: 100%;
+    padding: 10px;
+    background-color: #286090;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    opacity: 0.9;
+    margin-top: 10px;
+}
+.form button:hover
+{
+    opacity: 1;
+}
+.form button[disabled="disabled"]
+{
+    opacity: 0.5;
+}
+.slot-form
+{
+    max-width: 700px !important;
+}
+.remodal-close
+{
+    display: none;
+}
+
+.pop-loading
+{
+    height: 100px;
+    width: 100px;
+    max-width: 100px !important;
+    border-radius: 100%;
+    background-color: #519FCD !important;
+    background-image: url('../img/382.GIF') !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}

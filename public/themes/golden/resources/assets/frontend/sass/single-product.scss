@@ -1,0 +1,116 @@
+.product
+{
+    margin: 25px 0;
+    .holder
+    {
+        border: 1px solid #e1e1e1;
+        -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        margin-bottom: 25px;
+    }
+    .img
+    {
+        width: 100%;
+        @media screen and (min-width: 991px)
+        {
+            border-right: 1px solid #e1e1e1;
+        }
+    }
+    .info
+    {
+        padding: 15px 25px;
+        .title
+        {
+            color: #313131;
+            font-size: 31.96px;
+            font-weight: 700;
+        }
+        .sub
+        {
+            color: #767676;
+            font-size: 12.5px;
+            font-weight: 300;
+        }
+        .desc
+        {
+            color: #313131;
+            font-size: 12.5px;
+            font-weight: 300;
+            margin-top: 10px;
+        }
+        .feature-title
+        {
+            margin-top: 7.5px;
+            color: #0e0e0e;
+            font-size: 14.58px;
+            font-weight: 700;
+        }
+        .feature-content
+        {
+            padding: 0;
+            margin: 0;
+            margin-top: 15px;
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            li
+            {
+                margin: 5px 0;  
+                margin-left: 20px;
+                list-style: disc;  
+                font-weight: 700;
+                font-size: 12.5px;
+                color: #0e0e0e;
+            }
+        }
+    }
+}
+.other
+{
+    .about
+    {
+        -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        margin: 15px 0;
+        margin-top: 0px;
+        .img
+        {
+            img
+            {
+                width: 100%;
+            }
+        }
+        .desc
+        {
+            color: #828282;
+            font-size: 14.58px;
+            font-weight: 300;
+            padding: 25px;
+        }
+    }
+    .title
+    {
+        color: #313131;
+        font-size: 20.83px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    .relate-holder
+    {
+        -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+        margin-bottom: 10px;
+        cursor: pointer;
+        &:last-child
+        {
+            margin-bottom: 0;
+        }
+        img
+        {
+            width: 100%;
+        }
+    }
+}

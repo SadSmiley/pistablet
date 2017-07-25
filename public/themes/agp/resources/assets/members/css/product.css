@@ -1,0 +1,154 @@
+@media screen and (max-width: 991px) {
+  .product {
+    padding: 0 15px !important; } }
+.product .header {
+  font-size: 20.83px; }
+  .product .header img {
+    height: 40px;
+    margin-right: 20px; }
+.product .body {
+  padding: 30px 20px; }
+  .product .body .holder {
+    padding: 35px 0;
+    border-bottom: 1px solid #e3e6ea; }
+    .product .body .holder .pix {
+      display: table-cell;
+      vertical-align: top; }
+      @media screen and (max-width: 600px) {
+        .product .body .holder .pix {
+          display: block;
+          text-align: center; } }
+    .product .body .holder .text {
+      display: table-cell;
+      vertical-align: top;
+      text-align: left;
+      padding: 0 20px; }
+      @media screen and (max-width: 600px) {
+        .product .body .holder .text {
+          display: block;
+          text-align: center;
+          padding-top: 15px; } }
+      .product .body .holder .text .name {
+        color: #40c0c0;
+        font-size: 20.83px;
+        font-weight: bold; }
+      .product .body .holder .text .price {
+        color: #77818e;
+        font-size: 20.83px; }
+      .product .body .holder .text .description {
+        font-size: 12.5px;
+        color: #77818e;
+        margin: 15px 0; }
+      .product .body .holder .text .boton {
+        text-align: left; }
+        @media screen and (max-width: 600px) {
+          .product .body .holder .text .boton {
+            text-align: center; } }
+      .product .body .holder .text a {
+        color: #eee;
+        font-size: 12.5px; }
+        .product .body .holder .text a button {
+          background-color: #9ea7b3;
+          border: 0;
+          border-radius: 5px;
+          padding: 8px 50px;
+          margin-top: 30px; }
+  .product .body .holder:last-child {
+    border-bottom: 0; }
+
+.cart {
+  background-color: #fff;
+  border-top: 5px solid #f47265; }
+  @media screen and (max-width: 1200px) {
+    .cart {
+      padding: 0 !important; } }
+  @media screen and (max-width: 991px) {
+    .cart {
+      padding: 0 15px !important; } }
+  .cart .header {
+    color: #f47265;
+    padding: 20px 0 10px; }
+    .cart .header img {
+      margin: 0 5px; }
+  .cart .body {
+    padding: 0 !important; }
+    @media screen and (max-width: 1200px) {
+      .cart .body {
+        padding: 0 5px !important; } }
+    @media screen and (max-width: 991px) {
+      .cart .body {
+        padding: 0 !important; } }
+    .cart .body table {
+      width: 100%;
+      margin: auto; }
+      .cart .body table thead {
+        background-color: #9ea7b3; }
+        .cart .body table thead th {
+          padding: 10px 20px;
+          color: white;
+          font-size: 14.58px;
+          font-weight: 400;
+          text-align: center; }
+      .cart .body table tbody {
+        color: #77818e;
+        font-size: 12.5px;
+        border-left: 1px solid #eaeaea;
+        border-right: 1px solid #eaeaea;
+        border-bottom: 1px solid #eaeaea; }
+        .cart .body table tbody tr:nth-child(even) {
+          background: #f7f7f7; }
+        .cart .body table tbody tr:nth-child(odd) {
+          background: #eeeeee; }
+        .cart .body table tbody td {
+          padding: 10px 20px;
+          border-right: 1px solid #e8e8e8;
+          border-bottom: 1px solid #e8e8e8; }
+        .cart .body table tbody td:last-child {
+          border-right: 0;
+          border-bottom: 0; }
+        .cart .body table tbody a {
+          color: #77818e; }
+        .cart .body table tbody .check {
+          width: 23px;
+          height: 23px;
+          position: relative;
+          margin: auto; }
+          .cart .body table tbody .check input[type="checkbox"] {
+            width: 23px;
+            height: 23px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0 !important;
+            opacity: 0;
+            z-index: 20; }
+          .cart .body table tbody .check .bgs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("/resources/assets/frontend/img/no-check.png");
+            z-index: 10; }
+          .cart .body table tbody .check input[type="checkbox"]:checked + .bgs {
+            background-image: url("/resources/assets/frontend/img/check.png"); }
+    .cart .body .total {
+      font-size: 18.75px;
+      color: #77818e;
+      text-align: right;
+      margin: 15px 0; }
+      .cart .body .total span {
+        font-weight: bold; }
+    .cart .body a button {
+      background-color: #f47265;
+      font-size: 12.5px;
+      color: #fff;
+      border: 0;
+      padding: 8px 50px;
+      border-radius: 5px;
+      margin-top: 40px;
+      margin-bottom: 10px; }
+
+/*# sourceMappingURL=product.css.map */

@@ -1,0 +1,605 @@
+{
+	"home":
+	{
+		"home_intro_first_title" : 
+		{
+			"label":"Intro First Line Title",
+			"type":"textbox",
+			"default":"WELCOME TO",
+			"size":"4"
+		},
+		"home_intro_second_title" : 
+		{
+			"label":"Intro Second Line Title",
+			"type":"textbox",
+			"default":"SOVEREIGN",
+			"size":"4"
+		},
+		"home_intro_third_title" : 
+		{
+			"label":"Intro Third Line Title",
+			"type":"textbox",
+			"default":"WORLD CORPORATION",
+			"size":"4"
+		},
+		"home_intro_description" : 
+		{
+			"label":"Intro Description",
+			"type":"textbox",
+			"default":"Our objective is to share with you a system that is proven, tested and has changed lives of millions of people like you.",
+			"size":"6"
+		},
+		"home_intro_button" : 
+		{
+			"label":"Intro Button",
+			"type":"textbox",
+			"default":"Learn More",
+			"size":"6"
+		},
+		"home_company_image" : 
+		{
+			"label":"Company Image",
+			"type":"image",
+			"default":"/themes/sovereign/img/company-side.jpg",
+			"size":"4"
+		},
+		"home_company_title" : 
+		{
+			"label":"Company Title",
+			"type":"textbox",
+			"default":"Who We Are",
+			"size":"4"
+		},
+		"home_company_description" : 
+		{
+			"label":"Company Description",
+			"type":"textbox",
+			"default":"We are an International direct advertising company from multiple sources of business enterprise formed to create partners all across the world. Companies in the Network Marketing Industry today are creating vast opportunities in line with wellness products for people to form a concrete Global Business Opportunity.",
+			"size":"4"
+		},
+		"home_mission_image" : 
+		{
+			"label":"Mission Image",
+			"type":"image",
+			"default":"/themes/sovereign/img/mission-side.jpg",
+			"size":"4"
+		},
+		"home_mission_title" : 
+		{
+			"label":"Mission Title",
+			"type":"textbox",
+			"default":"Company Mission",
+			"size":"4"
+		},
+		"home_mission_description" : 
+		{
+			"label":"Mission Description",
+			"type":"textbox",
+			"default":"To serve the community and its people by providing opportunity for good health and abundant life. And inspire people to help others make a positive change in their lives.",
+			"size":"4"
+		},
+		"home_vision_image" : 
+		{
+			"label":"Vision Image",
+			"type":"image",
+			"default":"/themes/sovereign/img/vision-side.png",
+			"size":"4"
+		},
+		"home_vision_title" : 
+		{
+			"label":"Vision Title",
+			"type":"textbox",
+			"default":"Company Vision",
+			"size":"4"
+		},
+		"home_vision_description" : 
+		{
+			"label":"Vision Description",
+			"type":"textbox",
+			"default":"To be the trademark in the field of health nutrition, business education and service to the community thru its outstanding products made available for entrepreneurs worldwide.",
+			"size":"4"
+		},
+		"home_core_title" : 
+		{
+			"label":"Core Values Title",
+			"type":"textbox",
+			"default":"Company Core Values",
+			"size":"6"
+		},
+		"home_core_sub" : 
+		{
+			"label":"Core Values Sub",
+			"type":"textbox",
+			"default":"-Inspired by Coach Wooden",
+			"size":"6"
+		},
+		"home_core_excellence_title" : 
+		{
+			"label":"Core Values Excellence Title",
+			"type":"textbox",
+			"default":"Excellence",
+			"size":"6"
+		},
+		"home_core_excellence_description" : 
+		{
+			"label":"Core Values Excellence Description",
+			"type":"textbox",
+			"default":"Performing at your highest level",
+			"size":"6"
+		},
+		"home_core_character_title" : 
+		{
+			"label":"Core Values Character Title",
+			"type":"textbox",
+			"default":"Character",
+			"size":"6"
+		},
+		"home_core_character_description" : 
+		{
+			"label":"Core Values Character Description",
+			"type":"textbox",
+			"default":"The qualities that distinguish individuals",
+			"size":"6"
+		},
+		"home_core_integrity_title" : 
+		{
+			"label":"Core Values Integrity Title",
+			"type":"textbox",
+			"default":"Integrity",
+			"size":"6"
+		},
+		"home_core_integrity_description" : 
+		{
+			"label":"Core Values Integrity Description",
+			"type":"textbox",
+			"default":"The faithfulness to maintain high moral standards",
+			"size":"6"
+		},
+		"home_core_teamwork_title" : 
+		{
+			"label":"Core Values Teamwork Title",
+			"type":"textbox",
+			"default":"Team Work",
+			"size":"6"
+		},
+		"home_core_teamwork_description" : 
+		{
+			"label":"Core Values Teamwork Description",
+			"type":"textbox",
+			"default":"Subordinating personal prominence to team efficiency",
+			"size":"6"
+		},
+		"home_core_communication_title" : 
+		{
+			"label":"Core Values Communication Title",
+			"type":"textbox",
+			"default":"Communication",
+			"size":"6"
+		},
+		"home_core_communication_description" : 
+		{
+			"label":"Core Values Communication Description",
+			"type":"textbox",
+			"default":"The ingredient to organizational success",
+			"size":"6"
+		},
+		"home_core_collaboration_title" : 
+		{
+			"label":"Core Values Collaboration Title",
+			"type":"textbox",
+			"default":"Collaboration",
+			"size":"6"
+		},
+		"home_core_collaboration_description" : 
+		{
+			"label":"Core Values Collaboration Description",
+			"type":"textbox",
+			"default":"The willingness to jointly achieve common goals",
+			"size":"6"
+		},
+		"home_core_attitude_title" : 
+		{
+			"label":"Core Values Attitude Title",
+			"type":"textbox",
+			"default":"Attitude",
+			"size":"6"
+		},
+		"home_core_attitude_description" : 
+		{
+			"label":"Core Values Attitude Description",
+			"type":"textbox",
+			"default":"Energy, drive and enjoyment will always inspire others",
+			"size":"6"
+		},
+		"home_core_discipline_title" : 
+		{
+			"label":"Core Values Discipline Title",
+			"type":"textbox",
+			"default":"Discipline",
+			"size":"6"
+		},
+		"home_core_discipline_description" : 
+		{
+			"label":"Core Values Discipline Description",
+			"type":"textbox",
+			"default":"Relentless Perseverance in all that you do",
+			"size":"6"
+		},
+		"home_core_initiative_title" : 
+		{
+			"label":"Core Values Initiative Title",
+			"type":"textbox",
+			"default":"Initiative",
+			"size":"6"
+		},
+		"home_core_initiative_description" : 
+		{
+			"label":"Core Values Initiative Description",
+			"type":"textbox",
+			"default":"Failure to act will lead to the biggest failures of all",
+			"size":"6"
+		},
+		"home_core_workethic_title" : 
+		{
+			"label":"Core Values Work Ethic Title",
+			"type":"textbox",
+			"default":"Work Ethic",
+			"size":"6"
+		},
+		"home_core_workethic_description" : 
+		{
+			"label":"Core Values Work Ethic Description",
+			"type":"textbox",
+			"default":"Success travels in the company of very hard work and dedication",
+			"size":"6"
+		},
+		"home_product_title" :
+		{
+			"label":"Product Title",
+			"type":"textbox",
+			"default":"A Real Product Need",
+			"size":"4"
+		},
+		"home_product_description" :
+		{
+			"label":"Product Description",
+			"type":"textbox",
+			"default":"Wellness Products are a real need in the marketplace. People may have the money to buy anything, but they can not buy their time on earth. With rising economies and changing lifestyles of people worldwide, people are getting health issues and financial defeat, everybody is looking to save money on hospitalizations.",
+			"size":"4"
+		},
+		"home_network_title" :
+		{
+			"label":"Networking Marketing Title",
+			"type":"textbox",
+			"default":"Network Marketing has come of age",
+			"size":"12"
+		},
+		"home_network_image_1" :
+		{
+			"label":"Networking Marketing Image 1",
+			"type":"image",
+			"default":"/themes/sovereign/img/marketing-1.jpg",
+			"size":"6"
+		},
+		"home_network_description_1" :
+		{
+			"label":"Networking Marketing Description 1",
+			"type":"textbox",
+			"default":"58 million people are involved in network marketing worldwide.",
+			"size":"6"
+		},
+		"home_network_image_2" :
+		{
+			"label":"Networking Marketing Image 2",
+			"type":"image",
+			"default":"/themes/sovereign/img/marketing-2.jpg",
+			"size":"6"
+		},
+		"home_network_description_2" :
+		{
+			"label":"Networking Marketing Description 2",
+			"type":"textbox",
+			"default":"The network marketing industry has surpassed $100 billion in retail revenue.",
+			"size":"6"
+		},
+		"home_network_image_3" :
+		{
+			"label":"Networking Marketing Image 3",
+			"type":"image",
+			"default":"/themes/sovereign/img/marketing-3.jpg",
+			"size":"6"
+		},
+		"home_network_description_3" :
+		{
+			"label":"Networking Marketing Description 3",
+			"type":"textbox",
+			"default":"North American sales have reached over $34 billion dollars.",
+			"size":"6"
+		},
+		"home_network_quote" :
+		{
+			"label":"Networking Marketing Quote",
+			"type":"textbox",
+			"default":"I think network marketing has come of age. It’s become undeniable that it’s a viable way to entrepreneurship and independence for millions of people.",
+			"size":"4"
+		},
+		"home_network_author_quote" :
+		{
+			"label":"Networking Marketing Author Quote",
+			"type":"textbox",
+			"default":"Dr. Stephen R. Covey",
+			"size":"4"
+		},
+		"home_network_where_quote" :
+		{
+			"label":"Networking Marketing Where Quote",
+			"type":"textbox",
+			"default":"Interview in Network Marketing Lifestyle",
+			"size":"4"
+		},
+		"home_saying_title" :
+		{
+			"label":"Home Saying Title",
+			"type":"textbox",
+			"default":"What those who know Network Marketing are saying!",
+			"size":"12"
+		},
+		"home_saying_image_1" :
+		{
+			"label":"Home Saying Image 1",
+			"type":"image",
+			"default":"/themes/sovereign/img/saying-1.jpg",
+			"size":"6"
+		},
+		"home_saying_description_1" :
+		{
+			"label":"Home Saying Description 1",
+			"type":"textbox",
+			"default":"Network Marketers are creating FORTUNES at breakneck speeds!",
+			"size":"6"
+		},
+		"home_saying_image_2" :
+		{
+			"label":"Home Saying Image 2",
+			"type":"image",
+			"default":"/themes/sovereign/img/saying-2.jpg",
+			"size":"6"
+		},
+		"home_saying_description_2" :
+		{
+			"label":"Home Saying Description 2",
+			"type":"textbox",
+			"default":"Network Marketing is The Perfect Business for the average person to create wealth.",
+			"size":"6"
+		},
+		"home_saying_image_3" :
+		{
+			"label":"Home Saying Image 3",
+			"type":"image",
+			"default":"/themes/sovereign/img/saying-3.jpg",
+			"size":"6"
+		},
+		"home_saying_description_3" :
+		{
+			"label":"Home Saying Description 3",
+			"type":"textbox",
+			"default":"Network Marketing:  the industry for people who want to change their lives",
+			"size":"6"
+		},
+		"home_professional_title" :
+		{
+			"label":"Professional Title",
+			"type":"textbox",
+			"default":"What Professionals Say",
+			"size":"12"
+		},
+		"home_professional_maintenance" :
+		{
+			"label":"Professional Maintenance",
+			"type":"maintenance",
+			"default":"",
+			"field":[
+				{"name":"quote", "type":"textbox"},
+				{"name":"author_image", "type":"image"},
+				{"name":"author_name", "type":"text"},
+				{"name":"author_description", "type":"textbox"}
+			],
+			"size":"12"
+		},
+		"home_ending_title" :
+		{
+			"label":"Ending Title",
+			"type":"textbox",
+			"default":"Global Headquarters",
+			"size":"12"
+		},
+		"home_ending_address" :
+		{
+			"label":"Ending Address",
+			"type":"textbox",
+			"default":"8/F Wong Hing Building 74-78 Stanley Street, Central Hong Kong",
+			"size":"12"
+		},
+		"home_ending_telephone" :
+		{
+			"label":"Ending Telephone",
+			"type":"textbox",
+			"default":"(+852) 9472 6184 / (+852) 9145 7698",
+			"size":"12"
+		},
+		"home_join_text" :
+		{
+			"label":"Join Text",
+			"type":"textbox",
+			"default":"We offer one of the Strongest Compensations plans in the Industry with Multiple Ways to Earn Weekly and Monthly Income!",
+			"size":"12"
+		},
+		"home_join_button_text" :
+		{
+			"label":"Join Button Text",
+			"type":"textbox",
+			"default":"Join us today",
+			"size":"12"
+		}
+	},
+	"company":
+	{
+		"company_intro_text_1" : 
+		{
+			"label":"Intro First Text",
+			"type":"textbox",
+			"default":"LIVE",
+			"size":"4"
+		},
+		"company_intro_text_2" : 
+		{
+			"label":"Intro Second Text",
+			"type":"textbox",
+			"default":"WITHOUT",
+			"size":"4"
+		},
+		"company_intro_text_3" : 
+		{
+			"label":"Intro Third Text",
+			"type":"textbox",
+			"default":"LIMITS",
+			"size":"4"
+		},
+		"company_about_title" : 
+		{
+			"label":"About Title",
+			"type":"textbox",
+			"default":"About Us",
+			"size":"6"
+		},
+		"company_about_description" : 
+		{
+			"label":"About Title",
+			"type":"textbox",
+			"default":"We are an International direct advertising company from multiple sources of business enterprise formed to create partners all across the world. Companies in the Network Marketing Industry today are creating vast opportunities in line with wellness products for people to form a concrete Global Business Opportunity. We believe that financial education will improve the quality of life for people in the world, and we strive in becoming a global knowledge enterprise. Developing high quality health & wealth creation products, and to shift common paradigms through education, research and service.",
+			"size":"6"
+		},
+		"company_question_title" : 
+		{
+			"label":"Question Title",
+			"type":"textbox",
+			"default":"How do you earn money?",
+			"size":"6"
+		},
+		"company_question_description" : 
+		{
+			"label":"Question Description",
+			"type":"textbox",
+			"default":"We offer one of the Strongest Compensations plans in the Industry with Multiple Ways to Earn Weekly and Monthly Income!",
+			"size":"6"
+		},
+		"company_initiative_title" : 
+		{
+			"label":"Initiative Title",
+			"type":"textbox",
+			"default":"Company Initiatives",
+			"size":"6"
+		},
+		"company_initiative_image" : 
+		{
+			"label":"Initiative Title",
+			"type":"image",
+			"default":"/themes/sovereign/img/car.jpg",
+			"size":"6"
+		},
+		"company_contact_title" : 
+		{
+			"label":"Contact Title",
+			"type":"textbox",
+			"default":"Contact Information",
+			"size":"12"
+		},
+		"company_contact_address" : 
+		{
+			"label":"Contact Address",
+			"type":"textbox",
+			"default":"8/F Wong Hing Building 74-78 Stanley Street, Central Hong Kong",
+			"size":"3"
+		},
+		"company_contact_email" : 
+		{
+			"label":"Contact Email",
+			"type":"textbox",
+			"default":"info@youremail.com",
+			"size":"3"
+		},
+		"company_contact_phone" : 
+		{
+			"label":"Contact Phone",
+			"type":"textbox",
+			"default":"(+852) 9472 6184 / (+852) 9145 7698",
+			"size":"3"
+		},
+		"company_contact_mobile" : 
+		{
+			"label":"Contact Mobile",
+			"type":"textbox",
+			"default":"+63997 000 0000",
+			"size":"3"
+		}
+	},
+	"contact":
+	{
+		"contact_title" : 
+		{
+			"label":"Contact Title",
+			"type":"textbox",
+			"default":"Contact Us",
+			"size":"12"
+		},
+		"contact_form_title" : 
+		{
+			"label":"Form Title",
+			"type":"textbox",
+			"default":"Get Intouch With Us",
+			"size":"12"
+		},
+		"contact_location_title" : 
+		{
+			"label":"Location Title",
+			"type":"textbox",
+			"default":"Location",
+			"size":"12"
+		},
+		"contact_location_address" : 
+		{
+			"label":"Location Address",
+			"type":"textbox",
+			"default":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+			"size":"4"
+		},
+		"contact_location_mobile" : 
+		{
+			"label":"Location Mobile",
+			"type":"textbox",
+			"default":"+44 870 888 88 88",
+			"size":"4"
+		},
+		"contact_location_email" : 
+		{
+			"label":"Location Email",
+			"type":"textbox",
+			"default":"youremailhere@company.com",
+			"size":"4"
+		},
+		"contact_business_title" : 
+		{
+			"label":"Business Title",
+			"type":"textbox",
+			"default":"Business Hours",
+			"size":"12"
+		},
+		"contact_business_hours" : 
+		{
+			"label":"Business Hours",
+			"type":"textbox",
+			"default":"Monday - Friday at 9:00am - 6:00pm",
+			"size":"12"
+		}
+	}
+}

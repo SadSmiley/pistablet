@@ -1,0 +1,111 @@
+.account
+{
+    text-align: center;
+    .account-bg
+    {
+        background-color: #f6f6f6;
+    }
+    .account-header
+    {
+        border-bottom: 1px solid #e2ddd8;
+        background-color: #f6f6f6;
+        .account-logo
+        {
+            display: inline-block;
+            margin: 10px;
+            @for $logo from 1 through 6 
+            {
+                .account-logo-img-#{$logo}
+                {
+                    background-image: url("/resources/assets/rutsen/img/icon/register-icon.png");
+                    width: 40px;
+                    height: 40px;
+                    background-position: 40px * $logo 0;
+                    display: inline-block;
+                    vertical-align: top;
+                }
+            }
+            .account-logo-text
+            {
+                font-size: 12px;
+                color: #4b628e;
+                display: inline-block;
+                vertical-align: top;
+                padding: 11px 0;
+                font-weight: 600;
+            }
+        }
+    }
+    .account-container
+    {
+
+    }
+    .account-container
+    {
+        .register-header
+        {
+            text-align: left;
+            margin: 20px 0;
+        }
+        .register-sub
+        {
+            color: #8d8b8b;
+            font-size: 16.67px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        .register-holder
+        {
+            .bday
+            {
+                input[type="text"]
+                {
+                    width: 77px;
+                    display: inline-block;
+                }
+            }
+            .form-group
+            {
+                text-align: left;
+                .register-button
+                {
+                    font-size: 12.5px;
+                    color: white;
+                    background-color: #2b628b;
+                    padding: 10px 0px 5px;
+                    border-bottom: 5px solid #1d5177;
+                    text-align: center;
+                    width: 130px;
+                    margin: auto;
+                    cursor: pointer;
+                }
+                .message-ea
+                {
+                    font-size: 12.5px;
+                    color: #8d8b8b;
+                    margin: 20px 0 5px;
+                }
+                label
+                {
+                    font-size: 12.5px;
+                    color: #8d8b8b;
+                    font-weight: normal;
+                }
+                input[type="text"]
+                {
+                    background-color: #f2f5f6;
+                }
+                input[type="password"]
+                {
+
+                }
+                textarea
+                {
+                    resize: none;
+                    height: 130px;
+                    background-color: #f2f5f6;
+                }
+            }
+        }
+    }
+}  

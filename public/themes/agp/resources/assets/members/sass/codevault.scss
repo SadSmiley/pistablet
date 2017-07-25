@@ -1,0 +1,157 @@
+$font-family: "Open Sans", sans-serif !important;
+$background-color: #efefef;
+$blue: #474f71;
+$orange: #f47265;
+$sblue: #40c0c0;
+$gray: #aaafb6;
+$gray2: #9ea7b3;
+$font-color: #77818e;
+
+//CODE-VAULT
+.code-vault
+{
+	.table
+	{
+		background-color: white;
+		padding-bottom: 15px;
+		@media screen and (max-width: 991px)
+		{
+			padding-bottom: 0;
+		}
+		.table-head
+		{
+			background-color: $blue;
+			color: white;
+			padding: 20px;
+			font-size: 14.58px;
+			.aw
+			{
+				text-align: left;
+				@media screen and (max-width: 991px)
+				{
+					text-align: center;
+				}
+			}
+			.ew
+			{
+				text-align: right;
+				padding: 3px 0;
+				@media screen and (max-width: 991px)
+				{
+					text-align: center;
+					padding-top: 20px;
+				}
+				a
+				{
+					color: white;
+				}
+				.button
+				{
+					display: inline-block;
+					background-color: $orange;
+					border-bottom: 2px solid #eb685b;
+					border-right: 1px solid #eb685b;
+					border-left: 1px solid #eb685b;
+					padding: 10px 30px;
+					font-size: 12.5px;
+					-webkit-border-radius: 5px;
+					   -moz-border-radius: 5px;
+					        border-radius: 5px;
+				}
+			}
+			img
+			{
+				margin: 0 10px;
+			}
+		}
+		table
+		{
+			width: 98%;
+			margin: auto;
+			@media screen and (max-width: 991px)
+			{
+				width: 100%;
+			}
+			thead
+			{
+				background-color: $gray2;
+				th
+				{
+					padding: 10px 20px;
+					color: white;
+					font-size: 14.58px;
+					font-weight: 400;
+					text-align: center !important;
+				}
+			}
+			tbody
+			{
+				color: $font-color;
+				font-size: 12.5px;
+				border-left: 1px solid #eaeaea;
+				border-right: 1px solid #eaeaea;
+				border-bottom: 1px solid #eaeaea;
+				.tibolru:nth-child(even) {background: #f7f7f7}
+				.tibolru:nth-child(odd) {background: #eeeeee}
+				td
+				{
+					padding: 10px 20px;
+					border-right: 1px solid #e8e8e8;
+					border-bottom: 1px solid #e8e8e8;
+				}
+				td:last-child
+				{
+					border-right: 0;
+					border-bottom: 0;
+				}
+				a
+				{
+					// color: $font-color;
+					// @media screen and (max-width: 1200px)
+					// {
+						color: $orange;
+						font-weight: 600;
+					// }
+				}
+				.check
+				{
+					width: 23px;
+					height: 23px;
+					position: relative;
+					margin: auto;
+					@media screen and (max-width: 991px)
+					{
+						margin: 0 !important;
+					}
+					input[type="checkbox"]
+					{
+						width: 23px;
+						height: 23px;
+						position: absolute;
+						top: 0;
+						right: 0;
+						margin: 0 !important;
+						opacity: 0;
+						z-index: 20;
+					}
+					.bgs
+					{
+					 	position: absolute;
+					 	width: 100%;
+					 	height: 100%;
+					 	top: 0;
+					 	left: 0;
+					 	right: 0;
+					 	bottom: 0;
+					 	background-image: url("/resources/assets/frontend/img/no-check.png");
+					 	z-index: 10;
+					}
+					input[type="checkbox"]:checked + .bgs
+					{
+						background-image: url("/resources/assets/frontend/img/check.png");
+					}
+				}
+			}
+		}
+	}
+}

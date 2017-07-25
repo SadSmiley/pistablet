@@ -1,0 +1,210 @@
+{
+	"home":
+	{
+		"home_slideshow" :
+		{
+			"label":"Slideshow",
+			"type":"gallery",
+			"default":"",
+			"size":"12"
+		},
+		"home_intro1" :
+		{
+			"label":"Intro 1st Word",
+			"type":"textbox",
+			"default":"WELCOME TO",
+			"size":"4"
+		},
+		"home_intro2" :
+		{
+			"label":"Intro 2nd Word",
+			"type":"textbox",
+			"default":"GOLDEN FALCON",
+			"size":"4"
+		},
+		"home_intro3" :
+		{
+			"label":"Intro 3rd Word",
+			"type":"textbox",
+			"default":"MARKETING",
+			"size":"4"
+		},
+		"home_intro4" :
+		{
+			"label":"Intro 4th Word",
+			"type":"textarea",
+			"default":"Your long lasting financial freedom and security is our main concern",
+			"size":"12"
+		},
+		"home_thumb1" :
+		{
+			"label":"Thumb 1st Word",
+			"type":"textarea",
+			"default":"COMPANY",
+			"size":"4"
+		},
+		"home_thumb2" :
+		{
+			"label":"Thumb 2nd Word",
+			"type":"textarea",
+			"default":"OPPORTUNITY",
+			"size":"4"
+		},
+		"home_thumb3" :
+		{
+			"label":"Thumb 3rd Word",
+			"type":"textarea",
+			"default":"FREE TRAVEL",
+			"size":"4"
+		},
+		"home_about" :
+		{
+			"label":"About",
+			"type":"textarea",
+			"default":"Golden Falcon Marketing digital hybrid multi-level marketing strategy offers you long lasting returns at your fingertips. We've engineered our company for your sucess with little risk and boundless potential. A passion for success is all you need to achieve a level of your prosperity you never thought possible.",
+			"size":"12"
+		},
+		"home_mission" :
+		{
+			"label":"Mission",
+			"type":"textarea",
+			"default":"Our mission is to deliver a high quality hybrid multi level marketing plan, a wide range of services and new generation of compensation plan built around superior driven motivated Golden Falcon Marketing team.",
+			"size":"6"
+		},
+		"home_vision" :
+		{
+			"label":"Vision",
+			"type":"textarea",
+			"default":"Golden Falcon Marketing (GFM) is created to inspire and empower all people regardless race, status and belief to achieve new way of financial success and personal freedom.",
+			"size":"6"
+		},
+		"home_product_title" :
+		{
+			"label":"Product Title",
+			"type":"textarea",
+			"default":"Products and Services",
+			"size":"4"
+		},
+		"home_product_sub" :
+		{
+			"label":"Product Sub",
+			"type":"textarea",
+			"default":"Hybrid Multi-level Marketing system compensation plan, Online direct selling, hedging funds, web solution, online marketing consultancy and other proven business services offer’s you exactly what millions of people are searching for superior wellness and financial safety.",
+			"size":"4"
+		},
+		"home_product_sub_desc" :
+		{
+			"label":"Product Sub Description",
+			"type":"textarea",
+			"default":"When a team outgrows individual performance and learns team confidence, excellence becomes a reality.",
+			"size":"4"
+		}
+	},
+	"product":
+	{
+		"product_desc" :
+		{
+			"label":"Product Description",
+			"type":"textarea",
+			"default":"Hybrid Multi-level Marketing system compensation plan, Online direct selling, hedging funds, web solution, online marketing consultancy and other proven business services offer’s you exactly what millions of people are searching for superior wellness and financial safety.",
+			"size":"6"
+		},
+		"product_title" :
+		{
+			"label":"Product Title",
+			"type":"textarea",
+			"default":"Products and Services",
+			"size":"6"
+		}
+	},
+	"about":
+	{
+		"about_title" :
+		{
+			"label":"About Title",
+			"type":"textarea",
+			"default":"GOLDEN FALCON MARKETING",
+			"size":"4"
+		},
+		"about_sub" :
+		{
+			"label":"About Sub Title",
+			"type":"textarea",
+			"default":"WHO ARE WE?",
+			"size":"4"
+		},
+		"about_desc" :
+		{
+			"label":"About Description",
+			"type":"textarea",
+			"default":"At Golden Falcon Marketing, Your long lasting financial freedom and security is our main concern. You’ll enjoy the freedom and flexibility of owning your business; you are the captain of your ship take charge of your own destiny now.",
+			"size":"4"
+		},
+		"about_feature_1_first_image" :
+		{
+			"label":"About Feature 1 (First Image)",
+			"type":"image",
+			"default":"",
+			"size":"4"
+		},
+		"about_feature_1_title" :
+		{
+			"label":"About Feature 1 (Title)",
+			"type":"textarea",
+			"default":"Homebased Home Business",
+			"size":"4"
+		},
+		"about_feature_1_first_desc" :
+		{
+			"label":"About Feature 1 (First Description)",
+			"type":"textarea",
+			"default":"Starting your home-based business with Golden Falcon Marketing has a low start up cost with a high income potential. There is no limit on how much you earn. The harder you work the more money you build. There are no restrictions. Considerably, this is a clear advantage over traditional business.",
+			"size":"4"
+		},
+		"about_feature_1_second_image" :
+		{
+			"label":"About Feature 1 (Second Image)",
+			"type":"image",
+			"default":"",
+			"size":"6"
+		},
+		"about_feature_1_second_desc" :
+		{
+			"label":"About Feature 1 (Second Description)",
+			"type":"textarea",
+			"default":"Having a group of independent business owners and partners working together towards a common goal, Golden Falcon Marketing is a portable business helping diversify your potential income and allows you maintain aggressive hedge funds and secure lasting solution with superior service.",
+			"size":"6"
+		},
+		"about_feature_2_image" :
+		{
+			"label":"About Feature 2 (Image)",
+			"type":"image",
+			"default":"",
+			"size":"4"
+		},
+		"about_feature_2_title" :
+		{
+			"label":"About Feature 2 (Title)",
+			"type":"textarea",
+			"default":"Portable Business",
+			"size":"4"
+		},
+		"about_feature_2_desc" :
+		{
+			"label":"About Feature 2 (Description)",
+			"type":"textarea",
+			"default":"Golden Falcon Marketing digital hybrid multi-level marketing strategy offers you long lasting returns at your fingertips. We’ve engineered our company for your success with little risk and boundless potential. A passion for success is all you need to achieve a level of prosperity you never thought possible.",
+			"size":"4"
+		}
+	},
+	"blog":
+	{
+		"blog_post" :
+		{
+			"label":"Blog Posts",
+			"type":"post",
+			"default":"",
+			"size":"12"
+		}
+	}
+}

@@ -1,0 +1,62 @@
+.banner
+{
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	padding: 50px 0;
+	color: #fff;
+	.text
+	{
+		font-size: 19.79px;
+		font-weight: 700;
+	}
+	.breadcrumbz
+	{
+		@media screen and (min-width: 991px)
+		{
+			text-align: right;
+			margin-top: 5px;
+		}
+	}
+}
+.product
+{
+	margin: 50px 0;
+	.text-holder
+	{
+		.name
+		{
+			font-weight: 600;
+			color: #0f0f0f;
+			font-size: 25px;
+			position: relative;
+			border-bottom: 1px solid #003c9c;
+			z-index: 1;
+			&:after
+			{
+				content: '';
+				position: absolute;
+				height: 1px;
+				background-color: #d3d3d3;
+				width: 90%;
+				right: 0;
+				bottom: 0;
+				z-index: 2;
+				bottom: -1px;
+			}
+		}
+		.desc
+		{
+			color: #4d4c4c;
+			font-size: 15px;
+			margin: 25px 0;
+		}
+		.price
+		{
+			margin: 25px 0;
+			color: #4d4c4c;
+			font-size: 30px;
+			font-weight: 700;
+		}
+	}
+}

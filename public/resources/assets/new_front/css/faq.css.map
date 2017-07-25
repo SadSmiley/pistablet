@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,gBACA,CACC,KAAK,CAAE,eAAe,CAEvB,IACA,CACC,MAAM,CAAE,MAAM",
+"sources": ["../sass/faq.scss"],
+"names": [],
+"file": "faq.css"
+}

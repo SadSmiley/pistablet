@@ -1,0 +1,80 @@
+.header_page.basic
+{
+	height: auto;
+	padding: 75px 0;
+	color: #fff;
+	h1.title
+	{
+		padding: 0;
+		color: #fff !important;
+		font-size: 46.1px;
+		text-transform: capitalize;
+		font-weight: 400;
+		letter-spacing: 2px;
+	}
+}
+
+.contact
+{
+	padding: 50px 0;
+	.title
+	{
+		font-size: 25.01px;
+		color: #3a3a3a;
+		font-weight: 700;
+	}
+	.info
+	{
+		margin-top: 20px;
+		.holder
+		{
+			color: #555555;
+			font-size: 12.5px;
+			padding: 10px 0;
+			img
+			{
+				margin-right: 10px;
+			}
+		}
+	}
+	.wpb_column
+	{
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	form
+	{
+		margin-top: 50px;
+	}
+	.form-control
+	{
+		width: 100% !important;
+		border: 0 !important;
+		border-radius: 25px !important;
+		border: 1px solid #c7c7c7 !important;
+		box-sizing: border-box;
+		padding: 10px 20px;
+		color: #979797;
+		font-size: 12.51px !important;
+		margin: 0;
+		resize: none;
+	}
+	input.form-control
+	{
+		height: 45px !important;
+	}
+	textarea.form-control
+	{
+		height: 100px;
+	}
+	.btn
+	{
+		background-color: #ae7a1f;
+		height: 45px;
+		padding: 0 50px;
+		border: 0;
+		border-radius: 25px;
+		font-size: 12.51px;
+		font-weight: 700;
+	}
+}

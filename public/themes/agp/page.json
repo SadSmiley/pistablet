@@ -1,0 +1,391 @@
+{
+	"home":
+	{
+		"home_slider" :
+		{
+			"label":"Slideshow",
+			"type":"gallery",
+			"default":"",
+			"size":"12"
+		},
+		"home_welcome_title" :
+		{
+			"label":"Welcome Title",
+			"type":"textbox",
+			"default":"",
+			"size":"6"
+		},
+		"home_welcome_description" :
+		{
+			"label":"Welcome to Alpha Global Prestige Family!",
+			"type":"textbox",
+			"default":"Alpha Global Prestige believes in Family, the fundamental unit of a society. It is the living treasure of gold. It is made strong not by the headcounts but by the root of valued culture, commitment of time and harmony. Just like in Prolife Family, we want the best and all the convenience we can share to our members. Together, we have established a company that delivers high quality products and excellent e-services that brings each home the benefits of our natural environment and the comfort of technology. Prolife NWT has strategically ventured with trusted and reputed companies for our associates to enjoy hassle-free online services and privileges at their fingertips.",
+			"size":"6"
+		},
+		"home_nature_image" :
+		{
+			"label":"Nature Image",
+			"type":"image",
+			"default":"/themes/agp/resources/assets/front/img/technology-pic.jpg",
+			"size":"2"
+		},
+		"home_nature_title" :
+		{
+			"label":"Nature Title",
+			"type":"textbox",
+			"default":"Nature",
+			"size":"4"
+		},
+		"home_nature_description" :
+		{
+			"label":"Nature Description",
+			"type":"textbox",
+			"default":"We offer various lines of natural and organic beauty products that keeps you beautiful and healthy inside and out. Alpha Global Prestige wants to bring out the best in you! Our essential beauty products can help you achieve what you want. Fairer and beautiful skin is not only for the few. Regular use of Alpha Global Prestige beauty soaps will help you achieve that radiant and supple skin . Start your day with our herbal power drinks, from green coffee to chocolate to the very healthy and revitalizing juice!",
+			"size":"4"
+		},
+		"home_nature_quote" :
+		{
+			"label":"Nature Quote",
+			"type":"textbox",
+			"default":"BE HEALTHY. Live a life of beauty and youth.",
+			"size":"2"
+		},
+		"home_wealth_image" :
+		{
+			"label":"Wealth Image",
+			"type":"image",
+			"default":"/themes/agp/resources/assets/front/img/nature-pic.jpg",
+			"size":"2"
+		},
+		"home_wealth_title" :
+		{
+			"label":"Wealth Title",
+			"type":"textbox",
+			"default":"Wealth",
+			"size":"4"
+		},
+		"home_wealth_description" :
+		{
+			"label":"Wealth Description",
+			"type":"textbox",
+			"default":"Unravel the mystery of financial freedom. Unlock your ability to earn more money, save and get what you dream. We can show you how it can be done. Everybody wishes of alleviating their financial status. Venture into a world wherein you can have the chance to break free from financial lock-ups. Build your dream house, buy a new car or travel as often as you want. Everything is possible. All you need to do is just to invest your time. Act now!",
+			"size":"4"
+		},
+		"home_wealth_quote" :
+		{
+			"label":"Wealth Quote",
+			"type":"textbox",
+			"default":"BE FREE. Enjoy financial freedom. Earn more, save more... for a better future.",
+			"size":"2"
+		},
+		"home_technology_image" :
+		{
+			"label":"Technology Image",
+			"type":"image",
+			"default":"/themes/agp/resources/assets/front/img/technology-pic.jpg",
+			"size":"2"
+		},
+		"home_technology_title" :
+		{
+			"label":"Technology Title",
+			"type":"textbox",
+			"default":"Technology",
+			"size":"4"
+		},
+		"home_technology_description" :
+		{
+			"label":"Technology Description",
+			"type":"textbox",
+			"default":"Experience the speed and comfort at your fingertips through our fast and reliable on –line services. PROLIFE is your one-stop shop from sending your remittances to booking your flights. We want you to avoid the long queue to send money. Move out of the line and do all these at the comfort of your home.",
+			"size":"4"
+		},
+		"home_technology_quote" :
+		{
+			"label":"Technology Quote",
+			"type":"textbox",
+			"default":"BE CONNECTED. Your e-services at your fingertips.",
+			"size":"2"
+		},
+		"home_start_quote" :
+		{
+			"label":"Start Now Quote",
+			"type":"textbox",
+			"default":"Say something to motivate them and start your business. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+			"size":"6"
+		},
+		"home_start_button" :
+		{
+			"label":"Start Now Button Text",
+			"type":"textbox",
+			"default":"START NOW!",
+			"size":"6"
+		},
+		"home_partners" :
+		{
+			"label":"Our Partners",
+			"type":"maintenance",
+			"default":"",
+			"size":"6",
+			"field":[
+				{"name":"image", "type":"image"},
+				{"name":"name", "type":"text"}
+			]
+		},
+		"home_team_members" :
+		{
+			"label":"Team Members",
+			"type":"maintenance",
+			"default":"",
+			"size":"6",
+			"field":[
+				{"name":"image", "type":"image"},
+				{"name":"name", "type":"text"}
+			]
+		},
+		"home_quote" :
+		{
+			"label":"Quote Text",
+			"type":"textbox",
+			"default":"Say something to motivate them and start your business. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
+			"size":"12"
+		}
+	},
+	"product":
+	{
+		"product_start_quote" :
+		{
+			"label":"Start Now Quote",
+			"type":"textbox",
+			"default":"Say something to motivate them and start your business. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+			"size":"6"
+		},
+		"product_start_button_text" :
+		{
+			"label":"Start Now Button Text",
+			"type":"textbox",
+			"default":"START NOW!",
+			"size":"6"
+		}
+	},
+	"company":
+	{
+		"company_intro_image" : 
+		{
+			"label":"Company Intro Image",
+			"type":"image",
+			"default":"",
+			"size":"12"
+		},
+		"about_title" :
+		{
+			"label":"About Title",
+			"type":"textbox",
+			"default":"ABOUT US",
+			"size":"12"
+		},
+		"about_description" :
+		{
+			"label":"About Description",
+			"type":"textbox",
+			"default":"ALPHA GLOBAL PRESTIGE is a company formed by Filipino professionals based in the United Arab Emirates. Bound together by a common goal, each with their own expertise, they have decided it’s about time that expatriates in the UAE will be given a free choice and be catered with all their needs. By providing convenient e-services, the main aim is to help and alleviate the lives of expatriates around the globe. Alpha Global Prestige envisions prosperity for all. Alpha Global Prestige also promotes real estate investments, free entrepreneurships, encourages self development and offers a wide array of natural skincare and healthcare products.",
+			"size":"12"
+		}
+	},
+	"testimonial":
+	{
+		"testimonial_intro_image" : 
+		{
+			"label":"Testimonial Intro Image",
+			"type":"image",
+			"default":"/themes/agp/resources/assets/front/img/testimony-banner.jpg",
+			"size":"6"
+		},
+		"testimonial_testimonies" :
+		{
+			"label":"Testimonies",
+			"type":"maintenance",
+			"default":"",
+			"size":"6",
+			"field":[
+				{"name":"before_image", "type":"image"},
+				{"name":"after_image", "type":"image"},
+				{"name":"name", "type":"text"},
+				{"name":"title", "type":"text"},
+				{"name":"testimony", "type":"textbox"}
+			]
+		}
+	},
+	"policies":
+	{
+		"policies_refund_title" : 
+		{
+			"label":"Refund and Cancellation Title",
+			"type":"textbox",
+			"default":"Alpha Global Prestige Refund and Cancellation Policy",
+			"size":"6"
+		},
+		"policies_refund_description" : 
+		{
+			"label":"Refund and Cancellation Description",
+			"type":"textbox",
+			"default":"There is no refund and or cancellation policy.",
+			"size":"6"
+		},
+		"policies_terms_title" : 
+		{
+			"label":"Terms and Condition Title",
+			"type":"textbox",
+			"default":"Terms and Conditions",
+			"size":"6"
+		},
+		"policies_terms_description" : 
+		{
+			"label":"Terms and Condition Description",
+			"type":"textbox",
+			"default":"Once payment is made, allow 2 to 3 working days for Alpha Global Prestige to ready your product package and confirm your payment so that it can be shipped to your address. The special membership that you purchase online will be shipped once payment is cleared. You will be able to select the type of package if within UAE, for packages outside UAE we have an international package. For packages within UAE, the product can be picked up from our head office in Dubai, there will be separate courier charges if the customer would like the product to be shipped. Product package pick up is optional and no shipping charges will be applied if products will be picked up from Dubai Head office. Please be very careful when selecting your membership package if it is meant for UAE market and to be collected in Dubai Head office or if it meant for outside the UAE it is to be Shipped. If any further information about any of the products is required, please do e-mail and contact us for more information. Once the payment is complete, your unique special membership code will be sent to your email.",
+			"size":"6"
+		},
+		"policies_shipping_title" : 
+		{
+			"label":"Shipping Policy Title",
+			"type":"textbox",
+			"default":"Shipping Policy",
+			"size":"6"
+		},
+		"policies_shipping_description" : 
+		{
+			"label":"Shipping Policy Description",
+			"type":"textbox",
+			"default":"The products / package will be couriered by Fedex. Once the order and payment is complete, the shipment may take a total of 4 to 10 working days depending on the client’s destination. Please make sure the shipping address is correct with accurate contact number. The airway bill and cost of shipping will be sent to the customer. Please make sure you keep us updated with your latest delivery address and contact information. The courier charges are based on the weight and final destination of recipient.",
+			"size":"6"
+		}
+	},
+	"contact":
+	{
+		"contact_title" : 
+		{
+			"label":"Contact Intro Title",
+			"type":"textbox",
+			"default":"Contact Us",
+			"size":"6"
+		},
+		"contact_sub_title" : 
+		{
+			"label":"Contact Sub Title",
+			"type":"textbox",
+			"default":"Get Intouch With Us",
+			"size":"6"
+		},
+		"contact_location_title" : 
+		{
+			"label":"Contact Location Title",
+			"type":"textbox",
+			"default":"Location",
+			"size":"12"
+		},
+		"contact_location_address" : 
+		{
+			"label":"Contact Address",
+			"type":"textbox",
+			"default":" Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+			"size":"4"
+		},
+		"contact_location_phone" : 
+		{
+			"label":"Contact Phone Number",
+			"type":"textbox",
+			"default":"+44 870 888 88 88",
+			"size":"4"
+		},
+		"contact_location_email" : 
+		{
+			"label":"Contact Phone Number",
+			"type":"textbox",
+			"default":"youremail@here.com",
+			"size":"4"
+		},
+		"contact_business_title" : 
+		{
+			"label":"Business Hours Title",
+			"type":"textbox",
+			"default":"Business Hours",
+			"size":"6"
+		},
+		"contact_business_hours" : 
+		{
+			"label":"Business Hours",
+			"type":"textbox",
+			"default":"Monday - Friday at 9:00am - 6:00pm",
+			"size":"6"
+		}
+	},
+	"header":
+	{
+		"header_call_label" : 
+		{
+			"label":"Call Us Now Label",
+			"type":"textbox",
+			"default":"CALL US NOW",
+			"size":"6"
+		},
+		"header_call_number" : 
+		{
+			"label":"Call Us Now Number",
+			"type":"textbox",
+			"default":"09999999999",
+			"size":"6"
+		},
+		"header_email_label" : 
+		{
+			"label":"Email Label",
+			"type":"textbox",
+			"default":"Email US",
+			"size":"6"
+		},
+		"header_email_address" : 
+		{
+			"label":"Email Address",
+			"type":"textbox",
+			"default":"sample@email.com",
+			"size":"6"
+		}
+	},
+	"footer":
+	{
+		"footer_contact_number" : 
+		{
+			"label":"Contact Number",
+			"type":"textbox",
+			"default":"09999999999",
+			"size":"6"
+		},
+		"footer_contact_email" : 
+		{
+			"label":"Email Address",
+			"type":"textbox",
+			"default":"sample@email.com",
+			"size":"6"
+		},
+		"footer_facebook_link" : 
+		{
+			"label":"Facebook Link",
+			"type":"textbox",
+			"default":"http://facebook.com",
+			"size":"6"
+		},
+		"footer_twitter_link" : 
+		{
+			"label":"Twitter Link",
+			"type":"textbox",
+			"default":"http://twitter.com",
+			"size":"6"
+		},
+		"footer_pinterest_link" : 
+		{
+			"label":"Pinterest Link",
+			"type":"textbox",
+			"default":"http://pinterest.com",
+			"size":"6"
+		}
+	}
+}

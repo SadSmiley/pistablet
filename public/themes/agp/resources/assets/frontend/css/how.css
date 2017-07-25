@@ -1,0 +1,46 @@
+.how {
+  text-align: center; }
+  .how img {
+    margin: auto; }
+  .how .how-header .text {
+    font-size: 44.39px;
+    color: #898989;
+    padding: 40px 0; }
+  .how .how-header .icon {
+    overflow: auto;
+    text-align: center;
+    max-width: 800px;
+    margin: auto; }
+    .how .how-header .icon .left {
+      float: left; }
+      @media screen and (max-width: 750px) {
+        .how .how-header .icon .left {
+          display: block;
+          float: none;
+          margin: 25px auto; } }
+    .how .how-header .icon .right {
+      float: right; }
+      @media screen and (max-width: 750px) {
+        .how .how-header .icon .right {
+          display: block;
+          float: none;
+          margin: 25px auto; } }
+  .how .how-step {
+    max-width: 800px;
+    margin: auto; }
+    .how .how-step .title {
+      font-size: 47.99px;
+      color: #898989;
+      font-weight: 300;
+      text-align: left;
+      margin-top: 20px; }
+    .how .how-step .holder img {
+      width: 100%; }
+  .how .how-transaction {
+    clear: both; }
+    .how .how-transaction .title {
+      color: #898989;
+      font-size: 44.33px;
+      padding: 40px 0; }
+
+/*# sourceMappingURL=how.css.map */

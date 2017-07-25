@@ -1,0 +1,33 @@
+.loader
+{
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1050;
+}
+
+.loader span
+{
+    position: fixed;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1051;
+    text-align: center;
+    opacity: 1;
+}
+
+.loader span img
+{
+    width: 60px;
+    height: 60px;
+}

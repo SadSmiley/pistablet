@@ -1,0 +1,97 @@
+@font-face {
+  font-family: 'Sofia';
+  src: url("/resources/assets/fonts/SofiaProLight-webfont.eot");
+  src: url("/resources/assets/fonts/SofiaProLight-webfont.eot?#iefix") format("embedded-opentype"), url("/resources/assets/fonts/SofiaProLight-webfont.woff2") format("woff2"), url("/resources/assets/fonts/SofiaProLight-webfont.woff") format("woff"), url("/resources/assets/fonts/SofiaProLight-webfont.ttf") format("truetype"), url("/resources/assets/fonts/SofiaProLight-webfont.svg#sofia_prolight") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+body {
+  background-color: #434343;
+  font-family: "Sofia"; }
+
+.login {
+  width: 400px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin: auto;
+  background-color: #f9f9f2;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  padding: 20px 20px 80px; }
+
+.ribbon-holder {
+  position: relative;
+  margin-bottom: 35px; }
+  .ribbon-holder .ribbon {
+    background-color: #ffa300;
+    color: white;
+    font-size: 18px;
+    width: 160px;
+    padding: 5px 0;
+    text-align: center;
+    margin-left: -35px; }
+  .ribbon-holder .likod {
+    position: absolute;
+    left: -35px;
+    top: 35px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 15px 15px 0;
+    border-color: transparent #E07C00 transparent transparent; }
+
+input[type="text"], input[type="password"] {
+  background-color: #f9f9ef;
+  border: 1px solid #ddddda;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  color: #303030;
+  font-size: 16px;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.075) inset !important;
+  padding-left: 60px;
+  height: 40px; }
+
+.ediwow {
+  position: relative; }
+  .ediwow .wowie {
+    position: absolute;
+    top: 12px;
+    left: 30px; }
+  .ediwow .wew {
+    height: 30px;
+    position: absolute;
+    width: 1px;
+    background-color: #d3d3d3;
+    left: 60px;
+    top: 6px; }
+
+.button-bottom {
+  position: absolute;
+  bottom: 0;
+  margin-left: -20px;
+  margin-right: -20px;
+  width: 100%; }
+  .button-bottom button {
+    height: 50px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 0;
+    width: 100%;
+    background-color: #00bfff;
+    color: white;
+    font-size: 18px; }
+    .button-bottom button:hover {
+      color: white;
+      background-color: #00bfff; }
+
+/*# sourceMappingURL=login.css.map */

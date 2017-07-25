@@ -1,0 +1,128 @@
+*
+{
+	box-sizing: border-box;
+}
+
+/*body
+{
+	background-color: #fff;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	padding: 5px;
+}*/
+
+.containers{
+	background-image: url("../assets/images/BG.jpg");
+	background-repeat: no-repeat;
+	font-family: 'Open Sans', sans-serif;
+	background-color: #ec9909;
+	color: #fff;
+	width: 450px;
+	border-radius: 8px 8px 8px 8px;
+	margin: auto;
+	margin-top: 150px;
+	padding: 12px;
+	clear: both;
+	overflow: auto;
+	background-size: cover;
+}
+.website{
+	font-size: 13px;
+	font-weight: 300;
+	letter-spacing: 1px;
+}
+.logo{
+	float: right;
+}
+.top-container{
+	clear: both;
+
+}
+.mid-container{
+	margin-left: 20px;
+	height: 168px;
+}
+.bottom-container{
+	padding-top: 0px;
+	position: relative;
+}
+.member{
+	float: left;
+}
+.member-name
+{
+	font-size: 20px;
+	font-weight: 600;
+}
+.member-label
+{
+	font-size: 13px;
+	font-weight: 600;
+	padding-left: 5px;
+	letter-spacing: 3px;
+}
+.barcode{
+	position: relative;
+	float: right;
+	color:#171717;
+	font-size: 9px;
+	font-weight: 600;
+}
+.barcodetxt{
+	padding-left: 3px;
+	background-color: #fff;
+	text-align: center;
+	margin-top: -2.5px;
+}
+
+.backdesu
+{
+	font-size: 10px;
+	letter-spacing: 1px;
+	color: #000;
+}
+.info
+{
+	margin: 0;
+}
+.info table
+{
+	background-color: #fff;
+	width: 100%;
+}
+.info table td
+{
+	font-size: 12px;
+	letter-spacing: 0;
+	border: 2px solid #000;
+	border-bottom: 0;
+}
+.info table:last-child td
+{
+	border-bottom: 2px solid #000;
+}
+.info table td:first-child
+{
+	font-weight: bold;
+	border-right: 0;
+}
+.info table td:last-child
+{
+	border-left: 0;
+}
+.signature
+{
+	background-color: #fff;
+	text-align: center;
+	color: #676767;
+	margin-top: 5px;
+	padding-top: 40px;
+	width: 250px;
+	margin: auto;
+}
+.sign-label
+{
+	text-align: center;
+	font-weight: 700;
+}

@@ -1,0 +1,98 @@
+.intro
+{
+	background-image: url(/assets/new_front/img/compensation-bg.jpg);
+	background-size: cover;
+	background-position: center;
+	color: #fff;
+	text-align: center;
+	padding: 200px 0;
+	.text
+	{
+		font-weight: 500;
+		.ichi
+		{
+			font-size: 27.21px;
+		}
+		.ni
+		{
+			font-size: 41.67px;
+			margin: 25px 0;
+		}
+		.breadcram
+		{
+			font-weight: 700;
+			a
+			{
+				color: #fff;
+				font-weight: 400;
+			}
+		}
+		span
+		{
+			color: #2c71b8;
+		}
+	}
+}
+.content_wrap
+{
+	padding: 50px 0;
+}
+.table
+{
+	border: 1px solid #a3a3a3;
+	width: 100%;
+	th, td
+	{
+		padding: 7.5px 15px;
+		font-size: 14.59px;
+		border: 1px solid #a3a3a3;
+	}
+	thead
+	{
+		th
+		{
+			// background-color: #606769;
+			background-color: #000;
+			color: #fff;
+		}
+	}
+	.center
+	{
+		td
+		{
+			text-align: center;
+		}
+	}
+	tbody
+	{
+		td
+		{
+			color: #5e5e5e;
+		}
+	}
+}
+
+.info
+{
+	padding: 50px 0;
+	.name
+	{
+		color: #5e5e5e;
+		font-size: 14.59px;
+		font-weight: 700;
+		margin-bottom: 15px;
+	}
+	p
+	{
+		margin: 0;
+	}
+}
+
+.title
+{
+	color: #2a2a2a;
+	font-size: 25.01px;
+	font-weight: 700;
+	padding: 50px 0 25px;
+	text-align: center; 
+}

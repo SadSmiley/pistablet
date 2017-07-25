@@ -1,0 +1,306 @@
+.payment-container
+{
+    background-color: #fff;
+    padding: 25px;
+    h2
+    {
+        margin-top: 0;
+        margin-bottom: 25px;
+    }
+    .holder-holder
+    {
+        border: 1px solid #dde2e4;
+    }
+	.holder
+	{
+		width: 100px;
+		padding: 15px 15px;
+		text-align: center;
+		margin-bottom: 25px;
+		display: inline-block;
+		vertical-align: top;
+        border: 1px solid #dde2e4;
+        margin: -1px;
+        border-right: 0;
+        &:last-child
+        {
+            border-right: 1px solid #dde2e4 !important;
+        }
+		.image
+		{
+			height: 0;
+			position: relative;
+			padding-bottom: 75%;
+			img
+			{
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+			}
+		}
+		.radio
+		{
+
+		}
+	}
+	.details
+	{
+        border: 1px solid #dde2e4;
+        border-top: 0;
+        padding: 25px;
+        .details-text
+        {
+            margin: 25px 0;
+            margin-top: 0;
+        }
+        .details-order
+        {
+
+        }
+		.details-title
+		{
+			margin-bottom: 10px;
+			font-size: 16px;
+			font-weight: 700;
+		}
+	}
+	.button
+	{
+		margin-top: 25px;
+	}
+}
+.checkout-summary
+{
+    .title
+    {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    .order-summary
+    {
+        border: 1px solid #ddd;
+        padding: 10px;
+        .number-in-cart
+        {
+
+        }
+
+        table
+        {
+            width: 100%;
+            color: #777;
+
+            thead
+            {
+                font-weight: bold;
+
+                tr
+                {
+                    td
+                    {
+                        padding: 5px 0;
+                        border-bottom: 1px dashed #ddd;
+                    }
+                }
+            }
+
+            tbody
+            {
+                tr
+                {
+
+                    td
+                    {
+                        padding: 5px 0;
+                        border-bottom: 1px dashed #ddd;
+                    }
+                }
+            }
+        }
+
+        .total
+        {
+            overflow: auto;
+            padding-top: 5px;
+            .total-label
+            {
+                float: right;
+            }
+            .total-price
+            {
+                width: 100px;
+                margin-left: 15px;
+                float: right;
+
+                &.supertotal
+                {
+                    color: #2B628B;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+.hold-container
+{
+    border: 1px solid #999999;
+    border-radius: 2.5px;
+    margin-bottom: 25px;
+    .hold-header
+    {
+        background-color: #e9e9e9;
+        color: #262626;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 2.5px;
+        padding: 15px 25px;
+    }
+    .hold-content
+    {
+        padding: 25px;
+        background-color: #fff;
+        .pay
+        {
+            .pay-holder
+            {
+                .name
+                {
+                    color: #262626;
+                    font-size: 12px;
+                    font-weight: 600;
+                    margin-bottom: 5px;
+                }
+                table
+                {
+                    width: 100%;
+                    td
+                    {
+                        vertical-align: middle;
+                        padding: 15px 0;
+                    }
+                    tr
+                    {
+                        border-bottom: 1px solid #e9e9e9;
+                        &:first-child
+                        {
+                            td
+                            {
+                                padding-top: 0px;
+                            }
+                        }
+                    }
+                }
+                .ray
+                {
+                    padding-right: 15px;
+                }
+                .form-control
+                {
+                    box-shadow: none;
+                    border-radius: 0;
+                    display: inline-block;
+                    &.ccn
+                    {
+                        width: 200px;
+                    }
+                    &.date
+                    {
+                        width: 70px;
+                    }
+                }
+                .card-holder
+                {
+                    margin-top: 12.5px;
+                }
+            }
+        }
+
+        .upload-container
+        {
+            padding: 20px 0px 0px 37px;
+
+            #upload-button
+            {
+                border: solid 1px #bababa;
+                border-radius: 2px;
+                font-size: 12.5px;
+                font-weight: 600;
+                padding: 10px 30px;
+                margin: auto;
+                min-width: 100%;
+            }
+
+            #upload-proof
+            {
+                font-size: 12.5px;
+                font-weight: 600;
+                margin-top: 10px;
+            }
+
+        }
+        .cart-summary
+        {
+            margin: -25px;
+            table
+            {
+                thead
+                {
+                    tr
+                    {
+                        th
+                        {
+                            background-color: #626262;
+                            font-size: 12px;
+                            color: #fff;
+                            font-weight: 600;
+                            padding: 15px 25px;
+                        }
+                    }
+                }
+                tbody   
+                {
+                    tr
+                    {
+                        td
+                        {
+                            border: 0;
+                            padding: 12.5px 25px;
+                            color: #333333;
+                            font-size: 12px;
+                            font-weight: 600;
+                        }
+                        .total
+                        {
+                            color: #ff6767;
+                            font-size: 14px;
+                            font-weight: 700;
+                        }
+                    }
+                }
+                tbody
+                {
+                    border: 0;
+                }
+            }
+        }
+        .info
+        {
+            label
+            {
+                font-size: 12.5px;
+                font-weight: 600;
+            }
+            .form-control
+            {
+                border: 1px solid #cdcdcd;
+                box-shadow: none;
+            }
+        }
+    }
+}

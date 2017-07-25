@@ -1,0 +1,179 @@
+.about-container
+{
+    text-align: center;
+    .about-header
+    {
+        padding: 25px 0;
+        .title
+        {
+            font-size: 37.5px;
+            color: #6cab09;
+        }
+        .img
+        {
+            display: table-cell;
+            vertical-align: middle;
+            @media screen and (max-width: 991px)
+            {
+                display: block;
+                margin: 25px 0;
+            }
+            img
+            {
+                @media screen and (max-width: 300px)
+                {
+                    width: 100%;
+                }
+            }
+        }
+        .text
+        {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 20.83px;
+            color: #434040;
+            padding: 0 30px;
+            text-align: left;
+            line-height: 40px;
+            @media screen and (max-width: 991px)
+            {
+                display: block;
+                font-size: 18px;
+            }
+            @media screen and (max-width: 991px)
+            {
+                line-height: 30px;
+            }
+        }
+    }
+    .about-quote
+    {
+        background-image: url("/resources/assets/frontend/img/about-parallax.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 15px 0;
+        .text
+        {
+            display: table-cell;
+            vertical-align: middle;
+            color: white;
+            font-size: 25px;
+            padding: 5px 20px;
+            @media screen and (max-width: 991px)
+            {
+                display: block;
+                font-size: 30px;
+            }
+            @media screen and (max-width: 991px)
+            {
+                line-height: 30px;
+            }
+            span
+            {
+                font-size: 40px;
+                @media screen and (max-width: 991px)
+                {
+                    font-size: 40px;
+                }
+            }
+        }
+        .img
+        {
+            display: table-cell;
+            vertical-align: middle;
+            padding: 0 30px;
+            @media screen and (max-width: 991px)
+            {
+                display: block;
+                margin: 25px 0;
+                padding: 0;
+            }
+            img
+            {
+                @media screen and (max-width: 300px)
+                {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .about-award
+    {
+        padding: 25px 0;
+        .img
+        {
+            display: table-cell;
+            vertical-align: middle;
+            padding: 0 50px;
+            @media screen and (max-width: 991px)
+            {
+                display: block;
+                margin: 25px 0;
+            }
+            img
+            {
+                @media screen and (max-width: 400px)
+                {
+                    width: 100%;
+                }
+            }
+        }
+        .text
+        {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 25px;
+            color: #676767;
+            padding: 10px;
+            line-height: 60px;
+            @media screen and (max-width: 991px)
+            {
+                display: block;
+                font-size: 20px;
+            }
+            @media screen and (max-width: 991px)
+            {
+                line-height: 30px;
+            }
+            span
+            {
+                font-size: 30px;
+                color: #169f87;
+            }
+        }
+        .award
+        {
+            max-width: 900px;
+            margin: 25px auto;
+            img
+            {
+                width: 100%;
+            }
+        }
+    }
+    .about-info
+    {
+        background-image: url("/resources/assets/frontend/img/about-info.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 15px 0;
+        .text
+        {
+            font-size: 18px;
+            color: white;
+            padding: 20px 0;
+            @media screen and (max-width: 650px)
+            {
+                font-size: 20px;
+            }
+        }
+        .dots
+        {
+            background-image: url("/resources/assets/frontend/img/dots.png");
+            width: 100%;
+            height: 14px;
+        }
+    }
+}

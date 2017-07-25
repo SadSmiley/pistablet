@@ -1,0 +1,744 @@
+body
+{
+	font-family: 'Roboto', sans-serif;
+	background-color: #f7f7f7;
+}
+.row-no-padding 
+{
+	> div
+	{
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+.body-height{
+	min-height: 1000px;
+}
+/* GLOBAL ELEMENTS */
+
+.highlight{
+	color: #fff;
+	text-decoration: underline;
+}
+
+button:hover{
+	opacity: 0.9;
+	transition: 0.3s all ease;
+}
+
+.slick-next{
+	right: 1px;
+	z-index: 50;
+}
+.slick-prev{
+	left: 0px;
+	z-index: 50;
+}
+
+.slick-prev, .slick-next{
+	width: 40px;
+	height: 40px;
+}
+
+.content{
+	background-color: transparent;
+	padding-top: 5px;
+}
+
+.container{
+	// width: 1366px;
+	// margin-left: auto;
+	// margin-right: auto;
+	// padding-left: 10px;
+	// padding-right:10px;
+	// @media screen and (max-width: 1385px)
+	// {
+	// 	width: 1000px;
+	// }
+}
+
+
+/* HEADER */
+.header-container{
+	background-color: #fff;
+	@media screen and (max-width: 900px)
+	{
+		padding-bottom: 12px;
+	}
+	@media screen and (max-width: 768px)
+	{
+		padding-bottom: 12px;
+	}
+	@media screen and (max-width: 600px)
+	{
+		padding-bottom: 12px;
+	}
+	@media screen and (max-width: 375px)
+	{
+		padding-bottom: 12px;
+	}
+	@media screen and (max-width: 360px)
+	{
+		padding-bottom: 12px;
+	}
+	@media screen and (max-width: 320px)
+	{
+		padding-bottom: 12px;
+	}
+
+	nav{
+		a.active{
+			color: #ffc10e;
+		}
+	}
+}
+
+/* HEADER-FIXED */
+.header-fixed-body{
+	body{
+		padding-top: 25px;
+	}
+}
+.header-fixed{
+	@media screen and (min-width: 991px)
+	{
+		background-color: #000;
+		position: fixed;
+		width: 100%;
+		z-index: 999;
+		height: 50px;
+		-moz-box-shadow:5px 5px 5px rgba(0,0,0,0.1);
+		-webkit-box-shadow:5px 5px 5px rgba(0,0,0,0.1);
+		box-shadow:5px 5px 5px rgba(0,0,0,0.1);
+		
+
+		.slider3-wrapper{
+			top: 40px;
+
+			.slider3{
+				a{
+					color: #151515;
+					&:hover
+					{
+						text-decoration: none;
+						color: #151515;
+					}
+				}
+			}
+		}
+
+		.image-logo-holder{
+			padding: 5px 10px 5px 10px;
+			img{
+				width: 35%;
+			}
+		}
+		nav{
+			padding: 0px;
+			margin-top: 10px;
+			font-size: 12px;
+			.head-button{
+				color: #fff;
+				padding: 10px 0;
+			  	margin: 0 10px;
+			  	border-top: 2px solid #000;
+			  	border-bottom: 2px solid #000;
+			}
+		}
+	}
+}
+
+a{
+	color: #151515;
+	&:hover
+	{
+		text-decoration: none;
+		color: #151515;
+	}
+}
+
+nav{
+	float: right;
+	padding: 10px 15px 10px 15px;
+	margin-top: 25px;
+	font-family: 'Fjalla One', sans-serif;
+	font-size: 14px;
+	color: #151515;
+
+		.head-button{
+			transition: 0.3s ease;
+		  	text-decoration: none;
+		  	border-top: 4px solid #fff;
+		  	border-bottom: 4px solid #fff;
+		  	padding: 20px 0;
+		  	margin: 0 20px;
+		}
+
+		@media screen and (min-width: 991px)
+		{
+			.head-button:hover{
+			  	border-bottom: 4px solid #ffc10e;
+			  	padding: 6px 0;
+			  	color: #ffc10e;
+			  	cursor: pointer;
+			}
+		}
+	@media screen and (max-width: 991px)
+	{
+		float: none;
+		.head-button
+		{
+			display: block;
+			padding: 10px 0;
+			border-top: 1px solid #ddd;
+			&:last-child
+			{
+				border-bottom: 1px solid #ddd;
+			}
+		}
+	}
+}
+
+
+.image-logo-holder{
+	padding: 10px 15px 10px 15px;
+	text-align: center;
+	@media screen and (max-width: 991px)
+	{
+		> a
+		{
+			display: inline-block;
+			float: left;
+		}
+	}
+	&:hover{
+		cursor: pointer;
+	}
+	.menu-nav
+	{
+		display: none;
+		@media screen and (max-width: 991px)
+		{
+			display: block;
+			width: 50px;
+			padding: 7.5px 9px 7.5px 9px;
+			margin-left: auto;
+			margin-top: 15px;
+			background-color: #fff;
+			border: 2px solid #786044;
+			span
+			{
+				display: block;
+				height: 3px;
+				background-color: #786044;
+				margin: 5px 0;
+			}
+		}
+	}
+}
+
+
+
+.row-no-padding
+{
+	> div
+	{
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+
+
+
+
+footer
+{
+
+	color:#fff;
+	background-color: #333333;
+	padding-top: 28px;
+
+
+	.footer-img-container{
+	padding: 0px 10px 15px 10px;
+
+		img{
+			width: 100%;
+		}
+	}
+
+	.navigation-container{
+		padding-right: 15px;
+
+		.navigation-btn-container{
+			padding-top: 15px;
+
+			p{
+				color: #a5a5a5;
+				font-size: 12px;
+				span{
+					&:hover{
+						cursor: pointer;
+						color: #fff;
+						transition: 0.3s all ease;
+					}
+				}
+			}
+		}
+
+		.ftr-contact-container{
+			padding-top: 15px;
+
+			p{
+				color: #a5a5a5;
+				font-size: 12px;
+			}
+		}
+
+		.navigation-title-container{
+			font-family: 'Fjalla One', sans-serif;
+			font-size: 20px;
+			padding: 5px 0px 5px 0px;
+			border-bottom: 2px solid #fff;
+		}
+	}
+	
+	.btm-title 
+	{
+		color: #d7d7e1;
+		font-size: 16px;
+		margin-top: 30px;
+		margin-bottom: 20px;
+		font-weight: 700;
+	}
+
+	.btm-sub-title 
+	{
+		font-size: 12.5px;
+		margin-bottom: 10px;
+		a 
+		{
+			color: #9d9eb9;
+			text-decoration: none;
+		}
+	}
+
+
+	.btm-link 
+	{
+		margin-left: -15px;
+	}
+
+	.site-icon 
+	{
+		background-color: #383a9a;
+	    padding: 8px;
+	    margin-right: 5px;
+	    font-size: 20px;
+	    width: 20px;
+	    height: 20px;
+	    box-sizing: content-box;
+	    text-align: center;
+	    color: #fff;
+	    border: 0;
+	    border-radius: 5px;
+	}
+
+
+
+	.footer-link 
+	{
+		text-decoration: none;
+	}
+
+	.enter-email 
+	{
+		position: relative;
+		margin-top: 20px;
+		.plane-icon 
+		{
+			color: #fff;
+			font-size: 25px;
+			position: absolute;
+			right: 10px;
+		}
+		input 
+		{
+			padding: 10px;
+			border: solid 1px;
+			border-color: #767676;
+			border-radius: 0;
+			background-color: #313131;
+		}
+	}
+}
+
+#bottom-footer
+{
+	background-color: #0d0d0d;
+	padding: 10px;
+
+	.bottom
+	{
+		position: relative;
+		min-height: 10px;
+		border:none;
+		background-color: #0d0d0d;
+		
+
+		.ftr-title
+		{
+			float: left;
+		    left: 12px;
+		    color: #fff;
+		    font-size: 10px;
+		    padding-top: 5px;
+		}
+
+		.image-logo
+		{
+			float: right;
+    		right: 10px;
+    		padding-top: 15px;
+
+    		img
+    		{
+    			margin-left: 15px;
+    		}
+		}
+
+
+	}
+}
+
+/* DROPDOWN 3 SLIDER */
+
+.slider3-wrapper{
+	position: absolute;
+	right: 14px;
+	top: 90px;
+	z-index: 90;
+	padding: 10px 18px 18px 18px;
+	background-color: #fff;
+	width: 498px;
+
+	-moz-box-shadow:1px 1px 12px rgba(0,0,0,0.2);
+	-webkit-box-shadow:1px 1px 12px rgba(0,0,0,0.2);
+	box-shadow:1px 1px 12px rgba(0,0,0,0.2);
+
+	@media screen and (max-width: 991px){
+		
+		overflow: hidden;
+		width: 254px;
+
+
+	}
+
+	.slider3-button-container{
+		float: right;
+		padding-bottom: 8px;
+		button{
+			background-color: #fff;
+			border: 1px solid #d6d6d6;
+		}
+	}
+	.slider3-title{
+		padding-bottom: 5px;
+		font-size: 12px;
+	}
+
+	.slider3{
+		position: relative;
+		overflow: hidden;
+		width: 463px;
+		height: 120px;
+		background-color: #fff;
+
+		.slider3-per-container{
+			float: left;
+			img{
+				width: 100%;
+			}
+
+			&:hover{
+				img{
+					opacity: 0.5;
+					text-decoration: underline;
+					cursor: pointer;
+					transition: 0.3s all ease;
+
+				}
+				.slider3-title-container{
+					text-decoration: underline;
+					cursor: pointer;
+
+					
+				}
+			}
+
+			a{
+				color: #797979;
+			}
+
+			.per-container-wrapper{
+				padding: 2px 4px 2px 4px;
+			}
+			.slider3-title-container{
+				padding-top: 5px;
+				font-size: 11px;
+				max-width: 108px;
+				line-height: 13px;
+			}
+		}
+	}
+}
+
+/* LIGHTBOX */
+
+/*Eliminates padding, centers the thumbnail */
+
+/* body, html {
+padding: 0;
+margin: 0;
+text-align: center;
+}
+ */
+/* Styles the thumbnail */
+
+/* a.lightbox img {
+height: 150px;
+border: 3px solid white;
+box-shadow: 0px 0px 8px rgba(0,0,0,.3);
+margin: 94px 20px 20px 20px;
+} */
+
+/* Styles the lightbox, removes it from sight and adds the fade-in transition */
+
+.lightbox-target {
+position: fixed;
+top: -100%;
+width: 100%;
+background: rgba(0,0,0,.7);
+width: 100%;
+opacity: 0;
+-webkit-transition: opacity .5s ease-in-out;
+-moz-transition: opacity .5s ease-in-out;
+-o-transition: opacity .5s ease-in-out;
+transition: opacity .5s ease-in-out;
+overflow: hidden;
+z-index: 100;
+}
+
+/* Styles the lightbox image, centers it vertically and horizontally, adds the zoom-in transition and makes it responsive using a combination of margin and absolute positioning */
+
+.lightbox-target img {
+margin: auto;
+position: absolute;
+top: 0;
+left:0;
+right:0;
+bottom: 0;
+max-height: 0%;
+max-width: 0%;
+border: 3px solid white;
+box-shadow: 0px 0px 8px rgba(0,0,0,.3);
+box-sizing: border-box;
+-webkit-transition: .5s ease-in-out;
+-moz-transition: .5s ease-in-out;
+-o-transition: .5s ease-in-out;
+transition: .5s ease-in-out;
+
+	@media screen and (max-width: 500px)
+	{
+		top: 50px;
+		max-height: 650px;
+	}
+}
+
+/* Styles the close link, adds the slide down transition */
+
+a.lightbox-close {
+display: block;
+width:50px;
+height:50px;
+box-sizing: border-box;
+background: white;
+color: black;
+text-decoration: none;
+position: absolute;
+top: 50px;
+right: 10px;
+-webkit-transition: .5s ease-in-out;
+-moz-transition: .5s ease-in-out;
+-o-transition: .5s ease-in-out;
+transition: .5s ease-in-out;
+z-index: 100;
+}
+
+/* Provides part of the "X" to eliminate an image from the close link */
+
+a.lightbox-close:before {
+content: "";
+display: block;
+height: 30px;
+width: 1px;
+background: black;
+position: absolute;
+left: 26px;
+top:10px;
+-webkit-transform:rotate(45deg);
+-moz-transform:rotate(45deg);
+-o-transform:rotate(45deg);
+transform:rotate(45deg);
+}
+
+/* Provides part of the "X" to eliminate an image from the close link */
+
+a.lightbox-close:after {
+content: "";
+display: block;
+height: 30px;
+width: 1px;
+background: black;
+position: absolute;
+left: 26px;
+top:10px;
+-webkit-transform:rotate(-45deg);
+-moz-transform:rotate(-45deg);
+-o-transform:rotate(-45deg);
+transform:rotate(-45deg);
+}
+
+/* Uses the :target pseudo-class to perform the animations upon clicking the .lightbox-target anchor */
+
+.lightbox-target:target {
+opacity: 1;
+top: 0;
+bottom: 0;
+}
+
+.lightbox-target:target img {
+max-height: 100%;
+max-width: 100%;
+}
+
+.lightbox-target:target a.lightbox-close {
+top: 8px;
+}
+
+.lightbox
+{
+	position: relative;
+	height: 0;
+	padding-bottom: 100%;
+	display: block;
+	img
+	{
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+.lightbox2
+{
+	position: relative;
+	height: 0;
+	padding-bottom: 100%;
+	display: block;
+	img
+	{
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		object-fit: cover;
+	}
+}
+
+/* SCROLL TO TOP */
+.scroll-up {
+	padding: 15px 15px 18px 15px;
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 99;
+    &:hover{
+    	cursor: pointer;
+    }
+    @media screen and (max-width: 900px)
+    {
+    	right: 0px;
+    	bottom: 58px;
+    }
+    @media screen and (max-width: 600px)
+    {
+    	right: 0px;
+    	bottom: 58px;
+    }
+    @media screen and (max-width: 360px)
+    {
+    	right: 0px;
+    	bottom: 58px;
+    }
+
+}
+.navirino{
+	@media screen and (max-width: 900px)
+	{
+		padding: 0px;
+
+		&:last-child{
+			padding-bottom: 10px;
+		}
+	}
+	@media screen and (max-width: 768px)
+	{
+		padding: 0px;
+
+		&:last-child{
+			padding-bottom: 10px;
+		}
+	}
+	@media screen and (max-width: 600px)
+	{
+		padding: 0px;
+
+		&:last-child{
+			padding-bottom: 10px;
+		}
+	}
+	@media screen and (max-width: 375px)
+	{
+		padding: 0px;
+
+		&:last-child{
+			padding-bottom: 10px;
+		}
+	}
+	@media screen and (max-width: 360px)
+	{
+		padding: 0px;
+
+		&:last-child{
+			padding-bottom: 10px;
+		}
+	}
+	@media screen and (max-width: 320px)
+	{
+		padding: 0px;
+
+		&:last-child{
+			padding-bottom: 10px;
+		}
+	}
+}

@@ -1,0 +1,143 @@
+.payment-container
+{
+	margin-top: 40px;
+    .holder-holder
+    {
+        border: 1px solid #dde2e4;
+    }
+	.holder
+	{
+		width: 100px;
+		padding: 15px 15px;
+		text-align: center;
+		margin-bottom: 25px;
+		display: inline-block;
+		vertical-align: top;
+        border: 1px solid #dde2e4;
+        margin: -1px;
+        border-right: 0;
+        &:last-child
+        {
+            border-right: 1px solid #dde2e4 !important;
+        }
+		.image
+		{
+			height: 0;
+			position: relative;
+			padding-bottom: 75%;
+			img
+			{
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+			}
+		}
+		.radio
+		{
+
+		}
+	}
+	.details
+	{
+        border: 1px solid #dde2e4;
+        border-top: 0;
+        padding: 25px;
+        .details-text
+        {
+            margin: 25px 0;
+            margin-top: 0;
+        }
+        .details-order
+        {
+
+        }
+		.details-title
+		{
+			margin-bottom: 10px;
+			font-size: 16px;
+			font-weight: 700;
+		}
+	}
+	.button
+	{
+		margin-top: 25px;
+	}
+}
+.checkout-summary
+{
+    .title
+    {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    .order-summary
+    {
+        border: 1px solid #ddd;
+        padding: 10px;
+        .number-in-cart
+        {
+
+        }
+
+        table
+        {
+            width: 100%;
+            color: #777;
+
+            thead
+            {
+                font-weight: bold;
+
+                tr
+                {
+                    td
+                    {
+                        padding: 5px 0;
+                        border-bottom: 1px dashed #ddd;
+                    }
+                }
+            }
+
+            tbody
+            {
+                tr
+                {
+
+                    td
+                    {
+                        padding: 5px 0;
+                        border-bottom: 1px dashed #ddd;
+                    }
+                }
+            }
+        }
+
+        .total
+        {
+            overflow: auto;
+            padding-top: 5px;
+            .total-label
+            {
+                float: right;
+            }
+            .total-price
+            {
+                width: 100px;
+                margin-left: 15px;
+                float: right;
+
+                &.supertotal
+                {
+                    color: #2B628B;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

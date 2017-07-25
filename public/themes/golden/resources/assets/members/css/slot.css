@@ -1,0 +1,61 @@
+.slot {
+  background-image: url("/resources/assets/frontend/img/texture.png");
+  background-position: center;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+  .slot .body {
+    padding: 50px; }
+    @media screen and (max-width: 400px) {
+      .slot .body {
+        padding: 50px 10px; } }
+    .slot .body .holder {
+      margin: 30px 0; }
+      .slot .body .holder .top-container {
+        padding-top: 10px; }
+      .slot .body .holder .labels-container {
+        padding-top: 20px; }
+      .slot .body .holder .slot-box {
+        background-color: #37373F;
+        width: 280px;
+        height: 200px;
+        color: #fff;
+        text-align: center;
+        margin: auto;
+        max-width: 100%; }
+        .slot .body .holder .slot-box .labels-slot {
+          font-size: 20px;
+          padding-top: 50px; }
+        .slot .body .holder .slot-box .values-slot {
+          font-size: 40px; }
+      .slot .body .holder .labels {
+        color: #7A8391;
+        font-size: 14px;
+        padding: 10px 0;
+        text-align: right;
+        text-transform: uppercase;
+        font-weight: bold; }
+      .slot .body .holder .values {
+        color: #9ea7b3;
+        font-size: 14px;
+        padding: 10px 0;
+        text-align: left; }
+      .slot .body .holder a {
+        color: white; }
+        .slot .body .holder a button {
+          background-color: #EFC20F;
+          border: 0;
+          margin: 10px 0;
+          width: 100%;
+          padding: 10px 40px;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          border-bottom: 2px solid #EDB412;
+          border-left: 1px solid #EDB412;
+          border-right: 1px solid #EDB412;
+          font-size: 12.5px; }
+        .slot .body .holder a button:hover {
+          background-color: #EDB412; }
+
+/*# sourceMappingURL=slot.css.map */

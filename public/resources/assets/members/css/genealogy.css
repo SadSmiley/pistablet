@@ -1,0 +1,29 @@
+@media screen and (max-width: 768px) {
+  .genealogy .header {
+    padding: 15px; } }
+@media screen and (max-width: 768px) {
+  .genealogy .header .labels {
+    display: none; } }
+.genealogy .header select {
+  color: #77818e;
+  margin: 0 10px;
+  width: 250px;
+  text-align: center;
+  display: inline;
+  border-radius: 0; }
+  @media screen and (max-width: 768px) {
+    .genealogy .header select {
+      margin: 0; } }
+  @media screen and (max-width: 525px) {
+    .genealogy .header select {
+      width: 100%; } }
+.genealogy .header span {
+  padding: 5px 0; }
+@media screen and (max-width: 525px) {
+  .genealogy .header .pull-right {
+    float: none !important;
+    display: block !important;
+    padding-top: 20px;
+    text-align: center; } }
+
+/*# sourceMappingURL=genealogy.css.map */
