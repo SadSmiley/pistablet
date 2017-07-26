@@ -3,17 +3,17 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.helloworld"
+        id        = "com.digimawebsolutions.pis"
         version   = "1.0.0">
 
-    <name>Hello World</name>
+    <name>PIS Tablet</name>
 
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Exclusive Application for Digimahouse PIS
     </description>
 
-    <author href="http://phonegap.com" email="support@phonegap.com">
-        PhoneGap Team
+    <author href="http://digimaweb.solutions" email="support@digimaweb.solutions">
+        Digima Web Solutions
     </author>
 
     <!--
