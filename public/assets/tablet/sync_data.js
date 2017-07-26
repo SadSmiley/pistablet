@@ -262,6 +262,7 @@ function sync_data()
                 }
                 catch(err) 
                 {
+                    Alert("Error");
                     document.getElementById("demo").innerHTML = err.message;
                 }
                 
