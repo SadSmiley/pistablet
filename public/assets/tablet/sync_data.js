@@ -1,7 +1,5 @@
 var sync_data = new sync_data();
-var db = openDatabase("my168shop", "1.0", "Address Book", 200000); 
-var query = "";
-var dataset_from_browser = null; 
+
 function sync_data()
 {
 	init();
@@ -226,7 +224,6 @@ function sync_data()
                         crossDomain : true,
                         success : function(data)
                         {
-                            alert("Success AJAX");
                             db.transaction(function (tx)
                             {
                                 $(data).each(function(a, b)
