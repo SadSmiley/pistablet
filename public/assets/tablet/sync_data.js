@@ -160,7 +160,6 @@ function sync_data()
    
     function action_web_browser_sync_data(done)
     {
-        alert("Click Now!");
         var all_tbl_name = [];
         all_tbl_name[1] = "tbl_shop";
         all_tbl_name[2] = "tbl_category";
@@ -213,53 +212,59 @@ function sync_data()
         $(".web-to-browser-sync-data").unbind("click");
         $(".web-to-browser-sync-data").bind("click", function()
         {
-            alert("Started");
             var dateNow = getDateNow();
             var key = 0;
             $(all_tbl_name).each(function(a, table_name)
             {
-                alert("Get AJAX");
-                $.ajax({
-                    url : "http://digimatest.com/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
-                    dataType: "json",
-                    data : {},
-                    type : "get",
-                    crossDomain : true,
-                    success : function(data)
-                    {
-                        alert("Success AJAX");
-                        db.transaction(function (tx)
+                try 
+                {
+                    $.ajax({
+                        url : "http://digimatest.com/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
+                        dataType: "json",
+                        data : {},
+                        type : "get",
+                        crossDomain : true,
+                        success : function(data)
                         {
-                            $(data).each(function(a, b)
+                            alert("Success AJAX");
+                            db.transaction(function (tx)
                             {
-                                query = data[a];
-                                tx.executeSql(query,[], function(txt, result)
+                                $(data).each(function(a, b)
                                 {
-                                    // console.log(result);    
-                                },
-                                onError);        
+                                    query = data[a];
+                                    tx.executeSql(query,[], function(txt, result)
+                                    {
+                                        // console.log(result);    
+                                    },
+                                    onError);        
 
-                                percentage = ((a) / data.length) * 100;
-                                $(".progress").removeClass('hide');
-                                $(".progress-bar").css("width", (percentage).toFixed() + "%");
-                                $(".progress-bar").html("Synchronizing data " + (percentage).toFixed() + "%");
-                                $(".progress-bar").attr("aria-valuenow", (percentage).toFixed());
-                                $(".tbl-name-class").html(table_name);    
+                                    percentage = ((a) / data.length) * 100;
+                                    $(".progress").removeClass('hide');
+                                    $(".progress-bar").css("width", (percentage).toFixed() + "%");
+                                    $(".progress-bar").html("Synchronizing data " + (percentage).toFixed() + "%");
+                                    $(".progress-bar").attr("aria-valuenow", (percentage).toFixed());
+                                    $(".tbl-name-class").html(table_name);    
+                                });
+
+                                var query_timestamp = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('"+table_name+"','"+dateNow+"')";
+                                createTableName(query_timestamp);
+
+                                ctr++;
+
+                                /* Done */
+                                if (ctr === total) 
+                                {
+                                    alert("Done");
+                                }   
                             });
-
-                            var query_timestamp = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('"+table_name+"','"+dateNow+"')";
-                            createTableName(query_timestamp);
-
-                            ctr++;
-
-                            /* Done */
-                            if (ctr === total) 
-                            {
-                                alert("Done");
-                            }   
-                        });
-                    }
-                });
+                        }
+                    });
+                }
+                catch(err) 
+                {
+                    document.getElementById("demo").innerHTML = err.message;
+                }
+                
             });
         });
     }
