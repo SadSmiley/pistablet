@@ -84,7 +84,6 @@ function invoice_transaction()
     }
     function get_adding_cm_item_modal(item_id, sir_id)
     {
-        alert(item_id);
     }
     function get_adding_item_modal(item_id, sir_id)
     {
