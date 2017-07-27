@@ -19,6 +19,8 @@ function receive_payment()
 		event_button_action_click();
 
 		action_initialize_load();
+
+		get_all_customers();
 	}
 
 	this.action_initialize_load = function()
@@ -37,8 +39,7 @@ function receive_payment()
 	{
 		$(".drop-down-customer").globalDropList(
 		{
-		    link 		: '/member/customer/modalcreatecustomer',
-		    link_size 	: 'lg',
+		    hasPopup    : "false",
 		    width 		: "100%",
 		    placeholder : 'Customer',
 		    onChangeValue: function()
@@ -64,16 +65,14 @@ function receive_payment()
 
 		$(".drop-down-payment").globalDropList(
 		{
-		    link 		: '/member/maintenance/payment_method/add',
-		    link_size 	: 'sm',
+		    hasPopup    : "false",
 		    width 		: "100%",
 		    placeholder : 'Payment Method'
 		});
 
 		$(".drop-down-coa").globalDropList(
 		{
-		    link 		: '/member/accounting/chart_of_account/popup/add',
-		    link_size 	: 'md',
+		    hasPopup    : "false",
 		    width 		: "100%",
 		    placeholder : 'Account'
 		});

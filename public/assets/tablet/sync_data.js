@@ -61,10 +61,12 @@ function sync_data()
                         var data2 = results.rows;  
                         agent_id = data2[0]['employee_id'];
 
-                        toastr.success("Success");
                         ins_query_agent[1] = 'INSERT INTO tbl_agent_logon (agent_id, date_login) VALUES ("'+agent_id+'", "'+ getDateNow() +'")';
-                        onload_create_table(ins_query_agent);
-                        location.href = "index.html";
+                        // onload_create_table(ins_query_agent);
+                        insert_query(ins_query_agent, function()
+                        {
+                            location.href = "index.html";       
+                        });
                     }
                     else
                     {

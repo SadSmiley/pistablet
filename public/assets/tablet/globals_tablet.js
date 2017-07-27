@@ -1,7 +1,15 @@
+/** 
+ * Open WEBSQL 
+ */
 var db = openDatabase("my168shop", "1.0", "Address Book", 200000); 
 var query = "";
 var dataset_from_browser = null
 
+/**
+ * Agent Logout
+ *
+ * @param redirect (string)  Callback URL
+ */
 function agent_logout(redirect)
 {
 	db.transaction(function (tx) 
@@ -11,7 +19,11 @@ function agent_logout(redirect)
 	   location.href=''+redirect+'';
 	});
 }
-
+/**
+ * Create All Table
+ *
+ * @param callback (function)  Function to be called after the process.
+ */
 function query_create_all_table(callback)
 {
     var query = [];
@@ -80,6 +92,12 @@ function query_create_all_table(callback)
     	});
     });
 }
+/**
+ * Create Table
+ *
+ * @query (array)        Should be only one array without index.
+ * @callback (function)  Function to be called after the process.
+ */
 function create_tbl_name(query, callback)
 {
 	db.transaction(function (tx)
@@ -90,9 +108,98 @@ function create_tbl_name(query, callback)
 			console.log(result);
 			callback();
 		},
-		function()
-		{
-			console.log(error.message);
-		});
+		onError);
 	});
+}
+/**
+ * Insert Query
+ *
+ * @param query (array)        Should be in array with index.
+ * @param callback (function)  Function to be called after the process.
+ */
+function insert_query(query, callback)
+{
+    var total = query.length;
+    var ctr = 1;
+
+    query.forEach(function(single_query) 
+    {
+        db.transaction(function (tx)
+        { 
+            tx.executeSql(single_query,[],
+            function(txt, result)
+            {
+                console.log(result);
+                
+                ctr++;
+
+                if (total === ctr) 
+                {
+                    callback();
+                }
+            },
+            onError);
+        });
+    });
+}
+/**
+ * Insert Query
+ *
+ * @param callback (function)  Function to be called after the process.
+ */
+function get_shop_id(callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
+        tx.executeSql(query_check, [], function(tx, results)
+        {
+            if(results.rows.length <= 0)
+            {
+                alert("Some error occurred. Currently not logged in.")
+            }
+            else
+            {
+                var agent_id = results.rows[0].agent_id;
+                if (agent_id) 
+                {
+                    db.transaction(function(tx)
+                    {
+                        var query_check = 'SELECT * from tbl_employee WHERE employee_id = ' + agent_id + ' LIMIT 1';
+                        tx.executeSql(query_check, [], function(tx, results)
+                        {
+                            if (results.rows.length <= 0) 
+                            {
+                                alert("Some error occurred. Employee not found.");
+                            }     
+                            else
+                            {
+                                callback(results.rows[0].shop_id);
+                            }
+                        },
+                        onError);
+                    });
+                }
+            }
+        },
+        onError);
+    });
+}
+/**
+ * Get All Customers
+ *
+ * @param query (array)        Should be in array with index.
+ * @param callback (function)  Function to be called after the process.
+ */
+function get_all_customers()
+{
+    get_shop_id(function(shop_id)
+    {
+        alert(shop_id);
+    });
+}
+/* On ERROR */
+function onError(tx, error)
+{
+    console.log(error.message);
 }

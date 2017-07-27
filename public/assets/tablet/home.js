@@ -25,7 +25,6 @@ function home()
             var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
             tx.executeSql(query_check, [], function(tx, results)
             {
-                alert(results.rows.length);
                 if(results.rows.length <= 0)
                 {
                     location.href = "login.html";

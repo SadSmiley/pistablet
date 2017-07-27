@@ -89,7 +89,7 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="modal-loader hidden"></div>
+    <div class="modal-loader"></div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -110,7 +110,7 @@
 
         </div>
     </div>
-    <div class="row">
+    <div class="row hide">
         <div class="form-group">
             <div class="col-md-12">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -129,7 +129,7 @@
                             <div class="col-md-12">
                                 <label class="employee-name"></label><br>
                                 <label class="employee-position"></label><br>
-                                <a class="btn-logout">Logout</a>
+                                <a class="btn-logout" onClick="agent_logout('login.html')">Logout</a>
                             </div>
                             <div class="col-sm-4 pull-right">
                                 <form class="select-sir" method="get">
