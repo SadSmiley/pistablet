@@ -152,7 +152,7 @@
                                     <select class="drop-down-customer" name="rp_customer_id" required>
                                     <!-- @url '/member/customer/load_customer' -->
                                     <!-- @foreach($_customer as $key=>$customer) -->
-                                       <option value="{{$customer->customer_id}}" email="{{$customer->email}}">Edward Guevarra</option>
+                                       <!-- <option value="{{$customer->customer_id}}" email="{{$customer->email}}">Edward Guevarra</option> -->
                                        <!-- @if(sizeOf($_customer)-1 == $key) -->
                                           <!-- <option class="hidden" value="" /> -->
                                        <!-- @endif -->
@@ -232,10 +232,6 @@
                                                     <td><input type="text" class="text-right balance-due" value="" disabled /></td>
                                                     <td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>
                                                 </tr>
-
-                                                <script type="text/javascript">
-                                                   console.log("{{(isset($invoice['rpline_amount']) ? $invoice['rpline_amount'] : 0 )}}");
-                                                </script>
                                              <!-- @endforeach
                                           @else
                                              <tr>
