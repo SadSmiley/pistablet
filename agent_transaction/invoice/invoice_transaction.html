@@ -285,7 +285,6 @@
                             </div>
                             <!-- returns here -->
 
-                            @if(isset($pis) && $pis != 0)
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <label style="font-size: 15px">
@@ -296,7 +295,7 @@
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <div class="cm-div-item-list">
-                                        @include("tablet.load_ajax_tablet.tablet_cm_item")
+                                        <!-- @include("tablet.load_ajax_tablet.tablet_cm_item") -->
                                     </div>
                                 </div>                            
                             </div>
@@ -310,7 +309,7 @@
                                     <div class="col-xs-12">
                                     <!-- select-item droplist-item -->
                                         <select class="form-control tablet-droplist-item-return input-sm pull-left" name="cm_select_item_id">
-                                            @include("member.load_ajax_data.load_item", ['add_search' => "",'_item' => $_cm_item])
+                                            <!-- @include("member.load_ajax_data.load_item", ['add_search' => "",'_item' => $_cm_item]) -->
                                         </select>
                                     </div>
                                 </div>
@@ -339,10 +338,7 @@
                                     </div>
                                 </h3>
                             </div>
-
-                            @endif
-                            @if(isset($inv))
-                                <div class="form-group">
+                            <!--     <div class="form-group">
                                     <div class="col-xs-12">
                                         <div class="col-xs-6">
                                             Payment Appplied
@@ -363,8 +359,7 @@
                                             PHP&nbsp;<span class="balance-due">0.00</span>
                                         </div>
                                     </div>
-                                </div>
-                            @endif
+                                </div> -->
     			        </div>
     			   </div>
     			</div>

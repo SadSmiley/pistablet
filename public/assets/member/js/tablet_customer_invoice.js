@@ -683,11 +683,16 @@ function tablet_customer_invoice()
             onChangeValue : function()
             {
             	console.log($(this).val());
-            	if($(this).val() != '' || $(this).val() != null)
-            	{
-	           	    action_load_link_to_modal('/tablet/credit_memo/add_item/'+$(this).val()+"/true",'md');
-            	}
+            	// if($(this).val() != '' || $(this).val() != null)
+            	// {
+	           	//     action_load_link_to_modal('/tablet/credit_memo/add_item/'+$(this).val()+"/true",'md');
+            	// }
             	// action_load_item_info();
+				if($(this).val() != '')
+            	{
+            		var sir_id = $(this).find("option:selected").attr("sir_id");
+	           	    invoice_transaction.get_adding_cm_item_modal($(this).val(), sir_id);
+            	}
             }
         });
 
