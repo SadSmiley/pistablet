@@ -209,6 +209,7 @@ function get_all_customers(callback)
         });
     });
 }
+
 /**
  * Get All Chart of Accounts
  *
@@ -232,6 +233,38 @@ function get_all_coa(callback)
         });
     });
 }
+
+function get_cm_amount(cm_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function (tx)
+        {
+            var query_check = 'SELECT * FROM tbl_credit_memo'+
+                              ' WHERE cm_id = '+ cm_id         
+            tx.executeSql(query_check, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    if(results.rows[0]["cm_amount"])
+                    {
+                        callback(results.rows[0]["cm_amount"]);
+                    }
+                    else
+                    {
+                        callback(0);                    
+                    }                    
+                }
+                else
+                {
+                    callback(0);                    
+                }    
+            },
+            onError);
+        });
+    });
+}
+
 /* On ERROR */
 function onError(tx, error)
 {
