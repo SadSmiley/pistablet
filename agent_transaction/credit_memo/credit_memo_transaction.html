@@ -129,7 +129,7 @@
                                 </h1>
                             </div>
                             <div class="col-md-4 col-xs-6 text-right">
-                                <a href="/tablet" class="btn btn-custom-white">Cancel</a>
+                                <a href="../../index.html" class="btn btn-custom-white">Cancel</a>
                                 <button data-action="save-and-edit" class="btn btn-primary">Save</button>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                                <div class="form-group">
                                     <div class="col-md-12">
                                         <input type="hidden" class="form-control input-sm customer-email" name="cm_customer_email" placeholder="E-Mail (Separate E-Mails with comma)"  value=""/>
-                                        <select class="form-control droplist-customer input-sm pull-left" name="cm_customer_id" data-placeholder="Select a Customer" required>
+                                        <select class="form-control droplist-customer customer-select-list input-sm pull-left" name="cm_customer_id" data-placeholder="Select a Customer" required>
                                             <!-- @include('member.load_ajax_data.load_customer', ['customer_id' => isset($cm->cm_customer_id) ? $cm->cm_customer_id : '']); -->
                                         </select>
                                     </div>
@@ -210,7 +210,7 @@
         </form>
         <div class="tablet-div-script hide">
             <div class="item-table">
-                <div style="border: 1px solid #999999; padding: 10px;margin: 5px" class="popup" size="md" link="">
+                <div style="border: 1px solid #999999; padding: 10px;margin: 5px" class="edit-cm-item cm-item">
                     <a class="btn-remove col-xs-12 text-right" style="margin-top: -10px;margin-bottom: -10px">
                         Remove
                     </a>
@@ -387,4 +387,6 @@
 <script type="text/javascript" src="../../public/assets/member/bootstrap_drawer/cooker.drawer.js"></script>
 
 
+<script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
 <script type="text/javascript" src="../../public/assets/member/js/tablet_credit_memo.js"></script>
+<script type="text/javascript" src="../../public/assets/member/js/credit_memo_transaction.js"></script>
