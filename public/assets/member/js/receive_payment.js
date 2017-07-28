@@ -74,9 +74,11 @@ function receive_payment()
 			        	// $query->where("inv_shop_id", $shop_id)->where("inv_customer_id", $customer_id);
 			        	// ->where("inv_is_paid", 0)->where("is_sales_receipt",0)
 			            var query_check = 'SELECT * FROM tbl_customer_invoice '+
-			            				  'LEFT JOIN (select sum(rpline_amount) as amount_applied, rpline_reference_id from tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" and rpline_reference_id = "inv_id") '+
+			            				  'LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id from tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id '+
 			            				  // 'LEFT JOIN "pymnt.rpline_reference_id", "=", "inv_id" '+
-			                              'WHERE inv_shop_id = '+shop_id+' AND inv_customer_id = '+customer_id+' AND inv_is_paid = 0 AND is_sales_receipt = 0';            
+			                              'WHERE inv_shop_id = '+shop_id+' AND inv_customer_id = '+customer_id+' AND inv_is_paid = 0 AND is_sales_receipt = 0';
+
+			            var check    = 'SELECT * FROM tbl_customer_invoice LEFT JOIN';
 			            tx.executeSql(query_check, [], function(tx, results)
 			            {
 			                console.log(results.rows);
@@ -112,8 +114,8 @@ function receive_payment()
 		                                              '</td>'+
 		                                              '<td>Invoice #'+val.new_inv_id+' ( '+val.inv_date+' )</td>'+
 		                                              '<td class="text-right">'+val.inv_date+'</td>'+
-		                                              '<td><input type="text" class="text-right original-amount" value="'+(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
-		                                              '<td><input type="text" class="text-right balance-due" value="'+((val.inv_overall_price) - val.amount_applied + (val.rpline_amount ? val.rpline_amount : 0)).toFixed(2)+'" disabled /></td>'+
+		                                              '<td><input type="text" class="text-right original-amount" value="'+parseInt(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
+		                                              '<td><input type="text" class="text-right balance-due" value="'+parseInt((val.inv_overall_price) - val.amount_applied + (val.rpline_amount ? val.rpline_amount : 0 )).toFixed(2)+'" disabled /></td>'+
 		                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
 		                                          '</tr>';
 
