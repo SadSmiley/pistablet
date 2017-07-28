@@ -105,21 +105,25 @@ function receive_payment()
 
 			                	$.each(results.rows, function(index, val) 
 				                {
-				                	var append = '<tr>'+
-		                                             '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
-		                                             '<input type="hidden" value="" name="rpline_txn_id[]">'+
-		                                              '<td class="text-center">'+
-		                                                '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="" >'+
-		                                                '<input type="checkbox" class="line-checked">'+
-		                                              '</td>'+
-		                                              '<td>Invoice #'+val.new_inv_id+' ( '+val.inv_date+' )</td>'+
-		                                              '<td class="text-right">'+val.inv_date+'</td>'+
-		                                              '<td><input type="text" class="text-right original-amount" value="'+parseInt(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
-		                                              '<td><input type="text" class="text-right balance-due" value="'+parseInt((val.inv_overall_price) - val.amount_applied + (val.rpline_amount ? val.rpline_amount : 0 )).toFixed(2)+'" disabled /></td>'+
-		                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
-		                                          '</tr>';
+				                	get_cm_amount(val.credit_memo_id, function(cm_amount)
+			                		{
+			                			var append = '<tr>'+
+			                                             '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
+			                                             '<input type="hidden" value="" name="rpline_txn_id[]">'+
+			                                              '<td class="text-center">'+
+			                                                '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="" >'+
+			                                                '<input type="checkbox" class="line-checked">'+
+			                                              '</td>'+
+			                                              '<td>Invoice #'+val.new_inv_id+' ( '+val.inv_date+' )</td>'+
+			                                              '<td class="text-right">'+val.inv_date+'</td>'+
+			                                              '<td><input type="text" class="text-right original-amount" value="'+(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
+			                                              '<td><input type="text" class="text-right balance-due" value="'+(((val.inv_overall_price) - val.amount_applied) + ((val.rpline_amount ? val.rpline_amount : 0 ) - cm_amount)).toFixed(2)+'" disabled /></td>'+
+			                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
+			                                          '</tr>';
 
-				                	$('.tbody-item').append(append);
+					                	$('.tbody-item').append(append);
+			                		});
+				                	
 				                });
 			                }
 			                
