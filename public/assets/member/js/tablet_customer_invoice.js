@@ -98,7 +98,8 @@ function tablet_customer_invoice()
 			$item_table = $(".cm-div-item-list .cm.item-table:last");
 			
 			$(".cm-div-item-list .cm.item-table:last").addClass("item-list-"+$(".cm.tablet-item-id").val());
-			$(".cm-div-item-list .cm.item-table:last .popup").attr("link",'/tablet/credit_memo/add_item/'+$(".cm.tablet-item-id").val()+"/true");
+			$(".cm-div-item-list .cm.item-table:last .cm-item").attr("item_id",$(".cm.tablet-item-id").val());
+			$(".cm-div-item-list .cm.item-table:last .cm-item").attr("sir_id",$(".cm.tablet-sir-id").val());
 			
 			//PUT VALUE TO LABEL
 			$item_table.find(".item-cm-name").html($(".cm.tablet-item-name").html());
@@ -145,8 +146,9 @@ function tablet_customer_invoice()
 			$(".div-item-list").append(global_tablet_html);
 			$item_table = $(".div-item-list .item-table:last");
 
-			$(".div-item-list .item-table:last").addClass("item-list-"+$(".tablet-item-id").val());
-			$(".div-item-list .item-table:last .popup").attr("link",'/tablet/invoice/add_item/'+$(".tablet-item-id").val());
+			$(".div-item-list .item-table:last").addClass("item-list-" + $(".tablet-item-id").val());
+			$(".div-item-list .item-table:last .inv-item").attr("item_id", $(".tablet-item-id").val());
+			$(".div-item-list .item-table:last .inv-item").attr("sir_id", $(".inv.tablet-sir-id").val());
 
 			//PUT VALUE TO LABEL
 			$item_table.find(".item-name").html($(".tablet-item-name").html());

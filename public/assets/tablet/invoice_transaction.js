@@ -17,6 +17,8 @@ function invoice_transaction()
 	function document_ready()
 	{
 		check_if_have_login();
+        edit_inv_item();
+        edit_cm_item();
 	}
 	function check_if_have_login()
 	{
@@ -101,6 +103,7 @@ function invoice_transaction()
                 modal_content += '<div class="modal-body add_new_package_modal_body clearfix">';
                 modal_content += '<div class="form-group clearfix row">';
                 modal_content += '<div class="col-xs-4">';
+                modal_content += '<input type="hidden" name="cm_sir_id" class="cm tablet-sir-id" value="'+sir_id+'">';
                 modal_content += '<input type="hidden" name="item_id" class="cm tablet-item-id" value="'+item_row['item_id']+'">';
                 modal_content += '<h4> U/M </h4>';
                 modal_content += '</div>';
@@ -210,13 +213,14 @@ function invoice_transaction()
                         modal_content += '<div class="modal-body add_new_package_modal_body clearfix">';
                         modal_content += '<div class="form-group clearfix row">';
                         modal_content += '<div class="col-xs-4">';
+                        modal_content += '<input type="hidden" name="inv_sir_id" class="inv tablet-sir-id" value="'+sir_id+'">';
                         modal_content += '<input type="hidden" name="item_id" class="tablet-item-id" value="'+datarow['item_id']+'">';
                         modal_content += '<h4> U/M </h4>';
                         modal_content += '</div>';
                         modal_content += '<div class="col-xs-8">';
 
                         /* UNIT OF MEASUREMENT HERE (SELECT) */
-                        modal_content += '<select class="1111 tablet-droplist-um form-control tablet-item-um">';
+                        modal_content += '<select class="1111 inv tablet-droplist-um form-control tablet-item-um">';
 
                         var option = "";
                         $(datarow_um_multi).each(function(a,b)
@@ -308,6 +312,8 @@ function invoice_transaction()
                         tablet_customer_invoice.action_add_item_submit();
                         tablet_customer_invoice.action_add_cm_item_submit();
 
+                        $(".inv.tablet-droplist-um").val($(".inv.tablet-droplist-um").find("option:first").val()).change();
+
                     });
                 });
             }); 
@@ -377,6 +383,26 @@ function invoice_transaction()
             });
         });
 
+    }
+    function edit_inv_item()
+    {
+        $("body").on("click", ".edit-inv-item.inv-item", function()
+        {
+            var item_id = $(this).attr("item_id");
+            var sir_id = $(this).attr("sir_id");
+
+            get_adding_item_modal(item_id, sir_id);
+        });
+    }
+    function edit_cm_item()
+    {
+        $("body").on("click", ".edit-cm-item.cm-item", function()
+        {
+            var item_id = $(this).attr("item_id");
+            var sir_id = $(this).attr("sir_id");
+
+            get_adding_cm_item_modal(item_id, sir_id);
+        });
     }
 }
 function ReplaceNumberWithCommas(yourNumber)
