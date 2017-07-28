@@ -84,6 +84,101 @@ function invoice_transaction()
     }
     function get_adding_cm_item_modal(item_id, sir_id)
     {
+         db.transaction(function (tx)
+        {
+            var query_cm_item = 'SELECT * FROM tbl_item LEFT JOIN tbl_unit_measurement_multi ON tbl_unit_measurement_multi.multi_um_id = tbl_item.item_measurement_id  WHERE tbl_item.item_id = "'+item_id+'"';
+            tx.executeSql(query_cm_item, [], function(txs, results_item_cm)
+            {
+                var datarow = results_item_cm.rows;
+                var item_row = results_item_cm.rows[0];
+
+                var modal_content = "";
+
+                modal_content += '<div class="modal-header">';
+                modal_content += '<button type="button" class="close" data-dismiss="modal">&times;</button>';
+                modal_content += '<h4 class="modal-title cm tablet-item-name">'+item_row['item_name']+'</h4>';
+                modal_content += '</div>';
+                modal_content += '<div class="modal-body add_new_package_modal_body clearfix">';
+                modal_content += '<div class="form-group clearfix row">';
+                modal_content += '<div class="col-xs-4">';
+                modal_content += '<input type="hidden" name="item_id" class="cm tablet-item-id" value="'+item_row['item_id']+'">';
+                modal_content += '<h4> U/M </h4>';
+                modal_content += '</div>';
+                modal_content += '<div class="col-xs-8">';
+
+                /* UNIT OF MEASUREMENT HERE (SELECT) */
+                modal_content += '<select class="1111 cm tablet-droplist-um tablet-item-um form-control">';
+
+                var option = "";
+                $(datarow).each(function(a,b)
+                {
+                    option += '<option value="'+datarow[a]['multi_id']+'"  abbrev="'+datarow[a]['multi_abbrev']+'" qty="'+datarow[a]['unit_qty']+'">'+datarow[a]['multi_name']+'</option>';
+                });
+                modal_content += option;
+                modal_content += '</select>';
+
+                modal_content += '</div>';
+                modal_content += ' </div>';
+                modal_content += '<div class="form-group clearfix row">';
+                modal_content += '<div class="col-xs-4">';
+                modal_content += '<h4> Quantity </h4>';
+                modal_content += '</div>';
+                modal_content += '<div class="col-xs-8">';
+                modal_content += '<input type="text" class="form-control input-sm text-right number-input cm tablet-item-qty tablet-compute" value="1" name="invline_qty">';
+                modal_content += '</div>';
+                modal_content += '</div>';
+                modal_content += '<div class="form-group clearfix row">';
+                modal_content += '<div class="col-xs-4">';
+                modal_content += '<h4> Rate </h4>';
+                modal_content += ' </div>';
+                modal_content += '<div class="col-xs-8">';
+                modal_content += '<input type="hidden" name="" class="cm tablet-price-per-item" value="'+item_row['item_price']+'">';
+                modal_content += '<input type="text" style="text-align: right; border: 0;border-bottom: 1px solid #000;outline: 0;" class="form-control input-sm cm tablet-item-rate tablet-compute number-input" name="invline_rate" value="'+(item_row['item_price']).toFixed(2)+'">';
+                modal_content += '</div>';
+                modal_content += '</div>';
+                modal_content += '<div class="form-group clearfix row">';
+                modal_content += '<div class="col-xs-4">';
+                modal_content += '<h4> Amount </h4>';
+                modal_content += '</div>        ';
+                modal_content += '<div class="col-xs-8 text-right">';
+                modal_content += '<input type="hidden" class="cm tablet-item-amount">';
+                modal_content += '<h3 class="cm tablet-item-amount"></h3>';
+                modal_content += '</div>';
+                modal_content += '</div>';
+                modal_content += '<div class="form-group clearfix row">';
+                modal_content += '<div class="col-xs-12">';
+                modal_content += '<h4> Description </h4>';
+                modal_content += '</div>        ';
+                modal_content += '<div class="col-xs-12">';
+                modal_content += '<textarea class="form-control input-sm cm tablet-item-desc">'+item_row['item_sales_information']+'</textarea>';
+                modal_content += '</div>';
+                modal_content += '</div>';
+                modal_content += '</div>';
+                modal_content += '<div class="modal-footer">';
+                modal_content += '<div class="col-md-6 col-xs-6">';
+                modal_content += '<button data-dismiss="modal" class="btn btn-custom-white form-control">Cancel</button>';
+                modal_content += '</div>';
+                modal_content += '<div class="col-md-6 col-xs-6">';
+                modal_content += '<button class="btn btn-custom-blue form-control  cm tablet-add-item">Done</button>';
+                modal_content += '</div>';
+                modal_content += '</div>';
+
+
+                $("#global_modal").modal('show');
+                $("#global_modal").find(".modal-dialog").addClass("modal-md");
+                $("#global_modal").find(".modal-content").html(modal_content);
+
+                tablet_customer_invoice.iniatilize_select();
+                tablet_customer_invoice.event_tablet_cm_compute_class_change();
+                tablet_customer_invoice.action_cm_compute_tablet();
+                tablet_customer_invoice.action_add_cm_item_submit();
+                tablet_customer_invoice.action_compute_tablet();
+
+
+                $(".cm.tablet-droplist-um").val($(".cm.tablet-droplist-um").find("option:first").val()).change();
+
+            });
+        });
     }
     function get_adding_item_modal(item_id, sir_id)
     {
