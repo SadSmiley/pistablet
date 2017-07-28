@@ -19,6 +19,16 @@ function receive_payment()
 		event_button_action_click();
 		action_initialize_load();
 		action_put_customers();
+		action_put_accounting();
+	}
+
+	function action_put_accounting()
+	{
+		get_all_coa(function(coa)
+		{
+			alert(coa);
+		});
+		$('.drop-down-coa');
 	}
 
 	function action_put_customers()
@@ -114,7 +124,7 @@ function receive_payment()
 		                                              '<td class="text-right">'+val.inv_date+'</td>'+
 		                                              '<td><input type="text" class="text-right original-amount" value="'+(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
 		                                              '<td><input type="text" class="text-right balance-due" value="'+((val.inv_overall_price) - val.amount_applied + (val.rpline_amount ? val.rpline_amount : 0)).toFixed(2)+'" disabled /></td>'+
-		                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
+		                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/>'+val.rpline_amount+'</td>'+
 		                                          '</tr>';
 
 				                	$('.tbody-item').append(append);

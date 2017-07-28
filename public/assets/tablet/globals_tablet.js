@@ -209,6 +209,29 @@ function get_all_customers(callback)
         });
     });
 }
+/**
+ * Get All Chart of Accounts
+ *
+ * @param query (array)        Should be in array with index.
+ * @param callback (function)  Function to be called after the process.
+ */
+function get_all_coa(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function (tx)
+        {
+            // $query = Tbl_chart_of_account::accountInfo($shop)->balance()->where("account_parent_id", $parent_id)->where("account_sublevel", $sublevel)->orderBy("chart_type_id");
+            var query_check = 'SELECT * FROM tbl_chart_of_account '+
+                              'ORDER BY chart_type_id';         
+            tx.executeSql(query_check, [], function(tx, results)
+            {
+                callback(results.rows);
+            },
+            onError);
+        });
+    });
+}
 /* On ERROR */
 function onError(tx, error)
 {

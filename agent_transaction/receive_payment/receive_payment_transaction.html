@@ -188,7 +188,24 @@
                                  <div class="col-sm-3">
                                     <label>Deposit to</label>
                                     <select class="drop-down-coa" name="rp_ar_account" required>
-                                    @include("member.load_ajax_data.load_chart_account", ['add_search' => "", "account_id" => isset($rcvpayment) ? $rcvpayment->rp_ar_account : ''])
+                                    <!-- @foreach($_account as $key=>$account) -->
+                                      <!-- <option value="{{$account['account_id']}}" indent="{{$account['account_sublevel']}}" add-search="{{$add_search}}" reference="{{$account['account_type'] == 'Accounts Receivable' ? 'customer' : ($account['account_type'] == 'Accounts Payable' ? 'vendor' : '')}}">{{$account['account_number']}} • {{$account['account_name']}}</option> -->
+                                      <option value="" indent="" add-search="" reference="">1 • Edward</option>
+                                      <!-- @if($account['sub_account'] != null) -->
+                                        <!-- @foreach($_account as $key=>$account) -->
+                                          <!-- <option value="{{$account['account_id']}}" indent="{{$account['account_sublevel']}}" add-search="{{$add_search}}" reference="{{$account['account_type'] == 'Accounts Receivable' ? 'customer' : ($account['account_type'] == 'Accounts Payable' ? 'vendor' : '')}}">{{$account['account_number']}} • {{$account['account_name']}}</option> -->
+                                          <!-- @if($account['sub_account'] != null) -->
+                                            <!-- @include('member.load_ajax_data.load_chart_account', ['_account' => $account['sub_account'], 'add_search' => $account['account_name']."|".$add_search]) -->
+                                          <!-- @endif -->
+                                          <!-- @if(sizeOf($_account)-1 == $key) -->
+                                            <!-- <option class="hidden" value="" /> -->
+                                          <!-- @endif -->
+                                        <!-- @endforeach -->
+                                      <!-- @endif -->
+                                      <!-- @if(sizeOf($_account)-1 == $key) -->
+                                        <!-- <option class="hidden" value="" /> -->
+                                      <!-- @endif -->
+                                    <!-- @endforeach -->
                                     </select>
                                  </div>
                                  <div class="col-sm-2 pull-right">
