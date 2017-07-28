@@ -191,11 +191,22 @@ function get_shop_id(callback)
  * @param query (array)        Should be in array with index.
  * @param callback (function)  Function to be called after the process.
  */
-function get_all_customers()
+function get_all_customers(callback)
 {
     get_shop_id(function(shop_id)
     {
-        alert(shop_id);
+        db.transaction(function (tx)
+        {
+            var query_check = 'SELECT * FROM tbl_customer '+
+                              'LEFT JOIN tbl_customer_address ON tbl_customer.customer_id = tbl_customer_address.customer_id '+
+                              'WHERE shop_id = '+shop_id+' AND tbl_customer.archived = 0 '+
+                              'GROUP BY tbl_customer.customer_id';            
+            tx.executeSql(query_check, [], function(tx, results)
+            {
+                callback(results.rows);
+            },
+            onError);
+        });
     });
 }
 /* On ERROR */
