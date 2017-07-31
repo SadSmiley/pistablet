@@ -83,7 +83,8 @@ function tablet_credit_memo()
 			$item_table = $(".div-item-list .item-table:last");
 
 			$(".div-item-list .item-table:last").addClass("item-list-"+$(".tablet-item-id").val());
-			$(".div-item-list .item-table:last .popup").attr("link",'/tablet/credit_memo/add_item/'+$(".tablet-item-id").val()+'/false');
+			$(".div-item-list .item-table:last .cm-item").attr("item_id",$(".tablet-item-id").val());
+			$(".div-item-list .item-table:last .cm-item").attr("sir_id",$(".tablet-sir-id").val());
 
 			//PUT VALUE TO LABEL
 			$item_table.find(".item-name").html($(".tablet-item-name").html());
@@ -484,9 +485,9 @@ function tablet_credit_memo()
             {
             	if($(this).val() != '')
             	{
-	           	    action_load_link_to_modal('/tablet/credit_memo/add_item/'+$(this).val()+'/false','md');
+            		var sir_id = $(this).find("option:selected").attr("sir_id");
+	           	    credit_memo_transaction.get_adding_cm_item_modal($(this).val(), sir_id);
             	}
-            	// action_load_item_info();
             }
         });
         $('.droplist-um').globalDropList(

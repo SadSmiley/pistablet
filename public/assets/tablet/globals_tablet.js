@@ -224,7 +224,9 @@ function get_all_coa(callback)
         {
             // $query = Tbl_chart_of_account::accountInfo($shop)->balance()->where("account_parent_id", $parent_id)->where("account_sublevel", $sublevel)->orderBy("chart_type_id");
             var query_check = 'SELECT * FROM tbl_chart_of_account '+
-                              'INNER JOIN tbl_chart_account_type on account_type_id = chart_type_id';         
+                              'INNER JOIN tbl_chart_account_type on account_type_id = chart_type_id '+
+                              'WHERE tbl_chart_of_account.account_shop_id = '+shop_id;         
+            
             tx.executeSql(query_check, [], function(tx, results)
             {
                 callback(results.rows);
