@@ -26,9 +26,20 @@ function receive_payment()
 	{
 		get_all_coa(function(coa)
 		{
-			alert(coa);
+			$('.drop-down-coa').html('');
+			$.each(coa, function(index, val) 
+			{
+				var append = '<option value="'+val.account_id+'" indent="'+val.account_sublevel+'" add-search="" reference="">'+
+							 val.account_number+' • '+val.account_name+
+							 '</option>';
+				 $('.drop-down-coa').append(append);
+				 console.log(append);
+				 if (coa.length == (index + 1)) 
+				{
+					initialize_select_plugin();
+				}
+			});
 		});
-		$('.drop-down-coa');
 	}
 
 	function action_put_customers()
@@ -152,7 +163,7 @@ function receive_payment()
 
 	function action_initialize_load()
 	{
-		initialize_select_plugin();
+		// initialize_select_plugin();
 		$(".datepicker").datepicker();
 		$(".amount-payment").change();
 	}
