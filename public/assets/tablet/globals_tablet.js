@@ -264,6 +264,26 @@ function get_cm_amount(cm_id, callback)
         });
     });
 }
+function get_sir_inventory(sir_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        var query_sir = 'SELECT * FROM tbl_sir ' +
+                        'LEFT JOIN tbl_truck ON tbl_truck.truck_id = tbl_sir.truck_id ' + 
+                        'LEFT JOIN tbl_employee ON tbl_employee.employee_id = tbl_sir.sales_agent_id ' + 
+                        'WHERE tbl_sir.sir_id = ' + sir_id + ' ' +
+                        'WHERE tbl_sir.archived = 0 ' +
+                        'WHERE tbl_sir.sir_status = 1';
+        tx.executeSql(query_sir, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]);
+            }
+        });
+
+    });
+}
 
 /* On ERROR */
 function onError(tx, error)

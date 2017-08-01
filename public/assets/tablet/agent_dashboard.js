@@ -164,7 +164,16 @@ function click_action(action)
             if(action == "inventory")
             {
                 // GLOBALS FOR INVENTORY 
-                modal_content = '<div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button>   <h4 class="modal-title">SIR Inventory</h4></div><div class="modal-body add_new_package_modal_body clearfix"> <div class="col-md-12">  <h3>Under Maintenance</h3> </div> </div><div class="modal-footer"></div>';
+                modal_content = '<div class="modal-header"> '+
+                                ' <button type="button" class="close" data-dismiss="modal">&times;</button> '+
+                                ' <h4 class="modal-title">SIR Inventory</h4> '+
+                                '</div>'+ 
+                                '<div class="modal-body add_new_package_modal_body clearfix"> '+ 
+                                '<div class="col-md-12"> '+
+                                '<h3>Under Maintenance</h3> '+ 
+                                '</div> '+
+                                '</div>'+
+                                '<div class="modal-footer"></div>';
             }
             if(action == "reload")
             {
