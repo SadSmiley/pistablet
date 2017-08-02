@@ -3,7 +3,8 @@
  */
 var db = openDatabase("my168shop", "1.0", "Address Book", 200000); 
 var query = "";
-var dataset_from_browser = null
+var dataset_from_browser = null;
+var global_data = null;
 
 /**
  * Agent Logout
@@ -266,7 +267,6 @@ function get_cm_amount(cm_id, callback)
         });
     });
 }
-
 function get_date_now()
 {
     var today = new Date();
@@ -646,6 +646,120 @@ function post_journal_entries($entry, $entry_data, $remarks = '')
     });
 }
 
+function get_sir_data(sir_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_sir = 'SELECT * FROM tbl_sir ' +
+                        'LEFT JOIN tbl_truck ON tbl_truck.truck_id = tbl_sir.truck_id ' + 
+                        'LEFT JOIN tbl_employee ON tbl_employee.employee_id = tbl_sir.sales_agent_id ' + 
+                        'WHERE tbl_sir.sir_id = ' + sir_id + ' ' +
+                        'AND tbl_sir.archived = 0 ' +
+                        'AND tbl_sir.sir_status = 1';
+        tx.executeSql(query_sir, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]);
+            }
+        },
+        onError);
+    });
+}
+function get_sir_inventory_item(sir_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_sir_item = 'SELECT * FROM tbl_sir_item ' +
+                        'LEFT JOIN tbl_item ON tbl_item.item_id = tbl_sir_item.item_id ' + 
+                        'LEFT JOIN tbl_category ON tbl_category.type_id = tbl_item.item_category_id ' + 
+                        'WHERE tbl_sir_item.sir_id = ' + sir_id;
+        tx.executeSql(query_sir_item, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows);
+            }
+        },
+        onError);
+    });
+}
+function get_rem_qty_count(sir_id, item_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT sum(sir_inventory_count) as remaining_qty FROM tbl_sir_inventory ' +
+                        'WHERE inventory_sir_id = ' + sir_id + ' ' + 
+                        'AND sir_item_id = ' + item_id + ' ' +
+                        'AND sir_inventory_ref_name != "credit_memo"';
+        tx.executeSql(query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['remaining_qty']);
+            }
+            else
+            {
+                callback(0);
+            }
+        },
+        onError);
+    });
+}
+function get_sold_qty_count(sir_id, item_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT sum(sir_inventory_count) as sold_qty FROM tbl_sir_inventory ' +
+                        'WHERE inventory_sir_id = ' + sir_id + ' ' + 
+                        'AND sir_item_id = ' + item_id + ' ' +
+                        'AND sir_inventory_count <= 0 '
+                        'AND sir_inventory_ref_name != "credit_memo"';
+        tx.executeSql(query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(Math.abs(results.rows[0]['sold_qty']));
+            }
+            else
+            {
+                callback(0);
+            }
+        },
+        onError);
+    });
+}
+function unit_measurement_view(qty, item_id, um_issued_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT item_measurement_id FROM tbl_item WHERE item_id = ' + item_id;
+        tx.executeSql(query, [], function(tx, results)
+        {
+            /* */
+        },
+        onError);
+    });
+}
+function get_um_qty(um_id)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT unit_qty FROM tbl_unit_measurement_multi WHERE multi_id = ' + um_id;
+        tx.executeSql(query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['unit_qty']);
+            }
+            else
+            {
+                callback();
+            }
+        },
+        onError);
+    });
+}
 /* On ERROR */
 function onError(tx, error)
 {

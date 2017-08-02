@@ -163,8 +163,84 @@ function click_action(action)
             var modal_content = "";
             if(action == "inventory")
             {
-                // GLOBALS FOR INVENTORY 
-                modal_content = '<div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button>   <h4 class="modal-title">SIR Inventory</h4></div><div class="modal-body add_new_package_modal_body clearfix"> <div class="col-md-12">  <h3>Under Maintenance</h3> </div> </div><div class="modal-footer"></div>';
+                get_sir_data(sir_id, function(sir_data)
+                {
+                    get_sir_inventory_item(sir_id, function(sir_item_row)
+                    {
+
+                        // GLOBALS FOR INVENTORY 
+                        modal_content = '<div class="modal-header"> '+
+                                        ' <button type="button" class="close" data-dismiss="modal">&times;</button> '+
+                                        ' <h4 class="modal-title">SIR Inventory</h4> '+
+                                        '</div>'+ 
+                                        '<div class="modal-body add_new_package_modal_body clearfix"> '+ 
+                                        '<div class="panel-body form-horizontal"> '+
+                                        '<div class="form-group"> '+
+                                        '<div class="col-md-6">  '+
+                                        '<h3> SIR#'+sir_id+'</h3> '+ 
+                                        '</div> '+
+                                        '<div class="col-md-6">  '+
+                                        '<h3>Plate Number: '+sir_data['plate_number']+'</h3> '+ 
+                                        '</div> '+
+                                        '</div> '+
+                                        /* SIR INVENTORY TABLE */
+                                        '<div class="form-group">' +
+                                        '<div class="row clearfix draggable-container">'+
+                                        '<div class="">'+
+                                        '<div class="col-md-12">' +
+                                            '<div class="row clearfix draggable-container ilr-container">' +
+                                                '<div class="table-responsive">' +
+                                                    '<div class="col-sm-12">' +
+                                                        '<table class="digima-table">' +
+                                                            '<thead >' +
+                                                                '<tr>' +
+                                                                    '<th style="width: 15px;" class="text-right">#</th>' +
+                                                                    '<th style="width: 200px;">Product Name</th>' +
+                                                                    '<th style="width: 200px;">Issued QTY</th>' +
+                                                                    '<th style="width: 200px;">Sold QTY</th>' +
+                                                                    '<th style="width: 200px;">Remaining QTY</th>' +
+                                                                '</tr>' +
+                                                            '</thead>' +
+                                                            '<tbody class="item-list-inventory">'+
+                                                            '</tbody >'+
+                                                        '</table >'+
+                                                    '</div> '+
+                                                '</div> '+
+                                            '</div> '+
+                                        '</div> '+
+                                        /* END INVENTORY TABLE */
+
+                                        '</div> '+
+                                        '</div>'+
+                                        '<div class="modal-footer"></div>';
+
+
+                        var trow = "";
+                        $(sir_item_row).each(function(a,b)
+                        {
+                            get_rem_qty_count(sir_id, sir_item_row[a]['item_id'], function(remaining_qty)
+                            {
+                                get_sold_qty_count(sir_id, sir_item_row[a]['item_id'], function(sold_qty)
+                                {
+                                    trow = '<tr>' +                         
+                                    '<td>'+(a+1)+'</td>' +
+                                    '<td>'+sir_item_row[a]['item_name']+'</td>' +
+                                    '<td>'+sir_item_row[a]['item_qty'] * sir_item_row[a]['um_qty'] +'</td>' +
+                                    '<td>'+sold_qty+'</td>' +
+                                    '<td>'+remaining_qty+'</td>';
+                                    trow += '</tr>';
+
+                                    $(".item-list-inventory").append(trow);
+                                });
+
+                            });
+                        });
+
+                        $("#global_modal").modal('show');
+                        $("#global_modal").find(".modal-dialog").addClass("modal-md");
+                        $("#global_modal").find(".modal-content").html(modal_content);
+                    });
+                });
             }
             if(action == "reload")
             {
@@ -175,9 +251,6 @@ function click_action(action)
                 modal_content = '<div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button>   <h4 class="modal-title">Close SIR</h4></div><div class="modal-body add_new_package_modal_body clearfix"> <div class="col-md-12">  <h3>Are you sure you want to <span class="action-span">Close </span> SIR# <span class="sir-no-action">'+sir_id+'</span> ?</h3> </div> </div><div class="modal-footer"> <div class="col-md-6 col-xs-6"><button type="button" onclick="reload_sir('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button></div>  <div class="col-md-6 col-xs-6"><button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
             }
 			
-		    $("#global_modal").modal('show');
-    		$("#global_modal").find(".modal-dialog").addClass("modal-md");
-		    $("#global_modal").find(".modal-content").html(modal_content);
         });
     });
 }
