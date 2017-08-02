@@ -909,7 +909,7 @@ function get_um(um_based_id, um_issued_id, callback)
         });
     });
 }
-function get_um_qty(um_id)
+function get_um_qty(um_id, callback)
 {
     db.transaction(function (tx)
     {
@@ -926,6 +926,100 @@ function get_um_qty(um_id)
             }
         },
         onError);
+    });
+}
+function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, callback)
+{
+    console.log(_item_id);
+    $(_item_id).each(function(key, values)
+    {
+        get_item_bundle(_values['invline_item_id'][key], function(bundle_item)
+        {
+            if(bundle_item.length > 0)
+            {
+                $(bundle_item).each(function(a,b)
+                {
+                    var count = bundle_item.length;
+                    check_sir_qty(sir_id, b['bundle_item_id'], b['bundle_um_id'], qty * b['bundle_qty'],0,"", function(return_value)
+                    {
+                        if((a + 1) == count)
+                        {
+                            callback(return_value)
+                        }
+                    });
+                });
+            }
+            else
+            {
+                get_sir_inventory(sir_id,_values['invline_item_id'][key], _values['invline_um'][key], _values['invline_qty'][key].replace(',',""), invoice_id, function(return_value)
+                {
+                    callback(return_value)
+                });
+            }
+        });
+
+    });
+
+}
+function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT sum(sir_inventory_count) as current_qty FROM tbl_sir_inventory WHERE inventory_sir_id = ' + sir_id + ' ' + 
+                    'AND sir_item_id = ' + item_id;
+        tx.executeSql(query, [], function(tx, dtrow_sir_inventory)
+        {
+            var sir_inventory = dtrow_sir_inventory.rows[0]['current_qty'];
+            get_inv_qty(item_id, invoice_id, function(inv_qty)
+            {
+                var item_count = sir_inventory + inv_qty;
+
+                get_um_qty(um, function(unit_qty)
+                {
+                    var new_invoice_qty = unit_qty * qty;
+
+                    if(new_invoice_qty > item_count)
+                    {
+                        callback(1);
+                    }
+                    else
+                    {
+                        callback(0)
+                    }
+                });
+            });
+        });
+    });
+}
+function get_inv_qty(item_id,invoice_id,  callback)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT sum(sir_inventory_count) as inv_qty FROM tbl_sir_inventory WHERE sir_inventory_ref_name = "invoice" ' + 
+                    ' AND sir_item_id = ' + item_id +
+                    ' AND sir_inventory_ref_id = ' + invoice_id;
+        tx.executeSql(query, [], function(tx, dtrow_inv_inventory)
+        {
+            if(dtrow_inv_inventory.rows[0]['inv_qty'])
+            {   
+                callback(Math.abs(dtrow_inv_inventory.rows[0]['inv_qty']));
+            }
+            else
+            {
+                callback(0);
+            }
+        });
+    });
+}
+function get_item_bundle(item_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT * FROM tbl_item_bundle WHERE bundle_bundle_id = ' + item_id;
+        tx.executeSql(query, [], function(tx, results)
+        {
+            callback(results.rows);
+        });
     });
 }
 function update_submit_reload(sir_id)

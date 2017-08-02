@@ -113,10 +113,10 @@
 
     <div class="row">
 
-<!-- <form class="global-submit form-to-submit-transfer" id="invoice_form" role="form" action="{{$action}}" method="POST" >
-    <input type="hidden" class="token" name="_token" value="{{csrf_token()}}" >
-    <input type="hidden" class="token" name="sir_id" value="{{$sir_id}}" >
-    <input type="hidden" name="invoice_id" value="{{Request::input('id')}}" > -->
+    <form class="global-submit form-invoice" id="invoice_form" role="form"  method="POST" >
+    <!-- <input type="hidden" class="token" name="_token" value="{{csrf_token()}}" > -->
+        <input type="hidden" name="sir_id" class="sir-id-input">
+        <!-- <input type="hidden" name="invoice_id" value="{{Request::input('id')}}" >  -->
         <div class="form-group">
         	<div class="col-md-12">
     			<div class="panel panel-default panel-block panel-title-block" id="top">
@@ -131,7 +131,7 @@
     					</div>
     					<div class="col-md-4 col-xs-6 text-right">
     						<a href="../../index.html" class="btn btn-custom-white">Cancel</a>
-    						<button data-action="save-and-edit" class="btn btn-primary">Save</button>
+    						<button type="button" class="btn btn-primary" onClick="invoice_submit()">Save</button>
     					</div>
     				</div>
     			</div>
@@ -365,7 +365,7 @@
     			</div>
         	</div>
         </div>
-<!-- </form> -->
+    </form>
     <div class="tablet-div-script hide">
         <div class="inv item-table">
             <div style="border: 1px solid #999999; padding: 10px;margin: 5px" class="edit-inv-item inv-item" item_id="">
@@ -583,4 +583,5 @@
 <script type="text/javascript" src="../../public/assets/member/js/draggable_row.js"></script>
 <script type="text/javascript" src="../../public/assets/member/bootstrap_drawer/cooker.drawer.js"></script>
 <script type="text/javascript" src="../../public/assets/member/js/tablet_customer_invoice.js"></script>
+<script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
 <script type="text/javascript" src="../../public/assets/tablet/invoice_transaction.js"></script>
