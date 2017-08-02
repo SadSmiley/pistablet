@@ -147,7 +147,7 @@
                   <div class="tab-content panel-body form-horizontal tablet-container">
                     <div class="form-group">
                       <div class="col-md-12">
-                        <a onclick="click_action('close_sir')"> Close this S.I.R</a>
+                        <a onclick="click_action_update('close_sir')"> Close this S.I.R</a>
                       </div>
                     </div>
                     <div class="form-group clearfix text-center">
@@ -161,7 +161,7 @@
                         </div>
                         <div class="col-md-3 col-xs-3">
                             <h3>
-                           <a onclick="click_action('reload')" size="md" class="form-control btn btn-primary">Reload</a>
+                           <a onclick="click_action_update('reload')" size="md" class="form-control btn btn-primary">Reload</a>
                            </h3>
                         </div>
                     </div>
@@ -342,15 +342,15 @@
     function submit_done(data)
     {
         if(data.status == "success-login")
-    {
-    toastr.success("Success");
-    location.href = "/tablet/dashboard";
-    }
-    else if(data.status == "error")
-    {
-    toastr.warning(data.status_message);
-    $(data.target).html(data.view);
-    }
+        {
+            toastr.success("Success");
+            location.href = "/tablet/dashboard";
+        }
+        else if(data.status == "error")
+        {
+            toastr.warning(data.status_message);
+            $(data.target).html(data.view);
+        }
     }
 </script>
 <script type="text/javascript">

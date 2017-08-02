@@ -22,7 +22,6 @@ function agent_dashboard()
             var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
             tx.executeSql(query_check, [], function(tx, results)
             {
-                console.log(results);
                 if(results.rows.length <= 0)
                 {
                     location.href = "login.html";
@@ -52,7 +51,7 @@ function agent_dashboard()
 	{
 		db.transaction(function (tx)
         {
-        	var query_check = 'SELECT * from tbl_sir where sales_agent_id = "'+agent_id+'" AND lof_status IN ("1","2") AND sir_status IN ("0","1")';
+        	var query_check = 'SELECT * from tbl_sir where sales_agent_id = "'+agent_id+'" AND lof_status IN ("1","2") AND sir_status IN ("0","1") AND results_sir = 0';
         	var sir_id = "";       
             tx.executeSql(query_check, [], function(txs, results)
             {
@@ -74,7 +73,6 @@ function agent_dashboard()
 					var query_update = 'UPDATE tbl_agent_logon SET selected_sir = "'+sir_id+'" where agent_id = "'+agent_id+'"';            
 		            tx.executeSql(query_update, [], function(tx, results_update)
 		            {
-		            	console.log("update success");
 		            });
             	// }
                 get_amount_diff_transaction(sir_id);
@@ -232,7 +230,7 @@ function click_action(action)
                                                 trow = '<tr>' +                         
                                                 '<td>'+(a+1)+'</td>' +
                                                 '<td>'+sir_item_row[a]['item_name']+'</td>' +
-                                                '<td>'+ um_issued_qty +'</td>' +
+                                                '<td>'+um_issued_qty +'</td>' +
                                                 '<td>'+um_sold_qty+'</td>' +
                                                 '<td>'+um_remaining_qty+'</td>';
                                                 trow += '</tr>';
@@ -252,15 +250,57 @@ function click_action(action)
                     });
                 });
             }
+			
+        });
+    });
+}
+function click_action_update(action)
+{
+    db.transaction(function (tx)
+    {
+        var query_check = 'SELECT selected_sir FROM tbl_agent_logon LIMIT 1';            
+        tx.executeSql(query_check, [], function(txs, results)
+        {
+            var sir_id = results.rows[0]['selected_sir'];
+            var modal_content = "";
+            
             if(action == "reload")
             {
-                modal_content = '<div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button>   <h4 class="modal-title">Reload</h4></div><div class="modal-body add_new_package_modal_body clearfix"> <div class="col-md-12">  <h3>Are you sure you want to <span class="action-span">'+action+'</span> SIR# <span class="sir-no-action">'+sir_id+'</span> ?</h3> </div> </div><div class="modal-footer"> <div class="col-md-6 col-xs-6"><button type="button" onclick="reload_sir('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button></div>  <div class="col-md-6 col-xs-6"><button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
+                modal_content = '<div class="modal-header"> '+
+                                '<button type="button" class="close" data-dismiss="modal">&times;</button> '+
+                                '<h4 class="modal-title">Reload</h4>'+
+                                '</div> '+
+                                '<div class="modal-body add_new_package_modal_body clearfix">'+
+                                '<div class="col-md-12"> '+
+                                '<h3>Are you sure you want to <span class="action-span">'+action+'</span> SIR# <span class="sir-no-action">'+sir_id+'</span> ?</h3> '+
+                                '</div>'+
+                                '</div>'+
+                                '<div class="modal-footer">'+
+                                '<div class="col-md-6 col-xs-6">'+
+                                '<button type="button" onclick="update_submit_reload('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button>'+
+                                '</div> '+
+                                '<div class="col-md-6 col-xs-6">'+
+                                '<button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
             }
             if(action == "close_sir")
             {
-                modal_content = '<div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button>   <h4 class="modal-title">Close SIR</h4></div><div class="modal-body add_new_package_modal_body clearfix"> <div class="col-md-12">  <h3>Are you sure you want to <span class="action-span">Close </span> SIR# <span class="sir-no-action">'+sir_id+'</span> ?</h3> </div> </div><div class="modal-footer"> <div class="col-md-6 col-xs-6"><button type="button" onclick="reload_sir('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button></div>  <div class="col-md-6 col-xs-6"><button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
+                modal_content = '<div class="modal-header"> ' +
+                        ' <button type="button" class="close" data-dismiss="modal">&times;</button> ' +
+                        ' <h4 class="modal-title">Close SIR</h4></div> ' +
+                        ' <div class="modal-body add_new_package_modal_body clearfix"> ' +
+                        ' <div class="col-md-12"> ' +
+                        ' <h3>Are you sure you want to <span class="action-span">Close </span> SIR# <span class="sir-no-action">'+sir_id+'</span> ?</h3> ' +
+                        ' </div>'+
+                        ' </div> ' +
+                        ' <div class="modal-footer"> '+ 
+                        '<div class="col-md-6 col-xs-6"> ' +
+                        '<button type="button" onclick="reload_sir('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button>'+
+                        '</div>  <div class="col-md-6 col-xs-6"><button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
             }
-			
+
+            $("#global_modal").modal('show');
+            $("#global_modal").find(".modal-dialog").addClass("modal-md");
+            $("#global_modal").find(".modal-content").html(modal_content);
         });
     });
 }
