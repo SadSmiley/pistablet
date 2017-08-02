@@ -222,15 +222,25 @@ function click_action(action)
                             {
                                 get_sold_qty_count(sir_id, sir_item_row[a]['item_id'], function(sold_qty)
                                 {
-                                    trow = '<tr>' +                         
-                                    '<td>'+(a+1)+'</td>' +
-                                    '<td>'+sir_item_row[a]['item_name']+'</td>' +
-                                    '<td>'+sir_item_row[a]['item_qty'] * sir_item_row[a]['um_qty'] +'</td>' +
-                                    '<td>'+sold_qty+'</td>' +
-                                    '<td>'+remaining_qty+'</td>';
-                                    trow += '</tr>';
+                                    unit_measurement_view(remaining_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_remaining_qty)
+                                    {
+                                        unit_measurement_view(sold_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_sold_qty)
+                                        {
+                                            var issued_qty = sir_item_row[a]['item_qty'] * sir_item_row[a]['um_qty'];
+                                            unit_measurement_view(issued_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_issued_qty)
+                                            {
+                                                trow = '<tr>' +                         
+                                                '<td>'+(a+1)+'</td>' +
+                                                '<td>'+sir_item_row[a]['item_name']+'</td>' +
+                                                '<td>'+ um_issued_qty +'</td>' +
+                                                '<td>'+um_sold_qty+'</td>' +
+                                                '<td>'+um_remaining_qty+'</td>';
+                                                trow += '</tr>';
 
-                                    $(".item-list-inventory").append(trow);
+                                                $(".item-list-inventory").append(trow);
+                                            });
+                                        });
+                                    });
                                 });
 
                             });
