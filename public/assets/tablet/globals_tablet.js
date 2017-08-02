@@ -246,7 +246,7 @@ function get_cm_amount(cm_id, callback)
                               ' WHERE cm_id = '+ cm_id         
             tx.executeSql(query_check, [], function(tx, results)
             {
-                if(results.rows.length > 0)
+                if(results.rows.length >= 0)
                 {
                     if(results.rows[0]["cm_amount"])
                     {
@@ -264,6 +264,385 @@ function get_cm_amount(cm_id, callback)
             },
             onError);
         });
+    });
+}
+
+function get_date_now()
+{
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    return dateTime;
+}
+
+function post_journal_entries($entry, $entry_data, $remarks = '')
+{
+    // $cm_journal = Accounting::postJournalEntry($entry, $entry_data);
+    get_shop_id(function(shop_id)
+    {
+        /* GETTING THE DEFAULT ACCOUNTS RECEIVABLE AND ACCOUNTS PAYABLE */
+        // $query->join('tbl_chart_account_type','account_type_id','=','chart_type_id')
+        //       ->join('tbl_shop','shop_id','=','account_shop_id')
+        //       ->where( function ($where) use($shop)
+        //       {
+        //             $where->where("shop_id", $shop)
+        //                   ->orWhere("shop_key", $shop);
+        //       });
+        // $account_receivable = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-receivable")->pluck("account_id");
+        
+        /* Account Receivables */
+        db.transaction(function (tx)
+        {
+            var account_receivable_query = 'SELECT * FROM tbl_chart_of_account '+
+                              'INNER JOIN tbl_chart_account_type on account_type_id = chart_type_id '+
+                              'INNER JOIN tbl_shop on shop_id = account_shop_id '+
+                              'WHERE shop_id = '+shop_id+' '+
+                              'and account_code = "accounting-receivable"';
+
+            tx.executeSql(account_receivable_query, [], function(tx, results)
+            {
+                var account_receivable = [];
+
+                $.each(results.rows, function(index, val) 
+                {
+                    account_receivable.push(val.account_id);
+                });
+
+                console.log("Account Receivables");
+                console.log(account_receivable);
+                
+                // $account_payable    = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-payable")->pluck("account_id");
+                
+                /* Account Payable */
+                db.transaction(function (tx)
+                {
+                    var account_payable_query = 'SELECT * FROM tbl_chart_of_account '+
+                              'INNER JOIN tbl_chart_account_type on account_type_id = chart_type_id '+
+                              'INNER JOIN tbl_shop on shop_id = account_shop_id '+
+                              'WHERE shop_id = '+shop_id+' '+
+                              'and account_code = "accounting-payable"';
+
+                    tx.executeSql(account_payable_query, [], function(tx, results)
+                    {
+                        var account_payable = [];
+
+                        $.each(results.rows, function(index, val) 
+                        {
+                        account_payable.push(val.account_id);
+                        });
+
+                        console.log("Account Receivables");
+                        console.log(account_payable);
+                    },
+                    onError);
+                });
+
+                // $account_cash       = Accounting::getCashInBank();
+            },
+            onError);
+        });
+
+        // /* FOR OLD DATABASE - CHECKING IF THERE IS ALREADY AN ACCOUNT CODE*/
+        // if(!$account_receivable)
+        // {
+        //     Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Receivable")->update(['account_code'=>"accounting-receivable"]);
+        //     $account_receivable = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-receivable")->pluck("account_id");
+        // }
+        // if(!$account_payable)
+        // {
+        //     Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Payable")->update(['account_code'=>"accounting-payable"]);
+        //     $account_payable    = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-payable")->pluck("account_id");
+        // }
+        // /* END */
+
+        // /* IF THERE IS A SPECIFIED ACCOUNT ID FOR THE MAIN ACCOUNT (ACCOUNT THAT IS SELECTED IN THE TRANSACTION | OVERWRITE THE DEFAULT VALUE OF ACCOUNTS RECEIVABLE OR PAYABLE) */ /* !!!! FOR NOW IT IS FOR CASH ONLY */ 
+        // if(isset($entry["account_id"]))
+        // {
+        //     $account_cash = $entry["account_id"];
+        // }
+
+        // /* INSERT JOURNAL ENTRY */
+        // $journal_entry['je_shop_id']            = $shop_id;
+        // $journal_entry['je_reference_module']   = $entry["reference_module"];
+        // $journal_entry['je_reference_id']       = $entry["reference_id"];
+        // $journal_entry['je_entry_date']         = carbon::now();
+        // $journal_entry['je_remarks']            = $remarks;
+
+        // /* CHECK IF THE TRANSACTION JOURNAL IS ALREADY EXIST - USE IF NEW OR UPDATE TRANSACTION */
+        // $exist_journal = Tbl_journal_entry::where("je_reference_module", $journal_entry['je_reference_module'])->where("je_reference_id", $journal_entry['je_reference_id'])->first();
+
+        // if(!$exist_journal)
+        // {
+        //     $journal_entry['created_at']    = carbon::now();
+        //     $line_data["je_id"]             = Tbl_journal_entry::insertGetId($journal_entry);
+        // }
+        // else
+        // {
+        //     unset($journal_entry['je_entry_date']);
+        //     $journal_entry['updated_at']    = carbon::now();
+        //     Tbl_journal_entry_line::where("jline_je_id", $exist_journal->je_id)->delete();
+        //     Tbl_journal_entry::where("je_id", $exist_journal->je_id)->update($journal_entry);
+        //     $line_data["je_id"] = $exist_journal->je_id;
+        // }
+
+        // $line_data["item_id"]               = '';
+        // if(isset($entry["name_reference"])) $line_data["jline_name_reference"] = $entry["name_reference"];
+        // else   $line_data["jline_name_reference"]   = Accounting::checkTransaction($entry["reference_module"])['name'];
+        // $line_data["jline_name_id"]         = $entry["name_id"];
+
+        // /* RECIVABLE OR PAYABLE OR CASH */
+        // $main_account       = Accounting::checkTransaction($entry["reference_module"])['main_account'];
+        // $newNormalBalance   = Accounting::checkTransaction($entry["reference_module"])['newNormalJournal'];
+        // $newContraBalance   = Accounting::checkTransaction($entry["reference_module"])['newContraJournal'];
+
+        // if($main_account == 'receivable' || $main_account == 'cash-r')
+        // {
+        //     if($main_account == 'receivable') $main_account_id = $account_receivable;
+        //     elseif($main_account == 'cash-r') $main_account_id = $account_cash;
+
+        //     $line_data["entry_amount"]  = $entry["total"];
+        //     $line_data["entry_type"]    = Accounting::$newNormalBalance($main_account_id);
+        //     $line_data["account_id"]    = $main_account_id;
+        //     Accounting::insertJournalLine($line_data);
+
+        //     /* DISCOUNT AS WHOLE */
+        //     if(isset($entry["discount"]))
+        //     {
+        //         if($entry["discount"] > 0)
+        //         {
+        //             $line_data["entry_amount"]  = $entry["discount"];
+        //             $line_data["entry_type"]    = Accounting::$newContraBalance(Accounting::getDiscountSale());
+        //             $line_data["account_id"]    = Accounting::getDiscountSale();
+        //             Accounting::insertJournalLine($line_data);
+        //         }
+        //     }
+
+        //     /* VATABLE AS WHOLE */
+        //     if(isset($entry["vatable"]))
+        //     {
+        //         if($entry["vatable"] > 0)
+        //         {
+        //             $line_data["entry_amount"]  = $entry["vatable"];
+        //             $line_data["entry_type"]    = Accounting::$newNormalBalance(Accounting::getOutputVatPayable());
+        //             $line_data["account_id"]    = Accounting::getOutputVatPayable();
+        //             Accounting::insertJournalLine($line_data);
+        //         }
+        //     }
+
+        //     /* EWT AS WHOLE */
+        //     if(isset($entry["ewt"]))
+        //     {
+        //         if($entry["ewt"] > 0)
+        //         {
+        //             $line_data["entry_amount"]  = $entry["ewt"];
+        //             $line_data["entry_type"]    = Accounting::$newNormalBalance(Accounting::getWitholdingTax());
+        //             $line_data["account_id"]    = Accounting::getWitholdingTax();
+        //             Accounting::insertJournalLine($line_data);
+        //         }
+        //     }
+        // }
+        // elseif($main_account == 'payable' || $main_account == 'cash-p')
+        // {
+        //     if($main_account == 'payable') $main_account_id = $account_payable;
+        //     elseif($main_account == 'cash-p') $main_account_id = $account_cash;
+
+        //     $line_data["entry_amount"]  = $entry["total"];
+        //     $line_data["entry_type"]    = Accounting::$newNormalBalance($main_account_id);
+        //     $line_data["account_id"]    = $main_account_id;
+        //     Accounting::insertJournalLine($line_data);
+
+        //     /* DISCOUNT AS WHOLE */
+        //     if(isset($entry["discount"]))
+        //     {
+        //         if($entry["discount"] > 0)
+        //         {
+        //             $line_data["entry_amount"]  = $entry["discount"];
+        //             $line_data["entry_type"]    = Accounting::$newContraBalance(Accounting::getDiscountPurchase());
+        //             $line_data["account_id"]    = Accounting::getDiscountPurchase();
+        //             Accounting::insertJournalLine($line_data);
+        //         }
+        //     }
+
+        //     /* VATABLE AS WHOLE */
+        //     if(isset($entry["vatable"]))
+        //     {
+        //         if($entry["vatable"] > 0)
+        //         {
+        //             $line_data["entry_amount"]  = $entry["vatable"];
+        //             $line_data["entry_type"]    = Accounting::$newNormalBalance(Accounting::getOutputVatPayable());
+        //             $line_data["account_id"]    = Accounting::getOutputVatPayable();
+        //             Accounting::insertJournalLine($line_data);
+        //         }
+        //     }
+
+        //     /* EWT AS WHOLE */
+        //     if(isset($entry["ewt"]))
+        //     {
+        //         if($entry["ewt"] > 0)
+        //         {
+        //             $line_data["entry_amount"]  = $entry["ewt"];
+        //             $line_data["entry_type"]    = Accounting::$newNormalBalance(Accounting::getWitholdingTax());
+        //             $line_data["account_id"]    = Accounting::getWitholdingTax();
+        //             Accounting::insertJournalLine($line_data);
+        //         }
+        //     }
+        // }
+
+        // foreach($entry_data as $entry_line)
+        // {
+        //     /* IF ITEM ID OR ACCOUNT ID */
+        //     if(isset($entry_line["item_id"]))
+        //     {
+        //         $item = Tbl_item::where("item_id", $entry_line["item_id"])->first();
+        //         $line_data["item_id"] = $entry_line["item_id"];
+
+        //         /* GETTING CHART OF ACCOUNTS THAT TAGGED ON THE ITEM */
+        //         $account_asset      = Tbl_item::where("item_id", $entry_line["item_id"])->pluck("item_asset_account_id");   //Inventory 
+        //         $account_income     = Tbl_item::where("item_id", $entry_line["item_id"])->pluck("item_income_account_id");  //Sales
+        //         $account_expense    = Tbl_item::where("item_id", $entry_line["item_id"])->pluck("item_expense_account_id"); //Cost of Good Sold
+        //     }
+        //     elseif(isset($entry_line["account_id"]))
+        //     {
+        //         $account = Tbl_chart_of_account::type()->where("account_id", $entry_line["account_id"])->first();
+        //     }
+
+        //     /* ENTRY DESCRIPTION */ 
+        //     $line_data["entry_description"] = isset($entry_line["entry_description"]) ? $entry_line["entry_description"] : '';
+            
+        //     // if($item->item_type_id != 4) // ITEM IS NOT A BUNDLE
+        //     // {
+        //         switch($entry["reference_module"])
+        //         {
+        //             case "estimate": // NON-POSTING
+        //                 break;
+        //             case "sales-order": // NON-POSTING
+        //                 break;
+        //             case "mlm-product-repurchase":
+        //             case "product-order":
+        //             case "sales-receipt":
+        //             case "invoice":
+        //                 /* INCOME ACCOUNT */
+        //                 $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                 $line_data["entry_type"]    = Accounting::normalBalance($account_income);
+        //                 $line_data["account_id"]    = $account_income;
+        //                 Accounting::insertJournalLine($line_data);
+
+        //                 if($item->item_type_id == 1) // INVENTORY TYPE
+        //                 {
+        //                     /* EXPENSE ACCOUNT */
+        //                     $line_data["entry_amount"]  = $item->item_cost;
+        //                     $line_data["entry_type"]    = Accounting::normalBalance($account_expense);
+        //                     $line_data["account_id"]    = $account_expense;
+        //                     Accounting::insertJournalLine($line_data);
+
+        //                     /* ASSET ACCOUNT */
+        //                     $line_data["entry_amount"]  = $item->item_cost;
+        //                     $line_data["entry_type"]    = Accounting::contraAccount($account_asset);
+        //                     $line_data["account_id"]    = $account_asset;
+        //                     Accounting::insertJournalLine($line_data);
+        //                 }
+
+        //                 if($entry_line["discount"] > 0)
+        //                 {
+        //                     $line_data["entry_amount"]  = $entry_line["discount"];
+        //                     $line_data["entry_type"]    = Accounting::contraAccount(Accounting::getDiscountSale());
+        //                     $line_data["account_id"]    = Accounting::getDiscountSale();
+        //                     Accounting::insertJournalLine($line_data);
+        //                 }
+
+        //                 break;
+        //             case "receive-payment":
+        //                 /* CASH ACCOUNT - BANK */
+        //                 $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                 $line_data["entry_type"]    = Accounting::normalBalance($account->account_id);
+        //                 $line_data["account_id"]    = $account->account_id;
+        //                 Accounting::insertJournalLine($line_data);
+        //                 break;
+        //             case "bill-payment":
+        //                 /* CASH ACCOUNT - BANK */
+        //                 $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                 $line_data["entry_type"]    = Accounting::contraAccount($account->account_id);
+        //                 $line_data["account_id"]    = $account->account_id;
+        //                 Accounting::insertJournalLine($line_data);
+        //                 break;
+        //             case "purchase-order": // NON-POSTING
+        //                 break;
+        //             case "write-check":
+        //             case "bill":
+        //                 if($item->item_type_id == 1) // INVENTORY TYPE
+        //                 {
+        //                     /* ASSET ACCOUNT */
+        //                     $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                     $line_data["entry_type"]    = Accounting::normalBalance($account_asset);
+        //                     $line_data["account_id"]    = $account_asset;
+        //                     Accounting::insertJournalLine($line_data);
+        //                 }
+        //                 else
+        //                 {
+        //                     /* EXPENSE ACCOUNT */
+        //                     $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                     $line_data["entry_type"]    = Accounting::normalBalance($account_expense);
+        //                     $line_data["account_id"]    = $account_expense;
+        //                     Accounting::insertJournalLine($line_data);
+        //                 }
+        //                 break;
+        //             case "debit-memo":
+        //                 if($item->item_type_id == 1) // INVENTORY TYPE
+        //                 {
+        //                     /* ASSET ACCOUNT */
+        //                     $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                     $line_data["entry_type"]    = Accounting::contraAccount($account_asset);
+        //                     $line_data["account_id"]    = $account_asset;
+        //                     Accounting::insertJournalLine($line_data);
+        //                 }
+        //                 else
+        //                 {
+        //                     /* EXPENSE ACCOUNT */
+        //                     $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                     $line_data["entry_type"]    = Accounting::contraAccount($account_expense);
+        //                     $line_data["account_id"]    = $account_expense;
+        //                     Accounting::insertJournalLine($line_data);
+        //                 }
+        //                 break;
+        //                 break;
+        //             case "credit-memo":
+        //                 /* INCOME ACCOUNT */
+        //                 $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                 $line_data["entry_type"]    = Accounting::contraAccount($account_income);
+        //                 $line_data["account_id"]    = $account_income;
+        //                 Accounting::insertJournalLine($line_data);
+
+        //                 if($item->item_type_id == 1)
+        //                 {
+        //                     /* EXPENSE ACCOUNT */
+        //                     $line_data["entry_amount"]  = $item->item_cost;
+        //                     $line_data["entry_type"]    = Accounting::contraAccount($account_expense);
+        //                     $line_data["account_id"]    = $account_expense;
+        //                     Accounting::insertJournalLine($line_data);
+
+        //                     /* ASSET ACCOUNT */
+        //                     $line_data["entry_amount"]  = $item->item_cost;
+        //                     $line_data["entry_type"]    = Accounting::normalBalance($account_asset);
+        //                     $line_data["account_id"]    = $account_asset;
+        //                     Accounting::insertJournalLine($line_data);
+        //                 }
+        //                 break;
+        //             case "deposit":
+        //                 /* OPENING BALANCE EQUITY */
+        //                 $account ? $account : $account = Accounting::getOpenBalanceEquity();
+
+        //                 $line_data["entry_amount"]  = $entry_line["entry_amount"];
+        //                 $line_data["entry_type"]    = Accounting::normalBalance($account);
+        //                 $line_data["account_id"]    = $account;
+        //                 Accounting::insertJournalLine($line_data);
+        //                 break;  
+        //             // SO ON
+        //         }
+        //     // }
+        // }
+
+        // return $line_data["je_id"];
     });
 }
 
