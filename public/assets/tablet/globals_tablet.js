@@ -244,10 +244,11 @@ function get_cm_amount(cm_id, callback)
         db.transaction(function (tx)
         {
             var query_check = 'SELECT * FROM tbl_credit_memo'+
-                              ' WHERE cm_id = '+ cm_id         
+                              ' WHERE cm_id = '+ cm_id;
+
             tx.executeSql(query_check, [], function(tx, results)
             {
-                if(results.rows.length >= 0)
+                if(results.rows.length > 0)
                 {
                     if(results.rows[0]["cm_amount"])
                     {
@@ -276,21 +277,10 @@ function get_date_now()
     return dateTime;
 }
 
-function post_journal_entries($entry, $entry_data, $remarks = '')
+function post_one_journal_entries(callback)
 {
-    // $cm_journal = Accounting::postJournalEntry($entry, $entry_data);
     get_shop_id(function(shop_id)
     {
-        /* GETTING THE DEFAULT ACCOUNTS RECEIVABLE AND ACCOUNTS PAYABLE */
-        // $query->join('tbl_chart_account_type','account_type_id','=','chart_type_id')
-        //       ->join('tbl_shop','shop_id','=','account_shop_id')
-        //       ->where( function ($where) use($shop)
-        //       {
-        //             $where->where("shop_id", $shop)
-        //                   ->orWhere("shop_key", $shop);
-        //       });
-        // $account_receivable = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-receivable")->pluck("account_id");
-        
         /* Account Receivables */
         db.transaction(function (tx)
         {
@@ -329,32 +319,141 @@ function post_journal_entries($entry, $entry_data, $remarks = '')
 
                         $.each(results.rows, function(index, val) 
                         {
-                        account_payable.push(val.account_id);
+                            account_payable.push(val.account_id);
                         });
 
                         console.log("Account Receivables");
                         console.log(account_payable);
+
+                        // $account_cash       = Accounting::getCashInBank();
+                        // $exist_account = Tbl_chart_of_account::where("account_shop_id", Accounting::getShopId())->where("account_code", "accounting-cash-in-bank")->first();
+                        
+                        db.transaction(function (tx)
+                        {
+                            var account_cash_query = 'SELECT * FROM tbl_chart_of_account '+
+                                              'WHERE account_shop_id = '+shop_id+
+                                              ' and account_code = "accounting-cash-in-bank"';
+
+                            tx.executeSql(account_cash_query, [], function(tx, results)
+                            {
+                                if(results.rows.length > 0)
+                                {
+                                    var account_cash = results.rows[0].account_id;
+                                    callback(account_receivable, account_payable, account_cash);
+                                }
+                                else
+                                {
+                                    var insert_account_cash = {};
+
+                                    insert_account_cash["account_shop_id"]          = shop_id;
+                                    insert_account_cash["account_type_id"]          = 1;
+                                    insert_account_cash["account_number"]           = "00000";
+                                    insert_account_cash["account_name"]             = "Cash In Bank";
+                                    insert_account_cash["account_description"]      = "Default Bank";
+                                    insert_account_cash["account_protected"]        = 1;
+                                    insert_account_cash["account_code"]             = "accounting-cash-in-bank";
+                                    
+                                    db.transaction(function (tx)
+                                    {
+                                        tx.executeSql(
+                                            'INSERT INTO tbl_chart_of_account (account_shop_id, account_type_id, account_number, account_name, account_description, account_protected, account_code) VALUES '+
+                                            '("'+insert_account_cash["account_shop_id"]+'", "'+insert_account_cash["account_type_id"]+'", "'+insert_account_cash["account_number"]+'", "'+insert_account_cash["account_name"]+'", "'+insert_account_cash["account_description"]+'", "'+insert_account_cash["account_protected"]+'", "'+insert_account_cash["account_code"]+'")',
+                                            [],
+                                            function(tx, results)
+                                            {
+                                                // alert('Returned ID: ' + results.insertId);
+                                                var account_cash = results.insertId;
+                                                callback(account_receivable, account_payable, account_cash);
+                                            },
+                                            onError
+                                        );
+                                    });
+                                }
+                            },
+                            onError);
+                        });
+
+                        
+
+                        // return $exist_account->account_id;
                     },
                     onError);
                 });
-
-                // $account_cash       = Accounting::getCashInBank();
             },
             onError);
         });
+    });
+}
 
-        // /* FOR OLD DATABASE - CHECKING IF THERE IS ALREADY AN ACCOUNT CODE*/
-        // if(!$account_receivable)
-        // {
-        //     Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Receivable")->update(['account_code'=>"accounting-receivable"]);
-        //     $account_receivable = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-receivable")->pluck("account_id");
-        // }
-        // if(!$account_payable)
-        // {
-        //     Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Payable")->update(['account_code'=>"accounting-payable"]);
-        //     $account_payable    = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-payable")->pluck("account_id");
-        // }
-        // /* END */
+function post_two_journal_entries(account_receivable, account_payable, account_cash)
+{
+    alert(account_receivable + " " + account_payable + " " + account_cash);
+    // /* FOR OLD DATABASE - CHECKING IF THERE IS ALREADY AN ACCOUNT CODE*/
+    // if(!$account_receivable)
+    // {
+    //     Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Receivable")->update(['account_code'=>"accounting-receivable"]);
+    //     $account_receivable = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-receivable")->pluck("account_id");
+    // }
+    // if(!$account_payable)
+    // {
+    //     Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Payable")->update(['account_code'=>"accounting-payable"]);
+    //     $account_payable    = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-payable")->pluck("account_id");
+    // }
+    // /* END */
+    get_shop_id(function(shop_id)
+    {
+        if(!account_receivable)
+        {
+            // Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Receivable")->update(['account_code'=>"accounting-receivable"]);
+            db.transaction(function (tx)
+            {
+                var query1 = 'UPDATE tbl_chart_of_account '+
+                             'SET account_code = "accounting-receivable" '+
+                             'WHERE account_shop_id = '+shop_id+' '+
+                             'and account_name = "Accounts Receivable"';
+
+                tx.executeSql(query1, [], function(tx, results)
+                {
+                    // $query->join('tbl_chart_account_type','account_type_id','=','chart_type_id')
+                    //   ->join('tbl_shop','shop_id','=','account_shop_id')
+                    //   ->where( function ($where) use($shop)
+                    //   {
+                    //         $where->where("shop_id", $shop)
+                    //               ->orWhere("shop_key", $shop);
+                    //   });
+                    // $account_receivable = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-receivable")->pluck("account_id");
+                    
+                    db.transaction(function (tx)
+                    {
+                        var query2 = 'SELECT * FROM tbl_chart_of_account '+
+                                     'INNER JOIN tbl_chart_account_type on account_type_id = chart_type_id '+
+                                     'INNER JOIN tbl_shop on shop_id = account_shop_id '+
+                                     'WHERE shop_id = "'+shop_id+'" '+
+                                     'and account_code = "accounting-receivable"';
+
+                        tx.executeSql(query2, [], function(tx, results)
+                        {
+                            var account_receivable = results.rows[0].account_id; 
+
+                            if(!$account_payable)
+                            {
+                                // Tbl_chart_of_account::where("account_shop_id", $shop_id)->where("account_name", "Accounts Payable")->update(['account_code'=>"accounting-payable"]);
+                                // $account_payable    = Tbl_chart_of_account::accountInfo($shop_id)->where("account_code","accounting-payable")->pluck("account_id");
+                            }
+                        },
+                        onError);
+                    });
+                },
+                onError);
+            });
+        }
+    });
+}
+
+function post_journal_entries($entry, $entry_data, $remarks = '')
+{
+    // $cm_journal = Accounting::postJournalEntry($entry, $entry_data);
+    post_one_journal_entries(post_two_journal_entries);
 
         // /* IF THERE IS A SPECIFIED ACCOUNT ID FOR THE MAIN ACCOUNT (ACCOUNT THAT IS SELECTED IN THE TRANSACTION | OVERWRITE THE DEFAULT VALUE OF ACCOUNTS RECEIVABLE OR PAYABLE) */ /* !!!! FOR NOW IT IS FOR CASH ONLY */ 
         // if(isset($entry["account_id"]))
@@ -643,7 +742,6 @@ function post_journal_entries($entry, $entry_data, $remarks = '')
         // }
 
         // return $line_data["je_id"];
-    });
 }
 
 function get_sir_data(sir_id, callback)

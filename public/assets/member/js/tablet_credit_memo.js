@@ -807,7 +807,7 @@ function credit_memo_submit()
 												            entry_data[index]['entry_amount']       = val.amount;
 												            entry_data[index]['entry_description']  = val.item_description;
 
-												            post_journal_entries();
+												            post_journal_entries(entry, entry_data);
 											            }
 												        else
 												        {
@@ -867,7 +867,7 @@ function credit_memo_submit()
 																				                        entry_data['b'+index+key_bundle]['entry_amount']       = item_data.item_price * entry_data['b'+index+key_bundle]['entry_qty'];
 																				                        entry_data['b'+index+key_bundle]['entry_description']  = item_data.item_sales_information; 
 
-																				                        post_journal_entries();
+																				                        post_journal_entries(entry, entry_data);
 																						            },
 																						            onError
 																						        );
