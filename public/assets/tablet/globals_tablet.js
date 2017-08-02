@@ -835,8 +835,78 @@ function unit_measurement_view(qty, item_id, um_issued_id, callback)
         tx.executeSql(query, [], function(tx, results)
         {
             /* */
+            var um_based_id = results.rows[0]['item_measurement_id'];
+
+            get_um(um_based_id, um_issued_id, function(data_um_base, data_um_issued)
+            {
+                var return_value = "";
+                if(data_um_base && data_um_issued == null)
+                {
+                    return_value = qty + " " +data_um_base['multi_abbrev'];
+                }
+                else if(um_based_id == um_issued_id)
+                {
+                    if(data_um_base && data_um_issued)
+                    {
+                        return_value = qty + " " +data_um_base['multi_abbrev'];
+                    }
+                    else
+                    {
+                        return_value = qty + " PC";
+                    }
+                }
+                else if (data_um_base && data_um_issued)
+                {
+                    var issued_qty = 1;
+                    var based_qty = 1;
+                    if(data_um_issued)
+                    {
+                        issued_qty = data_um_issued["unit_qty"];
+                    }
+                    if(data_um_base)
+                    {
+                        based_qty = data_um_base["unit_qty"];
+                    }
+
+                    var issued_um = Math.floor(qty/issued_qty);
+                    var each = Math.round(((qty/issued_qty) - Math.floor(qty/issued_qty)) * issued_qty)
+                    return_value = issued_um +" " + data_um_issued["multi_abbrev"] + " & " + each + " " + data_um_base["multi_abbrev"];
+                }
+                else
+                {
+                    return_value = qty + " PC";
+                }
+
+                if(data_um_issued)
+                {     
+                    if(data_um_issued['is_base'] == 1)
+                    {
+                        return_value = qty+" "+data_um_issued['multi_abbrev'];
+                    }
+                }
+
+                callback(return_value);
+            });
         },
         onError);
+    });
+}
+function get_um(um_based_id, um_issued_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_issued = 'SELECT * FROM tbl_unit_measurement_multi WHERE multi_id = ' + um_issued_id;
+        tx.executeSql(query_issued, [], function(tx, results_um_issued)
+        {
+            var data_um_issued = results_um_issued.rows[0];
+            var query_based = 'SELECT * FROM tbl_unit_measurement_multi WHERE multi_um_id = ' + um_based_id + ' AND is_base = 1';
+            tx.executeSql(query_based, [], function(tx, results_um_based)
+            {
+                var data_um_based = results_um_based.rows[0];
+
+                callback(data_um_based, data_um_issued);
+            });
+        });
     });
 }
 function get_um_qty(um_id)
@@ -858,6 +928,21 @@ function get_um_qty(um_id)
         onError);
     });
 }
+function update_submit_reload(sir_id)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'UPDATE tbl_sir SET reload_sir = 0 WHERE sir_id = ' + sir_id;
+        tx.executeSql(query, [], function(tx, results)
+        {
+            toastr.success("Success");
+            $("#global_modal").toggle("hide");
+            location.reload();
+        },
+        onError);
+    });
+}
+
 /* On ERROR */
 function onError(tx, error)
 {
