@@ -771,9 +771,20 @@ function unit_measurement_view(qty, item_id, um_issued_id, callback)
                     }
 
                     var issued_um = Math.floor(qty/issued_qty);
-                    //$issued_um." ".$um_issued->multi_abbrev." & ".$each." ".$um_base->multi_abbrev;
                     var each = Math.round(((qty/issued_qty) - Math.floor(qty/issued_qty)) * issued_qty)
                     return_value = issued_um +" " + data_um_issued["multi_abbrev"] + " & " + each + " " + data_um_base["multi_abbrev"];
+                }
+                else
+                {
+                    return_value = qty + " PC";
+                }
+
+                if(data_um_issued)
+                {     
+                    if($data_um_issued['is_base'] == 1)
+                    {
+                        return_value = qty+" "+data_um_issued['multi_abbrev'];
+                    }
                 }
 
                 callback(return_value);
