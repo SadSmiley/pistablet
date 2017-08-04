@@ -1206,16 +1206,104 @@ function insert_invoice_submit(customer_info, item_info, callback)
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                                var invoice_id = results.insertId;
+                               var invoice_id = 0;
+                               insert_inv_line(invoice_id, item_info, function(data)
+                               {
+
+                               });
                             },
                             onError);
                         });
-
                     });
                 });
-
             });
         });
     });
+}
+function insert_inv_line(invoice_id, item_info, callback)
+{
+    console.log(item_info);
+    var ctr_item_info = item_info.length;
+    var ctr = 0;
+    $.each(item_info, function(key, value)
+    {
+        ctr++;
+        /* DISCOUNT PER LINE */
+        var discount = value['discount'];
+        var discount_type = 'fixed';
+        if(discount.indexOf('%') >= 0)
+        {
+            discount_type = 'percent';
+            discount      = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(value['rate']) * roundNumber(value['quantity']));
+        }
+
+        /* Amount Per Line */
+        var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - discount;
+
+        var insert_line = {};
+        insert_line['invline_inv_id']             = invoice_id; 
+        insert_line['invline_item_id']            = value['item_id'];
+        insert_line['invline_description']        = value['item_description'];
+        insert_line['invline_um']                 = value['um'];
+        insert_line['invline_qty']                = value['quantity'];
+        insert_line['invline_rate']               = value['rate'];
+        insert_line['invline_discount']           = value['discount'];
+        insert_line['invline_discount_type']      = discount_type;
+        insert_line['invline_discount_remark']    = value['discount_remark'];
+        insert_line['taxable']                    = value['taxable'];
+        insert_line['invline_ref_name']           = value['ref_name'];
+        insert_line['invline_ref_id']             = value['ref_id'];
+        insert_line['invline_amount']             = amount;
+        insert_line['date_created']               = get_date_now();
+        insert_line['created_at']                 = get_date_now();
+
+        db.transaction(function (tx) 
+        {
+            var insertline_row = 'INSERT INTO tbl_customer_invoice_line ( '+
+                                 ' invline_inv_id, '+
+                                 ' invline_item_id, '+
+                                 ' invline_description, '+
+                                 ' invline_um, '+
+                                 ' invline_qty, '+
+                                 ' invline_rate, '+
+                                 ' taxable, '+
+                                 ' invline_discount, '+
+                                 ' invline_discount_type, '+
+                                 ' invline_discount_remark, '+
+                                 ' invline_amount, '+
+                                 ' date_created, '+
+                                 ' invline_ref_name, '+
+                                 ' invline_ref_id, '+
+                                 ' created_at)' + 
+                                 ' VALUES ('+
+                                 insert_line['invline_inv_id'] + ', ' +
+                                 insert_line['invline_item_id'] + ', "' +
+                                 insert_line['invline_description'] + '", ' +
+                                 insert_line['invline_um'] + ', ' +
+                                 insert_line['invline_qty'] + ', ' +
+                                 insert_line['invline_rate'] + ', ' +
+                                 insert_line['taxable'] + ', ' +
+                                 insert_line['invline_discount'] + ', "' +
+                                 insert_line['invline_discount_type'] + '", "' +
+                                 insert_line['invline_discount_remark'] + '", ' +
+                                 insert_line['invline_amount'] + ', "' +
+                                 insert_line['date_created'] + '", "' +
+                                 insert_line['invline_ref_name'] + '", ' +
+                                 insert_line['invline_ref_id'] + ', "' +
+                                 insert_line['created_at'] + '"' +
+                                 ')';
+            tx.executeSql(insertline_row, [], function(tx, results)
+            {
+                console.log("success");
+                if(ctr == ctr_item_info)
+                {
+                    callback("success");
+                }
+            },onError);
+        });  
+
+    });
+
 }
 function get_tax(item_info, callback)
 {
