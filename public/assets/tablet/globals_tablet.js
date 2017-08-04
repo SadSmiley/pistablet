@@ -1203,7 +1203,6 @@ function insert_invoice_submit(customer_info, item_info, callback)
                         insert_inv['inv_is_paid']                   = 0;
                         insert_inv['inv_custom_field_id']           = 0;
                        
-                        console.log(insert_inv);
                        db.transaction(function (tx) 
                        {  
                             var insert_row = 'INSERT INTO tbl_customer_invoice (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt,credit_memo_id, sale_receipt_cash_account, inv_custom_field_id, inv_payment_applied, inv_is_paid, created_at)' + 
@@ -1211,7 +1210,6 @@ function insert_invoice_submit(customer_info, item_info, callback)
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                                var invoice_id = results.insertId;
-                               var invoice_id = 0;
                                insert_inv_line(invoice_id, item_info, function(data)
                                {
                                     callback(invoice_id);
@@ -1228,7 +1226,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
 function insert_inv_line(invoice_id, item_info, callback)
 {
     console.log(item_info);
-    var ctr_item_info = item_info.length;
+    var ctr_item_info = count(item_info);
     var ctr = 0;
     $.each(item_info, function(key, value)
     {
@@ -1247,6 +1245,7 @@ function insert_inv_line(invoice_id, item_info, callback)
 
         var insert_line = {};
         insert_line['invline_inv_id']             = invoice_id; 
+        insert_line['invline_service_date']       = "0000-00-00 00:00:00";; 
         insert_line['invline_item_id']            = value['item_id'];
         insert_line['invline_description']        = value['item_description'];
         insert_line['invline_um']                 = value['um'];
@@ -1256,7 +1255,7 @@ function insert_inv_line(invoice_id, item_info, callback)
         insert_line['invline_discount_type']      = discount_type;
         insert_line['invline_discount_remark']    = value['discount_remark'];
         insert_line['taxable']                    = value['taxable'];
-        insert_line['invline_ref_name']           = value['ref_name'];
+        insert_line['invline_ref_name']           = value['ref_name'] == "" ? 'none' : value['ref_name'];
         insert_line['invline_ref_id']             = value['ref_id'] == "" ? 0 : value['ref_id'];
         insert_line['invline_amount']             = amount;
         insert_line['date_created']               = get_date_now();
@@ -1267,6 +1266,7 @@ function insert_inv_line(invoice_id, item_info, callback)
             var insertline_row = 'INSERT INTO tbl_customer_invoice_line ( '+
                                  ' invline_inv_id, '+
                                  ' invline_item_id, '+
+                                 ' invline_service_date, '+
                                  ' invline_description, '+
                                  ' invline_um, '+
                                  ' invline_qty, '+
@@ -1283,12 +1283,13 @@ function insert_inv_line(invoice_id, item_info, callback)
                                  ' VALUES ('+
                                  insert_line['invline_inv_id'] + ', ' +
                                  insert_line['invline_item_id'] + ', "' +
+                                 insert_line['invline_service_date'] + '", "' +
                                  insert_line['invline_description'] + '", ' +
                                  insert_line['invline_um'] + ', ' +
                                  insert_line['invline_qty'] + ', ' +
                                  insert_line['invline_rate'] + ', ' +
-                                 insert_line['taxable'] + ', ' +
-                                 insert_line['invline_discount'] + ', "' +
+                                 insert_line['taxable'] + ', "' +
+                                 insert_line['invline_discount'] + '", "' +
                                  insert_line['invline_discount_type'] + '", "' +
                                  insert_line['invline_discount_remark'] + '", ' +
                                  insert_line['invline_amount'] + ', "' +
@@ -1297,7 +1298,6 @@ function insert_inv_line(invoice_id, item_info, callback)
                                  insert_line['invline_ref_id'] + ', "' +
                                  insert_line['created_at'] + '"' +
                                  ')';
-            console.log(insertline_row);
             tx.executeSql(insertline_row, [], function(tx, results)
             {
                 console.log("success");
@@ -1306,8 +1306,7 @@ function insert_inv_line(invoice_id, item_info, callback)
                     callback("success");
                 }
             },onError);
-        });  
-
+        });
     });
 
 }
