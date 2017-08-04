@@ -1179,7 +1179,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
                     {
                         var insert_inv = {};
                         insert_inv['inv_shop_id']                   = shop_id;
-                        insert_inv['inv_customer_id']               = customer_info['customer_id'];
+                        insert_inv['inv_customer_id']               = customer_info['inv_customer_id'];
                         insert_inv['inv_customer_email']            = customer_info['inv_customer_email'];
                         insert_inv['new_inv_id']                    = customer_info['new_invoice_id'];
                         insert_inv['inv_customer_billing_address']  = customer_info['inv_customer_billing_address'];
@@ -1197,19 +1197,24 @@ function insert_invoice_submit(customer_info, item_info, callback)
                         insert_inv['date_created']                  = get_date_now();
                         insert_inv['created_at']                    = get_date_now();
                         insert_inv['is_sales_receipt']              = 0;
+                        insert_inv['inv_payment_applied']           = 0;
+                        insert_inv['sale_receipt_cash_account']     = 0;
+                        insert_inv['credit_memo_id']                = 0;
+                        insert_inv['inv_is_paid']                   = 0;
+                        insert_inv['inv_custom_field_id']           = 0;
                        
-
+                        console.log(insert_inv);
                        db.transaction(function (tx) 
                        {  
-                            var insert_row = 'INSERT INTO tbl_customer_invoice (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt, created_at)' + 
-                                'VALUES ('+insert_inv['new_inv_id']+', '+insert_inv['inv_shop_id']+', '+insert_inv['inv_customer_id']+', "'+insert_inv['inv_customer_email']+'", "'+insert_inv['inv_customer_billing_address']+'", '+insert_inv['inv_terms_id']+', "'+insert_inv['inv_date']+'", "'+insert_inv['inv_due_date']+'", "'+insert_inv['inv_message']+'", "'+insert_inv['inv_memo']+'", "'+insert_inv['inv_discount_type']+'", '+insert_inv['inv_discount_value']+', '+insert_inv['ewt']+', '+insert_inv['taxable']+', '+insert_inv['inv_subtotal_price']+', '+insert_inv['inv_overall_price']+', "'+insert_inv['date_created']+'", '+insert_inv['is_sales_receipt']+', '+insert_inv['created_at']+')';
+                            var insert_row = 'INSERT INTO tbl_customer_invoice (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt,credit_memo_id, sale_receipt_cash_account, inv_custom_field_id, inv_payment_applied, inv_is_paid, created_at)' + 
+                                'VALUES ('+insert_inv['new_inv_id']+', '+insert_inv['inv_shop_id']+', '+insert_inv['inv_customer_id']+', "'+insert_inv['inv_customer_email']+'", "'+insert_inv['inv_customer_billing_address']+'", '+insert_inv['inv_terms_id']+', "'+insert_inv['inv_date']+'", "'+insert_inv['inv_due_date']+'", "'+insert_inv['inv_message']+'", "'+insert_inv['inv_memo']+'", "'+insert_inv['inv_discount_type']+'", '+insert_inv['inv_discount_value']+', '+insert_inv['ewt']+', '+insert_inv['taxable']+', '+insert_inv['inv_subtotal_price']+', '+insert_inv['inv_overall_price']+', "'+insert_inv['date_created']+'", '+insert_inv['is_sales_receipt']+', '+insert_inv['credit_memo_id']+', '+insert_inv['sale_receipt_cash_account']+', '+insert_inv['inv_custom_field_id']+', '+insert_inv['inv_payment_applied']+', '+insert_inv['inv_is_paid']+', "'+insert_inv['created_at']+'")';
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                                var invoice_id = results.insertId;
                                var invoice_id = 0;
                                insert_inv_line(invoice_id, item_info, function(data)
                                {
-
+                                    callback(invoice_id);
                                });
                             },
                             onError);
@@ -1252,7 +1257,7 @@ function insert_inv_line(invoice_id, item_info, callback)
         insert_line['invline_discount_remark']    = value['discount_remark'];
         insert_line['taxable']                    = value['taxable'];
         insert_line['invline_ref_name']           = value['ref_name'];
-        insert_line['invline_ref_id']             = value['ref_id'];
+        insert_line['invline_ref_id']             = value['ref_id'] == "" ? 0 : value['ref_id'];
         insert_line['invline_amount']             = amount;
         insert_line['date_created']               = get_date_now();
         insert_line['created_at']                 = get_date_now();
@@ -1292,6 +1297,7 @@ function insert_inv_line(invoice_id, item_info, callback)
                                  insert_line['invline_ref_id'] + ', "' +
                                  insert_line['created_at'] + '"' +
                                  ')';
+            console.log(insertline_row);
             tx.executeSql(insertline_row, [], function(tx, results)
             {
                 console.log("success");

@@ -737,7 +737,7 @@ function credit_memo_submit()
 		            function(tx, results)
 		            {
 		                var cm_id = results.insertId;
-
+		                alert(cm_id);
 		                /* Transaction Journal */
 				        var entry 				    = {}
 				        entry["reference_module"]  = "credit-memo";
