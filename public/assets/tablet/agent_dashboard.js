@@ -51,7 +51,7 @@ function agent_dashboard()
 	{
 		db.transaction(function (tx)
         {
-        	var query_check = 'SELECT * from tbl_sir where sales_agent_id = "'+agent_id+'" AND lof_status IN ("1","2") AND sir_status IN ("0","1") AND results_sir = 0';
+        	var query_check = 'SELECT * from tbl_sir where sales_agent_id = '+agent_id+' AND lof_status IN ("1","2") AND sir_status IN ("0","1") AND reload_sir = 0';
         	var sir_id = "";       
             tx.executeSql(query_check, [], function(txs, results)
             {

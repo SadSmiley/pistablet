@@ -546,8 +546,8 @@ function submit_done_customer(result)
     $(".droplist-customer").load("/member/customer/load_customer", function()
     {                
          $(".droplist-customer").globalDropList("reload");
-         $(".droplist-customer").val(result.id).change();    
-         toastr.success("Success");      
+         $(".droplist-customer").val(result.id).change();
+         toastr.success("Success");
     });
 }
 

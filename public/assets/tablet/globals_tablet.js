@@ -186,6 +186,27 @@ function get_shop_id(callback)
         onError);
     });
 }
+
+function get_sir_id(callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
+        tx.executeSql(query_check, [], function(tx, results)
+        {
+            if(results.rows.length <= 0)
+            {
+                alert("Some error occurred. Currently not logged in.")
+            }
+            else
+            {
+                selected_sir = results.rows[0].selected_sir;
+                callback(selected_sir);
+            }
+        },
+        onError);
+    });
+}
 /**
  * Get All Customers
  *
@@ -906,7 +927,8 @@ function get_um(um_based_id, um_issued_id, callback)
 
                 callback(data_um_based, data_um_issued);
             });
-        });
+        },
+        onError);
     });
 }
 function get_um_qty(um_id, callback)
@@ -922,7 +944,7 @@ function get_um_qty(um_id, callback)
             }
             else
             {
-                callback();
+                callback(0);
             }
         },
         onError);
@@ -930,21 +952,25 @@ function get_um_qty(um_id, callback)
 }
 function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, callback)
 {
-    console.log(_item_id);
-    $(_item_id).each(function(key, values)
+    var return_data = 0;
+    var count_item = count(_item_id);
+    var ctr = 0;
+    $.each( _item_id,function(key, values)
     {
+        ctr++;
         get_item_bundle(_values['invline_item_id'][key], function(bundle_item)
         {
             if(bundle_item.length > 0)
             {
-                $(bundle_item).each(function(a,b)
+                $.each(bundle_item, function(a,b)
                 {
                     var count = bundle_item.length;
                     check_sir_qty(sir_id, b['bundle_item_id'], b['bundle_um_id'], qty * b['bundle_qty'],0,"", function(return_value)
                     {
+                        return_data += return_value;
                         if((a + 1) == count)
                         {
-                            callback(return_value)
+                            callback(return_data)
                         }
                     });
                 });
@@ -953,11 +979,14 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
             {
                 get_sir_inventory(sir_id,_values['invline_item_id'][key], _values['invline_um'][key], _values['invline_qty'][key].replace(',',""), invoice_id, function(return_value)
                 {
-                    callback(return_value)
+                    return_data += return_value;
+                    if(ctr == count_item)
+                    {     
+                       callback(return_data)
+                    }
                 });
             }
         });
-
     });
 
 }
@@ -988,7 +1017,8 @@ function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
                     }
                 });
             });
-        });
+        },
+        onError);
     });
 }
 function get_inv_qty(item_id,invoice_id,  callback)
@@ -1008,18 +1038,30 @@ function get_inv_qty(item_id,invoice_id,  callback)
             {
                 callback(0);
             }
-        });
+        },
+        onError);
     });
 }
 function get_item_bundle(item_id, callback)
 {
     db.transaction(function (tx)
     {
-        var query = 'SELECT * FROM tbl_item_bundle WHERE bundle_bundle_id = ' + item_id;
+        var query = 'SELECT *, (tbl_unit_measurement_multi.unit_qty * bundle_qty) as bundle_um_qty FROM tbl_item_bundle ' +
+                    'LEFT JOIN tbl_unit_measurement_multi ON tbl_item_bundle.bundle_um_id = tbl_unit_measurement_multi.multi_um_id '+
+                    'WHERE bundle_bundle_id = ' + item_id;
         tx.executeSql(query, [], function(tx, results)
         {
-            callback(results.rows);
-        });
+            if(results.rows.length > 0)
+            {
+                callback(results.rows);
+            }
+            else
+            {
+                var return_value = {};
+                callback(return_value);
+            }
+        },
+        onError);
     });
 }
 function update_submit_reload(sir_id)
@@ -1035,6 +1077,193 @@ function update_submit_reload(sir_id)
         },
         onError);
     });
+}
+function get_item_returns(_cm_items_id, value_data, callback)
+{
+    var ctr = count(value_data['cmline_item_id']);
+    var item_returns = {};
+    if(count(_cm_items_id) > 0)
+    {       
+        $(_cm_items_id).each(function(key, val)
+        {        
+            get_item_bundle(val, function(bundle_item)
+            {
+                console.log(bundle_item);  
+                get_um_qty(value_data['cmline_um'][key], function(um_qty)
+                {
+                    if(bundle_item.length > 0)
+                    {
+                        $(bundle_item).each(function(key_bundle,value_bundle)
+                        {
+                            item_returns["b"+key+value_bundle['bundle_item_id']]               = {};  
+                            item_returns["b"+key+value_bundle['bundle_item_id']]['qty']        = (um_qty * value_data['cmline_qty'][key] * um_qty) * (value_bundle['bundle_um_qty'] * value_bundle['bundle_qty']);
+                            item_returns["b"+key+value_bundle['bundle_item_id']]['item_id']    = value_bundle['bundle_item_id'];
+                        });
+                    }
+                    else
+                    {
+                        if(value_data['cmline_item_id'][key])
+                        {
+                            item_returns[key]               = {};  
+                            item_returns[key]['qty']        = um_qty * value_data['cmline_qty'][key];
+                            item_returns[key]['item_id']    = value_data['cmline_item_id'][key];
+                        }
+                    }
+
+                    if((key + 1) == ctr)
+                    {
+                        remove_parent_bundle(item_returns, _cm_items_id, function(item_returns_deleted)
+                        {
+                            callback(item_returns_deleted);
+                        });
+                    }
+                });        
+            });
+        }); 
+    }
+    else
+    {
+        callback(item_returns);
+    }
+}
+function remove_parent_bundle(item_returns, _cm_items_id, callback)
+{
+    var ctr_item_returns = item_returns.length;
+    if(ctr_item_returns > 0)
+    {
+        $(item_returns).each(function(key,val)
+        {
+            var i = null;
+            $(_cm_items_id).each(function(key_cm, val_cm)
+            {
+                get_item_bundle(val_cm, function(bundle_item)
+                {
+                    if(bundle_item.length > 0)
+                    {
+                        if(val['item_id'] == val_cm)
+                        {
+                            delete item_returns[key];
+                        }
+                    }
+                    if((key + 1) == ctr_item_returns)
+                    {
+                        callback(item_returns);
+                    }
+                });
+            });
+        });
+    }
+    else
+    {
+        var return_value = {};
+        callback(return_value);
+    }
+}
+/* FUNCTION INVOICE INSERT */
+function insert_invoice_submit(customer_info, item_info, callback)
+{
+    console.log(customer_info);
+    get_sir_id(function(sir_id)
+    {
+        get_subtotal(item_info, function(subtotal)
+        {  
+            get_discount_amount(customer_info, subtotal, function(discount)
+            {
+                get_tax(item_info, function(tax)
+                {
+                    var ewt = subtotal * roundNumber(customer_info['ewt']);
+
+                    var overall_price = roundNumber(((subtotal - ewt) - discount) + tax);
+
+                    get_shop_id(function(shop_id)
+                    {
+                        var insert_inv = {};
+                        insert_inv['inv_shop_id']                   = shop_id;
+                        insert_inv['inv_customer_id']               = customer_info['customer_id'];
+                        insert_inv['inv_customer_email']            = customer_info['inv_customer_email'];
+                        insert_inv['new_inv_id']                    = customer_info['new_invoice_id'];
+                        insert_inv['inv_customer_billing_address']  = customer_info['inv_customer_billing_address'];
+                        insert_inv['inv_terms_id']                  = customer_info['inv_terms_id'];
+                        insert_inv['inv_date']                      = customer_info['inv_date'];
+                        insert_inv['inv_due_date']                  = customer_info['inv_due_date'];
+                        insert_inv['inv_subtotal_price']            = subtotal;
+                        insert_inv['ewt']                           = ewt;
+                        insert_inv['inv_discount_type']             = customer_info['inv_discount_type'];
+                        insert_inv['inv_discount_value']            = customer_info['inv_discount_value'];
+                        insert_inv['taxable']                       = customer_info['taxable'];
+                        insert_inv['inv_overall_price']             = customer_info['overall_price'];
+                        insert_inv['inv_message']                   = customer_info['inv_message'];
+                        insert_inv['inv_memo']                      = customer_info['inv_memo'];
+                        insert_inv['date_created']                  = get_date_now();
+                        insert_inv['created_at']                    = get_date_now();
+                        insert_inv['is_sales_receipt']              = 0;
+                       
+
+                       db.transaction(function (tx) 
+                       {  
+                            var insert_row = 'INSERT INTO tbl_customer_invoice (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt, created_at)' + 
+                                'VALUES ('+insert_inv['new_inv_id']+', '+insert_inv['inv_shop_id']+', '+insert_inv['inv_customer_id']+', "'+insert_inv['inv_customer_email']+'", "'+insert_inv['inv_customer_billing_address']+'", '+insert_inv['inv_terms_id']+', "'+insert_inv['inv_date']+'", "'+insert_inv['inv_due_date']+'", "'+insert_inv['inv_message']+'", "'+insert_inv['inv_memo']+'", "'+insert_inv['inv_discount_type']+'", '+insert_inv['inv_discount_value']+', '+insert_inv['ewt']+', '+insert_inv['taxable']+', '+insert_inv['inv_subtotal_price']+', '+insert_inv['inv_overall_price']+', "'+insert_inv['date_created']+'", '+insert_inv['is_sales_receipt']+', '+insert_inv['created_at']+')';
+                            tx.executeSql(insert_row, [], function(tx, results)
+                            {
+                               var invoice_id = results.insertId;
+                            },
+                            onError);
+                        });
+
+                    });
+                });
+
+            });
+        });
+    });
+}
+function get_tax(item_info, callback)
+{
+    var sub = roundNumber(0);
+    $.each(item_info, function(key, val)
+    {
+        if(val['taxable'] == 1)
+        {
+            sub += roundNumber(val['amount']);
+        }
+    });
+    callback(roundNumber(sub * 0.12));
+}
+function get_discount_amount(customer_info, subtotal, callback)
+{
+    var discount = roundNumber(customer_info['inv_discount_value']);
+    if(customer_info['inv_discount_type'] == 'percent')
+    {
+        discount = roundNumber((customer_info['inv_discount_value'] / 100) * subtotal);
+    }
+    callback(discount);
+}
+function get_subtotal(item_info, callback)
+{
+    var subtotal = roundNumber(0);
+    $.each(item_info, function(key, val)
+    {
+        subtotal += roundNumber(val['amount']);
+    });
+    callback(subtotal);
+}
+/* END INVOICE INSERT */
+
+function roundNumber(number) 
+{
+    var newnumber = new Number(number+'').toFixed(2);
+    return parseFloat(newnumber); 
+}
+
+function count(val_this) 
+{
+    var count = 0;
+    for(var prop in val_this) 
+    {
+        if(val_this.hasOwnProperty(prop))
+            count = count + 1;
+    }
+    return count;
 }
 
 /* On ERROR */
