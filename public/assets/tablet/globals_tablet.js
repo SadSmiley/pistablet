@@ -1165,7 +1165,6 @@ function remove_parent_bundle(item_returns, _cm_items_id, callback)
 /* FUNCTION INVOICE INSERT */
 function insert_invoice_submit(customer_info, item_info, callback)
 {
-    console.log(customer_info);
     get_sir_id(function(sir_id)
     {
         get_subtotal(item_info, function(subtotal)
@@ -1199,7 +1198,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
                         insert_inv['inv_memo']                      = customer_info['inv_memo'];
                         insert_inv['date_created']                  = get_date_now();
                         insert_inv['created_at']                    = get_date_now();
-                        insert_inv['is_sales_receipt']              = 0;
+                        insert_inv['is_sales_receipt']              = customer_info['is_sales_receipt'];
                         insert_inv['inv_payment_applied']           = 0;
                         insert_inv['sale_receipt_cash_account']     = 0;
                         insert_inv['credit_memo_id']                = 0;
