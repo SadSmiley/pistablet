@@ -502,7 +502,7 @@ function credit_memo_submit()
     // console.log(item_info);
 
     if(count(_items) > 0)
-    {   
+    {  
         get_item_returns(_items, values,function(item_returns)
         {
             insert_cm_submit(customer_info, item_info, item_returns, 0, function(returns_cm, cm_id)
@@ -514,8 +514,7 @@ function credit_memo_submit()
                         toastr.success("Success");
                         setInterval(function()
                         {
-                            // location.reload();
-                            alert("done");
+                            location.reload();
                         },2000)
                     })
                 }
