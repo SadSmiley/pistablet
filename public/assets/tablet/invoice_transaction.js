@@ -645,7 +645,7 @@ function invoice_submit()
                             {
                                 insert_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
                                 {
-                                    insert_cm_sumbit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                                    insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
                                     {
                                         if(returns_cm == 'success')
                                         {

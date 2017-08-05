@@ -1084,7 +1084,7 @@ function get_item_returns(_cm_items_id, value_data, callback)
     var item_returns = {};
     var ctr_loop = 0;
     if(count(_cm_items_id) > 0)
-    {       
+    {     
         $.each(_cm_items_id, function(key, val)
         {        
             ctr_loop++;
@@ -1110,7 +1110,6 @@ function get_item_returns(_cm_items_id, value_data, callback)
                             item_returns[key]['item_id']    = value_data['cmline_item_id'][key];
                         }
                     }
-
                     if(ctr_loop == ctr)
                     {
                         remove_parent_bundle(item_returns, _cm_items_id, function(item_returns_deleted)
@@ -1129,7 +1128,7 @@ function get_item_returns(_cm_items_id, value_data, callback)
 }
 function remove_parent_bundle(item_returns, _cm_items_id, callback)
 {
-    var ctr_item_returns = item_returns.length;
+    var ctr_item_returns = count(item_returns);
     var ctr = 0;
     if(ctr_item_returns > 0)
     {
@@ -1322,9 +1321,9 @@ function insert_manual_invoice(invoice_id, callback)
             insert_row['inv_id'] = invoice_id;
             insert_row['manual_invoice_date'] = get_date_now();
             insert_row['created_at'] = get_date_now();
-            var insert_row = 'INSERT INTO tbl_manual_invoice (sir_id, inv_id, manual_invoice_date, created_at) ' +
+            var insert_row_query = 'INSERT INTO tbl_manual_invoice (sir_id, inv_id, manual_invoice_date, created_at) ' +
                              ' VALUES ('+insert_row['sir_id']+', '+insert_row['inv_id']+',"'+insert_row['manual_invoice_date']+'", "'+insert_row['created_at']+'")';
-            tx.executeSql(insert_row, [], function(tx, results)
+            tx.executeSql(insert_row_query, [], function(tx, results)
             {
                 if(results.insertId > 0)
                 {
@@ -1335,6 +1334,31 @@ function insert_manual_invoice(invoice_id, callback)
 
         });
 
+    });
+}
+function insert_manual_cm(cm_id, callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        db.transaction(function(tx)
+        {
+            var insert_row = {};
+            insert_row['sir_id'] = sir_id;
+            insert_row['cm_id'] = cm_id;
+            insert_row['manual_cm_date'] = get_date_now();
+            insert_row['created_at'] = get_date_now();
+            var insert_row_query = 'INSERT INTO tbl_manual_credit_memo (sir_id, cm_id, manual_cm_date, created_at) ' +
+                             ' VALUES ('+insert_row['sir_id']+', '+insert_row['cm_id']+',"'+insert_row['manual_cm_date']+'", "'+insert_row['created_at']+'")';
+            tx.executeSql(insert_row_query, [], function(tx, results)
+            {
+                if(results.insertId > 0)
+                {
+                    callback("success");
+                }
+            },
+            onError);
+
+        });
     });
 }
 function insert_sir_inventory(item_info, ref_name, ref_id, callback)
@@ -1391,7 +1415,7 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
                                     callback("success");
                                 }
                             },
-                            onError);                            
+                            onError);                  
                         });
                     });
                 });
@@ -1455,7 +1479,7 @@ function get_subtotal(item_info, callback)
 }
 /* END INVOICE INSERT */
 /* CM INSERT */
-function insert_cm_sumbit(cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
+function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
 {
     get_shop_id(function(shop_id)
     {
@@ -1498,8 +1522,6 @@ function insert_cm_sumbit(cm_customer_info, cm_item_info, item_returns, invoice_
 
                 insert_cm_line(cm_id, cm_item_info, function(cmline_data)
                 {
-                    callback(cmline_data);
-
                     /* REFILL CM ITEMS TO SIR INVENTORY */
                     insert_sir_inventory(cm_item_info,"credit_memo",cm_id, function(returndata)
                     {
@@ -1508,8 +1530,12 @@ function insert_cm_sumbit(cm_customer_info, cm_item_info, item_returns, invoice_
                         {
                             update_invoice(invoice_id, cm_id, function(results_inv)
                             {
-                                callback(results_inv);
+                                callback(results_inv, cm_id);
                             });
+                        }
+                        else
+                        {
+                            callback(returndata, cm_id)
                         }
                     });
                 });
@@ -1533,7 +1559,6 @@ function update_invoice(invoice_id, cm_id, callback)
 }
 function insert_cm_line(cm_id, cm_item_info, callback)
 {
-    console.log(cm_item_info);
     var ctr_item_info = count(cm_item_info);
     var ctr = 0;
 
