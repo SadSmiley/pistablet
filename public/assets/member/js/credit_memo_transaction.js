@@ -514,7 +514,8 @@ function credit_memo_submit()
                         toastr.success("Success");
                         setInterval(function()
                         {
-                            location.reload();
+                            // location.reload();
+                            alert("done");
                         },2000)
                     })
                 }

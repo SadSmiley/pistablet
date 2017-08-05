@@ -1594,7 +1594,7 @@ function insert_cm_line(cm_id, cm_item_info, callback)
             {
                 if(ctr == ctr_item_info)
                 {
-                    callback("success");
+                    callback("success-insertline");
                 }
             },
             onError);
