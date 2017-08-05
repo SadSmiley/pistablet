@@ -1082,18 +1082,19 @@ function get_item_returns(_cm_items_id, value_data, callback)
 {
     var ctr = count(value_data['cmline_item_id']);
     var item_returns = {};
+    var ctr_loop = 0;
     if(count(_cm_items_id) > 0)
     {       
-        $(_cm_items_id).each(function(key, val)
+        $.each(_cm_items_id, function(key, val)
         {        
+            ctr_loop++;
             get_item_bundle(val, function(bundle_item)
             {
-                console.log(bundle_item);  
                 get_um_qty(value_data['cmline_um'][key], function(um_qty)
                 {
                     if(bundle_item.length > 0)
                     {
-                        $(bundle_item).each(function(key_bundle,value_bundle)
+                        $.each(bundle_item, function(key_bundle,value_bundle)
                         {
                             item_returns["b"+key+value_bundle['bundle_item_id']]               = {};  
                             item_returns["b"+key+value_bundle['bundle_item_id']]['qty']        = (um_qty * value_data['cmline_qty'][key] * um_qty) * (value_bundle['bundle_um_qty'] * value_bundle['bundle_qty']);
@@ -1110,7 +1111,7 @@ function get_item_returns(_cm_items_id, value_data, callback)
                         }
                     }
 
-                    if((key + 1) == ctr)
+                    if(ctr_loop == ctr)
                     {
                         remove_parent_bundle(item_returns, _cm_items_id, function(item_returns_deleted)
                         {
@@ -1129,12 +1130,14 @@ function get_item_returns(_cm_items_id, value_data, callback)
 function remove_parent_bundle(item_returns, _cm_items_id, callback)
 {
     var ctr_item_returns = item_returns.length;
+    var ctr = 0;
     if(ctr_item_returns > 0)
     {
-        $(item_returns).each(function(key,val)
+        $.each(item_returns, function(key,val)
         {
+            ctr++;
             var i = null;
-            $(_cm_items_id).each(function(key_cm, val_cm)
+            $.each(_cm_items_id, function(key_cm, val_cm)
             {
                 get_item_bundle(val_cm, function(bundle_item)
                 {
@@ -1145,7 +1148,7 @@ function remove_parent_bundle(item_returns, _cm_items_id, callback)
                             delete item_returns[key];
                         }
                     }
-                    if((key + 1) == ctr_item_returns)
+                    if(ctr == ctr_item_returns)
                     {
                         callback(item_returns);
                     }
@@ -1225,7 +1228,6 @@ function insert_invoice_submit(customer_info, item_info, callback)
 }
 function insert_inv_line(invoice_id, item_info, callback)
 {
-    console.log(item_info);
     var ctr_item_info = count(item_info);
     var ctr = 0;
     $.each(item_info, function(key, value)
@@ -1245,7 +1247,7 @@ function insert_inv_line(invoice_id, item_info, callback)
 
         var insert_line = {};
         insert_line['invline_inv_id']             = invoice_id; 
-        insert_line['invline_service_date']       = "0000-00-00 00:00:00";; 
+        insert_line['invline_service_date']       = "0000-00-00 00:00:00"; 
         insert_line['invline_item_id']            = value['item_id'];
         insert_line['invline_description']        = value['item_description'];
         insert_line['invline_um']                 = value['um'];
@@ -1300,7 +1302,6 @@ function insert_inv_line(invoice_id, item_info, callback)
                                  ')';
             tx.executeSql(insertline_row, [], function(tx, results)
             {
-                console.log("success");
                 if(ctr == ctr_item_info)
                 {
                     callback("success");
@@ -1309,6 +1310,119 @@ function insert_inv_line(invoice_id, item_info, callback)
         });
     });
 
+}
+
+function insert_manual_invoice(invoice_id, callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        db.transaction(function (tx) 
+        {
+            var insert_row = {};
+            insert_row['sir_id'] = sir_id;
+            insert_row['inv_id'] = invoice_id;
+            insert_row['manual_invoice_date'] = get_date_now();
+            insert_row['created_at'] = get_date_now();
+            var insert_row = 'INSERT INTO tbl_manual_invoice (sir_id, inv_id, manual_invoice_date, created_at) ' +
+                             ' VALUES ('+insert_row['sir_id']+', '+insert_row['inv_id']+',"'+insert_row['manual_invoice_date']+'", "'+insert_row['created_at']+'")';
+            tx.executeSql(insert_row, [], function(tx, results)
+            {
+                if(results.insertId > 0)
+                {
+                    callback("success");
+                }
+            },
+            onError);
+
+        });
+
+    });
+}
+function insert_sir_inventory(item_info, ref_name, ref_id, callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        convert_array_item_info(item_info, function(new_item)
+        {
+            var insert_row = {};
+            var ctr_item_info = count(item_info);
+            var ctr = 0;
+            var sign = 1;
+            if(ref_name == 'invoice')
+            {
+                sign = -1;
+            }
+            $.each(new_item, function(key, value)
+            {
+                ctr++;
+                get_item_bundle(value['item_id'], function(bundle_item)
+                {
+                    if(bundle_item.length > 0)
+                    {
+                        $.each(bundle_item, function(key_bundle, value_bundle)
+                        {
+                            insert_row[key + value_bundle['bundle_item_id']] = {};
+                            insert_row[key + value_bundle['bundle_item_id']]['inventory_sir_id'] = sir_id;
+                            insert_row[key + value_bundle['bundle_item_id']]['sir_item_id'] = value_bundle['bundle_item_id'];
+                            insert_row[key + value_bundle['bundle_item_id']]['sir_inventory_count'] = (value['qty'] * (value_bundle['bundle_um_qty'] * value_bundle['bundle_qty'])) * sign;
+                            insert_row[key + value_bundle['bundle_item_id']]['sir_inventory_ref_name'] = ref_name;
+                            insert_row[key + value_bundle['bundle_item_id']]['sir_inventory_ref_id'] = ref_id;
+                        });
+                    }
+                    else
+                    {                        
+                        insert_row[key] = {};
+                        insert_row[key]['inventory_sir_id'] = sir_id;
+                        insert_row[key]['sir_item_id'] = value['item_id'];
+                        insert_row[key]['sir_inventory_count'] = value['qty'] * sign;
+                        insert_row[key]['sir_inventory_ref_name'] = ref_name;
+                        insert_row[key]['sir_inventory_ref_id'] = ref_id;
+                        insert_row[key]['created_at'] = get_date_now();
+                    }
+                    db.transaction(function(tx)
+                    {
+                        $.each(insert_row, function(key_row, value_row)
+                        {
+                            var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at)' +
+                                             'VALUES ('+value_row['inventory_sir_id']+','+value_row['sir_item_id']+','+value_row['sir_inventory_count']+',"'+value_row['sir_inventory_ref_name']+'",'+value_row['sir_inventory_ref_id']+',"'+value_row['created_at']+'")';
+                            tx.executeSql(insert_row, [], function(tx, results)
+                            {
+                                if(ctr == ctr_item_info)
+                                {
+                                    callback("success");
+                                }
+                            },
+                            onError);                            
+                        });
+                    });
+                });
+            });
+        });
+    });
+}
+function convert_array_item_info(item_info, callback)
+{
+    var ctr_item_info = count(item_info);
+    var ctr = 0;
+    var new_item = {};
+    $.each(item_info, function(key, value)
+    {
+        ctr++;
+        /* Function here */
+        get_um_qty(value['um'], function(um_qty)
+        {
+            new_item[key] = {};
+            new_item[key]['item_id'] = value['item_id'];
+            new_item[key]['qty'] = um_qty * value['quantity'];
+
+            if(ctr == ctr_item_info)
+            {
+                /* Callback here*/
+                callback(new_item);
+            }
+
+        });
+    });
 }
 function get_tax(item_info, callback)
 {
@@ -1341,7 +1455,129 @@ function get_subtotal(item_info, callback)
     callback(subtotal);
 }
 /* END INVOICE INSERT */
+/* CM INSERT */
+function insert_cm_sumbit(cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        var insert_row = {};
+        insert_row['cm_shop_id'] = shop_id;
+        insert_row['cm_customer_id'] = cm_customer_info['cm_customer_id'];
+        insert_row['cm_customer_email'] = cm_customer_info['cm_customer_email'];
+        insert_row['cm_date'] = cm_customer_info['cm_date'];
+        insert_row['cm_message'] = cm_customer_info['cm_message'];
+        insert_row['cm_memo'] = cm_customer_info['cm_memo'];
+        insert_row['cm_amount'] = cm_customer_info['cm_amount'];
+        insert_row['cm_type'] = cm_customer_info['cm_type'] == 'returns' ? 0 : cm_customer_info['cm_type'];
+        insert_row['date_created'] = get_date_now();
+        insert_row['created_at'] = get_date_now();
+        insert_row['cm_ar_acccount'] = 0;
+        insert_row['cm_used_ref_name'] = cm_customer_info['cm_type'];
+        insert_row['cm_used_ref_id'] = 0;
 
+        db.transaction(function(tx)
+        {
+            var insert_query = 'INSERT INTO tbl_credit_memo (cm_shop_id, cm_customer_id, cm_customer_email, cm_date, cm_message, cm_memo, cm_amount, cm_type, date_created, created_at, cm_ar_acccount, cm_used_ref_name, cm_used_ref_id) ' +
+                               ' VALUES ('
+                               + insert_row['cm_shop_id'] + ',' 
+                               + insert_row['cm_customer_id'] + ',"'
+                               + insert_row['cm_customer_email'] + '","'
+                               + insert_row['cm_date'] + '","'
+                               + insert_row['cm_message'] + '","'
+                               + insert_row['cm_memo'] + '",'
+                               + insert_row['cm_amount'] + ','
+                               + insert_row['cm_type'] + ',"'
+                               + insert_row['date_created'] + '","'
+                               + insert_row['created_at'] + '",'
+                               + insert_row['cm_ar_acccount'] + ',"'
+                               + insert_row['cm_used_ref_name'] + '",'
+                               + insert_row['cm_used_ref_id'] 
+                               +')';
+            tx.executeSql(insert_query, [], function(tx, results)
+            {
+                var cm_id = results.insertId;
+
+                insert_cm_line(cm_id, cm_item_info, function(cmline_data)
+                {
+                    callback(cmline_data);
+
+                    /* REFILL CM ITEMS TO SIR INVENTORY */
+                    insert_sir_inventory(cm_item_info,"credit_memo",cm_id, function(returndata)
+                    {
+                        /* UPDATE INVOICE */
+                        if(invoice_id != 0)
+                        {
+                            update_invoice(invoice_id, cm_id, function(results_inv)
+                            {
+                                callback(results_inv);
+                            });
+                        }
+                    });
+                });
+            },
+            onError);
+        });
+
+    });
+}
+function update_invoice(invoice_id, cm_id, callback)
+{
+    db.transaction(function(tx)
+    {
+        var update_query = 'UPDATE tbl_customer_invoice SET credit_memo_id = ' + cm_id +
+                           ' WHERE inv_id = ' + invoice_id;
+        tx.executeSql(update_query, [], function(tx, results)
+        {
+            callback("success");
+        });
+    });
+}
+function insert_cm_line(cm_id, cm_item_info, callback)
+{
+    console.log(cm_item_info);
+    var ctr_item_info = count(cm_item_info);
+    var ctr = 0;
+
+    var insertline_cm = {};
+    $.each(cm_item_info, function(key, value)
+    {
+        ctr++;
+        insertline_cm[key] = {};
+        insertline_cm[key]['cmline_cm_id'] = cm_id;
+        insertline_cm[key]['cmline_service_date'] = "0000-00-00 00:00:00";
+        insertline_cm[key]['cmline_um'] = value['um'];
+        insertline_cm[key]['cmline_item_id'] = value['item_id'];
+        insertline_cm[key]['cmline_description'] = value['item_description'];
+        insertline_cm[key]['cmline_qty'] = value['quantity'];
+        insertline_cm[key]['cmline_rate'] = value['rate'];
+        insertline_cm[key]['cmline_amount'] = value['amount'];
+        insertline_cm[key]['created_at'] = get_date_now();
+        db.transaction(function(tx)
+        {
+            var insert_query = 'INSERT INTO tbl_credit_memo_line (cmline_cm_id, cmline_service_date, cmline_um, cmline_item_id, cmline_description, cmline_qty, cmline_rate, cmline_amount, created_at)' +
+                               'VALUES ('
+                               + insertline_cm[key]['cmline_cm_id']+ ', "'
+                               + insertline_cm[key]['cmline_service_date']+ '", '
+                               + insertline_cm[key]['cmline_um']+ ', '
+                               + insertline_cm[key]['cmline_item_id']+ ', "'
+                               + insertline_cm[key]['cmline_description']+ '", '
+                               + insertline_cm[key]['cmline_qty']+ ', '
+                               + insertline_cm[key]['cmline_rate']+ ', '
+                               + insertline_cm[key]['cmline_amount']+ ', "'
+                               + insertline_cm[key]['created_at'] + '"'+
+                               ')';
+            tx.executeSql(insert_query, [], function(tx, results)
+            {
+                if(ctr == ctr_item_info)
+                {
+                    callback("success");
+                }
+            },
+            onError);
+        });
+    });
+}
+/* END CM INSERT */
 function roundNumber(number) 
 {
     var newnumber = new Number(number+'').toFixed(2);

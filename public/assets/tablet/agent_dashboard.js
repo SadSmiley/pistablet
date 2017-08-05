@@ -95,10 +95,22 @@ function agent_dashboard()
             });     
 
             //cycyjoin
-            var query_count_credit_sales = 'SELECT sum(tbl_customer_invoice.inv_overall_price - cm_amount) as inv_total_amount FROM tbl_manual_invoice LEFT JOIN tbl_sir ON tbl_sir.sir_id = tbl_manual_invoice.sir_id LEFT JOIN tbl_customer_invoice ON tbl_customer_invoice.inv_id = tbl_manual_invoice.inv_id LEFT JOIN tbl_credit_memo ON tbl_credit_memo.cm_id = tbl_customer_invoice.credit_memo_id WHERE tbl_customer_invoice.is_sales_receipt = "0" and tbl_customer_invoice.inv_is_paid = "0" and tbl_manual_invoice.sir_id = "'+sir_id+'" GROUP BY tbl_customer_invoice.inv_id';
+            var query_count_credit_sales = 'SELECT sum(tbl_customer_invoice.inv_overall_price - cm_amount) as inv_total_amount '+
+                                           ' FROM tbl_manual_invoice LEFT JOIN tbl_sir ON tbl_sir.sir_id = tbl_manual_invoice.sir_id '+
+                                           ' LEFT JOIN tbl_customer_invoice ON tbl_customer_invoice.inv_id = tbl_manual_invoice.inv_id '+
+                                           ' LEFT JOIN tbl_credit_memo ON tbl_credit_memo.cm_id = tbl_customer_invoice.credit_memo_id '+
+                                           ' WHERE tbl_customer_invoice.is_sales_receipt = 0 '+
+                                           ' AND tbl_customer_invoice.inv_is_paid = 0 '+
+                                           ' AND tbl_manual_invoice.sir_id = '+sir_id+
+                                           ' GROUP BY tbl_customer_invoice.inv_id';
             tx.executeSql(query_count_credit_sales, [], function(txst, results)
             {
-                $(".credit-sales").html("Php "+ReplaceNumberWithCommas((results.rows[0]['inv_total_amount']).toFixed(2)));
+                var total = 0;
+                $.each(results.rows, function(key, val)
+                {
+                    total += roundNumber(val['inv_total_amount']);
+                })
+                $(".credit-sales").html("Php "+ReplaceNumberWithCommas(total));
             }); 
 
             var query_count_cash_sales = 'SELECT *, sum(tbl_customer_invoice.inv_overall_price) as cash_sales_total_amount FROM tbl_manual_invoice LEFT JOIN tbl_sir ON tbl_sir.sir_id = tbl_manual_invoice.sir_id LEFT JOIN tbl_customer_invoice ON tbl_customer_invoice.inv_id = tbl_manual_invoice.inv_id LEFT JOIN tbl_credit_memo ON tbl_credit_memo.cm_id = tbl_customer_invoice.credit_memo_id WHERE tbl_customer_invoice.is_sales_receipt = "1" and tbl_manual_invoice.sir_id = "'+sir_id+'" GROUP BY tbl_customer_invoice.inv_id';

@@ -552,6 +552,7 @@ function invoice_submit()
     cm_customer_info['cm_memo'] = customer_info["inv_memo"] = values["inv_memo"];
     cm_customer_info['cm_amount'] = customer_info["subtotal_price_returns"] = values["subtotal_price_returns"];
     cm_customer_info['cm_message'] = customer_info["inv_message"] = values["inv_message"];
+    cm_customer_info['cm_type'] = customer_info["returns"] = values["returns"];
 
     customer_info["inv_customer_billing_address"] = values["inv_customer_billing_address"];
     customer_info["new_invoice_id"] = values["new_invoice_id"];
@@ -636,7 +637,26 @@ function invoice_submit()
                    
                     insert_invoice_submit(customer_info, item_info, function(invoice_id)
                     {
-                        alert(invoice_id);
+                        insert_manual_invoice(invoice_id, function(return_value)
+                        {
+                            if(return_value == "success")
+                            {
+                                insert_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
+                                {
+                                    insert_cm_sumbit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                                    {
+                                        if(returns_cm == 'success')
+                                        {
+                                            toastr.success("Success");
+                                            setInterval(function()
+                                            {
+                                                location.reload();
+                                            },2000)
+                                        }
+                                    });
+                                });
+                            }
+                        });
                     });
                 }
             });        
