@@ -567,6 +567,7 @@ function invoice_submit()
     customer_info["inv_discount_type"] = values['inv_discount_type'];
     customer_info["inv_discount_value"] = values['inv_discount_value'];
     customer_info["is_sales_receipt"] = values['is_sales_receipt'];
+    customer_info["inv_is_paid"] = values["inv_is_paid"];
 
     var _items = values["invline_item_id"];
 

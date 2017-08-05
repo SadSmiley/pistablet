@@ -1202,7 +1202,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
                         insert_inv['inv_payment_applied']           = 0;
                         insert_inv['sale_receipt_cash_account']     = 0;
                         insert_inv['credit_memo_id']                = 0;
-                        insert_inv['inv_is_paid']                   = 0;
+                        insert_inv['inv_is_paid']                   = customer_info['inv_is_paid'];
                         insert_inv['inv_custom_field_id']           = 0;
                        
                        db.transaction(function (tx) 
