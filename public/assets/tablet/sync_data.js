@@ -153,6 +153,7 @@ function sync_data()
         query[44] = "DROP TABLE IF EXISTS tbl_user";
         query[45] = "DROP TABLE IF EXISTS tbl_timestamp";
         query[46] = "DROP TABLE IF EXISTS tbl_agent_logon";
+        query[47] = "DROP TABLE IF EXISTS tbl_payment_method";
 
         onload_create_table(query);
 
@@ -205,6 +206,7 @@ function sync_data()
         all_tbl_name[42] = "tbl_unit_measurement";
         all_tbl_name[43] = "tbl_unit_measurement_multi";
         all_tbl_name[44] = "tbl_user";
+        all_tbl_name[45] = "tbl_payment_method";
 
         var total = all_tbl_name.length;
         var ctr = 0;

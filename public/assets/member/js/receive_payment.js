@@ -20,6 +20,30 @@ function receive_payment()
 		action_initialize_load();
 		action_put_customers();
 		action_put_accounting();
+		action_put_payment();
+		test_function();
+	}
+	function test_function()
+	{
+	}
+	function action_put_payment()
+	{
+		get_payment_method(function(_payment_method)
+		{
+			$('.drop-down-payment').html('');
+			var ctr = 0;
+			$.each(_payment_method, function(key, value)
+			{
+				ctr++;
+				$('.drop-down-payment').globalDropList("reload");
+				var append = '<option value="'+value['payment_method_id']+'">'+value['payment_name']+'</option>';
+				$('.drop-down-payment').append(append);
+				if(_payment_method.length == ctr)
+				{
+					$('.drop-down-payment').globalDropList("reload");
+				}
+			});
+		});
 	}
 
 	function action_put_accounting()
@@ -27,14 +51,16 @@ function receive_payment()
 		get_all_coa(function(coa)
 		{
 			$('.drop-down-coa').html('');
+			var ctr = 0;
 			$.each(coa, function(index, val) 
 			{
+				ctr++;
 				var append = '<option value="'+val.account_id+'" indent="'+val.account_sublevel+'" add-search="" reference="">'+
 							 val.account_number+' • '+val.account_name+
 							 '</option>';
-				 $('.drop-down-coa').append(append);
-				 console.log(append);
-				 if (coa.length == (index + 1)) 
+				$('.drop-down-coa').append(append);
+				// console.log(append);
+				if (coa.length == ctr) 
 				{
 					initialize_select_plugin();
 				}
@@ -102,7 +128,6 @@ function receive_payment()
 			            var check    = 'SELECT * FROM tbl_customer_invoice LEFT JOIN';
 			            tx.executeSql(query_check, [], function(tx, results)
 			            {
-			                console.log(results.rows);
 			                var append_default = '<tr>'+
 		                                             '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
 		                                             '<input type="hidden" value="" name="rpline_txn_id[]">'+
@@ -128,9 +153,10 @@ function receive_payment()
 				                {
 				                	get_cm_amount(val.credit_memo_id, function(cm_amount)
 			                		{
+			                			// console.log(cm_amount);
 			                			var append = '<tr>'+
 			                                             '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
-			                                             '<input type="hidden" value="" name="rpline_txn_id[]">'+
+			                                             '<input type="hidden" value="'+val.inv_id+'" name="rpline_txn_id[]">'+
 			                                              '<td class="text-center">'+
 			                                                '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="" >'+
 			                                                '<input type="checkbox" class="line-checked">'+

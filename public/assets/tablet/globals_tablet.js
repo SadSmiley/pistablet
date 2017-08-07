@@ -75,6 +75,7 @@ function query_create_all_table(callback)
     query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NOT NULL, default_sublevel INTEGER NOT NULL, default_balance REAL NOT NULL, default_open_balance REAL NOT NULL, default_open_balance_date date NOT NULL, is_tax_account TINYINT NOT NULL, account_tax_code_id INTEGER NOT NULL, default_for_code VARCHAR(255) , account_protected TINYINT NOT NULL,created_at DATETIME, updated_at DATETIME)";
     query[45] = "CREATE TABLE IF NOT EXISTS tbl_timestamp (timestamp_id INTEGER PRIMARY KEY AUTOINCREMENT, table_name VARCHAR(255), timestamp DATETIME)";
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
+    query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255),isDefault TINYINT,archived TINYINT)";
 
     var total = query.length;
     var ctr = 1;
@@ -1618,6 +1619,259 @@ function insert_cm_line(cm_id, cm_item_info, callback)
     });
 }
 /* END CM INSERT */
+/* RECEIVE PAYMENT INSERT */
+function insert_rp_submit(customer_info, insertline, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        get_sir_id(function(sir_id)
+        {
+            db.transaction(function(tx)
+            {
+                var insert_query = 'INSERT INTO tbl_receive_payment (rp_shop_id, '+
+                                   ' rp_customer_id, '+
+                                   ' rp_ar_account, '+
+                                   ' rp_date, '+
+                                   ' rp_total_amount, '+
+                                   ' rp_payment_method, ' + 
+                                   ' rp_memo, ' + 
+                                   ' date_created, ' + 
+                                   ' rp_ref_name, ' + 
+                                   ' rp_ref_id, ' + 
+                                   ' created_at )' + 
+                                   'VALUES ('+
+                                   shop_id+','+
+                                   customer_info['rp_customer_id'] +','+
+                                   customer_info['rp_ar_account'] +',"'+
+                                   customer_info['rp_date'] + '",' +
+                                   customer_info['rp_total_amount'] + ',' +
+                                   customer_info['rp_payment_method'] + ',"' +
+                                   customer_info['rp_memo'] + '","' +
+                                   customer_info['date_created'] + '","' +
+                                   customer_info['rp_ref_name'] + '",' +
+                                   customer_info['rp_ref_id'] + ',"' +
+                                   customer_info['date_created'] + '")';
+
+                tx.executeSql(insert_query, [], function(tx, results)
+                {
+                    var rp_id = results.insertId;
+                    insert_rpline(rp_id, insertline, function(result_line)
+                    {
+                        callback(rp_id);
+                    });
+                },
+                onError);
+            });
+        });
+    });
+}
+function insert_rpline(rp_id, insertline, callback)
+{
+    var ctr = 0;
+    var ctr_row = count(insertline);
+    $.each(insertline, function(key, val)
+    {
+        db.transaction(function(tx)
+        {
+            var insert_row_query = 'INSERT INTO tbl_receive_payment_line (rpline_rp_id, rpline_reference_name, rpline_reference_id, rpline_amount, created_at)' +
+                                     'VALUES ('+rp_id+ ', "'+
+                                     val['rpline_reference_name'] +'",'+
+                                     val['rpline_reference_id'] +','+
+                                     val['rpline_amount'] +',"'+
+                                     get_date_now() +
+                                     '")';
+            tx.executeSql(insert_row_query, [], function(tx, results)
+            {
+                update_payment_applied(val['rpline_reference_id'], function(res)
+                {
+                    ctr++;
+                    if(ctr == ctr_row)
+                    {
+                        callback(rp_id);
+                    }
+                });
+            },
+            onError);
+        });
+    });
+}
+function insert_manual_rp(rp_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        get_sir_id(function(sir_id)
+        {
+            get_agent_id(function(agent_id)
+            {
+                var insert_row = {};
+                insert_row['agent_id'] = agent_id;
+                insert_row['rp_id'] = rp_id;
+                insert_row['sir_id'] = sir_id;
+                insert_row['rp_date'] = get_date_now();
+                insert_row['is_sync'] = 0;
+                insert_row['created_at'] = get_date_now();
+                db.transaction(function(tx)
+                {
+                    var insert_query = 'INSERT INTO tbl_manual_receive_payment (agent_id, rp_id, sir_id, rp_date, is_sync, created_at)' + 
+                                       ' VALUES ('+
+                                       insert_row['agent_id']+','+
+                                       insert_row['rp_id']+','+
+                                       insert_row['sir_id']+',"'+
+                                       insert_row['rp_date']+'",'+
+                                       insert_row['is_sync']+',"'+
+                                       insert_row['created_at']
+                                       +'")';
+                    tx.executeSql(insert_query, [], function(tx, results)
+                    {
+                        callback("success");
+                    },
+                    onError);
+                });
+            });
+        });
+    });
+}
+function update_payment_applied(inv_id, callback)
+{
+    get_amount_applied(inv_id, function(amount_applied)
+    {
+        var update = {};
+        update['inv_payment_applied'] = amount_applied;
+        db.transaction(function(tx)
+        {
+            var update_query = 'UPDATE tbl_customer_invoice SET inv_payment_applied = ' + update['inv_payment_applied'] 
+                               ' WHERE inv_id = '+ inv_id;
+            tx.executeSql(update_query, [], function(tx, results)
+            {
+                update_inv_is_paid(inv_id, function(res)
+                {
+                    callback(res);
+                });
+            });
+        });
+    });
+}
+function update_inv_is_paid(inv_id, callback)
+{
+    get_over_all_price_inv(inv_id, function(overall_price)
+    {
+        get_payment_applied_inv(inv_id, function(payment_applied)
+        {
+            var update = {};
+            update['inv_is_paid'] = 0;
+            if(overall_price == payment_applied)
+            {
+                update['inv_is_paid'] = 1;
+            }
+            db.transaction(function(tx)
+            {
+                var update_query = 'UPDATE tbl_customer_invoice SET inv_is_paid = '+ update['inv_is_paid'] +' WHERE inv_id =' + inv_id;
+                tx.executeSql(update_query, [], function(tx, results)
+                {
+                    callback("success");
+                });
+            });
+
+        });
+    });
+}
+function get_over_all_price_inv(inv_id, callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query = 'SELECT inv_overall_price FROM tbl_customer_invoice WHERE inv_id =' + inv_id;
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['inv_overall_price']);
+            }
+            else
+            {
+                callback(0);
+            }
+        });
+    });
+}
+function get_payment_applied_inv(inv_id, callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query = 'SELECT inv_payment_applied FROM tbl_customer_invoice WHERE inv_id =' + inv_id;
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['inv_payment_applied']);
+            }
+            else
+            {
+                callback(0);
+            }
+        });
+    });
+}
+function get_amount_applied(inv_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var query = 'SELECT amount_applied FROM tbl_customer_invoice' + 
+                        ' LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id FROM tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id ' + 
+                        ' WHERE inv_id = ' + inv_id;
+            tx.executeSql(query, [], function(tx, results)
+            {
+               if(results.rows.length > 0 && results.rows[0]['amount_applied'] != null)
+               {
+                    callback(results.rows[0]['amount_applied']);
+               }
+               else
+               {
+                    callback(0);
+               }
+            },
+            onError);
+        });
+    });
+}
+/* END RECEIVE PAYMENT INSERT */
+function get_agent_id(callback)
+    {
+        db.transaction(function (tx)
+        {
+            var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
+            tx.executeSql(query_check, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows[0]['agent_id']);
+                }
+                else
+                {
+                    alert('Something went wrong. Please Login again');
+                }
+            });
+        });
+    }
+function get_payment_method(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM tbl_payment_method where shop_id = ' + shop_id + 
+                               ' AND archived = 0'; 
+                               
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                callback(results.rows);
+            },
+            onError);
+        });
+
+    });
+}
 function roundNumber(number) 
 {
     var newnumber = new Number(number+'').toFixed(2);

@@ -108,15 +108,14 @@
       </div>
    </div>
    <div class="row">
-      <form class="global-submit" action="{{$action}}" method="post">
-         <input type="hidden" name="_token" value="{{csrf_token()}}"> 
+      <form class="form-receive-payment" action="" role="form" method="post">
          <span class="hidden for-tablet-only">for_tablet</span>
          <input type="hidden" class="button-action" name="button_action" value="">
          <div class="form-group">
             <div class="col-md-12">
                <div class="panel panel-default panel-block panel-title-block" id="top">
                   <div class="panel-heading">
-                     <div class="clearfix">
+                     <div class="col-md-8 col-xs-6">
                         <i class="fa fa-tags"></i>
                         <h1>
                            <span class="page-title">Customer &raquo; Collection</span>
@@ -125,9 +124,9 @@
                            </small>
                         </h1>
                      </div>
-                     <div class="clearfix" style="margin-top: 15px;">
-                        <button type="submit" class="panel-buttons btn btn-custom-primary pull-right" data-action="save-and-edit">Save</button>
+                     <div class="col-md-4 col-xs-6 text-right">
                         <a href="../../index.html" class="btn btn-custom-white">Cancel</a>
+                        <button type="button" class="panel-buttons btn btn-custom-primary" onClick="receive_payment_submit();" >Save</button>
                      </div>
                   </div>
                </div>
@@ -173,10 +172,10 @@
                                  </div>
                                  <div class="col-sm-3">
                                     <label>Payment Method</label>
-                                    <select class="drop-down-payment" name="rp_payment_method">
+                                    <select class="drop-down-payment load-payment-method" name="rp_payment_method">
                                        <!-- @url  -->
                                        <!-- @foreach($_payment_method as $key => $payment) -->
-                                          <option value="{{$payment->payment_method_id}}" selected>Cash </option>
+                                          <!-- <option value="" selected>Cash </option> -->
                                        <!-- @endforeach -->
                                        <option class="hidden" value="" />
                                     </select>
@@ -440,5 +439,6 @@
    <script type="text/javascript" src="../../public/assets/member/js/draggable_row.js"></script>
    <script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
    <script type="text/javascript" src="../../public/assets/member/js/receive_payment.js"></script>
+   <script type="text/javascript" src="../../public/assets/member/js/receive_payment_transaction.js"></script>
 </body>
 </html>
