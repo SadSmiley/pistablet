@@ -646,7 +646,7 @@ function invoice_edit_submit()
                    
                     update_invoice_submit(invoice_id ,customer_info, item_info, function(res)
                     {
-                        update_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
+                        insert_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
                         {
                             update_cm_submit(values["cm_id"], cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
                             {

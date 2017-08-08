@@ -1774,7 +1774,6 @@ function update_cm_submit(cm_id, cm_customer_info, cm_item_info, item_returns, i
                                +') ' + 'WHERE cm_id = ' + cm_id;
             tx.executeSql(insert_query, [], function(tx, results)
             {
-                var cm_id = results.insertId;
                 var delete_query = 'DELETE FROM tbl_credit_memo_line where cmline_cm_id = ' + cm_id;
                 tx.executeSql(delete_query, [], function(txt2,res)
                 {
@@ -1812,7 +1811,7 @@ function delete_sir_inventory(ref_name, ref_id, callback)
 {
     db.transaction(function(tx)
     {
-        var delete_query2 = 'DELETE FROM tbl_sir_inventory where sir_inventory_ref_name = '+ref_name+' AND sir_inventory_ref_id = ' + ref_id;
+        var delete_query2 = 'DELETE FROM tbl_sir_inventory where sir_inventory_ref_name = "'+ref_name+'" AND sir_inventory_ref_id = ' + ref_id;
         tx.executeSql(delete_query2, [], function(tx,res)
         {
             callback(true);
@@ -2151,4 +2150,5 @@ function count(val_this)
 function onError(tx, error)
 {
     console.log(error.message);
+    alert(error.message);
 }
