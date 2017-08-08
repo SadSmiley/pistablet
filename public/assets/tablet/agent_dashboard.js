@@ -14,6 +14,7 @@ function agent_dashboard()
 	function document_ready()
 	{
 		check_if_have_login();
+        forget_session('inv_id');
 	}
 	function check_if_have_login()
 	{

@@ -412,6 +412,265 @@ function invoice_transaction()
         });
     }
 }
+function invoice_edit_submit()
+{
+     var ctr = 0;
+    var status = null;
+    var status_message = null;
+    var data = {};
+    var values = {};
+
+    $.each($('.form-invoice').serializeArray(), function(i, field) 
+    {
+       if (field.name == "invline_item_id[]") 
+        {
+            values["invline_item_id"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_item_id"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_amount[]") 
+        {
+            values["invline_amount"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_amount"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_qty[]") 
+        {
+            values["invline_qty"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_qty"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_rate[]") 
+        {
+            values["invline_rate"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_rate"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_um[]") 
+        {
+            values["invline_um"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_um"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_discount[]") 
+        {
+            values["invline_discount"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_discount"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_discount_remark[]") 
+        {
+            values["invline_discount_remark"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_discount_remark"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_taxable[]") 
+        {
+            values["invline_taxable"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_taxable"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "invline_description[]") 
+        {
+            values["invline_description"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["invline_description"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_amount[]") 
+        {
+            values["cmline_amount"] = {};
+            $('.cm-div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_amount"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_description[]") 
+        {
+            values["cmline_description"] = {};
+            $('.cm-div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_description"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_item_id[]") 
+        {
+            values["cmline_item_id"] = {};
+            $('.cm-div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_item_id"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_qty[]") 
+        {
+            values["cmline_qty"] = {};
+            $('.cm-div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_qty"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_rate[]") 
+        {
+            values["cmline_rate"] = {};
+            $('.cm-div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_rate"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_um[]") 
+        {
+            values["cmline_um"] = {};
+            $('.cm-div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_um"][index] = $(el).val();
+            });
+        }
+        else
+        {
+            values[field.name] = field.value;
+        }
+    });
+
+    console.log(values);
+
+    var customer_info = {};
+    var cm_customer_info = {};
+
+    cm_customer_info['cm_customer_id'] = customer_info["inv_customer_id"] = values["inv_customer_id"];
+    cm_customer_info['cm_customer_email'] = customer_info["inv_customer_email"] = values["inv_customer_email"];
+    cm_customer_info['cm_date'] = customer_info["inv_date"] = values["inv_date"];
+    cm_customer_info['cm_memo'] = customer_info["inv_memo"] = values["inv_memo"];
+    cm_customer_info['cm_amount'] = customer_info["subtotal_price_returns"] = values["subtotal_price_returns"];
+    cm_customer_info['cm_message'] = customer_info["inv_message"] = values["inv_message"];
+    cm_customer_info['cm_type'] = customer_info["returns"] = values["returns"];
+
+    customer_info["inv_customer_billing_address"] = values["inv_customer_billing_address"];
+    customer_info["new_invoice_id"] = values["new_invoice_id"];
+    customer_info["inv_terms_id"] = values["inv_terms_id"];
+    customer_info["inv_due_date"] = values["inv_due_date"];
+    customer_info["subtotal_price"] = values["subtotal_price"];
+    customer_info["overall_price"] = values["overall_price"];
+    customer_info["overall_price_with_return"] = values["overall_price_with_return"];
+    customer_info["returns"] = values["returns"];
+    customer_info["taxable"] = values["taxable"];
+    customer_info["ewt"] = values["ewt"];
+    customer_info["inv_discount_type"] = values['inv_discount_type'];
+    customer_info["inv_discount_value"] = values['inv_discount_value'];
+    customer_info["is_sales_receipt"] = values['is_sales_receipt'];
+    customer_info["inv_is_paid"] = values["inv_is_paid"];
+
+    var _items = values["invline_item_id"];
+
+    var _cm_items = values["cmline_item_id"];
+
+    var item_info = {};
+    var cm_item_info = {};
+
+    var ctr_item = count(values["invline_item_id"]);
+
+    if(ctr_item > 0)
+    {
+        check_sir_qty(values['sir_id'],_items,values,0,'', function(return_value)
+        {
+            get_item_returns(_cm_items, values, function(item_returns)
+            {
+                /* CHECK IF QUANTITY IS MORE THAN THE STOCKS (1 >= 1) = true; 0 = false */
+                if(return_value >= 1)
+                {
+                    toastr.warning("Check item quantity. The item order is greater than to our stocks");     
+                }
+                else
+                {
+                    if(_items)
+                    {
+                        $.each(_items, function(index, val) 
+                        {
+                            if(val != null)
+                            {  
+                                ctr++;
+                                item_info[index]                       = {};              
+                                item_info[index]['item_service_date']  = "";
+                                item_info[index]['item_id']            = values['invline_item_id'][index];
+                                item_info[index]['um']                 = values['invline_um'][index];
+                                item_info[index]['taxable']            = values['invline_taxable'][index];
+                                item_info[index]['rate']               = values['invline_rate'][index].replace(',',"");
+                                item_info[index]['quantity']           = values['invline_qty'][index].replace(',',"");
+                                item_info[index]['discount_remark']    = values['invline_discount_remark'][index];
+                                item_info[index]['discount']           = values['invline_discount'][index];
+                                item_info[index]['item_description']   = values['invline_description'][index];
+                                item_info[index]['amount']             = values['invline_amount'][index].replace(',',"");
+                                item_info[index]['ref_name']           = "";
+                                item_info[index]['ref_id']             = "";
+                            }
+                        });
+                    }
+
+                    if(values['returns'] == 'returns')
+                    {
+                        if(_cm_items)
+                        {
+                            $.each(_cm_items, function(key, val_cm) 
+                            {
+                                if(val_cm != null)
+                                {  
+                                    ctr++;
+                                    cm_item_info[key]                       = {};              
+                                    cm_item_info[key]['item_service_date']  = "";
+                                    cm_item_info[key]['item_id']            = values['cmline_item_id'][key];
+                                    cm_item_info[key]['item_description']   = values['cmline_description'][key];
+                                    cm_item_info[key]['um']                 = values['cmline_um'][key];
+                                    cm_item_info[key]['quantity']           = values['cmline_qty'][key].replace(',',"");
+                                    cm_item_info[key]['rate']               = values['cmline_rate'][key].replace(',',"");
+                                    cm_item_info[key]['amount']             = values['cmline_amount'][key];
+                                }
+                            });
+                        }
+                    }
+                   
+                    update_invoice_submit(invoice_id ,customer_info, item_info, function(res)
+                    {
+                        update_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
+                        {
+                            update_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                            {
+                                if(returns_cm == 'success')
+                                {
+                                    toastr.success("Success");
+                                    setInterval(function()
+                                    {
+                                        location.reload();
+                                    },2000)
+                                }
+                            });
+                        });
+                    });
+                }
+            });        
+        });
+
+    }
+    else
+    {
+        toastr.warning("Please Select Item"); 
+    }
+}
 function invoice_submit()
 {
     var ctr = 0;

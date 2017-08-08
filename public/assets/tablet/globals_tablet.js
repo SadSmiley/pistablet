@@ -279,6 +279,20 @@ function get_all_sir_item(callback)
         });
     });
 }
+function get_all_cm_item(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var query_sir_cm_item = 'SELECT * FROM tbl_item LEFT JOIN tbl_category ON type_id = item_category_id WHERE is_mts = 1 AND tbl_item.archived = 0 AND shop_id = "'+shop_id+'" GROUP BY tbl_item.item_id';
+            tx.executeSql(query_sir_cm_item, [], function(txs, results_cm_item)
+            {
+                callback(results_cm_item.rows);
+            });
+        });
+    });
+}
 
 /**
  * Get All Chart of Accounts
@@ -1236,7 +1250,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
                         insert_inv['inv_date']                      = customer_info['inv_date'];
                         insert_inv['inv_due_date']                  = customer_info['inv_due_date'];
                         insert_inv['inv_subtotal_price']            = subtotal;
-                        insert_inv['ewt']                           = ewt;
+                        insert_inv['ewt']                           = customer_info['ewt'];
                         insert_inv['inv_discount_type']             = customer_info['inv_discount_type'];
                         insert_inv['inv_discount_value']            = customer_info['inv_discount_value'];
                         insert_inv['taxable']                       = customer_info['taxable'];
@@ -1569,6 +1583,7 @@ function get_invoice_data(inv_id, callback)
                     var select_query_cmline = 'SELECT * FROM tbl_customer_invoice '+
                                               'LEFT JOIN tbl_credit_memo_line ON tbl_credit_memo_line.cmline_cm_id = tbl_customer_invoice.credit_memo_id ' +
                                               'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
+                                              'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
                                               'WHERE tbl_customer_invoice.inv_id = ' + inv_id;
                     tx.executeSql(select_query_cmline,[],function(tx4, results_cmline)
                     {
