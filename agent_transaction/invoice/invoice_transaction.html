@@ -158,7 +158,7 @@
     			           </div>
                            <div class="form-group">
                                <div class="col-xs-12">                           
-                                    <textarea class="form-control input-sm textarea-expand" name="inv_customer_billing_address" placeholder="Billing Address"></textarea>                               
+                                    <textarea class="form-control input-sm textarea-expand inv-customer-billing" name="inv_customer_billing_address" placeholder="Billing Address"></textarea>                               
                                </div>
                            </div>
     			           <div class="form-group">
@@ -201,11 +201,11 @@
                             <div class="form-group">
                                  <div class="col-xs-6">
                                     <label>Message</label>
-                                    <textarea class="form-control input-sm textarea-expand" name="inv_message" placeholder=""></textarea>
+                                    <textarea class="form-control input-sm textarea-expand inv-message" name="inv_message" placeholder=""></textarea>
                                 </div>
                                 <div class="col-xs-6">
                                     <label>Statement Memo</label>
-                                    <textarea class="form-control input-sm textarea-expand" name="inv_memo" placeholder=""></textarea>  
+                                    <textarea class="form-control input-sm textarea-expand inv-memo" name="inv_memo" placeholder=""></textarea>  
                                 </div>
                             </div>
     			           	<div class="form-group">
@@ -226,7 +226,7 @@
                                             </div>
                                             <div class="col-xs-3  padding-lr-1">
                                                 <!-- <input class="form-control input-sm text-right ewt_value number-input" type="text" name="ewt"> -->
-                                                <select class="form-control input-sm ewt-value compute" name="ewt">  
+                                                <select class="form-control input-sm ewt-value compute inv-ewt" name="ewt">  
                                                     <option value="0"></option>
                                                     <option value="0.01">1%</option>
                                                     <option value="0.02">2%</option>
@@ -242,7 +242,7 @@
                                     <div class="col-xs-6 text-right digima-table-label">
                                         <div class="row">
                                             <div class="col-xs-6 col-xs-offset-3  padding-lr-1">
-                                                <select class="form-control input-sm compute discount_selection" name="inv_discount_type">  
+                                                <select class="form-control input-sm compute discount_selection inv-disc-type" name="inv_discount_type">  
                                                     <option value="percent" >Disc. %</option>
                                                     <option value="value" >Disc. value</option>
                                                 </select>
@@ -260,7 +260,7 @@
                                     <div class="col-xs-6 text-right digima-table-label">
                                         <div class="row">
                                             <div class="col-xs-6 col-xs-offset-6  padding-lr-1">
-                                                <select class="form-control input-sm tax_selection compute" name="taxable">  
+                                                <select class="form-control input-sm tax_selection compute inv-tax" name="taxable">  
                                                     <option value="0" >No Tax</option>
                                                     <option value="1" >Vat (12%)</option>
                                                 </select>
@@ -587,3 +587,4 @@
 <script type="text/javascript" src="../../public/assets/member/js/tablet_customer_invoice.js"></script>
 <script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
 <script type="text/javascript" src="../../public/assets/tablet/invoice_transaction.js"></script>
+<script type="text/javascript" src="../../public/assets/tablet/edit_invoice_transaction.js"></script>

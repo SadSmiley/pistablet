@@ -6,6 +6,21 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 
+
+function get_session(label, callback)
+{
+    var return_value = sessionStorage.getItem(label);
+    callback(return_value);
+}
+function set_session(label, value)
+{
+    sessionStorage.setItem(label, value);
+}
+function forget_session(label)
+{
+    sessionStorage.setItem(label, '');
+}
+
 /**
  * Agent Logout
  *
@@ -229,6 +244,38 @@ function get_all_customers(callback)
                 callback(results.rows);
             },
             onError);
+        });
+    });
+}
+function get_all_terms(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function (tx)
+        {
+            var query_terms = 'SELECT * FROM tbl_terms WHERE archived = "0" and terms_shop_id = "'+shop_id+'"';
+            tx.executeSql(query_terms, [], function(txs, results_terms)
+            {
+                callback(results_terms.rows);                
+            });
+        });
+    });
+}
+function get_all_sir_item(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        get_sir_id(function(sir_id)
+        {
+            db.transaction(function (tx)
+            {
+                var query_sir_item = 'SELECT * FROM tbl_sir_item LEFT JOIN tbl_item ON tbl_item.item_id = tbl_sir_item.item_id WHERE tbl_sir_item.sir_id = "'+sir_id+'"';
+                tx.executeSql(query_sir_item, [], function(txs, results_sir_item)
+                {
+                    callback(results_sir_item.rows);
+                });
+            });
+
         });
     });
 }
@@ -1162,7 +1209,7 @@ function remove_parent_bundle(item_returns, _cm_items_id, callback)
         callback(return_value);
     }
 }
-/* FUNCTION INVOICE INSERT */
+/* FUNCTION INVOICE */
 function insert_invoice_submit(customer_info, item_info, callback)
 {
     get_sir_id(function(sir_id)
@@ -1310,7 +1357,6 @@ function insert_inv_line(invoice_id, item_info, callback)
     });
 
 }
-
 function insert_manual_invoice(invoice_id, callback)
 {
     get_sir_id(function(sir_id)
@@ -1494,7 +1540,51 @@ function get_subtotal(item_info, callback)
     });
     callback(subtotal);
 }
-/* END INVOICE INSERT */
+function edit_invoice(inv_id)
+{
+    set_session('inv_id',inv_id);
+    location.href = '../agent_transaction/invoice/invoice_transaction.html';
+}
+function get_invoice_data(inv_id, callback)
+{
+    get_shop_id(function (shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM tbl_customer_invoice '+
+                               'LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id FROM tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id ' +
+                               'WHERE tbl_customer_invoice.inv_id = ' + inv_id;
+            tx.executeSql(select_query,[],function(tx2, results)
+            {
+                var inv = results.rows[0];
+
+                var select_query_line = 'SELECT * FROM tbl_customer_invoice_line '+
+                                        'LEFT JOIN tbl_item ON tbl_item.item_id = invline_item_id ' +
+                                        'LEFT JOIN tbl_unit_measurement_multi ON multi_id = invline_um ' +
+                                        'WHERE invline_inv_id = ' + inv_id;
+                tx.executeSql(select_query_line,[],function(tx3, results_line)
+                {
+                    var _invline = results_line.rows;
+
+                    var select_query_cmline = 'SELECT * FROM tbl_customer_invoice '+
+                                              'LEFT JOIN tbl_credit_memo_line ON tbl_credit_memo_line.cmline_cm_id = tbl_customer_invoice.credit_memo_id ' +
+                                              'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
+                                              'WHERE tbl_customer_invoice.inv_id = ' + inv_id;
+                    tx.executeSql(select_query_cmline,[],function(tx4, results_cmline)
+                    {
+                        var _cmline = results_cmline.rows;
+
+                        callback(inv, _invline, _cmline);
+                    },
+                    onError);
+                },
+                onError);
+            },
+            onError);
+        });
+    });
+}
+/* END INVOICE*/
 /* CM INSERT */
 function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
 {

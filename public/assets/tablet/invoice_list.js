@@ -1,8 +1,8 @@
-var agent_dashboard = new agent_dashboard();
+var invoice_list = new invoice_list();
 var db = openDatabase("my168shop", "1.0", "Address Book", 200000); 
 var query = "";
 var dataset_from_browser = null; 
-function agent_dashboard()
+function invoice_list()
 {
 	init();
 

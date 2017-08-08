@@ -69,8 +69,15 @@ function invoice_transaction()
                 {
                     var shop_id = results_sir.rows[0]['shop_id'];
 
-                    // FUNCTION HERE
-                    get_data_for_invoice_transaction(sir_id, shop_id);
+
+                    get_session('inv_id',function(inv_id)
+                    {
+                        if(inv_id == null || inv_id == 0)
+                        {                            
+                            // FUNCTION HERE
+                            get_data_for_invoice_transaction(sir_id, shop_id);
+                        }
+                    });
                 });
             });        	
         });
