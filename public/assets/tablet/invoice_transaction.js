@@ -548,8 +548,6 @@ function invoice_edit_submit()
         }
     });
 
-    console.log(values);
-
     var customer_info = {};
     var cm_customer_info = {};
 
@@ -577,6 +575,7 @@ function invoice_edit_submit()
     customer_info["is_sales_receipt"] = values['is_sales_receipt'];
     customer_info["inv_is_paid"] = values["inv_is_paid"];
 
+    invoice_id = values['invoice_id'];
     var _items = values["invline_item_id"];
 
     var _cm_items = values["cmline_item_id"];
@@ -588,7 +587,7 @@ function invoice_edit_submit()
 
     if(ctr_item > 0)
     {
-        check_sir_qty(values['sir_id'],_items,values,0,'', function(return_value)
+        check_sir_qty(values['sir_id'],_items,values,invoice_id,'', function(return_value)
         {
             get_item_returns(_cm_items, values, function(item_returns)
             {
