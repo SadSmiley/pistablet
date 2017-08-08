@@ -560,6 +560,7 @@ function invoice_edit_submit()
     cm_customer_info['cm_amount'] = customer_info["subtotal_price_returns"] = values["subtotal_price_returns"];
     cm_customer_info['cm_message'] = customer_info["inv_message"] = values["inv_message"];
     cm_customer_info['cm_type'] = customer_info["returns"] = values["returns"];
+    cm_customer_info['credit_memo_id'] = customer_info["credit_memo_id"] = values["cm_id"];
 
     customer_info["inv_customer_billing_address"] = values["inv_customer_billing_address"];
     customer_info["new_invoice_id"] = values["new_invoice_id"];
@@ -648,7 +649,7 @@ function invoice_edit_submit()
                     {
                         update_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
                         {
-                            update_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                            update_cm_submit(values["cm_id"], cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
                             {
                                 if(returns_cm == 'success')
                                 {

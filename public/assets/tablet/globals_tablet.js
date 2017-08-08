@@ -1599,6 +1599,73 @@ function get_invoice_data(inv_id, callback)
         });
     });
 }
+function update_invoice_submit(invoice_id, customer_info, item_info, callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        get_subtotal(item_info, function(subtotal)
+        {  
+            get_discount_amount(customer_info, subtotal, function(discount)
+            {
+                get_tax(item_info, function(tax)
+                {
+                    var ewt = subtotal * roundNumber(customer_info['ewt']);
+
+                    var overall_price = roundNumber(((subtotal - ewt) - discount) + tax);
+
+                    get_shop_id(function(shop_id)
+                    {
+                        var update_inv = {};
+                        update_inv['inv_shop_id']                   = shop_id;
+                        update_inv['inv_customer_id']               = customer_info['inv_customer_id'];
+                        update_inv['inv_customer_email']            = customer_info['inv_customer_email'];
+                        update_inv['new_inv_id']                    = customer_info['new_invoice_id'];
+                        update_inv['inv_customer_billing_address']  = customer_info['inv_customer_billing_address'];
+                        update_inv['inv_terms_id']                  = customer_info['inv_terms_id'];
+                        update_inv['inv_date']                      = customer_info['inv_date'];
+                        update_inv['inv_due_date']                  = customer_info['inv_due_date'];
+                        update_inv['inv_subtotal_price']            = subtotal;
+                        update_inv['ewt']                           = customer_info['ewt'];
+                        update_inv['inv_discount_type']             = customer_info['inv_discount_type'];
+                        update_inv['inv_discount_value']            = customer_info['inv_discount_value'];
+                        update_inv['taxable']                       = customer_info['taxable'];
+                        update_inv['inv_overall_price']             = customer_info['overall_price'];
+                        update_inv['inv_message']                   = customer_info['inv_message'];
+                        update_inv['inv_memo']                      = customer_info['inv_memo'];
+                        update_inv['date_created']                  = get_date_now();
+                        update_inv['created_at']                    = get_date_now();
+                        update_inv['is_sales_receipt']              = customer_info['is_sales_receipt'];
+                        update_inv['inv_payment_applied']           = 0;
+                        update_inv['sale_receipt_cash_account']     = 0;
+                        update_inv['credit_memo_id']                = 0;
+                        update_inv['inv_is_paid']                   = customer_info['inv_is_paid'];
+                        update_inv['inv_custom_field_id']           = 0;
+                       
+                       db.transaction(function (tx) 
+                       {  
+                            var update_row = 'UPDATE tbl_customer_invoice SET (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt,credit_memo_id, sale_receipt_cash_account, inv_custom_field_id, inv_payment_applied, inv_is_paid, created_at)' + 
+                                'VALUES ('+update_inv['new_inv_id']+', '+update_inv['inv_shop_id']+', '+update_inv['inv_customer_id']+', "'+update_inv['inv_customer_email']+'", "'+update_inv['inv_customer_billing_address']+'", '+update_inv['inv_terms_id']+', "'+update_inv['inv_date']+'", "'+update_inv['inv_due_date']+'", "'+update_inv['inv_message']+'", "'+update_inv['inv_memo']+'", "'+update_inv['inv_discount_type']+'", '+update_inv['inv_discount_value']+', '+update_inv['ewt']+', '+update_inv['taxable']+', '+update_inv['inv_subtotal_price']+', '+update_inv['inv_overall_price']+', "'+update_inv['date_created']+'", '+update_inv['is_sales_receipt']+', '+update_inv['credit_memo_id']+', '+update_inv['sale_receipt_cash_account']+', '+update_inv['inv_custom_field_id']+', '+update_inv['inv_payment_applied']+', '+update_inv['inv_is_paid']+', "'+update_inv['created_at']+'") '+
+                                'WHERE inv_id = ' + invoice_id ;
+                            tx.executeSql(update_row, [], function(txt, results)
+                            {
+                                var delete_query = 'DELETE FROM tbl_customer_invoice_line where invline_inv_id = ' + invoice_id;
+                                tx.executeSql(delete_query, [], function(txt2,res)
+                                {
+                                   insert_inv_line(invoice_id, item_info, function(data)
+                                   {
+                                        callback(invoice_id);
+                                   });
+                                });
+                            },
+                            onError);
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+}
 /* END INVOICE*/
 /* CM INSERT */
 function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
@@ -1660,6 +1727,75 @@ function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_
                             callback(returndata, cm_id)
                         }
                     });
+                });
+            },
+            onError);
+        });
+
+    });
+}
+function update_cm_submit(cm_id, cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        var insert_row = {};
+        insert_row['cm_shop_id'] = shop_id;
+        insert_row['cm_customer_id'] = cm_customer_info['cm_customer_id'];
+        insert_row['cm_customer_email'] = cm_customer_info['cm_customer_email'];
+        insert_row['cm_date'] = cm_customer_info['cm_date'];
+        insert_row['cm_message'] = cm_customer_info['cm_message'];
+        insert_row['cm_memo'] = cm_customer_info['cm_memo'];
+        insert_row['cm_amount'] = cm_customer_info['cm_amount'];
+        insert_row['cm_type'] = cm_customer_info['cm_type'] == 'returns' ? 0 : cm_customer_info['cm_type'];
+        insert_row['date_created'] = get_date_now();
+        insert_row['created_at'] = get_date_now();
+        insert_row['cm_ar_acccount'] = 0;
+        insert_row['cm_used_ref_name'] = cm_customer_info['cm_type'];
+        insert_row['cm_used_ref_id'] = 0;
+
+        db.transaction(function(tx)
+        {
+            var insert_query = 'UPDATE tbl_credit_memo SET (cm_shop_id, cm_customer_id, cm_customer_email, cm_date, cm_message, cm_memo, cm_amount, cm_type, date_created, created_at, cm_ar_acccount, cm_used_ref_name, cm_used_ref_id) ' +
+                               ' VALUES ('
+                               + insert_row['cm_shop_id'] + ',' 
+                               + insert_row['cm_customer_id'] + ',"'
+                               + insert_row['cm_customer_email'] + '","'
+                               + insert_row['cm_date'] + '","'
+                               + insert_row['cm_message'] + '","'
+                               + insert_row['cm_memo'] + '",'
+                               + insert_row['cm_amount'] + ','
+                               + insert_row['cm_type'] + ',"'
+                               + insert_row['date_created'] + '","'
+                               + insert_row['created_at'] + '",'
+                               + insert_row['cm_ar_acccount'] + ',"'
+                               + insert_row['cm_used_ref_name'] + '",'
+                               + insert_row['cm_used_ref_id'] 
+                               +') ' + 'WHERE cm_id = ' + cm_id;
+            tx.executeSql(insert_query, [], function(tx, results)
+            {
+                var cm_id = results.insertId;
+                var delete_query = 'DELETE FROM tbl_credit_memo_line where cmline_cm_id = ' + cm_id;
+                tx.executeSql(delete_query, [], function(txt2,res)
+                {
+                    insert_cm_line(cm_id, cm_item_info, function(cmline_data)
+                    {
+                        /* REFILL CM ITEMS TO SIR INVENTORY */
+                        insert_sir_inventory(cm_item_info,"credit_memo",cm_id, function(returndata)
+                        {
+                            /* UPDATE INVOICE */
+                            if(invoice_id != 0)
+                            {
+                                update_invoice(invoice_id, cm_id, function(results_inv)
+                                {
+                                    callback(results_inv, cm_id);
+                                });
+                            }
+                            else
+                            {
+                                callback(returndata, cm_id)
+                            }
+                        });
+                    });                    
                 });
             },
             onError);

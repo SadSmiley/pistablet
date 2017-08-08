@@ -72,7 +72,7 @@ function check_if_edit_invoice()
                                 $('.inv-tax').val(inv['taxable']);
                                 $('.inv-disc-val').val(inv['inv_discount_value']);
                                 $('.inv-id').val(inv['inv_id']);
-
+                                $('.cm-id').val(inv['credit_memo_id']);
                                 if(inv['credit_memo_id'] != 0)
                                 {
                                     $(".cm-returns").attr('checked');
