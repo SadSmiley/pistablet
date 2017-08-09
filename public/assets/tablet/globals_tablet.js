@@ -1559,6 +1559,11 @@ function edit_invoice(inv_id)
     set_session('inv_id',inv_id);
     location.href = '../agent_transaction/invoice/invoice_transaction.html';
 }
+function edit_credit_memo(cm_id)
+{
+    set_session('cm_id',cm_id);
+    location.href = '../agent_transaction/credit_memo/credit_memo_transaction.html';    
+}
 function get_invoice_data(inv_id, callback)
 {
     get_shop_id(function (shop_id)
