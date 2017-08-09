@@ -572,9 +572,10 @@ function invoice_edit_submit()
     customer_info["ewt"] = values["ewt"];
     customer_info["inv_discount_type"] = values['inv_discount_type'];
     customer_info["inv_discount_value"] = values['inv_discount_value'];
-    customer_info["is_sales_receipt"] = values['is_sales_receipt'];
-    customer_info["inv_is_paid"] = values["inv_is_paid"];
+    // customer_info["is_sales_receipt"] = values['is_sales_receipt'];
+    // customer_info["inv_is_paid"] = values["inv_is_paid"];
 
+    console.log(values);
     invoice_id = values['invoice_id'];
     var _items = values["invline_item_id"];
 

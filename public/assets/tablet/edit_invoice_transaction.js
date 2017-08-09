@@ -116,33 +116,39 @@ function check_if_edit_invoice()
                                             $item_table.find(".input-item-taxable").val(tax);
                                             $item_table.find(".input-item-desc").val(value['invline_description']);
                                         });
-
-                                        $.each(_cmline, function(key_cm, value_cm)
+                                        if(_cmline.length > 0)
                                         {
-                                            $(".cm-div-item-list").append(global_cm_tablet_html);
-                                            $item_table = $(".cm-div-item-list .cm.item-table:last");
-                                            
-                                            $(".cm-div-item-list .cm.item-table:last").addClass("item-list-"+value_cm['cmline_item_id']);
-                                            $(".cm-div-item-list .cm.item-table:last .cm-item").attr("item_id",value_cm['cmline_item_id']);
-                                            $(".cm-div-item-list .cm.item-table:last .cm-item").attr("sir_id",sir_id);
-                                            
-                                            //PUT VALUE TO LABEL
-                                            $item_table.find(".item-cm-name").html(value_cm['item_name']);
-                                            $item_table.find(".item-cm-rate").html((value_cm['cmline_rate']).toFixed(2));
-                                            $item_table.find(".item-cm-um").html(value_cm['multi_abbrev']);
-                                            $item_table.find(".item-cm-amount").html((value_cm['cmline_amount']).toFixed(2));
-                                            $item_table.find(".item-cm-qty").html(value_cm['cmline_qty']);
+                                            $.each(_cmline, function(key_cm, value_cm)
+                                            {
+                                                if(value_cm['cmline_item_id'])
+                                                {
+                                                    $(".cm-div-item-list").append(global_cm_tablet_html);
+                                                    $item_table = $(".cm-div-item-list .cm.item-table:last");
+                                                    
+                                                    $(".cm-div-item-list .cm.item-table:last").addClass("item-list-"+value_cm['cmline_item_id']);
+                                                    $(".cm-div-item-list .cm.item-table:last .cm-item").attr("item_id",value_cm['cmline_item_id']);
+                                                    $(".cm-div-item-list .cm.item-table:last .cm-item").attr("sir_id",sir_id);
+                                                    
+                                                    //PUT VALUE TO LABEL
+                                                    $item_table.find(".item-cm-name").html(value_cm['item_name']);
+                                                    $item_table.find(".item-cm-rate").html((value_cm['cmline_rate']).toFixed(2));
+                                                    $item_table.find(".item-cm-um").html(value_cm['multi_abbrev']);
+                                                    $item_table.find(".item-cm-amount").html((value_cm['cmline_amount']).toFixed(2));
+                                                    $item_table.find(".item-cm-qty").html(value_cm['cmline_qty']);
 
-                                            $item_table.find(".item-cm-desc").html(value_cm['cmline_description']);
+                                                    $item_table.find(".item-cm-desc").html(value_cm['cmline_description']);
 
-                                            //PUT VALUE TO INPUT
-                                            $item_table.find(".cm.input-item-id").val(value_cm['cmline_item_id']);
-                                            $item_table.find(".cm.input-item-amount").val(value_cm['cmline_amount']);
-                                            $item_table.find(".cm.input-item-rate").val(value_cm['cmline_rate']);
-                                            $item_table.find(".cm.input-item-qty").val(value_cm['cmline_qty']);
-                                            $item_table.find(".cm.input-item-um").val(value_cm['cmline_um']);
-                                            $item_table.find(".cm.input-item-desc").val(value_cm['cmline_description']);
-                                        });
+                                                    //PUT VALUE TO INPUT
+                                                    $item_table.find(".cm.input-item-id").val(value_cm['cmline_item_id']);
+                                                    $item_table.find(".cm.input-item-amount").val(value_cm['cmline_amount']);
+                                                    $item_table.find(".cm.input-item-rate").val(value_cm['cmline_rate']);
+                                                    $item_table.find(".cm.input-item-qty").val(value_cm['cmline_qty']);
+                                                    $item_table.find(".cm.input-item-um").val(value_cm['cmline_um']);
+                                                    $item_table.find(".cm.input-item-desc").val(value_cm['cmline_description']);
+                                                    
+                                                }
+                                            });
+                                        }
                                         
                                         tablet_customer_invoice.action_general_compute();
                                         $(".inv-save-btn").attr("onClick","invoice_edit_submit();");

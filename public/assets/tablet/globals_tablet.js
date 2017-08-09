@@ -1634,14 +1634,14 @@ function update_invoice_submit(invoice_id, customer_info, item_info, callback)
                         update_inv['inv_memo']                      = customer_info['inv_memo'];
                         update_inv['date_created']                  = get_date_now();
                         update_inv['created_at']                    = get_date_now();
-                        update_inv['is_sales_receipt']              = customer_info['is_sales_receipt'];
-                        update_inv['inv_is_paid']                   = customer_info['inv_is_paid'];
+                        // update_inv['is_sales_receipt']              = customer_info['is_sales_receipt'];
+                        // update_inv['inv_is_paid']                   = customer_info['inv_is_paid'];
                         update_inv['inv_custom_field_id']           = 0;
                        
                        db.transaction(function (tx) 
                        {  
-                            var update_row = 'UPDATE tbl_customer_invoice SET (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt, inv_custom_field_id, inv_is_paid, created_at) ' + 
-                                '= ('+update_inv['new_inv_id']+', '+update_inv['inv_shop_id']+', '+update_inv['inv_customer_id']+', "'+update_inv['inv_customer_email']+'", "'+update_inv['inv_customer_billing_address']+'", '+update_inv['inv_terms_id']+', "'+update_inv['inv_date']+'", "'+update_inv['inv_due_date']+'", "'+update_inv['inv_message']+'", "'+update_inv['inv_memo']+'", "'+update_inv['inv_discount_type']+'", '+update_inv['inv_discount_value']+', '+update_inv['ewt']+', '+update_inv['taxable']+', '+update_inv['inv_subtotal_price']+', '+update_inv['inv_overall_price']+', "'+update_inv['date_created']+'", '+update_inv['is_sales_receipt']+', '+update_inv['inv_custom_field_id']+', '+update_inv['inv_is_paid']+', "'+update_inv['created_at']+'") '+
+                            var update_row = 'UPDATE tbl_customer_invoice SET (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, inv_custom_field_id, created_at) ' + 
+                                '= ('+update_inv['new_inv_id']+', '+update_inv['inv_shop_id']+', '+update_inv['inv_customer_id']+', "'+update_inv['inv_customer_email']+'", "'+update_inv['inv_customer_billing_address']+'", '+update_inv['inv_terms_id']+', "'+update_inv['inv_date']+'", "'+update_inv['inv_due_date']+'", "'+update_inv['inv_message']+'", "'+update_inv['inv_memo']+'", "'+update_inv['inv_discount_type']+'", '+update_inv['inv_discount_value']+', '+update_inv['ewt']+', '+update_inv['taxable']+', '+update_inv['inv_subtotal_price']+', '+update_inv['inv_overall_price']+', "'+update_inv['date_created']+'", '+update_inv['inv_custom_field_id']+', "'+update_inv['created_at']+'") '+
                                 'WHERE inv_id = ' + invoice_id ;
                             tx.executeSql(update_row, [], function(txt, results)
                             {

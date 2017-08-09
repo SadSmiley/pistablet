@@ -99,7 +99,7 @@ function sales_receipt()
                         inv_total_amount = datarow['inv_overall_price'] - cm_amount;
                     }
                     tr += '<td>'+ReplaceNumberWithCommas((inv_total_amount).toFixed(2))+'</td>';
-                    tr += '<td class="text-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-custom"><li><a size="lg" link="/tablet/view_invoice_view/"" class="popup">View Invoice</a></li> <li><a size="lg" link="/tablet/view_invoice_view" class="popup">View Receipt</a></li><li><a href="/tablet/create_invoices/add?id={{$inv->inv_id}}&sir_id=">Edit Invoice</a></li></ul></div></td>'
+                    tr += '<td class="text-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-custom"><li><a size="lg" link="/tablet/view_invoice_view/"" class="popup">View Invoice</a></li> <li><a size="lg" link="/tablet/view_invoice_view" class="popup">View Receipt</a></li><li><a onClick="edit_invoice('+datarow['inv_id']+')">Edit Invoice</a></li></ul></div></td>'
                     tr += '</tr>';
                 });
                 $(".tbody-invoice-list").append(tr);
