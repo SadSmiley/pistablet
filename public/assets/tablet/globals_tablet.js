@@ -1674,6 +1674,31 @@ function update_invoice_submit(invoice_id, customer_info, item_info, callback)
 }
 /* END INVOICE*/
 /* CM INSERT */
+function get_cm_data(cm_id, callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query_cm = 'SELECT * FROM tbl_credit_memo '+
+                              'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
+                              'WHERE cm_id = ' + cm_id;
+
+        tx.executeSql(select_query_cm,[],function(tx4, results_cm)
+        {
+            var cm = results_cm.rows[0];
+
+            var select_query_cmline = 'SELECT * FROM tbl_credit_memo_line '+
+                                      'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
+                                      'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
+                                      'WHERE cmline_cm_id = ' + cm_id;
+            tx.executeSql(select_query_cmline,[],function(tx4, results_cmline)
+            {
+                var _cmline = results_cmline.rows;
+
+                callback(cm, _cmline);
+            });
+        });
+    });
+}
 function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
 {
     get_shop_id(function(shop_id)
