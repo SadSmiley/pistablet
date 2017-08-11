@@ -1564,6 +1564,11 @@ function edit_credit_memo(cm_id)
     set_session('cm_id',cm_id);
     location.href = '../agent_transaction/credit_memo/credit_memo_transaction.html';    
 }
+function edit_rp(rp_id)
+{
+    set_session('rp_id',rp_id);
+    location.href = '../agent_transaction/receive_payment/receive_payment_transaction.html';
+}
 function get_invoice_data(inv_id, callback)
 {
     get_shop_id(function (shop_id)
@@ -1673,13 +1678,30 @@ function update_invoice_submit(invoice_id, customer_info, item_info, callback)
 
 }
 /* END INVOICE*/
+function get_all_item(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query_item = 'SELECT * FROM tbl_item '+
+                                  'WHERE shop_id = ' + shop_id +
+                                  ' AND archived = 0';
+
+            tx.executeSql(select_query_item,[],function(tx4, results)
+            {
+                callback(results.rows);
+            },
+            onError);
+        });
+    });
+}
 /* CM INSERT */
 function get_cm_data(cm_id, callback)
 {
     db.transaction(function(tx)
     {
         var select_query_cm = 'SELECT * FROM tbl_credit_memo '+
-                              'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
                               'WHERE cm_id = ' + cm_id;
 
         tx.executeSql(select_query_cm,[],function(tx4, results_cm)
@@ -1695,8 +1717,10 @@ function get_cm_data(cm_id, callback)
                 var _cmline = results_cmline.rows;
 
                 callback(cm, _cmline);
-            });
-        });
+            },
+            onError);
+        },
+        onError);
     });
 }
 function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, callback)
@@ -1907,6 +1931,29 @@ function insert_cm_line(cm_id, cm_item_info, callback)
 }
 /* END CM INSERT */
 /* RECEIVE PAYMENT INSERT */
+function get_rp_data(rp_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            /* SELECT DATA IN RP */
+            var select_rp = 'SELECT * FROM tbl_receive_payment where rp_id = ' + rp_id;
+            tx.executeSql(select_rp, [], function(txs, results)
+            {
+                var rp = results.rows[0];
+
+                var select_rpline = 'SELECT * FROM tbl_receive_payment_line where rpline_rp_id = ' + rp_id;
+                tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                {
+                    var rpline = results_rpline.rows;
+
+                    callback(rp, rpline);
+                }); 
+            });
+        });
+    });
+}
 function insert_rp_submit(customer_info, insertline, callback)
 {
     get_shop_id(function(shop_id)

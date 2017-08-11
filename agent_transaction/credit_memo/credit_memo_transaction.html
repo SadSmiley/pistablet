@@ -115,7 +115,7 @@
         <form class="global-submit form-to-submit-transfer" id="invoice_form" role="form" action="" method="POST" >
             <input type="hidden" class="token" name="_token" value="" >
             <input type="hidden" class="token" name="sir_id" value="" >
-            <input type="hidden" name="credit_memo_id" value="" >
+            <input type="hidden" name="credit_memo_id" class="cm-id" value="" >
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="panel panel-default panel-block panel-title-block" id="top">
@@ -131,7 +131,7 @@
                             <div class="col-md-4 col-xs-6 text-right">
                                 <a href="../../index.html" class="btn btn-custom-white">Cancel</a>
                                 <!-- <button data-action="save-and-edit" class="btn btn-primary">Save</button> -->
-                                <button class="btn btn-primary" type="button" onClick="credit_memo_submit();">Save</button>
+                                <button class="btn btn-primary cm-edit-btn" type="button" onClick="credit_memo_submit();">Save</button>
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                                 <div class="form-group">
                                     <div class="col-xs-12">
                                         <label> Date</label>
-                                        <input type="text" class="datepicker form-control input-sm" name="cm_date" value=""/>
+                                        <input type="text" class="datepicker form-control input-sm cm-date" name="cm_date" value=""/>
                                     </div>
                                 </div>
                                 <div class="div-item-list">
@@ -172,11 +172,11 @@
                                 <div class="form-group">
                                      <div class="col-xs-6">
                                         <label>Message</label>
-                                         <textarea class="form-control input-sm textarea-expand" name="cm_message" placeholder=""></textarea>
+                                         <textarea class="form-control input-sm textarea-expand cm-message" name="cm_message" placeholder=""></textarea>
                                     </div>
                                     <div class="col-xs-6">
                                         <label>Statement Memo</label>
-                                        <textarea class="form-control input-sm textarea-expand" name="cm_memo" placeholder=""></textarea>
+                                        <textarea class="form-control input-sm textarea-expand cm-memo" name="cm_memo" placeholder=""></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -391,3 +391,4 @@
 <script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
 <script type="text/javascript" src="../../public/assets/member/js/tablet_credit_memo.js"></script>
 <script type="text/javascript" src="../../public/assets/member/js/credit_memo_transaction.js"></script>
+<script type="text/javascript" src="../../public/assets/tablet/edit_cm_transaction.js"></script>

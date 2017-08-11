@@ -67,9 +67,14 @@ function credit_memo_transaction()
                 tx.executeSql(query_check_shop, [], function(txs, results_sir)
                 {
                     var shop_id = results_sir.rows[0]['shop_id'];
-
-                    // FUNCTION HERE
-                    get_data_for_invoice_transaction(sir_id, shop_id);
+                    get_session('cm_id',function(cm_id)
+                    {
+                        if(cm_id == null || cm_id == 0)
+                        {  
+                            // FUNCTION HERE
+                            get_data_for_invoice_transaction(sir_id, shop_id);
+                        }
+                    });
                 });
             });        	
         });
@@ -402,7 +407,127 @@ function credit_memo_transaction()
         });
     }
 }
+function cm_edit_submit()
+{
 
+    var ctr = 0;
+    var status = null;
+    var status_message = null;
+    var data = {};
+    var values = {};
+
+    $.each($('.form-to-submit-transfer').serializeArray(), function(i, field) 
+    {
+        if (field.name == "cmline_amount[]") 
+        {
+            values["cmline_amount"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_amount"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_description[]") 
+        {
+            values["cmline_description"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_description"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_item_id[]") 
+        {
+            values["cmline_item_id"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_item_id"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_qty[]") 
+        {
+            values["cmline_qty"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_qty"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_rate[]") 
+        {
+            values["cmline_rate"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_rate"][index] = $(el).val();
+            });
+        }
+        else if (field.name == "cmline_um[]") 
+        {
+            values["cmline_um"] = {};
+            $('.div-item-list input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["cmline_um"][index] = $(el).val();
+            });
+        }
+        else
+        {
+            values[field.name] = field.value;
+        }
+    });
+    var cm_id = values['credit_memo_id'];
+    // console.log("Request::input()");
+    // console.log(values);
+    var customer_info = {};
+    customer_info["cm_customer_id"] = values["cm_customer_id"];
+    customer_info["cm_customer_email"] = values["cm_customer_email"];
+    customer_info["cm_date"] = values["cm_date"];
+    customer_info["cm_message"] = values["cm_message"];
+    customer_info["cm_memo"] = values["cm_memo"];
+    customer_info["cm_amount"] = values["overall_price"];
+    customer_info["cm_type"] = 'returns';
+    // console.log("Customer Info");
+    // console.log(customer_info);
+    var item_info = {};
+    var _items = values["cmline_item_id"];
+    if(_items)
+    {
+        $.each(_items, function(index, val) 
+        {
+            if(val != null)
+            {  
+                ctr++;
+                item_info[index]                       = {};              
+                item_info[index]['item_service_date']  = "";
+                item_info[index]['item_id']            = values['cmline_item_id'][index];
+                item_info[index]['item_description']   = values['cmline_description'][index];
+                item_info[index]['um']                 = values['cmline_um'][index];
+                item_info[index]['quantity']           = values['cmline_qty'][index].replace(',',"");
+                item_info[index]['rate']               = values['cmline_rate'][index].replace(',',"");
+                item_info[index]['amount']             = values['cmline_amount'][index].replace(',',"");
+            }
+        });       
+    }
+    // console.log("Item Info");
+    // console.log(item_info);
+
+    if(count(_items) > 0)
+    { 
+        get_item_returns(_items, values,function(item_returns)
+        {
+            update_cm_submit(cm_id, customer_info, item_info, item_returns, 0, function(returns_cm, cm_id)
+            {
+               
+                toastr.success("Success");
+                setInterval(function()
+                {
+                    location.reload();
+                },2000)
+            });
+        });
+    }
+    else
+    {
+        toastr.warning("Please Select Item");
+    }
+
+}
 function credit_memo_submit()
 {
     var ctr = 0;
