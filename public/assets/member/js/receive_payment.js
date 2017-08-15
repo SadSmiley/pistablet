@@ -113,71 +113,76 @@ function receive_payment()
 			    // 		action_compute_maximum_amount();
 			    // 	})		    		
 	    		// }
-	    		get_shop_id(function(shop_id)
+	    		get_session('rp_id', function(rp_id)
 	    		{
-	    			db.transaction(function (tx)
-			        {
-			        	// $query->leftJoin(DB::raw("(select sum(rpline_amount) as amount_applied, rpline_reference_id from tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = ".$shop_id." and rpline_reference_name = 'invoice' group by concat(rpline_reference_name,'-',rpline_reference_id)) pymnt"), "pymnt.rpline_reference_id", "=", "inv_id");
-			        	// $query->where("inv_shop_id", $shop_id)->where("inv_customer_id", $customer_id);
-			        	// ->where("inv_is_paid", 0)->where("is_sales_receipt",0)
-			            var query_check = 'SELECT * FROM tbl_customer_invoice '+
-			            				  'LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id from tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id '+
-			            				  // 'LEFT JOIN "pymnt.rpline_reference_id", "=", "inv_id" '+
-			                              'WHERE inv_shop_id = '+shop_id+' AND inv_customer_id = '+customer_id+' AND inv_is_paid = 0 AND is_sales_receipt = 0';
+	    			if(!rp_id)
+	    			{
+			    		get_shop_id(function(shop_id)
+			    		{
+			    			db.transaction(function (tx)
+					        {
+					        	// $query->leftJoin(DB::raw("(select sum(rpline_amount) as amount_applied, rpline_reference_id from tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = ".$shop_id." and rpline_reference_name = 'invoice' group by concat(rpline_reference_name,'-',rpline_reference_id)) pymnt"), "pymnt.rpline_reference_id", "=", "inv_id");
+					        	// $query->where("inv_shop_id", $shop_id)->where("inv_customer_id", $customer_id);
+					        	// ->where("inv_is_paid", 0)->where("is_sales_receipt",0)
+					            var query_check = 'SELECT * FROM tbl_customer_invoice '+
+					            				  'LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id from tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id '+
+					            				  // 'LEFT JOIN "pymnt.rpline_reference_id", "=", "inv_id" '+
+					                              'WHERE inv_shop_id = '+shop_id+' AND inv_customer_id = '+customer_id+' AND inv_is_paid = 0 AND is_sales_receipt = 0';
 
-			            var check    = 'SELECT * FROM tbl_customer_invoice LEFT JOIN';
-			            tx.executeSql(query_check, [], function(tx, results)
-			            {
-			                var append_default = '<tr>'+
-		                                             '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
-		                                             '<input type="hidden" value="" name="rpline_txn_id[]">'+
-		                                              '<td class="text-center">'+
-		                                                '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="" >'+
-		                                                '<input type="checkbox" class="line-checked">'+
-		                                              '</td>'+
-		                                              '<td></td>'+
-		                                              '<td class="text-right"></td>'+
-		                                              '<td><input type="text" class="text-right original-amount" value="" disabled /></td>'+
-		                                              '<td><input type="text" class="text-right balance-due" value="" disabled /></td>'+
-		                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
-		                                          '</tr>';
-			                if (results.rows.length <= 0) 
-			                {
-			                	$('.tbody-item').html(append_default);
-			                }
-			                else
-			                {
-			                	$('.tbody-item').html('');
+					            // var check    = 'SELECT * FROM tbl_customer_invoice LEFT JOIN';
+					            tx.executeSql(query_check, [], function(tx, results)
+					            {
+					                var append_default = '<tr class="inv-rp-id">'+
+				                                             '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
+				                                             '<input type="hidden" value="" name="rpline_txn_id[]" class="inv-rp-id">'+
+				                                              '<td class="text-center">'+
+				                                                '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="" >'+
+				                                                '<input type="checkbox" class="line-checked">'+
+				                                              '</td>'+
+				                                              '<td></td>'+
+				                                              '<td class="text-right"></td>'+
+				                                              '<td><input type="text" class="text-right original-amount" value="" disabled /></td>'+
+				                                              '<td><input type="text" class="text-right balance-due" value="" disabled /></td>'+
+				                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
+				                                          '</tr>';
+					                if (results.rows.length <= 0) 
+					                {
+					                	$('.tbody-item').html(append_default);
+					                }
+					                else
+					                {
+					                	$('.tbody-item').html('');
 
-			                	$.each(results.rows, function(index, val) 
-				                {
-				                	get_cm_amount(val.credit_memo_id, function(cm_amount)
-			                		{
-			                			// console.log(cm_amount);
-			                			var append = '<tr>'+
-			                                             '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
-			                                             '<input type="hidden" value="'+val.inv_id+'" name="rpline_txn_id[]">'+
-			                                              '<td class="text-center">'+
-			                                                '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="" >'+
-			                                                '<input type="checkbox" class="line-checked">'+
-			                                              '</td>'+
-			                                              '<td>Invoice #'+val.new_inv_id+' ( '+val.inv_date+' )</td>'+
-			                                              '<td class="text-right">'+val.inv_date+'</td>'+
-			                                              '<td><input type="text" class="text-right original-amount" value="'+(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
-			                                              '<td><input type="text" class="text-right balance-due" value="'+(((val.inv_overall_price) - val.amount_applied) + ((val.rpline_amount ? val.rpline_amount : 0 ) - cm_amount)).toFixed(2)+'" disabled /></td>'+
-			                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
-			                                          '</tr>';
+					                	$.each(results.rows, function(index, val) 
+						                {
+						                	get_cm_amount(val.credit_memo_id, function(cm_amount)
+					                		{
+					                			// console.log(cm_amount);
+					                			var append = '<tr class="inv-rp-id" inv_rp_id="'+val.inv_id+'">'+
+					                                             '<input type="hidden" value="invoice" class="rp-type" name="rpline_txn_type[]">'+
+					                                             '<input type="hidden" value="'+val.inv_id+'" class="rp-inv-id" name="rpline_txn_id[]">'+
+					                                              '<td class="text-center">'+
+					                                                '<input type="hidden" class="line-is-checked inv-is-paid" name="line_is_checked[]" value="" >'+
+					                                                '<input type="checkbox" class="rp line-checked">'+
+					                                              '</td>'+
+					                                              '<td>Invoice #'+val.new_inv_id+' ( '+val.inv_date+' )</td>'+
+					                                              '<td class="text-right">'+val.inv_date+'</td>'+
+					                                              '<td><input type="text" class="text-right original-amount" value="'+(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
+					                                              '<td><input type="text" class="text-right balance-due" value="'+(((val.inv_overall_price) - val.amount_applied) + ((val.rpline_amount ? val.rpline_amount : 0 ) - cm_amount)).toFixed(2)+'" disabled /></td>'+
+					                                              '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
+					                                          '</tr>';
 
-					                	$('.tbody-item').append(append);
-			                		});
-				                	
-				                });
-			                }
-			                
-			            },
-			            onError);
-			        });
-	    		})
+							                	$('.tbody-item').append(append);
+					                		});
+						                	
+						                });
+					                }			                
+					            },
+					            onError);
+					        });
+			    		});
+	    			}
+	    		});
 		    }
 		});
 	}

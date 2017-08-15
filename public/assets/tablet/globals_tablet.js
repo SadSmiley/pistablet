@@ -1943,13 +1943,68 @@ function get_rp_data(rp_id, callback)
             {
                 var rp = results.rows[0];
 
-                var select_rpline = 'SELECT * FROM tbl_receive_payment_line where rpline_rp_id = ' + rp_id;
+                var select_rpline = 'SELECT * FROM tbl_customer_invoice ' +
+                                    'LEFT JOIN tbl_receive_payment_line ON tbl_receive_payment_line.rpline_reference_id = tbl_customer_invoice.inv_id ' +
+                                    'WHERE inv_customer_id = ' + rp['rp_customer_id'] + 
+                                    ' AND inv_is_paid = 0 OR rpline_rp_id = ' + rp_id;
                 tx.executeSql(select_rpline, [], function(txs, results_rpline)
                 {
                     var rpline = results_rpline.rows;
 
-                    callback(rp, rpline);
-                }); 
+                    callback(rp, rpline);                                                                                              
+                },
+                onError); 
+            },
+            onError);
+        });
+    });
+}
+function update_rp_submit(rp_id, customer_info, insertline, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        get_sir_id(function(sir_id)
+        {
+            db.transaction(function(tx)
+            {
+                var update_query = 'UPDATE tbl_receive_payment SET (rp_shop_id, '+
+                                   ' rp_customer_id, '+
+                                   ' rp_ar_account, '+
+                                   ' rp_date, '+
+                                   ' rp_total_amount, '+
+                                   ' rp_payment_method, ' + 
+                                   ' rp_memo, ' + 
+                                   ' date_created, ' + 
+                                   ' rp_ref_name, ' + 
+                                   ' rp_ref_id, ' + 
+                                   ' created_at )' + 
+                                   '= ('+
+                                   shop_id+','+
+                                   customer_info['rp_customer_id'] +','+
+                                   customer_info['rp_ar_account'] +',"'+
+                                   customer_info['rp_date'] + '",' +
+                                   customer_info['rp_total_amount'] + ',' +
+                                   customer_info['rp_payment_method'] + ',"' +
+                                   customer_info['rp_memo'] + '","' +
+                                   customer_info['date_created'] + '","' +
+                                   customer_info['rp_ref_name'] + '",' +
+                                   customer_info['rp_ref_id'] + ',"' +
+                                   customer_info['date_created'] + '") '+
+                                   'WHERE rp_id = ' + rp_id;
+
+                tx.executeSql(update_query, [], function(tx, results)
+                {
+                    var delete_query = 'DELETE FROM tbl_receive_payment_line where rpline_rp_id = ' + rp_id;
+                    tx.executeSql(delete_query, [], function(txt2,res)
+                    {
+                        insert_rpline(rp_id, insertline, function(result_line)
+                        {
+                            callback(rp_id);
+                        });
+                    },
+                    onError);
+                },
+                onError);
             });
         });
     });
@@ -2073,7 +2128,7 @@ function update_payment_applied(inv_id, callback)
         update['inv_payment_applied'] = amount_applied;
         db.transaction(function(tx)
         {
-            var update_query = 'UPDATE tbl_customer_invoice SET inv_payment_applied = ' + update['inv_payment_applied'] 
+            var update_query = 'UPDATE tbl_customer_invoice SET inv_payment_applied = ' + update['inv_payment_applied'] +
                                ' WHERE inv_id = '+ inv_id;
             tx.executeSql(update_query, [], function(tx, results)
             {
@@ -2151,14 +2206,17 @@ function get_amount_applied(inv_id, callback)
     {
         db.transaction(function(tx)
         {
-            var query = 'SELECT amount_applied FROM tbl_customer_invoice' + 
+            var query = 'SELECT credit_memo_id, amount_applied FROM tbl_customer_invoice' + 
                         ' LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id FROM tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id ' + 
                         ' WHERE inv_id = ' + inv_id;
             tx.executeSql(query, [], function(tx, results)
             {
                if(results.rows.length > 0 && results.rows[0]['amount_applied'] != null)
                {
-                    callback(results.rows[0]['amount_applied']);
+                    get_cm_amount(results.rows[0]['credit_memo_id'], function(cm_amount)
+                    {
+                        callback(results.rows[0]['amount_applied'] + cm_amount);
+                    });
                }
                else
                {

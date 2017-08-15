@@ -15,6 +15,8 @@ function agent_dashboard()
 	{
 		check_if_have_login();
         forget_session('inv_id');
+        forget_session('cm_id');
+        forget_session('rp_id');
 	}
 	function check_if_have_login()
 	{
@@ -96,10 +98,9 @@ function agent_dashboard()
             });     
 
             //cycyjoin
-            var query_count_credit_sales = 'SELECT sum(tbl_customer_invoice.inv_overall_price - cm_amount) as inv_total_amount '+
+            var query_count_credit_sales = 'SELECT sum(tbl_customer_invoice.inv_overall_price) as inv_total_amount, tbl_customer_invoice.inv_id, credit_memo_id '+
                                            ' FROM tbl_manual_invoice LEFT JOIN tbl_sir ON tbl_sir.sir_id = tbl_manual_invoice.sir_id '+
                                            ' LEFT JOIN tbl_customer_invoice ON tbl_customer_invoice.inv_id = tbl_manual_invoice.inv_id '+
-                                           ' LEFT JOIN tbl_credit_memo ON tbl_credit_memo.cm_id = tbl_customer_invoice.credit_memo_id '+
                                            ' WHERE tbl_customer_invoice.is_sales_receipt = 0 '+
                                            ' AND tbl_customer_invoice.inv_is_paid = 0 '+
                                            ' AND tbl_manual_invoice.sir_id = '+sir_id+
@@ -109,10 +110,14 @@ function agent_dashboard()
                 var total = 0;
                 $.each(results.rows, function(key, val)
                 {
-                    total += roundNumber(val['inv_total_amount']);
-                })
-                $(".credit-sales").html("Php "+ReplaceNumberWithCommas(total));
-            }); 
+                    get_cm_amount(val['credit_memo_id'],function(cm_amount)
+                    {
+                        total += roundNumber(val['inv_total_amount'] - cm_amount);
+                        $(".credit-sales").html("Php "+ReplaceNumberWithCommas(total));
+                    });
+                });
+            },
+            onError); 
 
             var query_count_cash_sales = 'SELECT *, sum(tbl_customer_invoice.inv_overall_price) as cash_sales_total_amount FROM tbl_manual_invoice LEFT JOIN tbl_sir ON tbl_sir.sir_id = tbl_manual_invoice.sir_id LEFT JOIN tbl_customer_invoice ON tbl_customer_invoice.inv_id = tbl_manual_invoice.inv_id LEFT JOIN tbl_credit_memo ON tbl_credit_memo.cm_id = tbl_customer_invoice.credit_memo_id WHERE tbl_customer_invoice.is_sales_receipt = "1" and tbl_manual_invoice.sir_id = "'+sir_id+'" GROUP BY tbl_customer_invoice.inv_id';
             tx.executeSql(query_count_cash_sales, [], function(txsts, results_cash_sales)

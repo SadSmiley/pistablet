@@ -18,8 +18,6 @@ function check_if_edit_cm()
                     {
                         get_all_item(function(item_list)
                         {
-                            console.log(cm);
-                            console.log(_cmline);
                             var option = "";
                             $.each(customer_list, function(key, datarow)
                             {
