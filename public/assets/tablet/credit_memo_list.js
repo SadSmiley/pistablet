@@ -16,6 +16,7 @@ function credit_memo_list()
 	function document_ready()
 	{
 		check_if_have_login();
+        forget_session('cm_id_print');
 	}
 	function check_if_have_login()
 	{
@@ -92,7 +93,12 @@ function credit_memo_list()
                     company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : "" ;
                     tr += '<td>'+company+'</td>';
                     tr += '<td>'+ReplaceNumberWithCommas("Php "+(datarow['cm_amount']).toFixed(2))+'</td>';
-                    tr += '<td class="text-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-custom"><li><a onClick="edit_credit_memo('+datarow['cm_id']+')">Edit CM</a></li></ul></div></td>';
+                    tr += '<td class="text-center"><div class="btn-group">'+
+                          '<button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button>'+
+                          '<ul class="dropdown-menu dropdown-menu-custom">'+
+                          '<li><a onClick="edit_credit_memo('+datarow['cm_id']+')">Edit CM</a></li>'+
+                          '<li><a onClick="view_credit_memo('+datarow['cm_id']+')">View CM</a></li>'+
+                          '</ul></div></td>';
                     tr += '</tr>';
                 });
                 $(".tbody-credit-memo-list").append(tr);
