@@ -45,18 +45,20 @@ function invoice_print()
 	        var tr = "";
 	        var tr_total = "";
 	        var taxable_amount = 0;
+	        var ctr_inv = 0;
 	        $.each(_invline, function(key, val)
 	        {
+	        	ctr_inv++;
 	        	var total_qty = val['unit_qty'] * val['invline_qty'];
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
-		        	tr += '<tr >' +
+		        	tr += '<tr>' +
 						  '<td>'+val['item_name']+'</td>'+
 						  '<td class="text-center">'+um_view+'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_amount']).toFixed(2)+'</td>' +
 						'</tr>';
-					if(inv['inv_is_paid'])
+					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)
 					{
 						tr += '<div class="watermark">PAID</div>';
 					}
@@ -143,7 +145,7 @@ function invoice_print()
 						{
 							cm_item_row += '<tr>' +
 										   '<td colspan="2"></td>' +
-										   '<td  style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>' +
+										   '<td style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>' +
 									       '<td style="text-align: right; font-weight: bold">'+(cm_amount).toFixed(2)+'</td>'+
 										   '</tr>';							
 						}
