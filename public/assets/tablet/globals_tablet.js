@@ -2272,11 +2272,6 @@ function get_payment_method(callback)
 
     });
 }
-function print_function()
-{
-    $('.print-btn').addClass('hidden');
-    window.print();
-}
 function roundNumber(number) 
 {
     var newnumber = new Number(number+'').toFixed(2);

@@ -157,3 +157,13 @@ function invoice_print()
 	    });
 	}
 }
+
+function print_function()
+{
+    // $('.print-btn').addClass('hidden');
+
+    var type = "text/html";
+    var title = "test.html";
+    var fileContent = "<html>Phonegap Print Plugin</html>";
+    window.plugins.PrintPlugin.print(fileContent,function(){console.log('success')},function(){console.log('fail')},"",type,title);
+}
