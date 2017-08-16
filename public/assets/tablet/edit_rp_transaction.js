@@ -33,11 +33,12 @@ function check_if_edit_rp()
                           get_cm_amount(val.credit_memo_id, function(cm_amount)
                           {
                               var sign = val.rpline_id != null ? "checked" : "";
+
                               append = '<tr>'+
                                                '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
                                                '<input type="hidden" value="'+val.inv_id+'" name="rpline_txn_id[]">'+
                                                 '<td class="text-center">'+
-                                                  '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="1" >'+
+                                                  '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="'+(val.rpline_id != null ? "1" : "0")+'" >'+
                                                   '<input type="checkbox" '+ sign +' class="line-checked">'+
                                                 '</td>'+
                                                 '<td>Invoice #'+val.new_inv_id+' ( '+val.inv_date+' )</td>'+

@@ -1946,7 +1946,8 @@ function get_rp_data(rp_id, callback)
                 var select_rpline = 'SELECT * FROM tbl_customer_invoice ' +
                                     'LEFT JOIN tbl_receive_payment_line ON tbl_receive_payment_line.rpline_reference_id = tbl_customer_invoice.inv_id ' +
                                     'WHERE inv_customer_id = ' + rp['rp_customer_id'] + 
-                                    ' AND inv_is_paid = 0 OR rpline_rp_id = ' + rp_id;
+                                    ' AND inv_is_paid = 0 OR rpline_rp_id = ' + rp_id + 
+                                    ' GROUP BY tbl_customer_invoice.inv_id';
                 tx.executeSql(select_rpline, [], function(txs, results_rpline)
                 {
                     var rpline = results_rpline.rows;
