@@ -1559,6 +1559,11 @@ function edit_invoice(inv_id)
     set_session('inv_id',inv_id);
     location.href = '../agent_transaction/invoice/invoice_transaction.html';
 }
+function view_invoice(inv_id)
+{
+    set_session('inv_id_print',inv_id);
+    location.href = '../agent_transaction/invoice/invoice_print.html';
+}
 function edit_credit_memo(cm_id)
 {
     set_session('cm_id',cm_id);
@@ -1576,6 +1581,8 @@ function get_invoice_data(inv_id, callback)
         db.transaction(function(tx)
         {
             var select_query = 'SELECT * FROM tbl_customer_invoice '+
+                               'LEFT JOIN tbl_customer ON tbl_customer_invoice.inv_customer_id = tbl_customer.customer_id ' +
+                               'LEFT JOIN tbl_terms ON tbl_terms.terms_id = tbl_customer_invoice.inv_terms_id ' +
                                'LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id FROM tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id ' +
                                'WHERE tbl_customer_invoice.inv_id = ' + inv_id;
             tx.executeSql(select_query,[],function(tx2, results)
