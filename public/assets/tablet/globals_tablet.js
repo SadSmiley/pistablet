@@ -1714,13 +1714,12 @@ function get_cm_data(cm_id, callback)
     db.transaction(function(tx)
     {
         var select_query_cm = 'SELECT * FROM tbl_credit_memo '+
-                              'LEFT JOIN tbl_customer ON tbl_customer.customer_id = tbl_credit_memo.cm_customer_id '
+                              'LEFT JOIN tbl_customer ON tbl_customer.customer_id = tbl_credit_memo.cm_customer_id ' +
                               'WHERE cm_id = ' + cm_id;
 
         tx.executeSql(select_query_cm,[],function(tx4, results_cm)
         {
             var cm = results_cm.rows[0];
-            console.log(results_cm);
             var select_query_cmline = 'SELECT * FROM tbl_credit_memo_line '+
                                       'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
                                       'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +

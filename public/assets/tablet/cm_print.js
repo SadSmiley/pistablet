@@ -173,7 +173,8 @@ function cm_print()
 	    	console.log(_cmline);
 
 	        $('.cm-customer-name').html(cm['company'] == "" ? cm['first_name'] + " " + cm['middle_name']+ " " + cm['last_name'] : cm['company']);
-
+	        $('.cm-id-print').html(cm['cm_id']);
+	        $('.cm-date').html(cm['created_date']);
 	        var cm_item_row = "";
 	        $.each(_cmline, function(key, val)
 			{
