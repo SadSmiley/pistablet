@@ -42,6 +42,17 @@ function invoice_print()
 	        $('.inv-due-date').html(inv['inv_due_date']);
 	        $('.inv-terms').html(inv['terms_name']);
 
+	        if(inv['is_sales_receipt'] == 1)
+	        {
+	        	$('.cancel-btn').attr('href','../../agent/sales_receipt.html');
+	        	$('.transaction-type').html('Sales Report');
+	        }
+	        else
+	        {
+	        	$('.cancel-btn').attr('href','../../agent/invoice.html');
+	        	$('.transaction-type').html('INVOICE');
+	        }
+
 	        var tr = "";
 	        var tr_total = "";
 	        var taxable_amount = 0;
