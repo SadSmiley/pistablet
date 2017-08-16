@@ -13,42 +13,36 @@
     
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker-standalone.min.css">
     <link rel="stylesheet" href="../../public/assets/member/styles/92bc1fe4.bootstrap.css">
-    <link rel="stylesheet" href="../../public/assets/member/styles/vendor/jquery.pnotify.default.css">
-    <link rel="stylesheet" href="../../public/assets/member/styles/vendor/select2/select2.css">
-    <link rel="stylesheet" href="../../public/assets/member/styles/vendor/datatables.css" media="screen"/> 
-    <link rel="stylesheet" href="../../public/assets/member/styles/aaf5c053.proton.css">
-    <link rel="stylesheet" href="../../public/assets/member/styles/vendor/animate.css">
-    <link rel="stylesheet" href="../../public/assets/member/css/customBTN.css" type="text/css" />
-    <link rel="stylesheet" href="../../public/assets/external/chosen/chosen/chosen.css" media="screen"/>
-    
-    <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
-    <script src="../../public/assets/member/scripts/vendor/respond.min.js"></script>
-    <![endif]-->
-    
-    <link rel="stylesheet" type="text/css" href="../../public/assets/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../public/assets/member/styles/6227bbe5.font-awesome.css" type="text/css"/>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"/> -->
-    <link rel="stylesheet" href="../../public/assets/member/styles/40ff7bd7.font-titillium.css" type="text/css"/>
-    <link rel="stylesheet" href="../../public/assets/member/css/member.css" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="../../public/assets/member/plugin/toaster/toastr.css">
-    <link rel="stylesheet" type="text/css" href="../../public/assets/member/css/notice.css">
-    <link rel="stylesheet" type="text/css" href="../../public/assets/member/css/loader.css">
-    <link rel="stylesheet" type="text/css" href="../../public/assets/member/css/windows8.css">
-    <link rel="stylesheet" type="text/css" href="../../public/assets/member/css/image_gallery.css">
-    <link rel="stylesheet" type="text/css" href="../../public/assets/member/plugin/dropzone/basic.css">
-    <link rel="stylesheet" type="text/css" href="../../public/assets/custom_plugin/myDropList/css/myDropList.css">
 
     <!-- <link rel="stylesheet" type="text/css" href="../../public/assets/chartist/chartist.css"> -->
     <!-- <link rel="stylesheet" type="text/css" href="../../public/assets/member/plugin/dropzone/dropzone.min.css"> -->
 
     <link rel="stylesheet" href="../../public/assets/external/jquery_css/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="../../public/assets/mlm/pace.css">
     <style type="text/css">
     	.whole-page-inv
     	{
     		margin: 20px;
     	}
+        page
+        {
+            background:white;display:block;margin:0 auto;margin-bottom:0.5cm;box-shadow:0 0 0.5cm rgba(0,0,0,0.5)
+        }
+        page[size="A4"]
+        {
+            width:21cm;height:29.7cm
+        }
+        page[size="A4"][layout="portrait"]
+        {
+            width:29.7cm;height:21cm
+        }
+        .invoice-pdflook
+        {
+            padding: 15px;
+        }
+        td, thead
+        {
+            padding: 10px;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="../../public/assets/member/css/global.css">
     <script>
@@ -62,140 +56,63 @@
     document.write('<script src="' + js + '"><\/script>');
     }());
     </script>
-    <script src="../../public/assets/member/scripts/vendor/modernizr.js"></script>
     <script src="../../public/assets/member/scripts/vendor/jquery.cookie.js"></script>
-    <script>
-    $(function()
-    {
-        $(".datepicker").datepicker();
-    });
-    </script>
 </head>
 <body id="body">
     <!--[if lt IE 8]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+    <page size="A4">
+        <div class="invoice-pdflook">
+            <div class="row whole-page-inv">
+            	<div class="form-group">
+        			<h2>INVOICE</h2>		
+        		</div>
+        		<div class="form-group row clearfix">
+                    <table style="width: 100% ">
+                        <tr>
+                            <td width="50%">
+                                <strong>BILL TO</strong><br>
+                                <span class="inv-customer-name"></span>
+                            </td>
+                            <td style="width:25%;text-align: left">
+                                <strong>INVOICE NO.</strong><br>
+                                <strong>DATE.</strong><br>
+                                <strong>DUE DATE</strong><br>
+                                <strong>TERMS</strong><br>                                
+                            </td>
+                            <td style="width:25%;text-align: left">
+                                <span class="inv-id-print"></span><br>
+                                <span class="inv-date"></span><br>
+                                <span class="inv-due-date"></span><br>
+                                <span class="inv-terms"></span><br>                                
+                            </td>
+                        </tr>
+                    </table>
+        		</div>
 
-    <div class="row whole-page-inv">
-    	<div class="form-group">
-			<h2>INVOICE</h2>		
-		</div>
-		<div class="form-group">
-			<div class="col-md-6">
-				<strong>BILL TO</strong><br>
-				<span class="inv-customer-name"></span>
-			</div>
-			<div class="col-md-6 text-right" >
-				<div class="col-md-6 text-right">
-					<strong>INVOICE NO.</strong><br>
-					<strong>DATE.</strong><br>
-					<strong>DUE DATE</strong><br>
-					<strong>TERMS</strong><br>
-				</div>
-				<div class="col-md-6 text-left" >
-					<span class="inv-id-print"></span><br>
-					<span class="inv-date"></span><br>
-					<span class="inv-due-date"></span><br>
-					<span class="inv-terms"></span><br>
-				</div>
-			</div>
-		</div>
+        		<table width="100%" >
+        			<thead style="border: 1px solid #000">
+                        <tr>
+            				<th>PRODUCT NAME</th>
+            				<th class="text-center">QTY</th>
+            				<th class="text-center">PRICE</th>
+            				<th class="text-center">AMOUNT</th>
+                        </tr>
+        			</thead>
+        			<tbody class="inv-itemline">
 
-		<table width="100%" >
-			<tr>
-				<th>PRODUCT NAME</th>
-				<th width="20%" class="text-center">QTY</th>
-				<th width="15%" class="text-center">PRICE</th>
-				<th width="15%" class="text-center">AMOUNT</th>
-			</tr>
-			<tbody class="inv-itemline">
-		<!-- 	@if($invoice_item)		
-				@foreach($invoice_item as $item)
-					<tr >
-						<td>{{$item->item_name}}</td>
-						<td style="text-align: center;">{{$item->qty}}</td>
-						<td style="text-align: right;">{{currency("PHP",$item->invline_rate)}}</td>
-						<td style="text-align: right;">{{currency("PHP",$item->invline_amount)}}</td>
-						<td style="text-align: center;" {{$taxable_item += $item->taxable == 1 ? $item->invline_amount : 0}}>{{$item->taxable == 1 ? "&#10004;" : '' }}</td>
-					</tr>
-				@endforeach
-				<div class="{{$invoice->inv_is_paid == 1 ? 'watermark' : 'hidden'}}"> PAID </div>
-			@endif	
-				<tr>
-					<td colspan="2"></td>
-					<td colspan="2" style="text-align: left;font-weight: bold">SUBTOTAL</td>
-					<td style="text-align: right; font-weight: bold">{{currency('PHP', $invoice->inv_subtotal_price)}}</td>
-				</tr>
-				@if($invoice->ewt != 0)
-				<tr>
-					<td colspan="2"></td>
-					<td colspan="2" style="text-align: left;font-weight: bold">EWT ({{$invoice->ewt * 100}} %)</td>
-					<td style="text-align: right; font-weight: bold">{{currency('PHP',$invoice->ewt *  $invoice->inv_subtotal_price)}}</td>
-				</tr>
-				@endif
-				@if($invoice->inv_discount_value != 0)
-				<tr>
-					<td colspan="2"></td>
-					<td colspan="2" style="text-align: left;font-weight: bold">Discount {{$invoice->inv_discount_type == 'percent' ? $invoice->inv_discount_type."%" : '' }}</td>
-					<td style="text-align: right; font-weight: bold">{{$invoice->inv_discount_type == 'value' ? currency("PHP",$invoice->inv_discount_value) : currency("PHP",($invoice->inv_discount_value/100) * $invoice->inv_subtotal_price) }}</td>
-				</tr>
-				@endif
-				@if($invoice->taxable != 0)
-				<tr>
-					<td colspan="2" ></td>
-					<td colspan="2" style="text-align: left;font-weight: bold">Vat (12%)</td>
-					<td style="text-align: right; font-weight: bold">{{currency("PHP",$taxable_item * (12/100))  }}</td>
-				</tr>
-				@endif
-				<tr class="{{$cm_total = 0}}">
-					<td colspan="2"></td>
-					<td colspan="2" style="text-align: left;font-weight: bold">INVOICE TOTAL</td>
-					<td style="text-align: right; font-weight: bold">{{currency("PHP",$invoice->inv_overall_price)}}</td>
-				</tr>
-
-				@if($cm != null)
-					<tr class="{{$cm_total = $cm->cm_amount}}">
-						<td colspan="5">
-							<strong>RETURNS</strong>
-						</td>
-					</tr>
-					@if($_cmline != null)
-						@foreach($_cmline as $cmline)
-						<tr>
-							<td>{{$cmline->item_name}}</td>
-							<td style="text-align: center;">{{$cmline->cm_qty}}</td>
-							<td style="text-align: right;">{{currency("PHP",$cmline->cmline_rate)}}</td>
-							<td style="text-align: right;">{{currency("PHP",$cmline->cmline_amount)}}</td>
-							<td></td>
-						</tr>
-						@endforeach
-					@endif
-					<tr>
-						<td colspan="2"></td>
-						<td  colspan="2" style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>
-						<td style="text-align: right; font-weight: bold">{{currency('PHP', $cm->cm_amount)}}</td>
-						<td></td>
-					</tr>
-				@endif
- -->
-			</tbody>
-		</table>
-		<div class="row pull-right" style="margin-right: 10px">
-			<h3><strong>TOTAL</strong></h3><h3 class="inv-total"></h3>
-		</div>
-    </div>
-
-
-    <script type="text/javascript" src="../../public/assets/member/global.js"></script>
-
+        			</tbody>
+        		</table>
+        		<div class="row pull-right" style="margin-right: 10px">
+        			<h3 style="font-style: bold" class="inv-overall-total"></h3>
+        		</div>
+            </div>
+        </div>
+    </page>
     <script src="../../public/assets/external/jquery_ui/jquery_ui.js"></script>
     <script src="../../public/assets/member/scripts/e1d08589.bootstrap.min.js"></script>
-    <script src="../../public/assets/member/scripts/9f7a46ed.proton.js"></script>
     <script type="text/javascript" src="../../public/assets/member/scripts/vendor/jquery.pnotify.min.js"></script>
-    <script type="text/javascript" src="../../public/assets/member/plugin/toaster/toastr.min.js"></script>
-    <script type="text/javascript" src='../../public/assets/member/js/notice.js'></script>
-    <script type="text/javascript" src='../../public/assets/member/plugin/dropzone/dropzone.js'></script>
-    <script type="text/javascript" src='../../public/assets/member/js/match-height.js'></script>
 
 <script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
 <script type="text/javascript" src="../../public/assets/tablet/invoice_print.js"></script>

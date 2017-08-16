@@ -71,7 +71,7 @@ function invoice_print()
 
 			tr_total += '<tr>' +
 				  '<td colspan="2"></td>' +
-				  '<td colspan="2" style="text-align: left;font-weight: bold">SUBTOTAL</td>' + 
+				  '<td  style="text-align: left;font-weight: bold">SUBTOTAL</td>' + 
 			 	  '<td style="text-align: right; font-weight: bold">'+(inv['inv_subtotal_price']).toFixed(2)+'</td>' +
 				  '</tr>';
 
@@ -79,7 +79,7 @@ function invoice_print()
 			{
 				tr_total += '<tr>' + 
 							'<td colspan="2"></td>' + 
-							'<td colspan="2" style="text-align: left;font-weight: bold">EWT ('+ (inv['ewt'] * 100) +' %)</td>'+
+							'<td style="text-align: left;font-weight: bold">EWT ('+ (inv['ewt'] * 100) +' %)</td>'+
 							'<td style="text-align: right; font-weight: bold">'+ (inv['ewt'] * inv['inv_subtotal_price'])+'</td>'+
 							'</tr>';
 			}
@@ -95,7 +95,7 @@ function invoice_print()
 
 				tr_total += '<tr>' + 
 							'<td colspan="2"></td>' +
-							'<td colspan="2" style="text-align: left;font-weight: bold">Discount '+ sign_disc+'</td>'+
+							'<td  style="text-align: left;font-weight: bold">Discount '+ sign_disc+'</td>'+
 							'<td style="text-align: right; font-weight: bold">'+(disc_val).toFixed(2)+'</td>'+
 							'</tr>';
 			}
@@ -103,17 +103,55 @@ function invoice_print()
 			{
 				tr_total += '<tr>' + 
 							'<td colspan="2" ></td>' +
-							'<td colspan="2" style="text-align: left;font-weight: bold">Vat (12%)</td>'+
+							'<td style="text-align: left;font-weight: bold">Vat (12%)</td>'+
 							'<td style="text-align: right; font-weight: bold">'+(taxable_amount * (12/100)).toFixed(2)+'</td>' +
 							'</tr>';
 			}
 			tr_total += '<tr class="">'+
 						'<td colspan="2"></td>' + 
-						'<td colspan="2" style="text-align: left;font-weight: bold">INVOICE TOTAL</td>'+
+						'<td style="text-align: left;font-weight: bold">INVOICE TOTAL</td>'+
 						'<td style="text-align: right; font-weight: bold">'+(inv['inv_overall_price']).toFixed(2)+'</td>'+
 						'</tr>';
 
 	        $('.inv-itemline').append(tr_total);
+
+	        var cm_item_row = "";
+	        var cm_amount = 0;
+			if(_cmline.length > 0)
+			{
+				cm_item_row += '<tr>' + 
+							'<td colspan="4">' + 
+							'<strong>RETURNS</strong>' +
+							'</td>' +
+							'</tr>';
+				var ctr = 0;
+				$.each(_cmline, function(key, val)
+				{
+					ctr++;
+					cm_amount += val['cmline_amount']; 
+					var qty = (val['cmline_qty'] * val['unit_qty']);
+					unit_measurement_view(qty, val['cmline_item_id'], val['cmline_um'], function(um_view)
+					{
+						cm_item_row += '<tr>' + 
+								       '<td>'+ val['item_name'] +'</td>'+
+								       '<td style="text-align: center;">'+um_view+'</td>' +
+								       '<td style="text-align: center;">'+ (val['cmline_rate']).toFixed(2)+'</td>' +
+								       '<td style="text-align: center;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
+									   '</tr>';
+
+						if(ctr == _cmline.length)
+						{
+							cm_item_row += '<tr>' +
+										   '<td colspan="2"></td>' +
+										   '<td  style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>' +
+									       '<td style="text-align: right; font-weight: bold">'+(cm_amount).toFixed(2)+'</td>'+
+										   '</tr>';							
+						}
+		        		$('.inv-itemline').append(cm_item_row);
+					});
+				});
+			}
+			$('.inv-overall-total').html("<strong>TOTAL</strong>  PHP" +(inv['inv_overall_price'] - cm_amount).toFixed(2));
 	    });
 	}
 }
