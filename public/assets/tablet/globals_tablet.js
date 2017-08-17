@@ -2380,10 +2380,10 @@ function get_payment_method(callback)
 }
 function print_function()
 {
-    $('.print-btn').addClass('hidden');
+    // $('.print-btn').addClass('hidden');
     // window.print();
     // // URI for the index.html 
-    var page =document.getElementById('print_html');
+    var page = document.getElementById('print_html');
      
     cordova.plugins.printer.print(page, 'Document.html', function () {
         alert('printing finished or canceled')
