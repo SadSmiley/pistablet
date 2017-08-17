@@ -6,6 +6,9 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 
+document.addEventListener('deviceready', function () {
+    // cordova.plugins.printer is now available
+}, false);
 
 function get_session(label, callback)
 {
