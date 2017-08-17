@@ -7,9 +7,17 @@ var dataset_from_browser = null;
 var global_data = null;
 
 document.addEventListener('deviceready', function () {
-    // cordova.plugins.printer is now available
+    print_plugin();
 }, false);
 
+function print_plugin()
+{
+    $('.print-plugin-btn').unbind('click');
+    $('.print-plugin-btn').bind('click',function()
+    {
+        print_function();
+    });
+}
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
