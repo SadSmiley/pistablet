@@ -9,12 +9,13 @@ var global_data = null;
 document.addEventListener('deviceready', function () {
     print_plugin();
 }, false);
-
+print_plugin();
 function print_plugin()
 {
     $('.print-plugin-btn').unbind('click');
     $('.print-plugin-btn').bind('click',function()
     {
+        alert("test");
         var page = document.getElementById('print_html');
      
         window.plugins.printer.print(page, 'Document.html', function () {
