@@ -18,6 +18,7 @@ function credit_memo_transaction()
 		check_if_have_login();
         edit_inv_item();
         edit_cm_item();
+        initialize_select_plugin();
 	}
 	function check_if_have_login()
 	{
@@ -896,7 +897,7 @@ function cm_type_modal(cm_id)
                      '<br>' +
                      '<div class="form-group">' +
                      '<div class="col-md-12 col-xs-12">'+
-                     '<a class="btn btn-def-white btn-custom-white form-control" onClick="cm_update(`invoice_tablet`, '+cm_id+')">Apply to an Invoice</a>'+
+                     '<a class="btn btn-def-white btn-custom-white form-control" onClick="apply_to_invoice(`invoice_tablet`, '+cm_id+')">Apply to an Invoice</a>'+
                      '</div>'+
                      '</div>';
 
@@ -918,6 +919,157 @@ function cm_update(type, cm_id)
             },2000)            
         }
     });
+}
+function action_put_payment()
+    {
+        get_payment_method(function(_payment_method)
+        {
+            $('.drop-down-payment').html('');
+            var ctr = 0;
+            $.each(_payment_method, function(key, value)
+            {
+                ctr++;
+                $('.drop-down-payment').globalDropList("reload");
+                var append = '<option value="'+value['payment_method_id']+'">'+value['payment_name']+'</option>';
+                $('.drop-down-payment').append(append);
+                if(_payment_method.length == ctr)
+                {
+                    $('.drop-down-payment').globalDropList("reload");
+                }
+            });
+        });
+    }
+
+    function action_put_accounting()
+    {
+        get_all_coa(function(coa)
+        {
+            $('.drop-down-coa').html('');
+            var ctr = 0;
+            $.each(coa, function(index, val) 
+            {
+                ctr++;
+                var append = '<option value="'+val.account_id+'" indent="'+val.account_sublevel+'" add-search="" reference="">'+
+                             val.account_number+' • '+val.account_name+
+                             '</option>';
+                $('.drop-down-coa').append(append);
+                // console.log(append);
+                if (coa.length == ctr) 
+                {
+                    $('.drop-down-coa').globalDropList("reload");
+                }
+            });
+        });
+    }
+    function initialize_select_plugin()
+    {
+        $(".drop-down-payment").globalDropList(
+        {
+            hasPopup    : "false",
+            width       : "100%",
+            placeholder : 'Payment Method'
+        });
+
+        $(".drop-down-coa").globalDropList(
+        {
+            hasPopup    : "false",
+            width       : "100%",
+            placeholder : 'Account'
+        });
+    }
+
+function apply_to_invoice(type, cm_id)
+{
+    if(type == 'invoice_tablet')
+    {
+        get_cm_data(cm_id, function(cm, _cmline)
+        {
+            var customer_id = cm['cm_customer_id'];
+            get_shop_id(function(shop_id)
+            {
+                db.transaction(function (tx)
+                {
+                    var query_check = 'SELECT * FROM tbl_customer_invoice '+
+                                      'LEFT JOIN (SELECT sum(rpline_amount) as amount_applied, rpline_reference_id from tbl_receive_payment_line as rpline inner join tbl_receive_payment rp on rp_id = rpline_rp_id where rp_shop_id = '+shop_id+' and rpline_reference_name = "invoice" GROUP BY rpline_reference_id) ON rpline_reference_id = inv_id '+
+                                      'WHERE inv_shop_id = '+shop_id+' AND inv_customer_id = '+customer_id+' AND inv_is_paid = 0 AND is_sales_receipt = 0';
+
+                    tx.executeSql(query_check, [], function(tx, results)
+                    {
+                        var append_default = '<tr class="inv-rp-id">'+
+                                                 '<input type="hidden" value="invoice" name="rpline_txn_type[]">'+
+                                                 '<input type="hidden" value="" name="rpline_txn_id[]" class="inv-rp-id">'+
+                                                  '<td class="text-center">'+
+                                                    '<input type="hidden" class="line-is-checked" name="line_is_checked[]" value="" >'+
+                                                    '<input type="checkbox" class="line-checked">'+
+                                                  '</td>'+
+                                                  '<td></td>'+
+                                                  '<td class="text-right"></td>'+
+                                                  '<td><input type="text" class="text-right original-amount" value="" disabled /></td>'+
+                                                  '<td><input type="text" class="text-right balance-due" value="" disabled /></td>'+
+                                                  '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value=""/></td>'+
+                                              '</tr>';
+                        if (results.rows.length <= 0) 
+                        {
+                            $('.tbody-item').html(append_default);
+                        }
+                        else
+                        {
+                            $("#modal_cm_apply_invoice").modal('show');
+                            $("#modal_cm_apply_invoice").find(".modal-dialog").addClass("modal-md");
+                            action_put_payment();
+                            action_put_accounting();
+
+                            $('.amount-received').val(cm['cm_amount']);
+                            $('.cm-rp-customer-name').val(cm['company'] != "" ? cm['company'] : cm['first_name'] +" "+cm['middle_name']+" "+cm['last_name']);
+                            $('.cm-rp-customer-id').val(customer_id);
+                            $('.cm-id').val(cm_id);
+                            
+                            $('.tbody-item').html('');
+                            var ctr = 0;
+                            var total_amount = 0;
+                            $.each(results.rows, function(index, val) 
+                            {
+                                get_cm_amount(val.credit_memo_id, function(cm_amount)
+                                {
+                                    ctr++;
+                                    var $total_balance = (((val.inv_overall_price) - val.amount_applied) + ((val.rpline_amount ? val.rpline_amount : 0 ) - cm_amount)).toFixed(2);
+                                    var price_to_pay = 0;
+                                    var sign = '';
+                                    var value = 0;
+                                    if($total_balance >= cm['cm_amount'] && ctr == 1)
+                                    {
+                                        price_to_pay = cm['cm_amount'];
+                                        sign = 'checked';
+                                        value = 1;
+                                        total_amount += cm['cm_amount'];
+                                    }
+
+                                    var append = '<tr class="inv-rp-id" inv_rp_id="'+val.inv_id+'">'+
+                                                     '<input type="hidden" value="invoice" class="rp-type" name="rpline_txn_type[]">'+
+                                                     '<input type="hidden" value="'+val.inv_id+'" class="rp-inv-id" name="rpline_txn_id[]">'+
+                                                      '<td class="text-center">'+
+                                                        '<input type="hidden" class="line-is-checked inv-is-paid"  name="line_is_checked[]" value="'+value+'" >'+
+                                                        '<input type="checkbox" '+sign+' class="rp line-checked">'+
+                                                      '</td>'+
+                                                      '<td>Invoice #'+val.new_inv_id+' ( '+val.inv_date+' )</td>'+
+                                                      '<td class="text-right">'+val.inv_date+'</td>'+
+                                                      '<td><input type="text" class="text-right original-amount" value="'+(val.inv_overall_price).toFixed(2)+'" disabled /></td>'+
+                                                      '<td><input type="text" class="text-right balance-due" value="'+(((val.inv_overall_price) - val.amount_applied) + ((val.rpline_amount ? val.rpline_amount : 0 ) - cm_amount)).toFixed(2)+'" disabled /></td>'+
+                                                      '<td><input type="text" class="text-right amount-payment" name="rpline_amount[]" value="'+price_to_pay+'"/></td>'+
+                                                  '</tr>';
+
+                                    $('.tbody-item').append(append);
+                                    $('.amount-to-apply').val(total_amount);
+                                    $('.amount-apply').html(total_amount);
+                                });                                
+                            });
+                        }                           
+                    },
+                    onError);
+                });
+            });
+        });
+    }    
 }
 function ReplaceNumberWithCommas(yourNumber)
 {

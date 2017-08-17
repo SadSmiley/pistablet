@@ -1,0 +1,122 @@
+
+<div id="modal_cm_apply_invoice" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form class="global-submit form-horizontal" role="form" action="/tablet/receive_payment/add_submit" id="confirm_answer" method="post">
+                <div class="modal-header">
+                    <input type="hidden" class="form-control input-sm" name="cm_id" value="42">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Receive Payment</h4>
+                </div>
+                <div class="modal-body add_new_package_modal_body clearfix">
+                    <div class="col-md-12" style="padding: 30px;">
+                        <!-- START CONTENT -->
+                        <div style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px;">
+                            <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" disabled="" name="rp_customer_name" value="Lope Labao">
+                                    <input type="hidden" class="form-control" name="rp_customer_id" value="345">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px;">
+                            <div class="row clearfix">
+                                <div class="col-sm-2">
+                                    <label>Payment Date</label>
+                                    <input type="text" class="datepicker form-control input-sm hasDatepicker" name="rp_date" value="08/17/17" id="dp1502947862771">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label>Payment Method</label>
+                                    <select class="drop-down-payment" name="rp_payment_method">
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>Reference No</label>
+                                    <input type="text" class="form-control input-sm">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label>Deposit to</label>
+                                    <select class="drop-down-coa" name="rp_ar_account">
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 pull-right">
+                                    <label>Amount Received</label>
+                                    <input type="text" class="input-sm form-control amount-received" value="10.5">
+                                </div>
+                            </div>
+                            <!--  <div class="row clearfix">
+                                <div class="col-sm-3">
+                                    <a>Accept Payment in My168shop</a>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row clearfix draggable-container">
+                            <div class="table-responsive">
+                                <div class="col-sm-12">
+                                    <table class="digima-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 15px;"></th>
+                                                <th>Description</th>
+                                                <th style="width: 150px;">Due Date</th>
+                                                <th class="text-right" style="width: 120px;">Original Amount</th>
+                                                <th class="text-right" style="width: 120px;">Balance Due</th>
+                                                <th class="text-right" style="width: 120px;">Payment</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbody-item">
+                                            <tr>
+                                                <td class="text-center"></td>
+                                                <td></td>
+                                                <td class="text-right"></td>
+                                                <td><input type="text" class="text-right" disabled=""></td>
+                                                <td><input type="text" class="text-right" disabled=""></td>
+                                                <td><input class="text-right" type="text" disabled=""></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                <label>Memo</label>
+                                <textarea class="form-control input-sm textarea-expand" name="rp_memo" placeholder=""></textarea>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-md-7 text-right digima-table-label">
+                                        Amount to Apply
+                                    </div>
+                                    <div class="col-md-5 text-right digima-table-value total">
+                                        <input type="hidden" name="rp_total_amount" class="amount-to-apply">
+                                        <span class="amount-apply">PHP 0.00</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-7 text-right digima-table-label">
+                                        Amount to Credit
+                                    </div>
+                                    <div class="col-md-5 text-right digima-table-value red">
+                                        <input type="hidden" name="amount_to_credit" class="amount-to-credit">
+                                        <span class="amount-credit">PHP 0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- END CONTENT -->
+                    </div>;
+                </div>
+                <div class="modal-footer text-right">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-custom-blue">Save</button>
+                        <button data-dismiss="modal" class="btn btn-def-white btn-custom-white">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

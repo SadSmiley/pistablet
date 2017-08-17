@@ -228,8 +228,8 @@ function receive_payment_submit()
     customer_info['rp_memo'] = values['rp_memo'];
     customer_info['date_created'] = get_date_now();
 
-    customer_info['rp_ref_name'] = "";
-    customer_info['rp_ref_id'] = 0;
+    customer_info['rp_ref_name'] = values['cm_id'] ? 'credit_memo' : '';
+    customer_info['rp_ref_id'] = values['cm_id'] ? values['cm_id'] : 0;
 
 
     var payment_line = values['line_is_checked'];

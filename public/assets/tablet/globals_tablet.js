@@ -1737,10 +1737,6 @@ function update_cm(type, cm_id, callback)
             callback(res);
         });
     }
-    if(type == 'invoice_tablet')
-    {
-
-    }
 }
 function update_cm_type(cm_id, callback)
 {
