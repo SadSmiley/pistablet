@@ -2321,24 +2321,45 @@ function get_amount_applied(inv_id, callback)
     });
 }
 /* END RECEIVE PAYMENT INSERT */
-function get_agent_id(callback)
+function update_submit_reload(sir_id)
+{
+    db.transaction(function(tx)
     {
-        db.transaction(function (tx)
+        var update = {};
+        update['reload_sir'] = 1;
+
+        var update_sir = 'UPDATE tbl_sir SET reload_sir = ' + update['reload_sir'] +
+                         ' WHERE sir_id = ' + sir_id;
+
+        tx.executeSql(update_sir,[],function(tx4, results_cm)
         {
-            var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
-            tx.executeSql(query_check, [], function(tx, results)
+            toastr.success("Success");
+            setInterval(function()
             {
-                if(results.rows.length > 0)
-                {
-                    callback(results.rows[0]['agent_id']);
-                }
-                else
-                {
-                    alert('Something went wrong. Please Login again');
-                }
-            });
+                location.reload();
+            },2000)
+        },
+        onError);
+    });    
+}
+function get_agent_id(callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_check = 'SELECT * from tbl_agent_logon LIMIT 1';            
+        tx.executeSql(query_check, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['agent_id']);
+            }
+            else
+            {
+                alert('Something went wrong. Please Login again');
+            }
         });
-    }
+    });
+}
 function get_payment_method(callback)
 {
     get_shop_id(function(shop_id)
@@ -2360,7 +2381,13 @@ function get_payment_method(callback)
 function print_function()
 {
     $('.print-btn').addClass('hidden');
-    window.print();
+    // window.print();
+    // // URI for the index.html 
+    var page =document.getElementById('print_html');
+     
+    cordova.plugins.printer.print(page, 'Document.html', function () {
+        alert('printing finished or canceled')
+    });
 }
 function roundNumber(number) 
 {

@@ -241,9 +241,9 @@ function sync_data()
 
                                     percentage = ((a) / data.length) * 100;
                                     $(".progress").removeClass('hide');
-                                    $(".progress-bar").css("width", (percentage).toFixed() + "%");
-                                    $(".progress-bar").html("Synchronizing data " + (percentage).toFixed() + "%");
-                                    $(".progress-bar").attr("aria-valuenow", (percentage).toFixed());
+                                    $(".progress-bar").css("width", (percentage).toFixed(2) + "%");
+                                    $(".progress-bar").html("Synchronizing data " + (percentage).toFixed(2) + "%");
+                                    $(".progress-bar").attr("aria-valuenow", (percentage).toFixed(2));
                                     $(".tbl-name-class").html(table_name);    
                                 });
 

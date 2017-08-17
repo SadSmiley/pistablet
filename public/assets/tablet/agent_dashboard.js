@@ -17,6 +17,9 @@ function agent_dashboard()
         forget_session('inv_id');
         forget_session('cm_id');
         forget_session('rp_id');
+        forget_session('inv_id_print');
+        forget_session('cm_id_print');
+        forget_session('rp_id_print');
 	}
 	function check_if_have_login()
 	{
@@ -54,31 +57,39 @@ function agent_dashboard()
 	{
 		db.transaction(function (tx)
         {
-        	var query_check = 'SELECT * from tbl_sir where sales_agent_id = '+agent_id+' AND lof_status IN ("1","2") AND sir_status IN ("0","1") AND reload_sir = 0';
+        	var query_check = 'SELECT * FROM tbl_sir WHERE sales_agent_id = '+agent_id+' AND lof_status IN ("1","2") AND sir_status IN ("0","1") AND reload_sir = 0';
         	var sir_id = "";       
             tx.executeSql(query_check, [], function(txs, results)
             {
-            	data_result = results.rows;
-            	// if(data_result[0]['is_sync'] == 1)
-            	// {
-            	// 	location.href = "agent/agent_dashboard.html";
-            	// }
-            	// else
-            	// {
-            		$(data_result).each(function(key, datarow)
-					{	
-						$(".select-tag-sir").append("<option value='"+datarow['sir_id']+"'>SIR#"+datarow['sir_id']+"</option>");
-					});
+                if(results.rows.length > 0)
+                {
+                    data_result = results.rows;
+                // if(data_result[0]['is_sync'] == 1)
+                // {
+                //  location.href = "agent/agent_dashboard.html";
+                // }
+                // else
+                // {
+                    $(data_result).each(function(key, datarow)
+                    {   
+                        $(".select-tag-sir").append("<option value='"+datarow['sir_id']+"'>SIR#"+datarow['sir_id']+"</option>");
+                    });
 
-					$(".sir-no").html(data_result[0]['sir_id']);
-					sir_id = data_result[0]['sir_id'];
+                    $(".sir-no").html(data_result[0]['sir_id']);
+                    sir_id = data_result[0]['sir_id'];
 
-					var query_update = 'UPDATE tbl_agent_logon SET selected_sir = "'+sir_id+'" where agent_id = "'+agent_id+'"';            
-		            tx.executeSql(query_update, [], function(tx, results_update)
-		            {
-		            });
-            	// }
-                get_amount_diff_transaction(sir_id);
+                    var query_update = 'UPDATE tbl_agent_logon SET selected_sir = "'+sir_id+'" where agent_id = "'+agent_id+'"';            
+                    tx.executeSql(query_update, [], function(tx, results_update)
+                    {
+                    });
+                // }
+                    get_amount_diff_transaction(sir_id);
+                }
+                else
+                {
+                    location.href = 'no_sir.html';
+                }
+            	
             });        	
         });
 	}
@@ -295,7 +306,7 @@ function click_action_update(action)
                                 '</div>'+
                                 '<div class="modal-footer">'+
                                 '<div class="col-md-6 col-xs-6">'+
-                                '<button type="button" onclick="update_submit_reload('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button>'+
+                                '<button type="button" onClick="update_submit_reload('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button>'+
                                 '</div> '+
                                 '<div class="col-md-6 col-xs-6">'+
                                 '<button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
