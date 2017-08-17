@@ -36,7 +36,7 @@ function invoice_print()
 	    	console.log(_invline);
 	    	console.log(_cmline);
 
-	        $('.inv-id-print').html(inv['inv_id']);
+	        $('.inv-id-print').html(inv['new_inv_id']);
 	        $('.inv-customer-name').html(inv['company'] == "" ? inv['first_name'] + " " + inv['middle_name']+ " " + inv['last_name'] : inv['company']);
 	        $('.inv-date').html(inv['inv_date']);
 	        $('.inv-due-date').html(inv['inv_due_date']);
@@ -164,6 +164,10 @@ function invoice_print()
 					});
 				});
 			}
+			get_sales_person(function(agent_name)
+			{
+				$('.sales-person').html(agent_name);
+			});
 			$('.inv-overall-total').html("<strong>TOTAL</strong>  PHP" +(inv['inv_overall_price'] - cm_amount).toFixed(2));
 	    });
 	}

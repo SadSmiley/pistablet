@@ -35,6 +35,21 @@ function agent_logout(redirect)
 	   location.href=''+redirect+'';
 	});
 }
+function get_sales_person(callback)
+{
+    get_agent_id(function(agent_id)
+    {
+        db.transaction(function (tx)
+        {
+            var query_check = 'SELECT * from tbl_employee LEFT JOIN tbl_position ON tbl_employee.position_id = tbl_position.position_id where employee_id = "'+agent_id+'" ';            
+            tx.executeSql(query_check, [], function(tx, results)
+            {
+                data_result = results.rows[0];
+                callback(data_result['first_name']+" "+data_result['middle_name']+" "+data_result['last_name']);
+            });
+        });
+    });
+}
 /**
  * Create All Table
  *
