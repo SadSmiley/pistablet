@@ -628,6 +628,7 @@ function credit_memo_submit()
 
     if(count(_items) > 0)
     {  
+        var ctr = 0;
         get_item_returns(_items, values,function(item_returns)
         {
             insert_cm_submit(customer_info, item_info, item_returns, 0, function(returns_cm, cm_id)
@@ -637,10 +638,7 @@ function credit_memo_submit()
                     insert_manual_cm(cm_id, function(result_update)
                     {
                         toastr.success("Success");
-                        setInterval(function()
-                        {
-                            location.reload();
-                        },2000)
+                        cm_type_modal(cm_id);
                     })
                 }
             });
@@ -870,6 +868,56 @@ function credit_memo_submit()
     // }
 
     // return json_encode($data);
+}
+
+function cm_type_modal(cm_id)
+{
+    var modal_content = "";
+
+    modal_content += '<div class="modal-header">' +
+                     '<button type="button" class="close" data-dismiss="modal">&times;</button>'+
+                     '<h4 class="modal-title">Confirm</h4>'+
+                     '</div>'+
+                     '<div class="modal-body add_new_package_modal_body clearfix">'+
+                     '<div class="col-md-12 text-center">' +
+                     '<div class="form-group">' +
+                     '<div class="col-md-12 col-xs-12">' +
+                     '<a class="btn btn-def-white btn-custom-blue form-control" href="../../agent/credit_memo.html">Returns</a>'+
+                     '</div>'+
+                     '</div>'+
+                     '<br>'+
+                     '<br>'+
+                     '<div class="form-group">'+
+                     '<div class="col-md-12 col-xs-12">' +
+                     '<a class="btn btn-def-white btn-custom-white form-control" onClick="cm_update(`others_tablet`, '+cm_id+')">Others</a>' +
+                     '</div>' +
+                     '</div>' +
+                     '<br>' +
+                     '<br>' +
+                     '<div class="form-group">' +
+                     '<div class="col-md-12 col-xs-12">'+
+                     '<a class="btn btn-def-white btn-custom-white form-control" onClick="cm_update(`invoice_tablet`, '+cm_id+')">Apply to an Invoice</a>'+
+                     '</div>'+
+                     '</div>';
+
+    $("#global_modal").modal('show');
+    $("#global_modal").find(".modal-dialog").addClass("modal-md");
+    $("#global_modal").find(".modal-content").html(modal_content);
+}
+
+function cm_update(type, cm_id)
+{
+    update_cm(type, cm_id, function(res)
+    {
+        if(res == 'success')
+        {
+            toastr.success("Success");
+            setInterval(function()
+            {
+                location.reload();
+            },2000)            
+        }
+    });
 }
 function ReplaceNumberWithCommas(yourNumber)
 {

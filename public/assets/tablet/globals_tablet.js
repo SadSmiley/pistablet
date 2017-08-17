@@ -1433,7 +1433,6 @@ function insert_manual_cm(cm_id, callback)
                 }
             },
             onError);
-
         });
     });
 }
@@ -1729,6 +1728,38 @@ function get_all_item(callback)
     });
 }
 /* CM INSERT */
+function update_cm(type, cm_id, callback)
+{
+    if(type == 'others_tablet')
+    {
+        update_cm_type(cm_id, function(res)
+        {
+            callback(res);
+        });
+    }
+    if(type == 'invoice_tablet')
+    {
+
+    }
+}
+function update_cm_type(cm_id, callback)
+{
+    db.transaction(function(tx)
+    {
+        var update = {};
+        update['cm_type'] = 1;
+        update['cm_used_ref_name'] = 'others';
+
+        var update_cm = 'UPDATE tbl_credit_memo SET (cm_type, cm_used_ref_name) = (' + update['cm_type'] +
+                        ',"'+ update['cm_used_ref_name'] + '")'+
+                        ' WHERE cm_id = ' + cm_id;
+        tx.executeSql(update_cm,[],function(tx4, results_cm)
+        {
+           callback('success');
+        },
+        onError);
+    });
+}
 function get_cm_data(cm_id, callback)
 {
     db.transaction(function(tx)
