@@ -2387,8 +2387,8 @@ function print_function()
      
     cordova.plugins.printer.print(page, 'Document.html', function () {
         alert('printing finished or canceled')
-    },
-    onError);
+    });
+    // cordova.plugins.printer.print(page, 'Document.html');
 }
 function roundNumber(number) 
 {
