@@ -45,12 +45,12 @@ function invoice_print()
 	        if(inv['is_sales_receipt'] == 1)
 	        {
 	        	$('.cancel-btn').attr('href','../../agent/sales_receipt.html');
-	        	$('.transaction-type').html('Sales Report');
+	        	$('.transaction-type').html('Cash Sales');
 	        }
 	        else
 	        {
 	        	$('.cancel-btn').attr('href','../../agent/invoice.html');
-	        	$('.transaction-type').html('INVOICE');
+	        	$('.transaction-type').html('Credit Sales');
 	        }
 
 	        var tr = "";

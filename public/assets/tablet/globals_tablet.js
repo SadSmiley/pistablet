@@ -1584,6 +1584,11 @@ function view_credit_memo(cm_id)
     set_session('cm_id_print',cm_id);
     location.href = '../agent_transaction/credit_memo/cm_print.html';    
 }
+function view_rp(rp_id)
+{
+    set_session('rp_id_print',rp_id);
+    location.href = '../agent_transaction/receive_payment/rp_print.html';
+}
 function edit_credit_memo(cm_id)
 {
     set_session('cm_id',cm_id);
@@ -1958,6 +1963,37 @@ function insert_cm_line(cm_id, cm_item_info, callback)
 }
 /* END CM INSERT */
 /* RECEIVE PAYMENT INSERT */
+function get_paid_rp_data(rp_id, callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            /* SELECT DATA IN RP */
+            var select_rp = 'SELECT * FROM tbl_receive_payment '+
+                            'LEFT JOIN tbl_customer ON customer_id = rp_customer_id ' +
+                            'WHERE rp_id = ' + rp_id;
+            tx.executeSql(select_rp, [], function(txs, results)
+            {
+                var rp = results.rows[0];
+
+                var select_rpline = 'SELECT * FROM tbl_receive_payment_line ' +
+                                    'LEFT JOIN tbl_customer_invoice ON inv_id = rpline_reference_id ' +
+                                    'WHERE rpline_reference_name = "invoice" '+
+                                    'AND rpline_rp_id = ' + rp_id +
+                                    ' GROUP BY inv_id';
+                tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                {
+                    var rpline = results_rpline.rows;
+
+                    callback(rp, rpline);                                                                                              
+                },
+                onError);
+            },
+            onError);
+        });
+    });
+}
 function get_rp_data(rp_id, callback)
 {
     get_shop_id(function(shop_id)
@@ -1965,7 +2001,9 @@ function get_rp_data(rp_id, callback)
         db.transaction(function(tx)
         {
             /* SELECT DATA IN RP */
-            var select_rp = 'SELECT * FROM tbl_receive_payment where rp_id = ' + rp_id;
+            var select_rp = 'SELECT * FROM tbl_receive_payment '+
+                            'LEFT JOIN tbl_customer ON customer_id = rp_customer_id ' +
+                            'WHERE rp_id = ' + rp_id;
             tx.executeSql(select_rp, [], function(txs, results)
             {
                 var rp = results.rows[0];
@@ -2094,7 +2132,7 @@ function insert_rpline(rp_id, insertline, callback)
                                      'VALUES ('+rp_id+ ', "'+
                                      val['rpline_reference_name'] +'",'+
                                      val['rpline_reference_id'] +','+
-                                     val['rpline_amount'] +',"'+
+                                     val['rpline_amount'].replace(',',"") +',"'+
                                      get_date_now() +
                                      '")';
             tx.executeSql(insert_row_query, [], function(tx, results)
@@ -2319,4 +2357,15 @@ function onError(tx, error)
 {
     console.log(error.message);
     alert(error.message);
+}
+
+function number_format(number)
+{
+    var yourNumber = (number).toFixed(2);
+    //Seperates the components of the number
+    var n= yourNumber.toString().split(".");
+    //Comma-fies the first part
+    n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    //Combines the two sections
+    return (n.join("."));
 }

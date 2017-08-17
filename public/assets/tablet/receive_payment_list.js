@@ -92,7 +92,13 @@ function receive_payment_list()
                     company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : datarow['company'] ;
                     tr += '<td>'+company+'</td>';
                     tr += '<td>'+ReplaceNumberWithCommas("Php "+(datarow['rp_total_amount']).toFixed(2))+'</td>';
-                    tr += '<td class="text-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-custom"><li><a onClick="edit_rp('+datarow['rp_id']+')">Edit Payment</a></il></ul></div></td>'
+                    tr += '<td class="text-center">'+
+                          '<div class="btn-group">'+
+                          '<button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button>'+
+                          '<ul class="dropdown-menu dropdown-menu-custom">'+
+                          '<li><a onClick="edit_rp('+datarow['rp_id']+')">Edit Payment</a></il>'+
+                          '<li><a onClick="view_rp('+datarow['rp_id']+')">Payment Receipt</a></il>'+
+                          '</ul></div></td>'
                     tr += '</tr>';
                 });
                 $(".tbody-collection-list").append(tr);
