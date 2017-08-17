@@ -164,7 +164,7 @@ function sync_data()
         var all_tbl_name = [];
         all_tbl_name[1] = "tbl_shop";
         all_tbl_name[2] = "tbl_category";
-        all_tbl_name[3] = "tbl_audit_trail";
+        // all_tbl_name[3] = "tbl_audit_trail";
         all_tbl_name[4] = "tbl_chart_account_type";
         all_tbl_name[5] = "tbl_chart_of_account";
         all_tbl_name[6] = "tbl_country";
