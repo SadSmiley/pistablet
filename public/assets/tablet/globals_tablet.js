@@ -15,7 +15,11 @@ function print_plugin()
     $('.print-plugin-btn').unbind('click');
     $('.print-plugin-btn').bind('click',function()
     {
-        print_function();
+        var page = document.getElementById('print_html');
+     
+        window.plugins.printer.print(page, 'Document.html', function () {
+            alert('printing finished or canceled')
+        });
     });
 }
 function get_session(label, callback)
@@ -2396,7 +2400,7 @@ function print_function()
     // // URI for the index.html 
     var page = document.getElementById('print_html');
      
-    cordova.plugins.printer.print(page, 'Document.html', function () {
+    window.plugins.printer.print(page, 'Document.html', function () {
         alert('printing finished or canceled')
     });
     // cordova.plugins.printer.print(page, 'Document.html');
