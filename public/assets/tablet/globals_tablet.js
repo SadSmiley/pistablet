@@ -6,23 +6,7 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 
-document.addEventListener('deviceready', function () {
-    print_plugin();
-}, false);
-print_plugin();
-function print_plugin()
-{
-    $('.print-plugin-btn').unbind('click');
-    $('.print-plugin-btn').bind('click',function()
-    {
-        alert("test");
-        var page = document.getElementById('print_html');
-     
-        window.plugins.printer.print(page, 'Document.html', function () {
-            alert('printing finished or canceled')
-        });
-    });
-}
+
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -2396,15 +2380,8 @@ function get_payment_method(callback)
 }
 function print_function()
 {
-    // $('.print-btn').addClass('hidden');
-    // window.print();
-    // // URI for the index.html 
-    var page = document.getElementById('print_html');
-     
-    window.plugins.printer.print(page, 'Document.html', function () {
-        alert('printing finished or canceled')
-    });
-    // cordova.plugins.printer.print(page, 'Document.html');
+    $('.print-btn').addClass('hidden');
+    window.print();
 }
 function roundNumber(number) 
 {
