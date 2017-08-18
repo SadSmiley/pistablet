@@ -356,20 +356,20 @@ function tablet_customer_invoice()
 
         var qty = tablet_item_qty;
         /* CHECK THE DISCOUNT */
-        // if(tablet_item_disc.indexOf('%') >= 0)
-        // {
-        //     $(".tablet-item-disc").val(tablet_item_disc.substring(0, tablet_item_disc.indexOf("%") + 1));
-        //     tablet_item_disc = (parseFloat(tablet_item_disc.substring(0, tablet_item_disc.indexOf('%'))) / 100) * (action_return_to_number(tablet_item_rate) * action_return_to_number(qty));
-        // }
-        // else if(tablet_item_disc == "" || tablet_item_disc == null)
-        // {
-        //     tablet_item_disc = 0;
-        // }
-        // else
-        // {
-        //     tablet_item_disc = parseFloat(tablet_item_disc);
-        // }
-        tablet_item_disc = 0;
+        if(tablet_item_disc.indexOf('%') >= 0)
+        {
+            $(".tablet-item-disc").val(tablet_item_disc.substring(0, tablet_item_disc.indexOf("%") + 1));
+            tablet_item_disc = (parseFloat(tablet_item_disc.substring(0, tablet_item_disc.indexOf('%'))) / 100) * (action_return_to_number(tablet_item_rate) * action_return_to_number(qty));
+        }
+        else if(tablet_item_disc == "" || tablet_item_disc == null)
+        {
+            tablet_item_disc = 0;
+        }
+        else
+        {
+            tablet_item_disc = parseFloat(tablet_item_disc);
+        }
+        // tablet_item_disc = 0;
         /* RETURN TO NUMBER IF THERE IS COMMA */
         var rate        = action_return_to_number(tablet_item_rate);
         var discount    = action_return_to_number(tablet_item_disc);
@@ -377,7 +377,7 @@ function tablet_customer_invoice()
         // console.log(qty+" * "+ rate + " - " + discount)
         total = ((qty * rate) - discount).toFixed(2);
 
-
+        $(".input-item-amount").val(total);
         $(".tablet-item-amount").html(action_add_comma(total));
 
 	}
@@ -397,11 +397,7 @@ function tablet_customer_invoice()
 				var qty 	= $(this).find(".input-item-qty").val();
 				// console.lo
 				var rate 	= $(this).find(".input-item-rate").val();
-				var discount = "";
-				if($(this).find(".input-item-disc").val())
-				{
-					discount.toString();
-				}
+				var discount = $(this).find(".input-item-disc").val().toString();
 				var amount 	= $(this).find(".input-item-amount");
 				var taxable = $(this).find(".item-taxable");
 

@@ -912,17 +912,29 @@ function invoice_submit()
                             {
                                 insert_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
                                 {
-                                    insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                                    if(count(cm_item_info) > 0)
                                     {
-                                        if(returns_cm == 'success')
+                                        insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
                                         {
-                                            toastr.success("Success");
-                                            setInterval(function()
+                                            if(returns_cm == 'success')
                                             {
-                                                location.reload();
-                                            },2000)
-                                        }
-                                    });
+                                                toastr.success("Success");
+                                                setInterval(function()
+                                                {
+                                                    location.reload();
+                                                },2000)
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        toastr.success("Success");
+                                        setInterval(function()
+                                        {
+                                            location.reload();
+                                        },2000)
+                                    }
+                                    
                                 });
                             }
                         });

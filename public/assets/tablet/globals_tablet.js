@@ -1526,9 +1526,10 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
                             insert_row['sir_inventory_ref_name'] = ref_name;
                             insert_row['sir_inventory_ref_id'] = ref_id;
                             insert_row['created_at'] = get_date_now();
+                            insert_row['is_bundled_item'] = 0;
 
-                            var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at)' +
-                                         'VALUES ('+insert_row['inventory_sir_id']+','+insert_row['sir_item_id']+','+insert_row['sir_inventory_count']+',"'+insert_row['sir_inventory_ref_name']+'",'+insert_row['sir_inventory_ref_id']+',"'+insert_row['created_at']+'")';
+                            var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at,is_bundled_item)' +
+                                         'VALUES ('+insert_row['inventory_sir_id']+','+insert_row['sir_item_id']+','+insert_row['sir_inventory_count']+',"'+insert_row['sir_inventory_ref_name']+'",'+insert_row['sir_inventory_ref_id']+',"'+insert_row['created_at']+'",'+insert_row['is_bundled_item']+')';
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                             },
