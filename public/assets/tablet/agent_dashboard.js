@@ -243,34 +243,85 @@ function click_action(action)
 
 
                         var trow = "";
-                        $(sir_item_row).each(function(a,b)
+                        $.each(sir_item_row, function(a,b)
                         {
-                            get_rem_qty_count(sir_id, sir_item_row[a]['item_id'], function(remaining_qty)
+                            get_item_bundle(b['item_id'], function(bundle_item)
                             {
-                                get_sold_qty_count(sir_id, sir_item_row[a]['item_id'], function(sold_qty)
+                                var ctr_bundle = 0;
+                                if(bundle_item.length > 0)
                                 {
-                                    unit_measurement_view(remaining_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_remaining_qty)
+                                    $.each(bundle_item, function(key, val)
                                     {
-                                        unit_measurement_view(sold_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_sold_qty)
+                                        get_um_qty(val['bundle_um_id'], function(um_qty)
                                         {
-                                            var issued_qty = sir_item_row[a]['item_qty'] * sir_item_row[a]['um_qty'];
-                                            unit_measurement_view(issued_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_issued_qty)
+                                            get_um_qty(b['related_um_type'], function(issued_um_qty)
                                             {
-                                                trow = '<tr>' +                         
-                                                '<td>'+(a+1)+'</td>' +
-                                                '<td>'+sir_item_row[a]['item_name']+'</td>' +
-                                                '<td>'+um_issued_qty +'</td>' +
-                                                '<td>'+um_sold_qty+'</td>' +
-                                                '<td>'+um_remaining_qty+'</td>';
-                                                trow += '</tr>';
+                                                get_sold_qty_for_bundle(sir_id, val['bundle_item_id'], function(total_sold_bundle_qty)
+                                                {
+                                                    ctr_bundle++;
+                                                    var bundle_qty = um_qty * val['bundle_qty'];
+                                                    var issued_bundle_qty_item = (issued_um_qty * b['item_qty']) * bundle_qty;
+                                                    var rem_qty = (issued_bundle_qty_item - total_sold_bundle_qty) / bundle_qty;
+                                                    var sold_bundle_qty = b['item_qty'] - rem_qty;
 
-                                                $(".item-list-inventory").append(trow);
+                                                    if(bundle_item.length == ctr_bundle)
+                                                    {
+                                                        unit_measurement_view(Math.round(rem_qty), b['item_id'], b['related_um_type'], function(rem_qty_um)
+                                                        {
+                                                            unit_measurement_view(Math.round(sold_bundle_qty), b['item_id'], b['related_um_type'], function(sold_qty_um)
+                                                            {
+                                                                var issued_qty = sir_item_row[a]['item_qty'] * sir_item_row[a]['um_qty']; 
+                                                                unit_measurement_view(issued_qty, b['item_id'], b['related_um_type'], function(issued_qty_um)
+                                                                {
+                                                                     trow = '<tr>' +                         
+                                                                    '<td>'+(a+1)+'</td>' +
+                                                                    '<td>'+sir_item_row[a]['item_name']+'</td>' +
+                                                                    '<td>'+issued_qty_um +'</td>' +
+                                                                    '<td>'+sold_qty_um+'</td>' +
+                                                                    '<td>'+rem_qty_um+'</td>';
+                                                                    trow += '</tr>';
+
+                                                                    $(".item-list-inventory").append(trow);
+                                                                });
+
+                                                            });
+
+                                                        });
+                                                    }
+                                                });
                                             });
                                         });
                                     });
-                                });
+                                }
+                                else
+                                {   
+                                    get_rem_qty_count(sir_id, sir_item_row[a]['item_id'], function(remaining_qty)
+                                    {
+                                        get_sold_qty_count(sir_id, sir_item_row[a]['item_id'], function(sold_qty)
+                                        {
+                                            unit_measurement_view(remaining_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_remaining_qty)
+                                            {
+                                                unit_measurement_view(sold_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_sold_qty)
+                                                {
+                                                    var issued_qty = sir_item_row[a]['item_qty'] * sir_item_row[a]['um_qty'];
+                                                    unit_measurement_view(issued_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_issued_qty)
+                                                    {
+                                                        trow = '<tr>' +                         
+                                                        '<td>'+(a+1)+'</td>' +
+                                                        '<td>'+sir_item_row[a]['item_name']+'</td>' +
+                                                        '<td>'+um_issued_qty +'</td>' +
+                                                        '<td>'+um_sold_qty+'</td>' +
+                                                        '<td>'+um_remaining_qty+'</td>';
+                                                        trow += '</tr>';
 
-                            });
+                                                        $(".item-list-inventory").append(trow);
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                }
+                            });                    
                         });
 
                         $("#global_modal").modal('show');
@@ -385,33 +436,33 @@ function account_settings()
                 modal_content += '<div class="form-group">';
                 modal_content += '<div class="col-md-4">';
                 modal_content += '<label>Last Name *</label>';
-                modal_content += '<input type="text" class="form-control" value="'+data_result['last_name']+'" placeholder="Last Name..." name="last_name">';
+                modal_content += '<input type="text" class="form-control" disabled value="'+data_result['last_name']+'" placeholder="Last Name..." name="last_name">';
                 modal_content += '</div>';
                 modal_content += '<div class="col-md-4">';
                 modal_content += '<label>First Name *</label>';
-                modal_content += '<input type="text" class="form-control" value="'+data_result['first_name']+'" name="first_name" placeholder="First Name..." id="warehouse_name">';
+                modal_content += '<input type="text" class="form-control" disabled value="'+data_result['first_name']+'" name="first_name" placeholder="First Name..." id="warehouse_name">';
                 modal_content += '</div>';
 
                 modal_content += '<div class="col-md-4">';
                 modal_content += '<label>Middle Name *</label>';
-                modal_content += '<input type="text" class="form-control" value="'+data_result['middle_name']+'" placeholder="Middle Name..." name="middle_name" id="warehouse_name">';
+                modal_content += '<input type="text" class="form-control" disabled value="'+data_result['middle_name']+'" placeholder="Middle Name..." name="middle_name" id="warehouse_name">';
                 modal_content += '</div>';
                 modal_content += '</div>';
 
                 modal_content += '<div class="form-group">';
                 modal_content += '<div class="col-md-12">';
                 modal_content += '<label>Email Address</label>';
-                modal_content += '<input type="text" class="form-control" name="email_address" value="'+data_result['email']+'">';
+                modal_content += '<input type="text" class="form-control agent-email" name="email_address" value="'+data_result['email']+'">';
                 modal_content += '</div>';
 
                 modal_content += '<div class="col-md-6">';
                 modal_content += '<label>Username</label>';
-                modal_content += '<input type="text" class="form-control" name="username" value="'+data_result['username']+'">';
+                modal_content += '<input type="text" class="form-control agent-username" name="username" value="'+data_result['username']+'">';
                 modal_content += '</div>';
 
                 modal_content += '<div class="col-md-6">';
                 modal_content += '<label>Password</label>';
-                modal_content += '<input type="password" class="form-control" name="password" value="'+data_result['password']+'">';
+                modal_content += '<input type="password" class="form-control agent-password" name="password" value="'+data_result['password']+'">';
                 modal_content += '</div>';
                 modal_content += '</div>';
 
@@ -431,5 +482,23 @@ function account_settings()
 }
 function update_agent(agent_id)
 {
-    alert(agent_id);
+    var agent_info = {};
+    agent_info['email'] = $(".agent-email").val();
+    agent_info['username'] = $(".agent-username").val();
+    agent_info['password'] = $(".agent-password").val();
+
+    db.transaction(function (tx)
+    {
+        var query_update = 'UPDATE tbl_employee SET (email, username, password) = ("'+agent_info['email']+'", "'+agent_info['username']+'", "'+agent_info['password']+'") '+
+                           'WHERE employee_id = '+agent_id;
+        tx.executeSql(query_update, [], function(txs, results)
+        {
+            toastr.success("Success");
+            setInterval(function()
+            {
+                location.reload();
+            },2000)
+        },
+        onError);
+    });
 }

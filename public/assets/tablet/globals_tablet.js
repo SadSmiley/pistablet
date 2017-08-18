@@ -93,7 +93,7 @@ function query_create_all_table(callback)
     query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NOT NULL, rpline_reference_name VARCHAR(255)  NOT NULL, rpline_reference_id INTEGER NOT NULL, rpline_amount REAL(8,2) NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[33] = "CREATE TABLE IF NOT EXISTS tbl_settings ( settings_id INTEGER PRIMARY KEY AUTOINCREMENT, settings_key VARCHAR(255)  NOT NULL, settings_value longtext , settings_setup_done TINYINT NOT NULL default '0', shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[34] = "CREATE TABLE IF NOT EXISTS tbl_sir_cm_item (s_cm_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sc_sir_id INTEGER  NOT NULL, sc_item_id INTEGER NOT NULL, sc_item_qty INTEGER NOT NULL, sc_physical_count INTEGER NOT NULL, sc_item_price REAL NOT NULL, sc_status INTEGER NOT NULL, sc_is_updated TINYINT NOT NULL, sc_infos REAL NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NOT NULL, inventory_sir_id INTEGER  NOT NULL, sir_inventory_count INTEGER NOT NULL, sir_inventory_ref_name VARCHAR(255)  NOT NULL, sir_inventory_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NOT NULL, inventory_sir_id INTEGER  NOT NULL, sir_inventory_count INTEGER NOT NULL, sir_inventory_ref_name VARCHAR(255)  NOT NULL, sir_inventory_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, is_bundled_item TINYINT)";
     query[36] = "CREATE TABLE IF NOT EXISTS tbl_sir_item ( sir_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL,  item_id INTEGER  NOT NULL, item_qty INTEGER NOT NULL, archived TINYINT NOT NULL default '0', related_um_type VARCHAR(255)  NOT NULL, total_issued_qty INTEGER NOT NULL default '0', um_qty INTEGER NOT NULL, sold_qty INTEGER NOT NULL, remaining_qty INTEGER NOT NULL, physical_count INTEGER NOT NULL, status VARCHAR(255)  NOT NULL, loss_amount decimal(8,2) NOT NULL, sir_item_price REAL NOT NULL, is_updated TINYINT NOT NULL default '0', infos REAL NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
     query[37] = "CREATE TABLE IF NOT EXISTS tbl_sir_sales_report (sir_sales_report_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER NOT NULL, report_data TEXT NOT NULL, report_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[38] = "CREATE TABLE IF NOT EXISTS tbl_terms (terms_id INTEGER PRIMARY KEY AUTOINCREMENT, terms_shop_id INTEGER NOT NULL,  terms_name VARCHAR(255)  NOT NULL, terms_no_of_days INTEGER NOT NULL , archived TINYINT NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00')";
@@ -885,12 +885,13 @@ function get_rem_qty_count(sir_id, item_id, callback)
     db.transaction(function (tx)
     {
         var query = 'SELECT sum(sir_inventory_count) as remaining_qty FROM tbl_sir_inventory ' +
-                        'WHERE inventory_sir_id = ' + sir_id + ' ' + 
-                        'AND sir_item_id = ' + item_id + ' ' +
-                        'AND sir_inventory_ref_name != "credit_memo"';
+                    'WHERE inventory_sir_id = ' + sir_id + ' ' + 
+                    'AND sir_item_id = ' + item_id + ' ' +
+                    'AND is_bundled_item = 0 ' +
+                    'AND sir_inventory_ref_name != "credit_memo"';
         tx.executeSql(query, [], function(tx, results)
         {
-            if(results.rows.length > 0)
+            if(results.rows[0]['remaining_qty'] != null)
             {
                 callback(results.rows[0]['remaining_qty']);
             }
@@ -907,10 +908,35 @@ function get_sold_qty_count(sir_id, item_id, callback)
     db.transaction(function (tx)
     {
         var query = 'SELECT sum(sir_inventory_count) as sold_qty FROM tbl_sir_inventory ' +
-                        'WHERE inventory_sir_id = ' + sir_id + ' ' + 
-                        'AND sir_item_id = ' + item_id + ' ' +
-                        'AND sir_inventory_count <= 0 '
-                        'AND sir_inventory_ref_name != "credit_memo"';
+                    'WHERE inventory_sir_id = ' + sir_id + ' ' + 
+                    'AND sir_item_id = ' + item_id + ' ' +
+                    'AND sir_inventory_count <= 0 ' + 
+                    'AND is_bundled_item = 0 ' +
+                    'AND sir_inventory_ref_name != "credit_memo"';
+        tx.executeSql(query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(Math.abs(results.rows[0]['sold_qty']));
+            }
+            else
+            {
+                callback(0);
+            }
+        },
+        onError);
+    });
+}
+function get_sold_qty_for_bundle(sir_id, item_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query = 'SELECT sum(sir_inventory_count) as sold_qty FROM tbl_sir_inventory ' +
+                    'WHERE inventory_sir_id = ' + sir_id + ' ' + 
+                    'AND sir_item_id = ' + item_id + ' ' +
+                    'AND sir_inventory_count < 0 ' + 
+                    'AND is_bundled_item = 1 ' +
+                    'AND sir_inventory_ref_name != "credit_memo"';
         tx.executeSql(query, [], function(tx, results)
         {
             if(results.rows.length > 0)
@@ -1042,7 +1068,7 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
                 $.each(bundle_item, function(a,b)
                 {
                     var count = bundle_item.length;
-                    check_sir_qty(sir_id, b['bundle_item_id'], b['bundle_um_id'], qty * b['bundle_qty'],0,"", function(return_value)
+                    get_sir_inventory(sir_id, b['bundle_item_id'], b['bundle_um_id'], b['bundle_qty'],0, function(return_value)
                     {
                         return_data += return_value;
                         if((a + 1) == count)
@@ -1090,7 +1116,7 @@ function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
                     }
                     else
                     {
-                        callback(0)
+                        callback(0);
                     }
                 });
             });
@@ -1124,7 +1150,7 @@ function get_item_bundle(item_id, callback)
     db.transaction(function (tx)
     {
         var query = 'SELECT *, (tbl_unit_measurement_multi.unit_qty * bundle_qty) as bundle_um_qty FROM tbl_item_bundle ' +
-                    'LEFT JOIN tbl_unit_measurement_multi ON tbl_item_bundle.bundle_um_id = tbl_unit_measurement_multi.multi_um_id '+
+                    'LEFT JOIN tbl_unit_measurement_multi ON tbl_item_bundle.bundle_um_id = tbl_unit_measurement_multi.multi_id '+
                     'WHERE bundle_bundle_id = ' + item_id;
         tx.executeSql(query, [], function(tx, results)
         {
@@ -1275,7 +1301,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
                         insert_inv['date_created']                  = get_date_now();
                         insert_inv['created_at']                    = get_date_now();
                         insert_inv['is_sales_receipt']              = customer_info['is_sales_receipt'];
-                        insert_inv['inv_payment_applied']           = 0;
+                        insert_inv['inv_payment_applied']           = customer_info['is_sales_receipt'] == 1 ? customer_info['overall_price'] : 0  ;
                         insert_inv['sale_receipt_cash_account']     = 0;
                         insert_inv['credit_memo_id']                = 0;
                         insert_inv['inv_is_paid']                   = customer_info['inv_is_paid'];
@@ -1285,6 +1311,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
                        {  
                             var insert_row = 'INSERT INTO tbl_customer_invoice (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt,credit_memo_id, sale_receipt_cash_account, inv_custom_field_id, inv_payment_applied, inv_is_paid, created_at)' + 
                                 'VALUES ('+insert_inv['new_inv_id']+', '+insert_inv['inv_shop_id']+', '+insert_inv['inv_customer_id']+', "'+insert_inv['inv_customer_email']+'", "'+insert_inv['inv_customer_billing_address']+'", '+insert_inv['inv_terms_id']+', "'+insert_inv['inv_date']+'", "'+insert_inv['inv_due_date']+'", "'+insert_inv['inv_message']+'", "'+insert_inv['inv_memo']+'", "'+insert_inv['inv_discount_type']+'", '+insert_inv['inv_discount_value']+', '+insert_inv['ewt']+', '+insert_inv['taxable']+', '+insert_inv['inv_subtotal_price']+', '+insert_inv['inv_overall_price']+', "'+insert_inv['date_created']+'", '+insert_inv['is_sales_receipt']+', '+insert_inv['credit_memo_id']+', '+insert_inv['sale_receipt_cash_account']+', '+insert_inv['inv_custom_field_id']+', '+insert_inv['inv_payment_applied']+', '+insert_inv['inv_is_paid']+', "'+insert_inv['created_at']+'")';
+                            console.log(insert_row);
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                                var invoice_id = results.insertId;
@@ -1464,18 +1491,22 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
                                 insert_row = {};
                                 insert_row['inventory_sir_id'] = sir_id;
                                 insert_row['sir_item_id'] = value_bundle['bundle_item_id'];
-                                insert_row['sir_inventory_count'] = (value['qty'] * (value_bundle['bundle_um_qty'] * value_bundle['bundle_qty'])) * sign;
+                                insert_row['sir_inventory_count'] = (value['qty'] * value_bundle['bundle_um_qty']) * sign;
                                 insert_row['sir_inventory_ref_name'] = ref_name;
                                 insert_row['sir_inventory_ref_id'] = ref_id;
+                                insert_row['created_at'] = get_date_now();
+                                insert_row['is_bundled_item'] = 1;
 
-                                var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at)' +
+                                var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at,is_bundled_item)' +
                                              'VALUES ('+
                                              insert_row['inventory_sir_id']+','+
                                              insert_row['sir_item_id']+','+
                                              insert_row['sir_inventory_count'] +',"'+
                                              insert_row['sir_inventory_ref_name']+'",'+
-                                             insert_row['sir_inventory_ref_id']+',"'+value_row['created_at']+
-                                             '")';
+                                             insert_row['sir_inventory_ref_id']+',"'+
+                                             insert_row['created_at']+'",'+
+                                             insert_row['is_bundled_item']+
+                                             ')';
                                 tx.executeSql(insert_row, [], function(tx, results)
                                 {
                                 },

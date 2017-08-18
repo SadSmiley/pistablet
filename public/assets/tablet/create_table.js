@@ -1,5 +1,4 @@
 var query = [];
-
 query[0] = "CREATE TABLE IF NOT EXISTS tbl_audit_trail ( audit_trail_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, remarks TEXT, old_data  NOT NULL, new_data NOT NULL, created_at DATETIME, updated_at DATETIME, source VARCHAR(255),source_id INTEGER, audit_shop_id INTEGER)";
 query[1] = "CREATE TABLE IF NOT EXISTS tbl_bill (bill_id INTEGER PRIMARY KEY AUTOINCREMENT, bill_new_id INTEGER NOT NULL,bill_shop_id INTEGER NOT NULL, bill_vendor_id INTEGER NOT NULL, bill_vendor_email VARCHAR(255) NOT NULL,  bill_ap_account INTEGER NOT NULL, bill_mailing_address TEXT NOT NULL, bill_terms_id INTEGER NOT NULL, bill_date DATE NOT NULL,  bill_due_date DATE NOT NULL, bill_total_amount REAL NOT NULL, bill_payment_method INTEGER NOT NULL, bill_memo VARCHAR(255) NOT NULL, date_created DATETIME NOT NULL, bill_is_paid TINYINT NOT NULL default '0', bill_applied_payment REAL NOT NULL, inventory_only TINYINT NOT NULL default '0')";
 // query[02] = "DROP TABLE IF EXISTS tbl_bill_account_line";
