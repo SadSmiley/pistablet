@@ -2449,3 +2449,8 @@ function number_format(number)
     //Combines the two sections
     return (n.join("."));
 }
+
+function global_sync()
+{
+    
+}
