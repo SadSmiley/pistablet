@@ -137,6 +137,8 @@ function invoice_print()
 							'<strong>RETURNS</strong>' +
 							'</td>' +
 							'</tr>';
+
+		        $('.inv-itemline').append(cm_item_row);		
 				var ctr = 0;
 				$.each(_cmline, function(key, val)
 				{
@@ -145,22 +147,23 @@ function invoice_print()
 					unit_measurement_view(qty, val['cmline_item_id'], val['cmline_um'], function(um_view)
 					{
 						ctr++;
-						cm_item_row += '<tr>' + 
-								       '<td>'+ val['item_name'] +'</td>'+
-								       '<td style="text-align: center;">'+um_view+'</td>' +
-								       '<td style="text-align: center;">'+ (val['cmline_rate']).toFixed(2)+'</td>' +
-								       '<td style="text-align: center;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
-									   '</tr>';
+						var cm_item_row_line = '<tr>' + 
+										       '<td>'+ val['item_name'] +'</td>'+
+										       '<td style="text-align: center;">'+um_view+'</td>' +
+										       '<td style="text-align: center;">'+ (val['cmline_rate']).toFixed(2)+'</td>' +
+										       '<td style="text-align: center;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
+											   '</tr>';
 
+						$('.inv-itemline').append(cm_item_row_line);
 						if(ctr == _cmline.length)
 						{
-							cm_item_row += '<tr>' +
+							var cm_item_row_2 = '<tr>' +
 										   '<td colspan="2"></td>' +
 										   '<td style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>' +
 									       '<td style="text-align: right; font-weight: bold">'+(cm_amount).toFixed(2)+'</td>'+
-										   '</tr>';							
+										   '</tr>';					
+		        			$('.inv-itemline').append(cm_item_row_2);		
 						}
-		        		$('.inv-itemline').append(cm_item_row);
 					});
 				});
 			}
@@ -168,7 +171,7 @@ function invoice_print()
 			{
 				$('.sales-person').html(agent_name);
 			});
-			$('.inv-overall-total').html("<strong>TOTAL</strong>  PHP" +(inv['inv_overall_price'] - cm_amount).toFixed(2));
+			$('.inv-overall-total').html("<strong>TOTAL</strong>  PHP" + number_format(inv['inv_overall_price'] - cm_amount));
 	    });
 	}
 }

@@ -44,7 +44,7 @@ function cm_print()
 				var qty = (val['cmline_qty'] * val['unit_qty']);
 				unit_measurement_view(qty, val['cmline_item_id'], val['cmline_um'], function(um_view)
 				{
-					cm_item_row += '<tr>' + 
+					cm_item_row = '<tr>' + 
 							       '<td>'+ val['item_name'] +'</td>'+
 							       '<td style="text-align: center;">'+um_view+'</td>' +
 							       '<td style="text-align: center;">'+ (val['cmline_rate']).toFixed(2)+'</td>' +
@@ -58,7 +58,7 @@ function cm_print()
 			total_cm += '<tr>' +
 						   '<td colspan="2"></td>' +
 						   '<td style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>' +
-					       '<td style="text-align: right; font-weight: bold">'+((cm['cm_amount']).toFixed(2))+'</td>'+
+					       '<td style="text-align: right; font-weight: bold">'+(number_format(cm['cm_amount']))+'</td>'+
 						   '</tr>';
 
 	        $('.cm-itemline').append(total_cm);
