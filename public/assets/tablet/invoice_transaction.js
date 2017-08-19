@@ -653,11 +653,11 @@ function invoice_edit_submit()
                             {
                                 if(returns_cm == 'success')
                                 {
-                                    toastr.success("Success");
-                                    setInterval(function()
-                                    {
-                                        location.reload();
-                                    },2000)
+                                    // toastr.success("Success");
+                                    // setInterval(function()
+                                    // {
+                                    //     location.reload();
+                                    // },2000)
                                 }
                             });
                         });

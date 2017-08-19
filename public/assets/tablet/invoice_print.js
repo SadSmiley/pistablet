@@ -63,7 +63,7 @@ function invoice_print()
 	        	var total_qty = val['unit_qty'] * val['invline_qty'];
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
-		        	tr += '<tr>' +
+		        	tr = '<tr>' +
 						  '<td>'+val['item_name']+'</td>'+
 						  '<td class="text-center">'+um_view+'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
@@ -140,11 +140,11 @@ function invoice_print()
 				var ctr = 0;
 				$.each(_cmline, function(key, val)
 				{
-					ctr++;
 					cm_amount += val['cmline_amount']; 
 					var qty = (val['cmline_qty'] * val['unit_qty']);
 					unit_measurement_view(qty, val['cmline_item_id'], val['cmline_um'], function(um_view)
 					{
+						ctr++;
 						cm_item_row += '<tr>' + 
 								       '<td>'+ val['item_name'] +'</td>'+
 								       '<td style="text-align: center;">'+um_view+'</td>' +

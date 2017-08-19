@@ -1058,9 +1058,8 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
     var return_data = 0;
     var count_item = count(_item_id);
     var ctr = 0;
-    $.each( _item_id,function(key, values)
+    $.each(_item_id, function(key, values)
     {
-        ctr++;
         get_item_bundle(_values['invline_item_id'][key], function(bundle_item)
         {
             if(bundle_item.length > 0)
@@ -1082,6 +1081,7 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
             {
                 get_sir_inventory(sir_id,_values['invline_item_id'][key], _values['invline_um'][key], _values['invline_qty'][key].replace(',',""), invoice_id, function(return_value)
                 {
+                    ctr++;
                     return_data += return_value;
                     if(ctr == count_item)
                     {     
@@ -1269,12 +1269,16 @@ function insert_invoice_submit(customer_info, item_info, callback)
 {
     get_sir_id(function(sir_id)
     {
+        console.log("sir_id "+sir_id);
         get_subtotal(item_info, function(subtotal)
         {  
+            console.log("subtotal "+subtotal);
             get_discount_amount(customer_info, subtotal, function(discount)
             {
+                console.log("discount "+discount);
                 get_tax(item_info, function(tax)
                 {
+                    console.log("tax "+tax);
                     var ewt = subtotal * roundNumber(customer_info['ewt']);
 
                     var overall_price = roundNumber(((subtotal - ewt) - discount) + tax);
@@ -1310,8 +1314,31 @@ function insert_invoice_submit(customer_info, item_info, callback)
                        db.transaction(function (tx) 
                        {  
                             var insert_row = 'INSERT INTO tbl_customer_invoice (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, is_sales_receipt,credit_memo_id, sale_receipt_cash_account, inv_custom_field_id, inv_payment_applied, inv_is_paid, created_at)' + 
-                                'VALUES ('+insert_inv['new_inv_id']+', '+insert_inv['inv_shop_id']+', '+insert_inv['inv_customer_id']+', "'+insert_inv['inv_customer_email']+'", "'+insert_inv['inv_customer_billing_address']+'", '+insert_inv['inv_terms_id']+', "'+insert_inv['inv_date']+'", "'+insert_inv['inv_due_date']+'", "'+insert_inv['inv_message']+'", "'+insert_inv['inv_memo']+'", "'+insert_inv['inv_discount_type']+'", '+insert_inv['inv_discount_value']+', '+insert_inv['ewt']+', '+insert_inv['taxable']+', '+insert_inv['inv_subtotal_price']+', '+insert_inv['inv_overall_price']+', "'+insert_inv['date_created']+'", '+insert_inv['is_sales_receipt']+', '+insert_inv['credit_memo_id']+', '+insert_inv['sale_receipt_cash_account']+', '+insert_inv['inv_custom_field_id']+', '+insert_inv['inv_payment_applied']+', '+insert_inv['inv_is_paid']+', "'+insert_inv['created_at']+'")';
-                            console.log(insert_row);
+                                'VALUES ('+insert_inv['new_inv_id']+', '+
+                                           insert_inv['inv_shop_id']+', '+
+                                           insert_inv['inv_customer_id']+', "'+
+                                           insert_inv['inv_customer_email']+'", "'+
+                                           insert_inv['inv_customer_billing_address']+'", '+
+                                           insert_inv['inv_terms_id']+', "'+
+                                           insert_inv['inv_date']+'", "'+
+                                           insert_inv['inv_due_date']+'", "'+
+                                           insert_inv['inv_message']+'", "'+
+                                           insert_inv['inv_memo']+'", "'+
+                                           insert_inv['inv_discount_type']+'", '+
+                                           insert_inv['inv_discount_value']+', '+
+                                           insert_inv['ewt']+', '+
+                                           insert_inv['taxable']+', '+
+                                           insert_inv['inv_subtotal_price']+', '+
+                                           insert_inv['inv_overall_price']+', "'+
+                                           insert_inv['date_created']+'", '+
+                                           insert_inv['is_sales_receipt']+', '+
+                                           insert_inv['credit_memo_id']+', '+
+                                           insert_inv['sale_receipt_cash_account']+', '+
+                                           insert_inv['inv_custom_field_id']+', '+
+                                           insert_inv['inv_payment_applied']+', '+
+                                           insert_inv['inv_is_paid']+', "'+
+                                           insert_inv['created_at']+'")';
+                            
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                                var invoice_id = results.insertId;
@@ -1330,11 +1357,11 @@ function insert_invoice_submit(customer_info, item_info, callback)
 }
 function insert_inv_line(invoice_id, item_info, callback)
 {
+    console.log(item_info);
     var ctr_item_info = count(item_info);
     var ctr = 0;
     $.each(item_info, function(key, value)
     {
-        ctr++;
         /* DISCOUNT PER LINE */
         var discount = value['discount'];
         var discount_type = 'fixed';
@@ -1404,6 +1431,8 @@ function insert_inv_line(invoice_id, item_info, callback)
                                  ')';
             tx.executeSql(insertline_row, [], function(tx, results)
             {
+                ctr++;
+                console.log("ctr_item :" + ctr + " " + ctr_item_info);
                 if(ctr == ctr_item_info)
                 {
                     callback("success");
@@ -2452,5 +2481,5 @@ function number_format(number)
 
 function global_sync()
 {
-    
+
 }
