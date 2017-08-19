@@ -144,6 +144,20 @@
     <script src="../../public/assets/external/jquery_ui/jquery_ui.js"></script>
     <script src="../../public/assets/member/scripts/e1d08589.bootstrap.min.js"></script>
     <script type="text/javascript" src="../../public/assets/member/scripts/vendor/jquery.pnotify.min.js"></script>
-
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        var item_number = $('input[name="item_number"]').val();
+        var txn_id = $('input[name="txn_id"]').val();
+        var payment_gross = $('input[name="payment_gross"]').val();
+        var currency_code = $('input[name="currency_code"]').val();
+        var payment_status = $('input[name="payment_status"]').val();
+        location.href = 'localhost:8080/ADCC/REQUIREMENT/membershipfee/add.php?item_number="'+item_number+'"'+
+                        '&txn_id="'+txn_id+'"' +
+                        '&payment_gross="'+payment_gross+'"' +
+                        '&currency_code="'+currency_code+'"' +
+                        '&payment_status="'+payment_status+'"';
+    });
+</script>
 <script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
 <script type="text/javascript" src="../../public/assets/tablet/invoice_print.js"></script>

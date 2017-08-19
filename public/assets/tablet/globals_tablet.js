@@ -482,7 +482,103 @@ function post_one_journal_entries(callback)
         });
     });
 }
+function post_journal_entries(entry, entry_data, remarks = '')
+{
+    get_shop_id(function(shop_id)
+    {
+        get_default_accounts(shop_id, "accounting-receivable", function(account_receivable)
+        {
+            get_default_accounts(shop_id, "accounting-payable", function(account_payable)
+            {
+                var account_cash = 0;
+                if(entry["account_id"])
+                {
+                    account_cash = entry["account_id"];
+                }
+                /* INSERT JOURNAL ENTRY */
+                journal_entry['je_shop_id']            = shop_id;
+                journal_entry['je_reference_module']   = entry["reference_module"];
+                journal_entry['je_reference_id']       = entry["reference_id"];
+                journal_entry['je_entry_date']         = get_date_now();
+                journal_entry['je_remarks']            = remarks;
 
+                
+            });
+        });
+    });
+}
+function get_default_accounts(shop_id, account_code, callback)
+{
+    db.transaction(function (tx)
+    {
+        var select = 'SELECT account_id FROM tbl_chart_of_account '+
+                     'WHERE account_shop_id = ' +shop_id +
+                     'AND account_code =' + account_code;
+        tx.executeSql(select, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['account_id']);
+            }
+            else if (account_code == 'accounting-cash-in-bank' && results.rows.length < 0) 
+            {
+                insert_default_cash_in_bank(function(account_id)
+                {
+                    if(account_id != 0)
+                    {
+                        callback(account_id);
+                    }
+                    else
+                    {
+                        alert("Something wen't wrong. Please contact your administrator.");
+                    }
+                });
+            }
+            else
+            {
+                alert("Something wen't wrong. Please contact your administrator.");
+            }
+        });
+    });
+
+}
+function insert_default_cash_in_bank(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function (tx)
+        {
+
+            var insert = {};
+            insert["account_shop_id"]          = shop_id;
+            insert["account_type_id"]          = 1;
+            insert["account_number"]           = "00000";
+            insert["account_name"]             = "Cash In Bank";
+            insert["account_description"]      = "Default Bank";
+            insert["account_protected"]        = 1;
+            insert["account_code"]             = "accounting-cash-in-bank";
+
+            var insert_query = 'INSERT INTO tbl_chart_of_account (account_shop_id, '+
+                                                                 'account_type_id, '+
+                                                                 'account_number, '+
+                                                                 'account_name, '+
+                                                                 'account_description,'+
+                                                                 'account_protected, '+
+                                                                 'account_code) ' +
+                                                                 'VALUES ('+
+                                                                 insert['account_shop_id']+','+
+                                                                 insert['account_type_id']+',"'+
+                                                                 insert['account_number']+'","'+
+                                                                 insert['account_name']+'","'+
+                                                                 insert['account_description']+'",'+
+                                                                 insert['account_protected']+',"'+
+                                                                 insert['account_code']+'")';
+            tx.executeSql(insert_query, [], function(tx, results)
+            {
+                callback(results.insertId);
+            });
+    });
+}
 function post_two_journal_entries(account_receivable, account_payable, account_cash)
 {
     alert(account_receivable + " " + account_payable + " " + account_cash);
