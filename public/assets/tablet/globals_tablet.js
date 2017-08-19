@@ -499,11 +499,115 @@ function post_journal_entries(entry, entry_data, remarks = '')
                 journal_entry['je_shop_id']            = shop_id;
                 journal_entry['je_reference_module']   = entry["reference_module"];
                 journal_entry['je_reference_id']       = entry["reference_id"];
-                journal_entry['je_entry_date']         = get_date_now();
                 journal_entry['je_remarks']            = remarks;
 
-                
+                // /* CHECK IF THE TRANSACTION JOURNAL IS ALREADY EXIST - USE IF NEW OR UPDATE TRANSACTION */
+                // $exist_journal = Tbl_journal_entry::where("je_reference_module", $journal_entry['je_reference_module'])->where("je_reference_id", $journal_entry['je_reference_id'])->first();
+
+                // if(!$exist_journal)
+                // {
+                //     $journal_entry['created_at']    = carbon::now();
+                //     $line_data["je_id"]             = Tbl_journal_entry::insertGetId($journal_entry);
+                // }
+                // else
+                // {
+                //     unset($journal_entry['je_entry_date']);
+                //     $journal_entry['updated_at']    = carbon::now();
+                //     Tbl_journal_entry_line::where("jline_je_id", $exist_journal->je_id)->delete();
+                //     Tbl_journal_entry::where("je_id", $exist_journal->je_id)->update($journal_entry);
+                //     $line_data["je_id"] = $exist_journal->je_id;
+                // }
+
+                var line_data = {};
+                /* CHECK IF THE TRANSACTION JOURNAL IS ALREADY EXIST - USE IF NEW OR UPDATE TRANSACTION */
+                check_if_transaction_exist(journal_entry, function(je_id)
+                {
+                    var line_data['je_id'] = je_id;
+                    
+                });
             });
+        });
+    });
+}
+function check_if_transaction_exist(journal_entry, callback)
+{
+    db.transaction(function (tx)
+    {
+
+                journal_entry['je_shop_id']            = shop_id;
+                journal_entry['je_reference_module']   = entry["reference_module"];
+                journal_entry['je_reference_id']       = entry["reference_id"];
+                journal_entry['je_remarks']            = remarks;
+        var select = 'SELECT * FROM tbl_journal_entry '+
+                     'WHERE je_reference_module = ' +journal_entry['je_reference_module'] +
+                     'AND je_reference_id =' + journal_entry['je_reference_id'];
+        tx.executeSql(select, [], function(tx, results)
+        {
+            var res = results.rows.length; 
+            if(res == 0)
+            {
+                /* INSERT HERE */
+                journal_entry['created_at']       = get_date_now();
+                journal_entry['je_entry_date']    = get_date_now();
+
+                db.transaction(function (tx)
+                {
+                    var insert_query = 'INSERT INTO tbl_journal_entry ('+
+                                        'je_shop_id,' +
+                                        'je_reference_module,' +
+                                        'je_reference_id,' +
+                                        'je_remarks,'+
+                                        'je_entry_date,' +
+                                        'created_at)'+
+                                        ' VALUES ('+
+                                        journal_entry['je_shop_id'] + ',"'+         
+                                        journal_entry['je_reference_module'] + '",'+
+                                        journal_entry['je_reference_id'] + ',"'+
+                                        journal_entry['je_remarks'] + '","'+
+                                        journal_entry['je_entry_date'] + '","'+   
+                                        journal_entry['created_at'] + '")';
+                    tx.executeSql(insert_query, [], function(tx, results)
+                    {
+                        callback(results.insertId);
+                    });
+                });
+            }
+            else
+            {
+
+                Tbl_journal_entry_line::where("jline_je_id", $exist_journal->je_id)->delete();
+
+                db.transaction(function (tx)
+                {
+                    var delete_query = 'DELETE * FROM tbl_journal_entry_line WHERE jline_je_id = ' + results.rows[0].je_id;
+                    tx.executeSql(delete_query, [], function(tx, results_del)
+                    {
+
+                    });
+                });
+                /* UPDATE HERE */       
+                journal_entry['updated_at']    = get_date_now();
+                db.transaction(function (tx)
+                {
+                    var insert_query = 'UPDATE tbl_journal_entry SET ('+
+                                        'je_shop_id,' +
+                                        'je_reference_module,' +
+                                        'je_reference_id,' +
+                                        'je_remarks,'+
+                                        'updated_at)'+
+                                        ' = ('+
+                                        journal_entry['je_shop_id'] + ',"'+         
+                                        journal_entry['je_reference_module'] + '",'+
+                                        journal_entry['je_reference_id'] + ',"'+
+                                        journal_entry['je_remarks'] + '","'+  
+                                        journal_entry['updated_at'] + '") '+
+                                        'WHERE je_id = ' + results.rows[0].je_id ;
+                    tx.executeSql(insert_query, [], function(tx, results)
+                    {
+                        callback(results.rows[0].je_id );
+                    });
+                });
+            }
         });
     });
 }
