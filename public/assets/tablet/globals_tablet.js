@@ -575,7 +575,7 @@ function check_if_transaction_exist(journal_entry, callback)
             else
             {
 
-                Tbl_journal_entry_line::where("jline_je_id", $exist_journal->je_id)->delete();
+                // Tbl_journal_entry_line::where("jline_je_id", $exist_journal->je_id)->delete();
 
                 db.transaction(function (tx)
                 {
