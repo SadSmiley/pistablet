@@ -207,6 +207,7 @@ function sync_data()
         all_tbl_name[43] = "tbl_unit_measurement_multi";
         all_tbl_name[44] = "tbl_user";
         all_tbl_name[45] = "tbl_payment_method";
+        all_tbl_name[45] = "tbl_invoice_log";
 
         var total = all_tbl_name.length;
         var ctr = 0;
@@ -221,7 +222,7 @@ function sync_data()
                 try 
                 {
                     $.ajax({
-                        url : "http://digimatest.com/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
+                        url : "http://digimahouse.dev/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
                         dataType: "json",
                         data : {},
                         type : "get",

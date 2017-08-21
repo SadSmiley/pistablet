@@ -109,8 +109,8 @@ function query_create_all_table(callback)
     query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NOT NULL, default_sublevel INTEGER NOT NULL, default_balance REAL NOT NULL, default_open_balance REAL NOT NULL, default_open_balance_date date NOT NULL, is_tax_account TINYINT NOT NULL, account_tax_code_id INTEGER NOT NULL, default_for_code VARCHAR(255) , account_protected TINYINT NOT NULL,created_at DATETIME, updated_at DATETIME)";
     query[45] = "CREATE TABLE IF NOT EXISTS tbl_timestamp (timestamp_id INTEGER PRIMARY KEY AUTOINCREMENT, table_name VARCHAR(255), timestamp DATETIME)";
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
-    query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255),isDefault TINYINT,archived TINYINT)";
-    query[48] = "CREATE TABLE IF NOT EXISTS tbl_invoice_log (record_id INTEGER PRIMARY KEY AUTOINCREMENT, transaction_name VARCHAR(255) NULL, transaction_id INTEGER NULL, transaction_amount REAL NULL, date_created DATETIME NULL)";
+    query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255), isDefault TINYINT,archived TINYINT)";
+    query[48] = "CREATE TABLE IF NOT EXISTS tbl_invoice_log (record_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, transaction_name VARCHAR(255) NULL, transaction_id INTEGER NULL, transaction_amount REAL NULL, date_created DATETIME NULL)";
 
     var total = query.length;
     var ctr = 1;
@@ -1543,16 +1543,12 @@ function insert_invoice_submit(customer_info, item_info, callback)
 {
     get_sir_id(function(sir_id)
     {
-        console.log("sir_id "+sir_id);
         get_subtotal(item_info, function(subtotal)
         {  
-            console.log("subtotal "+subtotal);
             get_discount_amount(customer_info, subtotal, function(discount)
             {
-                console.log("discount "+discount);
                 get_tax(item_info, function(tax)
                 {
-                    console.log("tax "+tax);
                     var ewt = subtotal * roundNumber(customer_info['ewt']);
 
                     var overall_price = roundNumber(((subtotal - ewt) - discount) + tax);
