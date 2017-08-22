@@ -1,0 +1,89 @@
+.package
+{
+	padding: 25px 0;
+	.title
+	{
+		color: #4f4f4f;
+		font-size: 45px;
+	}
+	.sub
+	{
+		color: #4f4f4f;
+		font-size: 18px;
+		margin-bottom: 50px;
+	}
+	.membership
+	{
+		text-align: left;
+		.holder
+		{
+			.img
+			{
+				img
+				{
+					width: 100%;
+				}
+			}
+			.text-holder
+			{
+				padding: 25px;
+				.name
+				{
+					margin-bottom: 25px;
+					.radio
+					{
+						color: #4f4f4f;
+						font-size: 18px;
+					}
+				}
+				.membership-name
+				{
+					color: #4f4f4f;
+					font-size: 18px;
+					font-weight: 700;
+					input[type="radio"]
+					{
+						margin-top: 6px;
+						margin-right: 5px;
+					}
+				}
+				.membership-price
+				{
+					color: #4f4f4f;
+					font-size: 18px;
+				}
+				.info
+				{
+					color: #4f4f4f;
+					margin: 15px 0;
+					color: #4f4f4f;
+					font-size: 15px;
+				}
+				.type
+				{
+					select
+					{
+						color: #4f4f4f;
+						font-size: 18px;
+						border-radius: 0;
+						box-shadow: none;
+					}
+				}
+			}
+		}
+	}
+	.button-holder
+	{
+		margin-top: 50px;
+		.btn-green
+		{
+			color: #20ca1f;
+			font-size: 18px;
+			border: 1px solid #20ca1f;
+			background-color: transparent;
+			border-radius: 0;
+			font-weight: 700;
+			letter-spacing: 1px;
+		}
+	}
+}

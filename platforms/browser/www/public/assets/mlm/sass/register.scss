@@ -1,0 +1,95 @@
+.register
+{
+	text-align: center;
+	padding: 25px 0;
+	.title
+	{
+		color: #424242;
+		font-size: 43.73px;
+		letter-spacing: 2px;
+	}
+	.sub
+	{
+		font-size: 16.08px;
+		color: #424242;
+		letter-spacing: 1px;
+	}
+	.form-container
+	{
+		background-color: #f3f3f3;
+		padding: 20px 25px;
+		margin: 25px 0;
+		margin-bottom: 5px;
+		text-align: left;
+		&.second
+		{
+			margin-top: 0;
+			margin-bottom: 15px;
+		}
+		label
+		{
+			color: #424242;
+			font-size: 18px;
+			letter-spacing: 1px;
+			font-weight: 300;
+		}
+		.form-control
+		{
+			border-radius: 0;
+			background-color: #fff;
+			border: 1px solid #ebebeb;
+			box-shadow: none;
+		}
+	}
+	.button-holder
+	{
+		.agreement
+		{
+			color: #424242;
+			font-size: 17.78px;
+			letter-spacing: 1px;
+			padding: 15px 0 25px;
+			span
+			{
+				color: #21cc21;
+			}
+			input[type="checkbox"]
+			{
+				margin-top: 6px;
+			}
+		}
+		.main
+		{
+			max-width: 450px;
+			margin: auto;
+			.already
+			{
+				color: #424242;
+				font-size: 14px;
+				padding: 15px 0;
+				letter-spacing: 1px;
+			}
+			.btn
+			{
+				background-color: transparent;
+				border: 1px solid;
+				font-size: 14px;
+				font-weight: 700;
+				border-radius: 0;
+				font-family: "Roboto", sans-serif;
+				letter-spacing: 1px;
+				width: 100%;
+			}
+			.btn-green
+			{
+				color: #21cc21;
+				border-color: #21cc21;
+			}
+			.btn-black
+			{
+				color: #424242;
+				border-color: #424242;
+			}
+		}
+	}
+}
