@@ -2471,20 +2471,29 @@ function get_paid_rp_data(rp_id, callback)
                             'WHERE rp_id = ' + rp_id;
             tx.executeSql(select_rp, [], function(txs, results)
             {
-                var rp = results.rows[0];
-
-                var select_rpline = 'SELECT * FROM tbl_receive_payment_line ' +
-                                    'LEFT JOIN tbl_customer_invoice ON inv_id = rpline_reference_id ' +
-                                    'WHERE rpline_reference_name = "invoice" '+
-                                    'AND rpline_rp_id = ' + rp_id +
-                                    ' GROUP BY inv_id';
-                tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                if(results.rows.length > 0)
                 {
-                    var rpline = results_rpline.rows;
+                    var rp = results.rows[0];
 
-                    callback(rp, rpline);                                                                                              
-                },
-                onError);
+                    var select_rpline = 'SELECT * FROM tbl_receive_payment_line ' +
+                                        'LEFT JOIN tbl_customer_invoice ON inv_id = rpline_reference_id ' +
+                                        'WHERE rpline_reference_name = "invoice" '+
+                                        'AND rpline_rp_id = ' + rp_id +
+                                        ' GROUP BY inv_id';
+                    tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                    {
+                        var rpline = results_rpline.rows;
+
+                        callback(rp, rpline);                                                                                              
+                    },
+                    onError);
+                }
+                else
+                {
+                    var rp = {};
+                    var rpline = {};
+                    callback(rp, rpline);  
+                }
             },
             onError);
         });
@@ -2981,7 +2990,7 @@ function global_sync()
                 {
                     get_cm_data(value['transaction_id'], function(cm, cmline)
                     {
-                        get_rp_data(value['transaction_id'], function(rp, rpline)
+                        get_paid_rp_data(value['transaction_id'], function(rp, rpline)
                         {
                             ctr++;
                             if(value['transaction_name'] == 'invoice')
