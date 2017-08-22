@@ -1540,27 +1540,73 @@ function remove_parent_bundle(item_returns, _cm_items_id, callback)
 function insert_log(customer_id, transaction_name, transaction_id, transaction_amount = 0, callback)
 {
     get_shop_id(function(shop_id)
-    {
-        var insert_row = {};
-        insert_row['customer_id'] = customer_id;
-        insert_row['transaction_name'] = transaction_name;
-        insert_row['transaction_id'] = transaction_id;
-        insert_row['transaction_amount'] = transaction_amount;
-        db.transaction(function (tx) 
-        {  
-            var insert_query = 'INSERT INTO tbl_invoice_log (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
-                               'VALUES ('+shop_id+', '+insert_row['customer_id']+',"'+
-                                insert_row['transaction_name']+'",'+
-                                insert_row['transaction_id']+','+
-                                insert_row['transaction_amount']+',"'+
-                                get_date_now()+'")';
-            tx.executeSql(insert_query, [], function(tx, results)
+    {       
+        check_invoice_log(customer_id, transaction_name, transaction_id, function(record_id)
+        {            
+            var data = {};
+            data['customer_id'] = customer_id;
+            data['transaction_name'] = transaction_name;
+            data['transaction_id'] = transaction_id;
+            data['transaction_amount'] = transaction_amount;
+            console.log(record_id);
+            if(record_id == 0)
             {
-                callback(results.insertId);
-            }, 
-            onError);
+                db.transaction(function (tx) 
+                {  
+                    var insert_query = 'INSERT INTO tbl_invoice_log (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
+                                       'VALUES ('+shop_id+', '+data['customer_id']+',"'+
+                                        data['transaction_name']+'",'+
+                                        data['transaction_id']+','+
+                                        data['transaction_amount']+',"'+
+                                        get_date_now()+'")';
+                    tx.executeSql(insert_query, [], function(tx, results)
+                    {
+                        callback(results.insertId);
+                    }, 
+                    onError);
+                });
+            }
+            else
+            {
+                db.transaction(function (tx) 
+                {  
+                    var update_query = 'UPDATE tbl_invoice_log SET (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
+                                       '= ('+shop_id+', '+data['customer_id']+',"'+
+                                        data['transaction_name']+'",'+
+                                        data['transaction_id']+','+
+                                        data['transaction_amount']+',"'+
+                                        get_date_now()+'") ' +
+                                        'WHERE record_id = ' + record_id;
+                    tx.executeSql(update_query, [], function(tx, results)
+                    {
+                        callback(record_id);
+                    }, 
+                    onError);
+                });
+            }            
         });
-
+    });
+}
+function check_invoice_log(customer_id, transaction_name, transaction_id, callback)
+{
+    db.transaction(function (tx) 
+    {  
+        var select_query = 'SELECT * FROM tbl_invoice_log ' +
+                           'WHERE transaction_customer_id = ' + customer_id +
+                           ' AND transaction_name = "' + transaction_name +
+                           '" AND transaction_id = ' + transaction_id;
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['record_id']);
+            }
+            else
+            {
+                callback(0);
+            }
+        },
+        onError);
     });
 }
 /* FUNCTION INVOICE */
@@ -2495,7 +2541,7 @@ function update_rp_submit(rp_id, customer_info, insertline, callback)
                     {
                         insert_rpline(rp_id, insertline, function(result_line)
                         {
-                            insert_log(customer_info['rp_customer_id'], 'receive_payment', rp_id, customer_info['rp_total_amount'], function(record_id)
+                            insert_log(customer_info['rp_customer_id'], 'receive_payment', rp_id, -(customer_info['rp_total_amount']), function(record_id)
                             {
                                 if(record_id != 0)
                                 {
@@ -2873,4 +2919,5 @@ function number_format(number)
 function global_sync()
 {
 
+    
 }
