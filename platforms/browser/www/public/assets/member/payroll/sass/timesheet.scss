@@ -1,0 +1,124 @@
+.timeEntry-control
+{
+	display: none !important;
+}
+
+.timesheet-table-loading
+{
+	min-height: 1500px;
+	text-align: center;
+	.spin
+	{
+		font-size: 20px;
+	}
+}
+.timesheet
+{
+
+	thead
+	{
+		background-color: #FBFBFB;
+
+	}
+	tbody
+	{
+		tr
+		{
+			cursor: pointer;
+			td
+			{
+				padding: 5px !important;
+				textarea
+				{
+					border: none;
+					height: 40px;
+					width: 100%;
+					background-color: transparent;
+					resize: none;
+					cursor: pointer;
+					border-radius: 3px;
+					padding: 8px;
+				}
+
+				input[type=text]
+				{
+					border: none;
+					width: 100%;
+					text-align: center;
+					padding: 5px;
+					background-color: transparent;
+					cursor: pointer;
+					border-radius: 3px;
+				}
+				.button
+				{
+					display: block;
+					padding: 5px;
+					border: none;
+					color: #ddd;
+					background-color: transparent;
+					&:hover
+					{
+						color: #333;
+					}
+				}
+				&.editable
+				{
+					&:focus
+					{
+					}
+				}
+				&.red
+				{
+					color: red;
+				}
+			}
+
+
+			&:hover
+			{
+				background-color: #fcfcfc;
+			}
+			&.focus
+			{
+				background-color: #FFF;
+				box-shadow: 0 0 10px #ccc;
+				z-index: 1;
+				position: relative;
+				background-color: #fff;
+				td
+				{
+					textarea
+					{
+						border: 1px solid #bbb;
+						cursor: text;
+
+					}
+					input[type=text]
+					{
+						border: 1px solid #bbb;
+						cursor: text;
+					}
+
+					&.editable
+					{
+						&:focus
+						{
+						}
+					}
+
+				}
+			}
+		}
+		tr.disable-hover
+		{
+			background-color: #fdfdfd;
+			cursor: default;
+			.text-table
+			{
+				cursor: default;
+			}
+		}
+	}
+
+}

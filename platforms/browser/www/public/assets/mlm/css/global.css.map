@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,IACA,CACC,WAAW,CAAE,kCAAkC,CAGhD,6EACA,CACC,KAAK,CAAE,OAAO,CACd,WAAW,CAAE,GAAG,CAGjB,cACA,CACC,KAAK,CAAE,OAAO,CACd,WAAW,CAAE,GAAG",
+"sources": ["../sass/global.scss"],
+"names": [],
+"file": "global.css"
+}
