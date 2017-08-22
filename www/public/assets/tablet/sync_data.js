@@ -223,7 +223,7 @@ function sync_data()
                 try 
                 {
                     $.ajax({
-                        url : "http://digimahouse.dev/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
+                        url : "http://digimatest.com/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
                         dataType: "json",
                         data : {},
                         type : "get",

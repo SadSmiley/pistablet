@@ -2806,8 +2806,34 @@ function get_payment_method(callback)
 }
 function print_function()
 {
-    $('.print-btn').addClass('hidden');
-    window.print();
+    /**
+     * Checks if the printer service is available (iOS)
+     * or if printer services are installed and enabled (Android).
+     *
+     * @param {Function} callback
+     *      A callback function
+     * @param {Object} scope
+     *      Optional scope of the callback
+     *      Defaults to: window
+     */
+    cordova.plugins.printer.check(function (available, count) {
+        alert(available ? 'Found ' + count + ' services' : 'No');
+        /**
+         * Displays system interface for selecting a printer.
+         *
+         * @param {Function} callback
+         *      A callback function
+         */
+        cordova.plugins.printer.pick(function (uri) {
+            alert(uri ? uri : 'Canceled');
+            var page = location.href;
+            cordova.plugins.printer.print(page, 'invoice_print.html');
+        });
+        
+    });
+
+    // $('.print-btn').addClass('hidden');
+    // window.print();
 }
 function roundNumber(number) 
 {
