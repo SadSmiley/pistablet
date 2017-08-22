@@ -154,7 +154,7 @@ function sync_data()
         query[45] = "DROP TABLE IF EXISTS tbl_timestamp";
         query[46] = "DROP TABLE IF EXISTS tbl_agent_logon";
         query[47] = "DROP TABLE IF EXISTS tbl_payment_method";
-        query[47] = "DROP TABLE IF EXISTS tbl_invoice_log";
+        query[48] = "DROP TABLE IF EXISTS tbl_invoice_log";
 
         onload_create_table(query);
 
@@ -223,7 +223,7 @@ function sync_data()
                 try 
                 {
                     $.ajax({
-                        url : "http://digimatest.com/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
+                        url : "http://digimahouse.dev/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
                         dataType: "json",
                         data : {},
                         type : "get",
@@ -235,6 +235,7 @@ function sync_data()
                                 $(data).each(function(a, b)
                                 {
                                     query = data[a];
+
                                     tx.executeSql(query,[], function(txt, result)
                                     {
                                         // console.log(result);    
