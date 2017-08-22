@@ -84,7 +84,11 @@ function customer_list()
             tx.executeSql(query_check_sir, [], function(txs, results_sir)
             {
                 var shop_id = results_sir.rows[0]['shop_id'];
-                var query_count_customer = 'SELECT * FROM tbl_customer where archived = 0 and shop_id = "'+shop_id+'"';
+                var query_count_customer = 'SELECT *, sum(transaction_amount) as balance FROM tbl_customer ' +
+                                           'LEFT JOIN tbl_invoice_log ON transaction_customer_id = customer_id '+
+                                           'WHERE transaction_name != "credit_memo" AND transaction_name != "sales_receipt" ' + 
+                                           'AND  archived = 0 AND tbl_customer.shop_id = "'+shop_id+'"' + 
+                                           'GROUP BY customer_id';
                 tx.executeSql(query_count_customer, [], function(txst, results_customer)
                 {
                     data_result = results_customer.rows;
@@ -94,12 +98,22 @@ function customer_list()
                         tr += '<tr><td>'+datarow['customer_id']+'</td>';
                         company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : "" ;
                         tr += '<td>'+company+'</td>';
-                        tr += '<td class="text-center"><div class="btn-group"><button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-custom"><li><a href="/tablet/create_invoices/add?sir_id=&customer_id={{$customer->customer_id}}">Create Invoice</a></li><li><a href="/tablet/receive_payment/add?customer_id={{$customer->customer_id}}">Receive Payment</a></li> </ul></div></td>';
+                        tr += '<td class="text-right">'+ number_format(datarow['balance'])+'</td>';
+                        tr += '<td class="text-center">'+
+                              '<div class="btn-group">'+
+                              '<button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button>'+
+                              '<ul class="dropdown-menu dropdown-menu-custom">'+
+                              '<li><a href="../agent_transaction/invoice/invoice_transaction.html">Create Credit Sales</a></li>'+
+                              '<li><a href="../agent_transaction/sales_receipt/sales_receipt_transaction.html">Create Cash Sales</a></li>'+
+                              '<li><a href="../agent_transaction/receive_payment/receive_payment_transaction.html">Receive Payment</a></li>'+
+                              '<li><a href="../agent_transaction/credit_memo/credit_memo_transaction.html">Credit Memo</a></li>'+
+                              ' </ul></div></td>';
                         tr += '</tr>';
                     });
                     
                     $(".tbody-customer-list").append(tr);
-                });
+                },
+                onError);
 
                 
             });

@@ -97,8 +97,6 @@ function home()
 
 	            tx.executeSql(query_sir_item, [], function(tx, results_get)
 	            {
-	            	console.log(results_get);
-
 	            	data_result = results_get.rows;
 					$(data_result).each(function(key, datarow)
 					{

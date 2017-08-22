@@ -110,7 +110,7 @@ function query_create_all_table(callback)
     query[45] = "CREATE TABLE IF NOT EXISTS tbl_timestamp (timestamp_id INTEGER PRIMARY KEY AUTOINCREMENT, table_name VARCHAR(255), timestamp DATETIME)";
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
     query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255), isDefault TINYINT,archived TINYINT)";
-    query[48] = "CREATE TABLE IF NOT EXISTS tbl_invoice_log (record_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, transaction_name VARCHAR(255) NULL, transaction_id INTEGER NULL, transaction_amount REAL NULL, date_created DATETIME NULL)";
+    query[48] = "CREATE TABLE IF NOT EXISTS tbl_invoice_log (record_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, transaction_customer_id INTEGER, transaction_name VARCHAR(255) NULL, transaction_id INTEGER NULL, transaction_amount REAL NULL, date_created DATETIME NULL)";
 
     var total = query.length;
     var ctr = 1;
@@ -1538,6 +1538,30 @@ function remove_parent_bundle(item_returns, _cm_items_id, callback)
         callback(return_value);
     }
 }
+function insert_log(customer_id, transaction_name, transaction_id, transaction_amount = 0)
+{
+    get_shop_id(function(shop_id)
+    {
+        var insert_row = {};
+        insert_row['customer_id'] = customer_id;
+        insert_row['transaction_name'] = transaction_name;
+        insert_row['transaction_id'] = transaction_id;
+        insert_row['transaction_amount'] = transaction_amount.replace(',','');
+        db.transaction(function (tx) 
+        {  
+            // var insert_query = 'INSERT INTO tbl_invoice_log (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount)' +
+            //                    'VALUES ('+shop_id+', '+insert_row['customer_id']+',"'+
+            //                     insert_row['']
+            //                    +')';
+            // tx.executeSql(insert_row, [], function(tx, results)
+            // {
+
+            // }, 
+            // onError);
+        });
+
+    });
+}
 /* FUNCTION INVOICE */
 function insert_invoice_submit(customer_info, item_info, callback)
 {
@@ -1614,7 +1638,10 @@ function insert_invoice_submit(customer_info, item_info, callback)
                                var invoice_id = results.insertId;
                                insert_inv_line(invoice_id, item_info, function(data)
                                {
-                                    callback(invoice_id);
+                                    if(invoice_id != 0)
+                                    {
+                                        callback(invoice_id);
+                                    }
                                });
                             },
                             onError);
@@ -1627,7 +1654,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
 }
 function insert_inv_line(invoice_id, item_info, callback)
 {
-    console.log(item_info);
+    // console.log(item_info);
     var ctr_item_info = count(item_info);
     var ctr = 0;
     $.each(item_info, function(key, value)
