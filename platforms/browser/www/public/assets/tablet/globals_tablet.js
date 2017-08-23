@@ -19,6 +19,7 @@ function forget_session(label)
 {
     sessionStorage.setItem(label, '');
 }
+global_sync();
 
 /**
  * Agent Logout
@@ -71,12 +72,12 @@ function query_create_all_table(callback)
     query[10] = "CREATE TABLE IF NOT EXISTS tbl_customer_address (customer_address_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NOT NULL, country_id INTEGER  NOT NULL, customer_state VARCHAR(255)  NOT NULL, customer_city VARCHAR(255)  NOT NULL,  customer_zipcode VARCHAR(255)  NOT NULL, customer_street text  NOT NULL, purpose VARCHAR(255)  NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[11] = "CREATE TABLE IF NOT EXISTS tbl_customer_attachment (customer_attachment_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NOT NULL, customer_attachment_path text  NOT NULL, customer_attachment_name VARCHAR(255)  NOT NULL, customer_attachment_extension VARCHAR(255)  NOT NULL, mime_type VARCHAR(255)  NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
     /*INVOICE*/
-    query[12] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice (inv_id INTEGER PRIMARY KEY AUTOINCREMENT, new_inv_id INTEGER NOT NULL, inv_shop_id INTEGER NOT NULL, inv_customer_id INTEGER NOT NULL, inv_customer_email VARCHAR(255)  NOT NULL, inv_customer_billing_address VARCHAR(255)  NOT NULL, inv_terms_id TINYINT NOT NULL, inv_date DATE NOT NULL, inv_due_date DATE NOT NULL, inv_message VARCHAR(255)  NOT NULL, inv_memo VARCHAR(255)  NOT NULL, inv_discount_type VARCHAR(255)  NOT NULL, inv_discount_value INTEGER NOT NULL, ewt REAL NOT NULL, taxable TINYINT NOT NULL, inv_subtotal_price REAL NOT NULL,  inv_overall_price REAL NOT NULL, inv_payment_applied REAL NOT NULL, inv_is_paid TINYINT NOT NULL, inv_custom_field_id INTEGER NOT NULL, date_created DATETIME NOT NULL, credit_memo_id INTEGER NOT NULL default '0', is_sales_receipt TINYINT NOT NULL, sale_receipt_cash_account INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255)  DEFAULT 'new'NULL)"; 
+    query[12] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice (inv_id INTEGER PRIMARY KEY AUTOINCREMENT, new_inv_id INTEGER NOT NULL, inv_shop_id INTEGER NOT NULL, inv_customer_id INTEGER NOT NULL, inv_customer_email VARCHAR(255)  NOT NULL, inv_customer_billing_address VARCHAR(255)  NOT NULL, inv_terms_id TINYINT NOT NULL, inv_date DATE NOT NULL, inv_due_date DATE NOT NULL, inv_message VARCHAR(255)  NOT NULL, inv_memo VARCHAR(255)  NOT NULL, inv_discount_type VARCHAR(255)  NOT NULL, inv_discount_value INTEGER NOT NULL, ewt REAL NOT NULL, taxable TINYINT NOT NULL, inv_subtotal_price REAL NOT NULL,  inv_overall_price REAL NOT NULL, inv_payment_applied REAL NOT NULL, inv_is_paid TINYINT NOT NULL, inv_custom_field_id INTEGER NOT NULL, date_created DATETIME NOT NULL, credit_memo_id INTEGER NOT NULL default '0', is_sales_receipt TINYINT NOT NULL, sale_receipt_cash_account INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255)  DEFAULT 'new' NULL)"; 
     query[13] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice_line (invline_id INTEGER PRIMARY KEY AUTOINCREMENT, invline_inv_id INTEGER  NOT NULL, invline_service_date DATE NOT NULL, invline_item_id INTEGER NOT NULL, invline_description VARCHAR(255)  NOT NULL, invline_um INTEGER NOT NULL, invline_qty INTEGER NOT NULL, invline_rate REAL NOT NULL, taxable TINYINT NOT NULL, invline_discount REAL NOT NULL, invline_discount_type VARCHAR(255) NOT NULL, invline_discount_remark VARCHAR(255) NOT NULL, invline_amount REAL NOT NULL, date_created DATETIME NOT NULL, invline_ref_name VARCHAR(255)  NOT NULL, invline_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[14] = "CREATE TABLE IF NOT EXISTS tbl_position (position_id INTEGER PRIMARY KEY AUTOINCREMENT, position_name VARCHAR(255)  NOT NULL, daily_rate decimal(8,2) NOT NULL, position_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', position_code VARCHAR(255)  NOT NULL, position_shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[15] = "CREATE TABLE IF NOT EXISTS tbl_truck (truck_id INTEGER PRIMARY KEY AUTOINCREMENT, plate_number VARCHAR(255)  NOT NULL, warehouse_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', truck_model VARCHAR(255)  NOT NULL, truck_kilogram decimal(8,2) NOT NULL, truck_shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
     /*EMPLOYEE INFO*/
-    query[16] = "CREATE TABLE IF NOT EXISTS tbl_employee (employee_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_id INTEGER  NOT NULL,  warehouse_id INTEGER  NOT NULL, first_name VARCHAR(255)  NOT NULL, middle_name VARCHAR(255)  NOT NULL, last_name VARCHAR(255)  NOT NULL, gender VARCHAR(255)  NOT NULL, email VARCHAR(255)  NOT NULL, username VARCHAR(255)  NOT NULL,  password text  NOT NULL, b_day DATE NOT NULL, position_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[16] = "CREATE TABLE IF NOT EXISTS tbl_employee (employee_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_id INTEGER  NOT NULL,  warehouse_id INTEGER  NOT NULL, first_name VARCHAR(255)  NOT NULL, middle_name VARCHAR(255)  NOT NULL, last_name VARCHAR(255)  NOT NULL, gender VARCHAR(255)  NOT NULL, email VARCHAR(255)  NOT NULL, username VARCHAR(255)  NOT NULL,  password text  NOT NULL, b_day DATE NOT NULL, position_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'old' NULL)";
     query[17] = "CREATE TABLE IF NOT EXISTS tbl_image (image_id INTEGER PRIMARY KEY AUTOINCREMENT, image_path VARCHAR(255)  NOT NULL, image_key VARCHAR(255)  NOT NULL,  image_shop INTEGER  NOT NULL, image_reason VARCHAR(255)  NOT NULL default 'product', image_reason_id INTEGER NOT NULL, image_date_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[18] = "CREATE TABLE IF NOT EXISTS tbl_item ( item_id INTEGER PRIMARY KEY AUTOINCREMENT, item_name VARCHAR(255)  NOT NULL, item_sku VARCHAR(255)  NOT NULL, item_sales_information VARCHAR(255) NOT NULL, item_purchasing_information VARCHAR(255)  NOT NULL,  item_img VARCHAR(255)  NOT NULL, item_quantity INTEGER NOT NULL, item_reorder_point INTEGER NOT NULL, item_price REAL NOT NULL, item_cost REAL NOT NULL, item_sale_to_customer TINYINT NOT NULL, item_purchase_from_supplier TINYINT NOT NULL,  item_type_id INTEGER  NOT NULL, item_category_id INTEGER  NOT NULL, item_asset_account_id INTEGER  default NULL,  item_income_account_id INTEGER  default NULL, item_expense_account_id INTEGER  default NULL, item_date_tracked DATETIME default NULL, item_date_created DATETIME NOT NULL, item_date_archived DATETIME default NULL, archived TINYINT NOT NULL,  shop_id INTEGER  NOT NULL, item_barcode VARCHAR(255)  NOT NULL, has_serial_number TINYINT NOT NULL default '0',  item_measurement_id INTEGER  default NULL, item_vendor_id INTEGER NOT NULL default '0', item_manufacturer_id INTEGER  default NULL, packing_size VARCHAR(255)  NOT NULL, item_code VARCHAR(255)  NOT NULL, item_show_in_mlm INTEGER NOT NULL default '0', promo_price REAL NOT NULL, start_promo_date date NOT NULL, end_promo_date date NOT NULL, bundle_group TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
     query[19] = "CREATE TABLE IF NOT EXISTS tbl_inventory_serial_number (serial_id INTEGER PRIMARY KEY AUTOINCREMENT, serial_inventory_id INTEGER  NOT NULL, item_id INTEGER  NOT NULL, serial_number VARCHAR(255)  NOT NULL, serial_created DATETIME NOT NULL,  item_count INTEGER NOT NULL, item_consumed TINYINT NOT NULL, sold TINYINT NOT NULL default '0', consume_source VARCHAR(255)  default NULL, consume_source_id INTEGER NOT NULL default '0', serial_has_been_credit VARCHAR(255)  default NULL,  serial_has_been_debit VARCHAR(255) default NULL, created_at DATETIME, updated_at DATETIME)";
@@ -92,7 +93,7 @@ function query_create_all_table(callback)
     query[29] = "CREATE TABLE IF NOT EXISTS tbl_manual_receive_payment ( manual_receive_payment_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER NOT NULL, rp_id INTEGER NOT NULL, sir_id INTEGER NOT NULL, rp_date DATETIME NOT NULL,  is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
     query[30] = "CREATE TABLE IF NOT EXISTS tbl_manufacturer (manufacturer_id INTEGER PRIMARY KEY AUTOINCREMENT, manufacturer_name VARCHAR(255)  NOT NULL, manufacturer_address VARCHAR(255)  NOT NULL, phone_number VARCHAR(255)  NOT NULL, email_address VARCHAR(255)  NOT NULL, website text  NOT NULL, date_created DATETIME NOT NULL, date_updated DATETIME NOT NULL, archived TINYINT NOT NULL default '0', manufacturer_shop_id INTEGER  NOT NULL, manufacturer_fname VARCHAR(255)  NOT NULL,  manufacturer_mname VARCHAR(255)  NOT NULL, manufacturer_lname VARCHAR(255)  NOT NULL, manufacturer_image INTEGER default NULL, created_at DATETIME, updated_at DATETIME)";
     /*RECEIVE PAYMENT*/
-    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NOT NULL, rp_customer_id INTEGER NOT NULL, rp_ar_account INTEGER NOT NULL, rp_date date NOT NULL, rp_total_amount REAL(8,2) NOT NULL, rp_payment_method VARCHAR(255)  NOT NULL, rp_memo text  NOT NULL, date_created DATETIME NOT NULL, rp_ref_name VARCHAR(255)  NOT NULL, rp_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NOT NULL, rp_customer_id INTEGER NOT NULL, rp_ar_account INTEGER NOT NULL, rp_date date NOT NULL, rp_total_amount REAL(8,2) NOT NULL, rp_payment_method VARCHAR(255)  NOT NULL, rp_memo text  NOT NULL, date_created DATETIME NOT NULL, rp_ref_name VARCHAR(255)  NOT NULL, rp_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'old' NULL)";
     query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NOT NULL, rpline_reference_name VARCHAR(255)  NOT NULL, rpline_reference_id INTEGER NOT NULL, rpline_amount REAL(8,2) NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[33] = "CREATE TABLE IF NOT EXISTS tbl_settings ( settings_id INTEGER PRIMARY KEY AUTOINCREMENT, settings_key VARCHAR(255)  NOT NULL, settings_value longtext , settings_setup_done TINYINT NOT NULL default '0', shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[34] = "CREATE TABLE IF NOT EXISTS tbl_sir_cm_item (s_cm_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sc_sir_id INTEGER  NOT NULL, sc_item_id INTEGER NOT NULL, sc_item_qty INTEGER NOT NULL, sc_physical_count INTEGER NOT NULL, sc_item_price REAL NOT NULL, sc_status INTEGER NOT NULL, sc_is_updated TINYINT NOT NULL, sc_infos REAL NOT NULL, created_at DATETIME, updated_at DATETIME)";
@@ -2028,30 +2029,40 @@ function get_invoice_data(inv_id, callback)
                                'WHERE tbl_customer_invoice.inv_id = ' + inv_id;
             tx.executeSql(select_query,[],function(tx2, results)
             {
-                var inv = results.rows[0];
-
-                var select_query_line = 'SELECT * FROM tbl_customer_invoice_line '+
-                                        'LEFT JOIN tbl_item ON tbl_item.item_id = invline_item_id ' +
-                                        'LEFT JOIN tbl_unit_measurement_multi ON multi_id = invline_um ' +
-                                        'WHERE invline_inv_id = ' + inv_id;
-                tx.executeSql(select_query_line,[],function(tx3, results_line)
+                if(results.rows.length > 0)
                 {
-                    var _invline = results_line.rows;
+                    var inv = results.rows[0];
 
-                    var select_query_cmline = 'SELECT * FROM tbl_customer_invoice '+
-                                              'LEFT JOIN tbl_credit_memo_line ON tbl_credit_memo_line.cmline_cm_id = tbl_customer_invoice.credit_memo_id ' +
-                                              'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
-                                              'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
-                                              'WHERE tbl_customer_invoice.inv_id = ' + inv_id;
-                    tx.executeSql(select_query_cmline,[],function(tx4, results_cmline)
+                    var select_query_line = 'SELECT * FROM tbl_customer_invoice_line '+
+                                            'LEFT JOIN tbl_item ON tbl_item.item_id = invline_item_id ' +
+                                            'LEFT JOIN tbl_unit_measurement_multi ON multi_id = invline_um ' +
+                                            'WHERE invline_inv_id = ' + inv_id;
+                    tx.executeSql(select_query_line,[],function(tx3, results_line)
                     {
-                        var _cmline = results_cmline.rows;
+                        var _invline = results_line.rows;
 
-                        callback(inv, _invline, _cmline);
+                        var select_query_cmline = 'SELECT * FROM tbl_customer_invoice '+
+                                                  'LEFT JOIN tbl_credit_memo_line ON tbl_credit_memo_line.cmline_cm_id = tbl_customer_invoice.credit_memo_id ' +
+                                                  'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
+                                                  'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
+                                                  'WHERE tbl_customer_invoice.inv_id = ' + inv_id;
+                        tx.executeSql(select_query_cmline,[],function(tx4, results_cmline)
+                        {
+                            var _cmline = results_cmline.rows;
+
+                            callback(inv, _invline, _cmline);
+                        },
+                        onError);
                     },
                     onError);
-                },
-                onError);
+                }
+                else
+                {
+                    var inv = {};
+                    var invline = {};
+                    var cmline = {};
+                    callback(inv, invline, cmline);
+                }
             },
             onError);
         });
@@ -2195,18 +2206,27 @@ function get_cm_data(cm_id, callback)
 
         tx.executeSql(select_query_cm,[],function(tx4, results_cm)
         {
-            var cm = results_cm.rows[0];
-            var select_query_cmline = 'SELECT * FROM tbl_credit_memo_line '+
-                                      'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
-                                      'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
-                                      'WHERE cmline_cm_id = ' + cm_id;
-            tx.executeSql(select_query_cmline,[],function(tx4, results_cmline)
+            if(results_cm.rows.length > 0) 
             {
-                var _cmline = results_cmline.rows;
+                var cm = results_cm.rows[0];
+                var select_query_cmline = 'SELECT * FROM tbl_credit_memo_line '+
+                                          'LEFT JOIN tbl_item ON cmline_item_id = item_id ' +
+                                          'LEFT JOIN tbl_unit_measurement_multi ON multi_id = cmline_um ' +
+                                          'WHERE cmline_cm_id = ' + cm_id;
+                tx.executeSql(select_query_cmline,[],function(tx4, results_cmline)
+                {
+                    var _cmline = results_cmline.rows;
 
-                callback(cm, _cmline);
-            },
-            onError);
+                    callback(cm, _cmline);
+                },
+                onError);
+            }
+            else
+            {
+                var cm = {};
+                var cmline = {};
+                callback(cm, cmline);
+            }
         },
         onError);
     });
@@ -2451,20 +2471,29 @@ function get_paid_rp_data(rp_id, callback)
                             'WHERE rp_id = ' + rp_id;
             tx.executeSql(select_rp, [], function(txs, results)
             {
-                var rp = results.rows[0];
-
-                var select_rpline = 'SELECT * FROM tbl_receive_payment_line ' +
-                                    'LEFT JOIN tbl_customer_invoice ON inv_id = rpline_reference_id ' +
-                                    'WHERE rpline_reference_name = "invoice" '+
-                                    'AND rpline_rp_id = ' + rp_id +
-                                    ' GROUP BY inv_id';
-                tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                if(results.rows.length > 0)
                 {
-                    var rpline = results_rpline.rows;
+                    var rp = results.rows[0];
 
-                    callback(rp, rpline);                                                                                              
-                },
-                onError);
+                    var select_rpline = 'SELECT * FROM tbl_receive_payment_line ' +
+                                        'LEFT JOIN tbl_customer_invoice ON inv_id = rpline_reference_id ' +
+                                        'WHERE rpline_reference_name = "invoice" '+
+                                        'AND rpline_rp_id = ' + rp_id +
+                                        ' GROUP BY inv_id';
+                    tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                    {
+                        var rpline = results_rpline.rows;
+
+                        callback(rp, rpline);                                                                                              
+                    },
+                    onError);
+                }
+                else
+                {
+                    var rp = {};
+                    var rpline = {};
+                    callback(rp, rpline);  
+                }
             },
             onError);
         });
@@ -2482,20 +2511,29 @@ function get_rp_data(rp_id, callback)
                             'WHERE rp_id = ' + rp_id;
             tx.executeSql(select_rp, [], function(txs, results)
             {
-                var rp = results.rows[0];
-
-                var select_rpline = 'SELECT * FROM tbl_customer_invoice ' +
-                                    'LEFT JOIN tbl_receive_payment_line ON tbl_receive_payment_line.rpline_reference_id = tbl_customer_invoice.inv_id ' +
-                                    'WHERE inv_customer_id = ' + rp['rp_customer_id'] + 
-                                    ' AND inv_is_paid = 0 OR rpline_rp_id = ' + rp_id + 
-                                    ' GROUP BY tbl_customer_invoice.inv_id';
-                tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                if(results.rows.length > 0) 
                 {
-                    var rpline = results_rpline.rows;
+                    var rp = results.rows[0];
 
-                    callback(rp, rpline);                                                                                              
-                },
-                onError); 
+                    var select_rpline = 'SELECT * FROM tbl_customer_invoice ' +
+                                        'LEFT JOIN tbl_receive_payment_line ON tbl_receive_payment_line.rpline_reference_id = tbl_customer_invoice.inv_id ' +
+                                        'WHERE inv_customer_id = ' + rp['rp_customer_id'] + 
+                                        ' AND inv_is_paid = 0 OR rpline_rp_id = ' + rp_id + 
+                                        ' GROUP BY tbl_customer_invoice.inv_id';
+                    tx.executeSql(select_rpline, [], function(txs, results_rpline)
+                    {
+                        var rpline = results_rpline.rows;
+
+                        callback(rp, rpline);                                                                                              
+                    },
+                    onError);                     
+                }
+                else
+                {
+                    var rp = {};
+                    var rpline = {};
+                    callback(rp, rpline);
+                }
             },
             onError);
         });
@@ -2966,6 +3004,99 @@ function number_format(number)
 
 function global_sync()
 {
+    get_sir_id(function(sir_id)
+    {
+        //tbl_manual_invoice
+        //tbl_manual_credit_memo
+        //tbl_manual_rp
+        //tbl_sir <x>
+        //tbl_sir_item <x>
+        //tbl_sir_inventory
+        //tbl_sir_cm_item <x>
+        //tbl_sir_sales_report <x>
 
-    
+        //tbl_customer_invoice
+        //tbl_customer_invoice_line
+
+        //tbl_credit_memo
+        //tbl_credit_memo_line
+
+        //tbl_receive_payment
+        //tbl_receive_payment_line
+
+        select_all_logs(function(logs)
+        {
+            var data = {};
+            data['invoice'] = {};
+            data['credit_memo'] = {};
+            data['receive_payment'] = {};
+            var ctr_length = logs.length;
+            var ctr = 0;
+            $.each(logs, function(key, value)
+            {
+                get_invoice_data(value['transaction_id'], function(inv, invline, cmline)
+                {
+                    get_cm_data(value['transaction_id'], function(cm, cmline)
+                    {
+                        get_paid_rp_data(value['transaction_id'], function(rp, rpline)
+                        {
+                            ctr++;
+                            if(value['transaction_name'] == 'invoice')
+                            {
+                                data['invoice'][value['transaction_id']] = {};
+                                data['invoice'][value['transaction_id']]['inv'] = inv;
+                                data['invoice'][value['transaction_id']]['invline'] = invline;
+                            }
+                            if(value['transaction_name'] == 'sales_receipt')
+                            {
+                                data['invoice'][value['transaction_id']] = {};
+                                data['invoice'][value['transaction_id']]['inv'] = inv;
+                                data['invoice'][value['transaction_id']]['invline'] = invline;                                
+                            }
+                            if(value['transaction_name'] == 'credit_memo')
+                            {
+                                data['credit_memo'][value['transaction_id']] = {};
+                                data['credit_memo'][value['transaction_id']]['cm'] = cm;
+                                data['credit_memo'][value['transaction_id']]['cmline'] = cmline;                                
+                            }
+                            if(value['transaction_name'] == 'receive_payment')
+                            {
+                                data['receive_payment'][value['transaction_id']] = {};
+                                data['receive_payment'][value['transaction_id']]['rp'] = rp;
+                                data['receive_payment'][value['transaction_id']]['rpline'] = rpline;                                
+                            }
+                            if(ctr == ctr_length)
+                            {
+                                console.log(data);
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    });
+}
+function select_all_logs(callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM tbl_invoice_log ' +
+                               'WHERE shop_id = ' + shop_id +
+                               ' AND transaction_name != "customer_beginning_balance"'; 
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows);
+                }
+                else
+                {
+                    alert("Please try again!");
+                }
+            },
+            onError);
+        });
+    });
 }
