@@ -166,13 +166,5 @@
         },
         "is_top_level": true,
         "variables": {}
-    },
-    "cordova-plugin-printer": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-printer"
-        },
-        "is_top_level": true,
-        "variables": {}
     }
 }

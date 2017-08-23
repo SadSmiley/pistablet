@@ -63,9 +63,6 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.digimawebsolutions.pis"
-        },
-        "cordova-plugin-printer": {
-            "PACKAGE_NAME": "com.digimawebsolutions.pis"
         }
     },
     "dependent_plugins": {

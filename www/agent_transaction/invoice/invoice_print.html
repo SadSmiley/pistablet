@@ -12,7 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker-standalone.min.css">
-    <link rel="stylesheet" href="../../public/assets/member/styles/92bc1fe4.bootstrap.css">
 
     <!-- <link rel="stylesheet" type="text/css" href="../../public/assets/chartist/chartist.css"> -->
     <!-- <link rel="stylesheet" type="text/css" href="../../public/assets/member/plugin/dropzone/dropzone.min.css"> -->
@@ -20,11 +19,25 @@
     <link rel="stylesheet" href="../../public/assets/external/jquery_css/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="../../public/assets/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../public/assets/member/styles/6227bbe5.font-awesome.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="../../public/assets/member/css/global.css">
+    <script>
+    (function () {
+    var js;
+    if (typeof JSON !== 'undefined' && 'querySelector' in document && 'addEventListener' in window) {
+    js = '../../public/assets/external/jquery.minv2.js';
+    } else {
+    js = '../../public/assets/external/jquery.minv1.js';
+    }
+    document.write('<script src="' + js + '"><\/script>');
+    }());
+    </script>
+    <script src="../../public/assets/member/scripts/vendor/jquery.cookie.js"></script>
+    <link rel="stylesheet" href="../../public/assets/member/styles/92bc1fe4.bootstrap.css">
     <style type="text/css">
-    	.whole-page-inv
-    	{
-    		margin: 20px;
-    	}
+        .whole-page-inv
+        {
+            margin: 20px;
+        }
         page
         {
             background:white;display:block;margin:0 auto;margin-bottom:0.5cm;box-shadow:0 0 0.5cm rgba(0,0,0,0.5)
@@ -60,20 +73,11 @@
             -webkit-transform: rotate(-40deg); /* Chrome, Safari, Opera */
             transform: rotate(-40deg);
         }
+        .text-center
+        {
+            text-align: center;
+        }
     </style>
-    <link rel="stylesheet" type="text/css" href="../../public/assets/member/css/global.css">
-    <script>
-    (function () {
-    var js;
-    if (typeof JSON !== 'undefined' && 'querySelector' in document && 'addEventListener' in window) {
-    js = '../../public/assets/external/jquery.minv2.js';
-    } else {
-    js = '../../public/assets/external/jquery.minv1.js';
-    }
-    document.write('<script src="' + js + '"><\/script>');
-    }());
-    </script>
-    <script src="../../public/assets/member/scripts/vendor/jquery.cookie.js"></script>
 </head>
 <body id="body">
     <!--[if lt IE 8]>
@@ -159,5 +163,6 @@
                         '&payment_status="'+payment_status+'"';
     });
 </script>
+<script type="text/javascript" src="../../cordova.js"></script>
 <script type="text/javascript" src="../../public/assets/tablet/globals_tablet.js"></script>
 <script type="text/javascript" src="../../public/assets/tablet/invoice_print.js"></script>
