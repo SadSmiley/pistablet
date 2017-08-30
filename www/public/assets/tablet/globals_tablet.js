@@ -197,7 +197,7 @@ function get_shop_id(callback)
         {
             if(results.rows.length <= 0)
             {
-                alert("Some error occurred. Currently not logged in.")
+                console.log("Some error occurred. Currently not logged in.")
             }
             else
             {
@@ -236,7 +236,7 @@ function get_sir_id(callback)
         {
             if(results.rows.length <= 0)
             {
-                alert("Some error occurred. Currently not logged in.")
+                console.log("Some error occurred. Currently not logged in.")
             }
             else
             {
