@@ -90,7 +90,7 @@ function credit_memo_list()
                 $(data_result).each(function(key, datarow)
                 {   
                     tr += '<tr><td>'+datarow['cm_id']+'</td>';
-                    company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : "" ;
+                    company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : datarow['company'] ;
                     tr += '<td>'+company+'</td>';
                     tr += '<td>'+ReplaceNumberWithCommas("Php "+(datarow['cm_amount']).toFixed(2))+'</td>';
                     tr += '<td class="text-center"><div class="btn-group">'+

@@ -649,17 +649,45 @@ function invoice_edit_submit()
                     {
                         insert_sir_inventory(item_info,"invoice",invoice_id, function(result_inventory)
                         {
-                            update_cm_submit(values["cm_id"], cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                            if(count(cm_item_info) > 0)
                             {
-                                if(returns_cm == 'success')
+                                if(values["cm_id"] != 0)
                                 {
-                                    // toastr.success("Success");
-                                    // setInterval(function()
-                                    // {
-                                    //     location.reload();
-                                    // },2000)
+                                    update_cm_submit(values["cm_id"], cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                                    {
+                                        if(returns_cm == 'success')
+                                        {
+                                            toastr.success("Success");
+                                            setInterval(function()
+                                            {
+                                                location.reload();
+                                            },2000)
+                                        }
+                                    });
                                 }
-                            });
+                                else
+                                {
+                                    insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_id, function(returns_cm)
+                                    {
+                                        if(returns_cm == 'success')
+                                        {
+                                            toastr.success("Success");
+                                            setInterval(function()
+                                            {
+                                                location.reload();
+                                            },2000)
+                                        }
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                toastr.success("Success");
+                                setInterval(function()
+                                {
+                                    location.reload();
+                                },2000)
+                            }
                         });
                     });
                 }
@@ -679,7 +707,6 @@ function invoice_submit()
     var status_message = null;
     var data = {};
     var values = {};
-
     $.each($('.form-invoice').serializeArray(), function(i, field) 
     {
        if (field.name == "invline_item_id[]") 
@@ -807,8 +834,6 @@ function invoice_submit()
             values[field.name] = field.value;
         }
     });
-
-    // console.log(values);
     var customer_info = {};
     var cm_customer_info = {};
 

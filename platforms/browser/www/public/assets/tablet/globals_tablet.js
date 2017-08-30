@@ -92,7 +92,8 @@ function query_create_all_table(callback)
     /*TABLET TRANSACTION*/
     query[28] = "CREATE TABLE IF NOT EXISTS tbl_manual_invoice (manual_invoice_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, inv_id INTEGER  NOT NULL, manual_invoice_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[29] = "CREATE TABLE IF NOT EXISTS tbl_manual_receive_payment ( manual_receive_payment_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER NOT NULL, rp_id INTEGER NOT NULL, sir_id INTEGER NOT NULL, rp_date DATETIME NOT NULL,  is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[30] = "CREATE TABLE IF NOT EXISTS tbl_manufacturer (manufacturer_id INTEGER PRIMARY KEY AUTOINCREMENT, manufacturer_name VARCHAR(255)  NOT NULL, manufacturer_address VARCHAR(255)  NOT NULL, phone_number VARCHAR(255)  NOT NULL, email_address VARCHAR(255)  NOT NULL, website text  NOT NULL, date_created DATETIME NOT NULL, date_updated DATETIME NOT NULL, archived TINYINT NOT NULL default '0', manufacturer_shop_id INTEGER  NOT NULL, manufacturer_fname VARCHAR(255)  NOT NULL,  manufacturer_mname VARCHAR(255)  NOT NULL, manufacturer_lname VARCHAR(255)  NOT NULL, manufacturer_image INTEGER default NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+
+    query[30] = "CREATE TABLE IF NOT EXISTS tbl_manufacturer (manufacturer_id INTEGER PRIMARY KEY AUTOINCREMENT, manufacturer_name VARCHAR(255)  NOT NULL, manufacturer_address VARCHAR(255)  NOT NULL, phone_number VARCHAR(255)  NOT NULL, email_address VARCHAR(255)  NOT NULL, website text  NOT NULL, date_created DATETIME NOT NULL, date_updated DATETIME NOT NULL, archived TINYINT NOT NULL default '0', manufacturer_shop_id INTEGER  NOT NULL, manufacturer_fname VARCHAR(255)  NOT NULL,  manufacturer_mname VARCHAR(255)  NOT NULL, manufacturer_lname VARCHAR(255)  NOT NULL, manufacturer_image INTEGER default NULL, created_at DATETIME, updated_at DATETIME)";
     /*RECEIVE PAYMENT*/
     query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NOT NULL, rp_customer_id INTEGER NOT NULL, rp_ar_account INTEGER NOT NULL, rp_date date NOT NULL, rp_total_amount REAL(8,2) NOT NULL, rp_payment_method VARCHAR(255)  NOT NULL, rp_memo text  NOT NULL, date_created DATETIME NOT NULL, rp_ref_name VARCHAR(255)  NOT NULL, rp_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NOT NULL, rpline_reference_name VARCHAR(255)  NOT NULL, rpline_reference_id INTEGER NOT NULL, rpline_amount REAL(8,2) NOT NULL, created_at DATETIME, updated_at DATETIME)";
@@ -107,7 +108,8 @@ function query_create_all_table(callback)
     query[40] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement ( um_id INTEGER PRIMARY KEY AUTOINCREMENT, um_shop INTEGER  NOT NULL, um_name VARCHAR(255)  NOT NULL, is_multi TINYINT NOT NULL, um_date_created DATETIME NOT NULL, um_archived TINYINT NOT NULL, um_type INTEGER  NOT NULL, parent_basis_um INTEGER NOT NULL default '0', um_item_id INTEGER NOT NULL default '0',  um_n_base INTEGER NOT NULL, um_base INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[41] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement_multi (multi_id INTEGER PRIMARY KEY AUTOINCREMENT, multi_um_id INTEGER  NOT NULL, multi_name VARCHAR(255)  NOT NULL, multi_conversion_ratio REAL NOT NULL, multi_sequence TINYINT NOT NULL,  unit_qty INTEGER NOT NULL, multi_abbrev VARCHAR(255)  NOT NULL, is_base TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[42] = "CREATE TABLE IF NOT EXISTS tbl_user ( user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_email VARCHAR(255)  NOT NULL, user_level INTEGER NOT NULL, user_first_name VARCHAR(255)  NOT NULL, user_last_name VARCHAR(255)  NOT NULL, user_contact_number VARCHAR(255)  NOT NULL, user_password text  NOT NULL, user_date_created DATETIME NOT NULL default '1000-01-01 00:00:00', user_last_active_date DATETIME NOT NULL default '1000-01-01 00:00:00', user_shop INTEGER  NOT NULL,  IsWalkin TINYINT NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, cm_id INTEGER NOT NULL, manual_cm_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    /*TABLET TRANSACTION-cm*/
+    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, cm_id INTEGER NOT NULL, manual_cm_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NOT NULL, default_sublevel INTEGER NOT NULL, default_balance REAL NOT NULL, default_open_balance REAL NOT NULL, default_open_balance_date date NOT NULL, is_tax_account TINYINT NOT NULL, account_tax_code_id INTEGER NOT NULL, default_for_code VARCHAR(255) , account_protected TINYINT NOT NULL,created_at DATETIME, updated_at DATETIME)";
     query[45] = "CREATE TABLE IF NOT EXISTS tbl_timestamp (timestamp_id INTEGER PRIMARY KEY AUTOINCREMENT, table_name VARCHAR(255), timestamp DATETIME)";
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
@@ -1375,8 +1377,10 @@ function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
     {
         var query = 'SELECT sum(sir_inventory_count) as current_qty FROM tbl_sir_inventory WHERE inventory_sir_id = ' + sir_id + ' ' + 
                     'AND sir_item_id = ' + item_id;
+
         tx.executeSql(query, [], function(tx, dtrow_sir_inventory)
         {
+            console.log(dtrow_sir_inventory);
             var sir_inventory = dtrow_sir_inventory.rows[0]['current_qty'];
             get_inv_qty(item_id, invoice_id, function(inv_qty)
             {
@@ -1551,42 +1555,41 @@ function insert_log(customer_id, transaction_name, transaction_id, transaction_a
             data['transaction_name'] = transaction_name;
             data['transaction_id'] = transaction_id;
             data['transaction_amount'] = transaction_amount;
-            console.log(record_id);
-            if(record_id == 0)
-            {
-                db.transaction(function (tx) 
-                {  
-                    var insert_query = 'INSERT INTO tbl_invoice_log (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
-                                       'VALUES ('+shop_id+', '+data['customer_id']+',"'+
-                                        data['transaction_name']+'",'+
-                                        data['transaction_id']+','+
-                                        data['transaction_amount']+',"'+
-                                        get_date_now()+'")';
-                    tx.executeSql(insert_query, [], function(tx, results)
-                    {
-                        callback(results.insertId);
-                    }, 
-                    onError);
-                });
-            }
-            else
-            {
-                db.transaction(function (tx) 
-                {  
-                    var update_query = 'UPDATE tbl_invoice_log SET (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
+
+            db.transaction(function (tx) 
+            {  
+                var query = 'UPDATE tbl_invoice_log SET (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
                                        '= ('+shop_id+', '+data['customer_id']+',"'+
                                         data['transaction_name']+'",'+
                                         data['transaction_id']+','+
                                         data['transaction_amount']+',"'+
                                         get_date_now()+'") ' +
                                         'WHERE record_id = ' + record_id;
-                    tx.executeSql(update_query, [], function(tx, results)
+
+                if(record_id == 0)
+                {
+                    query = 'INSERT INTO tbl_invoice_log (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
+                                   'VALUES ('+shop_id+', '+data['customer_id']+',"'+
+                                    data['transaction_name']+'",'+
+                                    data['transaction_id']+','+
+                                    data['transaction_amount']+',"'+
+                                    get_date_now()+'")';
+                }
+                console.log(query)
+                tx.executeSql(query, [], function(tx, results)
+                {
+                    if(record_id == 0)
+                    {
+                        callback(results.insertId);
+                    }
+                    else
                     {
                         callback(record_id);
-                    }, 
-                    onError);
-                });
-            }            
+                    }
+                }, 
+                onError);
+
+            });        
         });
     });
 }
@@ -2638,6 +2641,7 @@ function insert_rp_submit(customer_info, insertline, callback)
                     var rp_id = results.insertId;
                     insert_rpline(rp_id, insertline, function(result_line)
                     {
+                        insert_payment_reference(customer_info['rp_ref_name'],customer_info['rp_ref_id'], rp_id);
                         if(rp_id != 0)
                         {
                             insert_log(customer_info['rp_customer_id'], 'receive_payment', rp_id, -(customer_info['rp_total_amount']), function(record_id)
@@ -2658,6 +2662,22 @@ function insert_rp_submit(customer_info, insertline, callback)
             });
         });
     });
+}
+function insert_payment_reference(ref_name, ref_id, rp_id)
+{
+    if(ref_name == 'credit_memo')
+    {
+        db.transaction(function(tx)
+        {
+            var update_row_query = 'UPDATE tbl_credit_memo SET (cm_type, cm_used_ref_name, cm_used_ref_id)'+
+                                   '= (1,"receive_payment", '+ rp_id+') WHERE cm_id = ' + ref_id;
+            tx.executeSql(update_row_query, [], function(tx, results)
+            {
+                console.log('success_test');
+            },
+            onError);
+        });
+    }
 }
 function insert_rpline(rp_id, insertline, callback)
 {
@@ -2984,65 +3004,78 @@ function global_sync()
             data['invoice'] = {};
             data['credit_memo'] = {};
             data['receive_payment'] = {};
+            data['sir_inventory'] = {};
+            data['manual_inv'] = {};
+            data['manual_rp'] = {};
+            data['manual_cm'] = {};
             var ctr_length = logs.length;
             var ctr = 0;
-            $.each(logs, function(key, value)
-            {
-                get_invoice_data(value['transaction_id'], function(inv, invline, cmline)
-                {
-                    get_cm_data(value['transaction_id'], function(cm, cmline)
-                    {
-                        get_paid_rp_data(value['transaction_id'], function(rp, rpline)
-                        {
-                            ctr++;
-                            if(value['transaction_name'] == 'invoice')
-                            {
-                                data['invoice'][value['transaction_id']] = {};
-                                data['invoice'][value['transaction_id']]['inv'] = inv;
-                                data['invoice'][value['transaction_id']]['invline'] = invline;
-                            }
-                            if(value['transaction_name'] == 'sales_receipt')
-                            {
-                                data['invoice'][value['transaction_id']] = {};
-                                data['invoice'][value['transaction_id']]['inv'] = inv;
-                                data['invoice'][value['transaction_id']]['invline'] = invline;                                
-                            }
-                            if(value['transaction_name'] == 'credit_memo')
-                            {
-                                data['credit_memo'][value['transaction_id']] = {};
-                                data['credit_memo'][value['transaction_id']]['cm'] = cm;
-                                data['credit_memo'][value['transaction_id']]['cmline'] = cmline;                                
-                            }
-                            if(value['transaction_name'] == 'receive_payment')
-                            {
-                                data['receive_payment'][value['transaction_id']] = {};
-                                data['receive_payment'][value['transaction_id']]['rp'] = rp;
-                                data['receive_payment'][value['transaction_id']]['rpline'] = rpline;                                
-                            }
-                            if(ctr == ctr_length)
-                            {
-                                get_sir_id(function(sir_id)
-                                {
-                                    var all_data = JSON.stringify(data);
-                                    // location.href = "http://digimahouse.dev/tablet/get_data/" + JSON.stringify(all_data) + '/'+sir_id;
-                                    $('.sync-out').unbind('click');
-                                    $('.sync-out').bind('click', function()
-                                    {
-                                        $.ajax(
-                                        {
-                                            url: 'http://digimahouse.dev/tablet/get_data',
-                                            type : "POST",
-                                            crossDomain : true,
-                                            dataType: "json",
-                                            data : { getdata : all_data, sir_id : sir_id},
-                                            success : function()
-                                            {
 
-                                            }
-                                        });
-                                    });                                    
-                                });
-                            }
+            get_other_transaction(function(sir_inventory, manual_inv, manual_rp, manual_cm)
+            {
+                data['sir_inventory'] = sir_inventory;
+                data['manual_inv'] = manual_inv;
+                data['manual_rp'] = manual_rp;
+                data['manual_cm'] = manual_cm;
+                $.each(logs, function(key, value)
+                {
+                    get_invoice_data(value['transaction_id'], function(inv, invline, cmline)
+                    {
+                        get_cm_data(value['transaction_id'], function(cm, cmline)
+                        {
+                            get_paid_rp_data(value['transaction_id'], function(rp, rpline)
+                            {
+                                ctr++;
+                                if(value['transaction_name'] == 'invoice')
+                                {
+                                    data['invoice'][value['transaction_id']] = {};
+                                    data['invoice'][value['transaction_id']]['inv'] = inv;
+                                    data['invoice'][value['transaction_id']]['invline'] = invline;
+                                }
+                                if(value['transaction_name'] == 'sales_receipt')
+                                {
+                                    data['invoice'][value['transaction_id']] = {};
+                                    data['invoice'][value['transaction_id']]['inv'] = inv;
+                                    data['invoice'][value['transaction_id']]['invline'] = invline;                                
+                                }
+                                if(value['transaction_name'] == 'credit_memo')
+                                {
+                                    data['credit_memo'][value['transaction_id']] = {};
+                                    data['credit_memo'][value['transaction_id']]['cm'] = cm;
+                                    data['credit_memo'][value['transaction_id']]['cmline'] = cmline;                                
+                                }
+                                if(value['transaction_name'] == 'receive_payment')
+                                {
+                                    data['receive_payment'][value['transaction_id']] = {};
+                                    data['receive_payment'][value['transaction_id']]['rp'] = rp;
+                                    data['receive_payment'][value['transaction_id']]['rpline'] = rpline;                                
+                                }
+                                console.log(ctr + ":" + ctr_length);
+                                if(ctr == ctr_length)
+                                {
+                                    get_sir_id(function(sir_id)
+                                    {
+                                        var all_data = JSON.stringify(data);
+                                        // location.href = "http://digimahouse.dev/tablet/get_data/" + JSON.stringify(all_data) + '/'+sir_id;
+                                        $('.sync-out').unbind('click');
+                                        $('.sync-out').bind('click', function()
+                                        {
+                                            $.ajax(
+                                            {
+                                                url: 'http://digimahouse.dev/tablet/get_data',
+                                                type : "POST",
+                                                crossDomain : true,
+                                                dataType: "json",
+                                                data : { getdata : all_data, sir_id : sir_id},
+                                                success : function()
+                                                {
+
+                                                }
+                                            });
+                                        });                                    
+                                    });
+                                }
+                            });
                         });
                     });
                 });
@@ -3050,18 +3083,52 @@ function global_sync()
         });
     });
 }
-function get_php_token(callback)
+function get_other_transaction(callback)
 {
-    $.ajax(
+    get_data_manual_transaction('tbl_manual_receive_payment', function(manual_rp)
     {
-        url: 'http://digimahouse.dev/tablet/get_token',
-        type : 'get',
-        crossDomain : 'true',
-        data : {},
-        success : function(token)
+        get_data_manual_transaction('tbl_manual_credit_memo', function(manual_cm)
         {
-            callback(token);
-        }
+            get_data_manual_transaction('tbl_manual_invoice', function(manual_inv)
+            {
+                get_data_sir_inventory(function(sir_inventory)
+                {
+                    callback(sir_inventory, manual_inv, manual_rp, manual_cm);
+                });
+            });
+        });
+    });
+}
+function get_data_sir_inventory(callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM tbl_sir_inventory ' +
+                               'WHERE inventory_sir_id = '+sir_id +
+                               ' AND get_status = "new"';
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                callback(results.rows);
+            });
+        });
+    });
+}
+function get_data_manual_transaction(tbl_name, callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM ' + tbl_name +
+                               ' WHERE sir_id = '+sir_id + 
+                               ' AND get_status = "new"';
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                callback(results.rows);
+            });
+        });
     });
 }
 function select_all_logs(callback)
@@ -3078,10 +3145,6 @@ function select_all_logs(callback)
                 if(results.rows.length > 0)
                 {
                     callback(results.rows);
-                }
-                else
-                {
-                    alert("Please try again!");
                 }
             },
             onError);

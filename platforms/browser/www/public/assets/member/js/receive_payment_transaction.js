@@ -231,6 +231,8 @@ function receive_payment_submit()
     customer_info['rp_ref_name'] = values['cm_id'] ? 'credit_memo' : '';
     customer_info['rp_ref_id'] = values['cm_id'] ? values['cm_id'] : 0;
 
+    console.log(customer_info);
+    console.log(values);
 
     var payment_line = values['line_is_checked'];
 

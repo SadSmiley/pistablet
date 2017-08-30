@@ -59,28 +59,31 @@ function home()
             tx.executeSql(query_check, [], function(txs, results)
             {
             	data_result = results.rows;
-            	if(data_result[0]['is_sync'] == 1)
-            	{
-            		location.href = "agent/agent_dashboard.html";
-            	}
-            	else
-            	{
-            		$(data_result).each(function(key, datarow)
-					{	
-						$(".select-tag-sir").append("<option value='"+datarow['sir_id']+"'>SIR#"+datarow['sir_id']+"</option>");
-					});
+                if(data_result.length > 0)
+                {
+                    if(data_result[0]['is_sync'] == 1)
+                    {
+                        location.href = "agent/agent_dashboard.html";
+                    }
+                    else
+                    {
+                        $(data_result).each(function(key, datarow)
+                        {   
+                            $(".select-tag-sir").append("<option value='"+datarow['sir_id']+"'>SIR#"+datarow['sir_id']+"</option>");
+                        });
 
-					$(".sir-no").html(data_result[0]['sir_id']);
-					sir_id = data_result[0]['sir_id'];
+                        $(".sir-no").html(data_result[0]['sir_id']);
+                        sir_id = data_result[0]['sir_id'];
 
-					var query_update = 'UPDATE tbl_agent_logon SET selected_sir = "'+sir_id+'" where agent_id = "'+agent_id+'"';            
-		            tx.executeSql(query_update, [], function(tx, results_update)
-		            {
-		            	console.log("update success");
-		            });
+                        var query_update = 'UPDATE tbl_agent_logon SET selected_sir = "'+sir_id+'" where agent_id = "'+agent_id+'"';            
+                        tx.executeSql(query_update, [], function(tx, results_update)
+                        {
+                            console.log("update success");
+                        });
 
-		            get_sir_item();
-            	}
+                        get_sir_item();
+                    }                    
+                }
             });        	
         });
 	}

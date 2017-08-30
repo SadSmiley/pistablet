@@ -304,15 +304,15 @@
 	function submit_done(data)
 	{
 		if(data.status == "success-login")
-	{
-	toastr.success("Success");
-	location.href = "/tablet/dashboard";
-	}
-	else if(data.status == "error")
-	{
-	toastr.warning(data.status_message);
-	$(data.target).html(data.view);
-	}
+    	{
+    	toastr.success("Success");
+    	location.href = "/tablet/dashboard";
+    	}
+    	else if(data.status == "error")
+    	{
+    	toastr.warning(data.status_message);
+    	$(data.target).html(data.view);
+    	}
 	}
 </script>
 <script type="text/javascript" src="public/assets/tablet/create_table.js"></script>
