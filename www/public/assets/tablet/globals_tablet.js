@@ -237,6 +237,7 @@ function get_sir_id(callback)
             if(results.rows.length <= 0)
             {
                 console.log("Some error occurred. Currently not logged in.")
+                callback(0);
             }
             else
             {
@@ -3148,6 +3149,36 @@ function select_all_logs(callback)
                 }
             },
             onError);
+        });
+    });
+}
+get_timestamp();
+function get_timestamp()
+{
+    get_last_timestamp(function(ctr)
+    {
+        if(ctr == 0)
+        {
+           $('.loading-page').removeClass('hidden');
+           $('.login-page').addClass('hidden');
+        }
+    });
+}
+function get_last_timestamp(callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query = 'SELECT count(timestamp_id) as ctr FROM tbl_timestamp'; 
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['ctr']);
+            }
+            else
+            {
+                callback(0)
+            }
         });
     });
 }

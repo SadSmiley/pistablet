@@ -217,49 +217,57 @@ function sync_data()
         $(".web-to-browser-sync-data").unbind("click");
         $(".web-to-browser-sync-data").bind("click", function()
         {
+            $('.color-green').addClass('fa-spin');
+            $('.data-text').html("Synchronizing Data");
             var dateNow = getDateNow();
             var key = 0;
-            $(all_tbl_name).each(function(a, table_name)
+            $.each(all_tbl_name, function(key, table_name)
             {
                 try 
                 {
                     $.ajax({
-                        url : "http://digimahouse.dev/tablet/sync_data/"+all_tbl_name[a]+"/"+dateNow,
+                        url : "http://digimahouse.dev/tablet/sync_data/"+all_tbl_name[key]+"/"+dateNow,
                         dataType: "json",
                         data : {},
                         type : "get",
                         crossDomain : true,
                         success : function(data)
                         {
+                            var ctr_total = data.length;
+                            var ctr_len = 0;
                             db.transaction(function (tx)
                             {
-                                $(data).each(function(a, b)
+                                $.each(data, function(a, b)
                                 {
+                                    console.log(data.length);
                                     query = data[a];
-
-                                    tx.executeSql(query,[], function(txt, result)
-                                    {
-                                        // console.log(result);    
-                                    },
-                                    onError);        
 
                                     percentage = ((a) / data.length) * 100;
                                     $(".progress").removeClass('hide');
                                     $(".progress-bar").css("width", (percentage).toFixed(2) + "%");
                                     $(".progress-bar").html("Synchronizing data " + (percentage).toFixed(2) + "%");
                                     $(".progress-bar").attr("aria-valuenow", (percentage).toFixed(2));
-                                    $(".tbl-name-class").html(table_name);    
-                                });
+                                    $(".tbl-name-class").html(table_name);   
 
-                                var query_timestamp = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('"+table_name+"','"+dateNow+"')";
-                                createTableName(query_timestamp);
+                                    console.log(query);
+                                    createTableName(query);        
+                                });
 
                                 ctr++;
 
+                                console.log(total +" " +ctr);
                                 /* Done */
-                                if (ctr === total) 
+                                if (ctr == total) 
                                 {
-                                    alert("Done");
+                                    var query_timestamp = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('all','"+dateNow+"')";
+                                    createTableName(query_timestamp);
+
+                                   $('.data-text').html("Setting up your data");
+                                   $(".progress").addClass('hide');
+                                    setInterval(function()
+                                    {
+                                        location.reload();
+                                    },10000);
                                 }   
                             });
                         }
@@ -267,7 +275,7 @@ function sync_data()
                 }
                 catch(err) 
                 {
-                    Alert("Error");
+                    alert("Error");
                     document.getElementById("demo").innerHTML = err.message;
                 }
                 
