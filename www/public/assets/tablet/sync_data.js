@@ -233,7 +233,6 @@ function sync_data()
                         crossDomain : true,
                         success : function(data)
                         {
-
                             ctr++;
                             insert_all_data(data, function(res)
                             {
@@ -249,9 +248,8 @@ function sync_data()
                                     setInterval(function()
                                     {
                                         location.reload();
-                                    },10000);
-                                }   
-
+                                    },1000);
+                                }
                             });
                         }
                     });
