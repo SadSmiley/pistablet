@@ -1,5 +1,9 @@
 
 var sync_data = new sync_data();
+var sync_key = 0;
+var table_sync_key = 0;
+var current_table = "";
+var all_tbl_name = [];
 
 function sync_data()
 {
@@ -163,7 +167,7 @@ function sync_data()
    
     function action_web_browser_sync_data(done)
     {
-        var all_tbl_name = [];
+
         all_tbl_name[1] = "tbl_shop";
         all_tbl_name[2] = "tbl_category";
         all_tbl_name[3] = "tbl_audit_trail";
@@ -213,88 +217,108 @@ function sync_data()
 
         var total = all_tbl_name.length;
         var ctr = 0;
+        
 
         $(".web-to-browser-sync-data").unbind("click");
         $(".web-to-browser-sync-data").bind("click", function()
         {
-            $('.color-green').addClass('fa-spin');
-            $('.data-text').html("Synchronizing Data");
-            var dateNow = getDateNow();
-            var key = 0;
-            $.each(all_tbl_name, function(key, table_name)
+            sync_key = 1;
+            table_name = all_tbl_name[sync_key];
+            table_sync(table_name);
+
+            // $('.color-green').addClass('fa-spin');
+            // $('.data-text').html("Synchronizing Data");
+            // 
+            // var key = 0;
+            // $.each(all_tbl_name, function(key, table_name)
+            // {
+            //     try 
+            //     {
+
+            //     }
+            //     catch(err) 
+            //     {
+            //         alert("Error");
+            //         document.getElementById("demo").innerHTML = err.message;
+            //     }
+            // });
+        });
+    }
+    function table_sync(table_name)
+    {
+        var dateNow = getDateNow();
+        current_table = table_name;
+
+        $.ajax(
+        {
+            url : "http://digimahouse.dev/tablet/sync_data/" + table_name + "/"+ dateNow,
+            dataType: "json",
+            data : {},
+            type : "get",
+            crossDomain : true,
+            success : function(data)
             {
-                try 
-                {
-                    $.ajax({
-                        url : "http://digimahouse.dev/tablet/sync_data/"+all_tbl_name[key]+"/"+dateNow,
-                        dataType: "json",
-                        data : {},
-                        type : "get",
-                        crossDomain : true,
-                        success : function(data)
-                        {
-
-                            ctr++;
-                            insert_all_data(data, function(res)
-                            {
-                                console.log(total +" " +ctr);
-                                /* Done */
-                                if (ctr == 45) 
-                                {
-                                    var query_timestamp = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('all','"+dateNow+"')";
-                                    createTableName(query_timestamp);
-
-                                   $('.data-text').html("Setting up your data");
-                                   $(".progress").addClass('hide');
-                                    setInterval(function()
-                                    {
-                                        location.reload();
-                                    },10000);
-                                }   
-
-                            });
-                        }
-                    });
-                }
-                catch(err) 
-                {
-                    alert("Error");
-                    document.getElementById("demo").innerHTML = err.message;
-                }
-                
+                insert_all_data(data);
+            }
+        });
+    }
+    function insert_all_data(data)
+    {
+        /* DELETE DATA FROM TABLE FIRST */
+        var delete_query = "DELETE FROM " + current_table;
+        console.log(delete_query);
+        db.transaction(function (tx)
+        {
+            tx.executeSql(delete_query, [], function (tx, results)
+            {
+                table_sync_key = 0;
+                insert_query_sync(data, table_sync_key);
             });
         });
-    }
-    function insert_all_data(data, callback)
-    {
-        var ctr_total = data.length;
-        var ctr_len = 0;
+        
+        // var ctr_total = data.length;
+        // var ctr_len = 0;
 
-        $.each(data, function(a, b)
+        // $.each(data, function(a, b)
+        // {
+        //     query = data[a];
+        //     percentage = ((ctr_len) / data.length) * 100;
+        //     $(".progress").removeClass('hide');
+        //     $(".progress-bar").css("width", (percentage).toFixed(2) + "%");
+        //     $(".progress-bar").html("Synchronizing data " + (percentage).toFixed(2) + "%");
+        //     $(".progress-bar").attr("aria-valuenow", (percentage).toFixed(2));
+
+        //     insert_query_sync(query);    
+        // });
+    }
+    function insert_query_sync(data, table_sync_key)
+    {
+        var current_count = table_sync_key+1;
+        var final_count = data.length;
+
+        db.transaction(function (tx)
         {
-            query = data[a];
-            percentage = ((ctr_len) / data.length) * 100;
-            $(".progress").removeClass('hide');
-            $(".progress-bar").css("width", (percentage).toFixed(2) + "%");
-            $(".progress-bar").html("Synchronizing data " + (percentage).toFixed(2) + "%");
-            $(".progress-bar").attr("aria-valuenow", (percentage).toFixed(2));
-            // $(".tbl-name-class").html(table_name);   
+            console.log(data[table_sync_key]);
 
-            insert_query_sync(query);    
+            tx.executeSql(data[table_sync_key], [], function (tx, results)
+            {
+                $summary_html = "<div>Overall " + " (" + (sync_key) + " of " + all_tbl_name.length + ")" + "</div>" +
+                                "<div>" + current_table + " (" + (current_count) + " of " + final_count + ")" + "</div>";
+                $(".data-text").html($summary_html);
+                
+                if(current_count == final_count)
+                {
+                    console.log("NEXT TABLE!");
+                    table_sync_key = 0;
+                    sync_key++;
+                    table_name = all_tbl_name[sync_key];
+                    table_sync(table_name);
+                }
+                else
+                {
+                    insert_query_sync(data, table_sync_key+1);
+                }
 
-            ctr_len++;
-            console.log(ctr_len +" | "+ ctr_total);
-            if(ctr_len == ctr_total)
-            {
-                callback('success');
-            } 
-        });
-    }
-    function insert_query_sync(query)
-    {
-        db.transaction(function (tx){ tx.executeSql(query,[],
-            function(txt, result)
-            {
                 
             });
         });
