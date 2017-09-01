@@ -262,19 +262,46 @@ function sync_data()
             }
         });
     }
+    function next_table()
+    {
+        if(sync_key == all_tbl_name.length)
+        {
+            var last_updated = getDateNow();
+            action_update_timestamp(last_updated);
+            location.reload();
+        }   
+        else
+        {
+            table_sync_key = 0;
+            sync_key++;
+            table_name = all_tbl_name[sync_key];
+            console.log("NEXT TABLE! (" + table_name + " - " + sync_key + ")");
+            table_sync(table_name);
+        }
+
+    }
     function insert_all_data(data)
     {
         /* DELETE DATA FROM TABLE FIRST */
-        var delete_query = "DELETE FROM " + current_table;
-        console.log(delete_query);
-        db.transaction(function (tx)
+        if(data.length > 0)
         {
-            tx.executeSql(delete_query, [], function (tx, results)
+            var delete_query = "DELETE FROM " + current_table;
+            console.log(delete_query);
+            db.transaction(function (tx)
             {
-                table_sync_key = 0;
-                insert_query_sync(data, table_sync_key);
+                tx.executeSql(delete_query, [], function (tx, results)
+                {
+                    table_sync_key = 0;
+                    insert_query_sync(data, table_sync_key);
+                });
             });
-        });
+        }
+        else
+        {
+            next_table();
+        }
+
+
         
         // var ctr_total = data.length;
         // var ctr_len = 0;
@@ -308,11 +335,7 @@ function sync_data()
                 
                 if(current_count == final_count)
                 {
-                    console.log("NEXT TABLE!");
-                    table_sync_key = 0;
-                    sync_key++;
-                    table_name = all_tbl_name[sync_key];
-                    table_sync(table_name);
+                    next_table();
                 }
                 else
                 {
