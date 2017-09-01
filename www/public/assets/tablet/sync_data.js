@@ -4,6 +4,7 @@ var sync_key = 0;
 var table_sync_key = 0;
 var current_table = "";
 var all_tbl_name = [];
+var shop_id = 29;
 
 function sync_data()
 {
@@ -222,70 +223,10 @@ function sync_data()
         $(".web-to-browser-sync-data").unbind("click");
         $(".web-to-browser-sync-data").bind("click", function()
         {
-            // $('.color-green').addClass('fa-spin');
-            // $('.data-text').html("Synchronizing Data");
-            // var dateNow = getDateNow();
-            // var key = 0;
-            // $.each(all_tbl_name, function(key, table_name)
-            // {
-            //     try 
-            //     {
-            //         $.ajax({
-            //             url : "http://digimahouse.dev/tablet/sync_data/"+all_tbl_name[key]+"/"+dateNow,
-            //             dataType: "json",
-            //             data : {},
-            //             type : "get",
-            //             crossDomain : true,
-            //             success : function(data)
-            //             {
-            //                 ctr++;
-            //                 insert_all_data(data, function(res)
-            //                 {
-            //                     console.log(total +" " +ctr);
-            //                     /* Done */
-            //                     if (ctr == 45) 
-            //                     {
-            //                         var query_timestamp = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('all','"+dateNow+"')";
-            //                         createTableName(query_timestamp);
-
-            //                        $('.data-text').html("Setting up your data");
-            //                        $(".progress").addClass('hide');
-            //                         setInterval(function()
-            //                         {
-            //                             location.reload();
-            //                         },1000);
-            //                     }
-            //                 });
-            //             }
-            //         });
-            //     }
-            //     catch(err) 
-            //     {
-            //         alert("Error");
-            //         document.getElementById("demo").innerHTML = err.message;
-            //     }
-                
-            // });
             sync_key = 1;
             table_name = all_tbl_name[sync_key];
             table_sync(table_name);
 
-            // $('.color-green').addClass('fa-spin');
-            // $('.data-text').html("Synchronizing Data");
-            // 
-            // var key = 0;
-            // $.each(all_tbl_name, function(key, table_name)
-            // {
-            //     try 
-            //     {
-
-            //     }
-            //     catch(err) 
-            //     {
-            //         alert("Error");
-            //         document.getElementById("demo").innerHTML = err.message;
-            //     }
-            // });
         });
     }
     function table_sync(table_name)
@@ -297,7 +238,7 @@ function sync_data()
         {
             url : "http://digimahouse.dev/tablet/sync_data/" + table_name + "/"+ dateNow,
             dataType: "json",
-            data : {},
+            data : {shop_id : shop_id},
             type : "get",
             crossDomain : true,
             success : function(data)
