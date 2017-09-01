@@ -1,0 +1,15 @@
+@font-face 
+{
+  font-family: 'CenturyGothic';
+  src: url('/assets/font/CenturyGothic.eot?#iefix') format('embedded-opentype'),  
+	  url('/assets/font/CenturyGothic.woff') format('woff'), 
+	  url('/assets/font/CenturyGothic.ttf')  format('truetype'), 
+	  url('/assets/font/CenturyGothic.svg#CenturyGothic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body
+{
+	font-family: 'CenturyGothic', sans-serif;
+}
