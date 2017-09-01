@@ -3070,7 +3070,7 @@ function global_sync()
                                                 data : { getdata : all_data, sir_id : sir_id},
                                                 success : function()
                                                 {
-
+                                                    alert('success');
                                                 }
                                             });
                                         });                                    

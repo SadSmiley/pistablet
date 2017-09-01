@@ -236,7 +236,7 @@ function sync_data()
 
         $.ajax(
         {
-            url : "http://digimahouse.dev/tablet/sync_data/" + table_name + "/"+ dateNow,
+            url : "http://digimahouse.com/tablet/sync_data/" + table_name + "/"+ dateNow,
             dataType: "json",
             data : {shop_id : shop_id},
             type : "get",
