@@ -252,8 +252,10 @@ function sync_data()
         if(sync_key == all_tbl_name.length)
         {
             var last_updated = getDateNow();
-            action_update_timestamp(last_updated);
-            location.reload();
+            action_update_timestamp(last_updated, function(data)
+            {
+                location.reload();
+            });
         }   
         else
         {
@@ -302,6 +304,19 @@ function sync_data()
 
         //     insert_query_sync(query);    
         // });
+    }
+    function action_update_timestamp_v2(last_updated, callback)
+    {
+        db.transaction(function (tx)
+        {
+            query = "INSERT INTO tbl_timestamp (table_name, timestamp) values ('last_updated','"+last_updated+"')";
+            tx.executeSql(query,[], function(txt, result)
+            {
+                console.log(result);
+                callback(results);
+            },
+            onError);
+        });
     }
     function insert_query_sync(data, table_sync_key)
     {

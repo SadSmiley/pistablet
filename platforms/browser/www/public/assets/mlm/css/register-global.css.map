@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,UASC,CAPC,WAAW,CAAE,eAAe,CAC5B,GAAG,CAAE,yPAG6D,CAClE,WAAW,CAAE,MAAM,CACnB,UAAU,CAAE,MAAM,CAGpB,IACA,CACC,WAAW,CAAE,2BAA2B",
-"sources": ["../sass/register-global.scss"],
-"names": [],
-"file": "register-global.css"
-}
