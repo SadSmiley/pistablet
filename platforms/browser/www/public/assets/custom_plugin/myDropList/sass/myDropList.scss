@@ -1,0 +1,209 @@
+.droplist
+{   
+
+    position: relative;
+    min-width: 100px;
+    /*width: 320px;
+    height: 36px;
+    border: 1px solid #888;
+    background: #fff;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;*/
+
+    &.droplist-open
+    {
+        /*border-bottom: 1px solid #eee;*/
+    }
+    
+    /*a 
+    {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        padding: 8px 10px;
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+
+        span 
+        {
+            display: inline-block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }*/
+
+    select
+    {
+        display: none !important;
+    }
+
+    .input-group
+    {
+        input 
+        {
+            &:disabled
+            {
+                cursor: not-allowed;
+            }
+        }
+        
+        .input-group-btn
+        {
+            button
+            {
+                padding: 9px 6px 8px 6px;
+                font-size: 8px;
+
+                &:disabled
+                {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+
+    > .droplist-container 
+    {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin: 3px 2px 0 -1px;
+        width: 100%;
+        border: 1px solid #3699d2;;
+        border-radius: 2px;
+        background: #FFFFFF;
+        z-index: 10;
+        overflow: hidden;
+
+        > .droplist-container-list 
+        {
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: visible;
+
+            span 
+            {
+                cursor: pointer;
+                background: #f6f7f9;
+                display: inline-block;
+                width: 100%;
+                padding: 5px;
+                text-align: left;
+
+                *
+                {
+                    display: inline;
+                }
+
+                &:hover
+                {
+                    
+                }
+            }
+
+            hr
+            {
+                margin-top: 4px;
+                margin-bottom: 3px;
+            }
+        }
+    }
+
+    /*input 
+    {
+        width: 298px;
+        border: 1px solid #888;
+        margin: 5px 5px 0;
+        padding: 5px;
+        font-size: 14px;
+
+        /* Hide Input Box
+        ----------------------------------*/
+        /*.droplist-hidden-input 
+        {
+            position: absolute !important;
+            top: 0 !important;
+            left: -1000px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            z-index: -1 !important;
+        }
+    }*/
+
+    .droplist-container
+    {
+        ul
+        {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-align: left;
+
+            li 
+            {
+                display: none;
+                padding: 5px;
+
+                &.active 
+                {
+                    display: block;
+                    cursor: pointer;
+                }
+
+                &:hover 
+                {
+                    background: #66bbff;
+                    color: #fff;
+                }
+
+                &.option-hover 
+                {
+                    background: #3399ff;
+                    color: #fff;
+                }
+
+                &.option-disabled
+                 {
+                    color: #999;
+                }
+
+                &.option-disabled:hover 
+                {
+                    background: #cecece;
+                    color: #fff;
+                }
+
+                &.option-hover.option-disabled 
+                {
+                    background: #a9a9a9;
+                    color: #fff;
+                }
+
+                &.no-results {
+                    display: none;
+                    background: #f2f2f2;
+                    color: #000;
+                }
+            }
+        }
+    }
+}
+
+/* Custom Select - Open
+----------------------------------*/
+.droplist-open 
+{
+  border-bottom: 1px solid #eee;
+}
+.droplist-open .droplist-container 
+{
+  display: block;
+}
