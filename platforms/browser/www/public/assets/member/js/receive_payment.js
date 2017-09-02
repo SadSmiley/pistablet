@@ -99,7 +99,7 @@ function receive_payment()
 		    {
 		    	var customer_id = $(this).val();
 		    	var check = $(".for-tablet-only").html();
-		    	alert(customer_id);
+		    	// alert(customer_id);
 		    	// if(check == null || check == "")
 		    	// {
 			    // 	$(".tbody-item").load("/member/customer/load_rp/"+ (customer_id != '' ? customer_id : 0), function()
