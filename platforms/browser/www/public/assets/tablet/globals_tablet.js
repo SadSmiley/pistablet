@@ -3068,7 +3068,7 @@ function global_sync(type = '')
                                             // {
                                                 $.ajax(
                                                 {
-                                                    url: 'http://digimahouse.dev/tablet/get_data',
+                                                    url: 'http://digimahouse.com/tablet/get_data',
                                                     type : "POST",
                                                     crossDomain : true,
                                                     dataType: "json",
@@ -3108,7 +3108,7 @@ function global_sync(type = '')
                 {
                     $.ajax(
                     {
-                        url: 'http://digimahouse.dev/tablet/get_data',
+                        url: 'http://digimahouse.com/tablet/get_data',
                         type : "POST",
                         crossDomain : true,
                         dataType: "json",
