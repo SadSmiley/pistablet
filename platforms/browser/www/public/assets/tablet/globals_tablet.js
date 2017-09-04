@@ -3094,6 +3094,10 @@ function global_sync(type = '')
                                                                 });
                                                             });
                                                         }
+                                                    },
+                                                    error : function()
+                                                    {
+                                                        alert('Please make sure you are connected to the internet');
                                                     }
                                                 });
                                             // });                                    
@@ -3134,6 +3138,10 @@ function global_sync(type = '')
                                     });
                                 });
                             }
+                        },
+                        error : function()
+                        {
+                            alert('Please make sure you are connected to the internet');
                         }
                     });
                 }
@@ -3188,7 +3196,7 @@ function get_data_sir(callback)
             {
                 if(results.rows.length > 0)
                 {
-                    callback(results.rows);
+                    callback(results.rows[0]);
                 }
                 else
                 {

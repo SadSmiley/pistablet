@@ -244,6 +244,10 @@ function sync_data()
             success : function(data)
             {
                 insert_all_data(data);
+            },
+            error : function()
+            {
+                alert('Please make sure you are connected to the internet');
             }
         });
     }

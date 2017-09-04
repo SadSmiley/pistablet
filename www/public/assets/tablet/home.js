@@ -82,6 +82,7 @@ function home()
                         });
 
                         get_sir_item();
+
                     }                    
                 }
                 else
@@ -98,20 +99,29 @@ function home()
         	var query_check = 'SELECT selected_sir FROM tbl_agent_logon LIMIT 1';            
             tx.executeSql(query_check, [], function(txs, results)
             {
+
+                $(".modal-loader").addClass("hidden");
             	var sir_id = results.rows[0]['selected_sir'];
 
-	        	var query_sir_item = 'SELECT * FROM tbl_sir_item LEFT OUTER JOIN tbl_item ON tbl_item.item_id = tbl_sir_item.item_id where tbl_sir_item.sir_id = "'+ sir_id +'"';  
+	        	var query_sir_item = 'SELECT *, tbl_sir_item.item_id as sir_item_id FROM tbl_sir_item LEFT JOIN tbl_item ON tbl_item.item_id = tbl_sir_item.item_id WHERE tbl_sir_item.sir_id = "'+ sir_id +'"';  
 
 	            tx.executeSql(query_sir_item, [], function(tx, results_get)
 	            {
-	            	data_result = results_get.rows;
-					$(data_result).each(function(key, datarow)
+	            	var data_result = results_get.rows;
+                    console.log(results_get.rows);
+					$.each(data_result, function(key, datarow)
 					{
-						$(".tbody-sir-item").append('<tr class="text-left unchecked all_tr tr_'+datarow['sir_item_id']+'"><td><input type="checkbox" name="" value="'+datarow['sir_item_id']+'" onclick="checked_item('+datarow['sir_item_id']+')"></td><td>'+datarow['item_barcode']+'</td><td>'+datarow['item_name']+'</td><td>'+datarow['item_qty'] * datarow['um_qty']+'</td></tr>');
+                        unit_measurement_view(datarow['item_qty'] * datarow['um_qty'],datarow['sir_item_id'],datarow['related_um_type'], function(um_view)
+                        {
+                            $(".tbody-sir-item").append('<tr class="text-left unchecked all_tr tr_'+datarow['sir_item_id']+'"><td><input type="checkbox" name="" value="'+datarow['sir_item_id']+'" onclick="checked_item('+datarow['sir_item_id']+')"></td><td>'+datarow['item_barcode']+'</td><td>'+datarow['item_name']+'</td><td>'+um_view+'</td></tr>');
+                        });
 					});
 					$(".tbody-sir-item").append('<tr id="noresults"><span id="qt"></span></tr>');
-	            });
-            });
+
+	            },
+                onError);
+            },
+            onError);
         });
 	}
 }
@@ -160,8 +170,7 @@ function confirm_lof_action(sir_id,action)
             }
             else if(action == "reject")
             {
-            	//SYNC REJECTED SIR TO SERVER
-            	// location.reload = "";
+            	global_sync('reject');
             }
         });
     });
