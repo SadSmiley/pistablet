@@ -3020,7 +3020,7 @@ function global_sync(type = '')
                 data['manual_rp'] = manual_rp;
                 data['manual_cm'] = manual_cm;
                 data['sir_data'] = sir_data;
-                console.log(data);
+                // console.log(data);
                 if(ctr_length != 0)
                 {
                     $.each(logs, function(key, value)
