@@ -99,6 +99,7 @@ function receive_payment()
 		    {
 		    	var customer_id = $(this).val();
 		    	var check = $(".for-tablet-only").html();
+		    	// alert(customer_id);
 		    	// if(check == null || check == "")
 		    	// {
 			    // 	$(".tbody-item").load("/member/customer/load_rp/"+ (customer_id != '' ? customer_id : 0), function()
@@ -115,6 +116,7 @@ function receive_payment()
 	    		// }
 	    		get_session('rp_id', function(rp_id)
 	    		{
+	    			console.log(rp_id);
 	    			if(!rp_id)
 	    			{
 			    		get_shop_id(function(shop_id)

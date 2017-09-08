@@ -89,7 +89,7 @@ function sales_receipt()
                 {   
                     tr += '<tr><td>'+datarow['inv_id']+'</td>';
                     checked = datarow['inv_is_paid'] == 1 ? 'checked' : '' ;
-                    company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : "" ;
+                    company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : datarow['company'];
                     tr += '<td class="text-center"><input type="checkbox" name="paid" disabled '+checked+'></td>';
                     tr += '<td>'+company+'</td>';
                     cm_amount = datarow['cm_amount'];

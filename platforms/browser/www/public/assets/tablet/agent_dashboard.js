@@ -124,7 +124,7 @@ function agent_dashboard()
                     get_cm_amount(val['credit_memo_id'],function(cm_amount)
                     {
                         total += roundNumber(val['inv_total_amount'] - cm_amount);
-                        $(".credit-sales").html("Php "+ReplaceNumberWithCommas(total));
+                        $(".credit-sales").html("Php "+number_format(total));
                     });
                 });
             },
@@ -141,7 +141,7 @@ function agent_dashboard()
                     total_amount += datarow['cash_sales_total_amount'] - cm_amount;
                 });
 
-                $(".cash-sales").html("Php "+ReplaceNumberWithCommas((total_amount).toFixed(2)));
+                $(".cash-sales").html("Php "+number_format(total_amount));
             });
 
             var query_count_collection_sales = 'SELECT * FROM tbl_manual_receive_payment LEFT JOIN tbl_receive_payment ON tbl_receive_payment.rp_id = tbl_manual_receive_payment.rp_id WHERE tbl_manual_receive_payment.sir_id = "'+sir_id+'" GROUP BY tbl_receive_payment.rp_id';
@@ -153,7 +153,7 @@ function agent_dashboard()
                 {
                     total_amount_collection += datarow['rp_total_amount'];
                 });
-                $(".collection-sales").html("Php "+ReplaceNumberWithCommas((total_amount_collection).toFixed(2)));
+                $(".collection-sales").html("Php "+number_format(total_amount_collection));
             });
 
             var query_count_credit_memo = 'SELECT * FROM tbl_manual_credit_memo LEFT JOIN tbl_credit_memo ON tbl_credit_memo.cm_id = tbl_manual_credit_memo.cm_id WHERE tbl_manual_credit_memo.sir_id = "'+sir_id+'" GROUP BY tbl_credit_memo.cm_id';
@@ -165,7 +165,7 @@ function agent_dashboard()
                 {
                     total_amount_cm += datarow['cm_amount'];
                 });
-                $(".credit-memo").html("Php "+ReplaceNumberWithCommas((total_amount_cm).toFixed(2)));
+                $(".credit-memo").html("Php "+number_format(total_amount_cm));
             });
         });
     }
@@ -242,13 +242,14 @@ function click_action(action)
                                         '<div class="modal-footer"></div>';
 
 
-                        var trow = "";
+                        
                         $.each(sir_item_row, function(a,b)
                         {
                             get_item_bundle(b['item_id'], function(bundle_item)
                             {
+                                var trow = "";
                                 var ctr_bundle = 0;
-                                if(bundle_item.length > 0)
+                                if(count(bundle_item) > 0)
                                 {
                                     $.each(bundle_item, function(key, val)
                                     {
@@ -295,24 +296,25 @@ function click_action(action)
                                 }
                                 else
                                 {   
-                                    get_rem_qty_count(sir_id, sir_item_row[a]['item_id'], function(remaining_qty)
+                                    get_rem_qty_count(sir_id, b['item_id'], function(remaining_qty)
                                     {
-                                        get_sold_qty_count(sir_id, sir_item_row[a]['item_id'], function(sold_qty)
+                                        get_sold_qty_count(sir_id, b['item_id'], function(sold_qty)
                                         {
-                                            unit_measurement_view(remaining_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_remaining_qty)
+                                            unit_measurement_view(remaining_qty, b['item_id'],b['related_um_type'], function(um_remaining_qty)
                                             {
-                                                unit_measurement_view(sold_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_sold_qty)
+                                                unit_measurement_view(sold_qty, b['item_id'], b['related_um_type'], function(um_sold_qty)
                                                 {
-                                                    var issued_qty = sir_item_row[a]['item_qty'] * sir_item_row[a]['um_qty'];
-                                                    unit_measurement_view(issued_qty, sir_item_row[a]['item_id'],sir_item_row[a]['related_um_type'], function(um_issued_qty)
+                                                    var issued_qty = b['item_qty'] * b['um_qty'];
+                                                    unit_measurement_view(issued_qty, b['item_id'],b['related_um_type'], function(um_issued_qty)
                                                     {
                                                         trow = '<tr>' +                         
                                                         '<td>'+(a+1)+'</td>' +
-                                                        '<td>'+sir_item_row[a]['item_name']+'</td>' +
+                                                        '<td>'+b['item_name']+'</td>' +
                                                         '<td>'+um_issued_qty +'</td>' +
                                                         '<td>'+um_sold_qty+'</td>' +
                                                         '<td>'+um_remaining_qty+'</td>';
-                                                        trow += '</tr>';
+                                                        trow += '</tr>';        
+                                                        console.log(um_remaining_qty);
 
                                                         $(".item-list-inventory").append(trow);
                                                     });
@@ -357,7 +359,7 @@ function click_action_update(action)
                                 '</div>'+
                                 '<div class="modal-footer">'+
                                 '<div class="col-md-6 col-xs-6">'+
-                                '<button type="button" onClick="update_submit_reload('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button>'+
+                                '<button type="button" onClick="global_sync(`reload`)" btn-action-type="reload" class="sync-out btn btn-custom-blue form-control">Yes</button>'+
                                 '</div> '+
                                 '<div class="col-md-6 col-xs-6">'+
                                 '<button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
@@ -374,7 +376,7 @@ function click_action_update(action)
                         ' </div> ' +
                         ' <div class="modal-footer"> '+ 
                         '<div class="col-md-6 col-xs-6"> ' +
-                        '<button type="button" onclick="reload_sir('+sir_id+')" class="btn btn-custom-blue form-control">Yes</button>'+
+                        '<button type="button" onClick="global_sync(`close`)" btn-action-type="close" class="btn btn-custom-blue form-control">Yes</button>'+
                         '</div>  <div class="col-md-6 col-xs-6"><button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
             }
 

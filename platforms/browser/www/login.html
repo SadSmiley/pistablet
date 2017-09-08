@@ -55,6 +55,10 @@
     {
         overflow-y: auto;
     }
+    .color-green
+    {
+        color : green;
+    }
     </style>
     <link rel="stylesheet" type="text/css" href="public/assets/member/css/global.css">
     <script>
@@ -128,7 +132,24 @@
 							</div>
 						</div>
 					</div>
-					<div class="panel panel-default panel-block panel-title-block">
+
+                    <div class="panel panel-default panel-block panel-title-block loading-page hidden">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12 text-center">
+                                    <i class="fa fa-refresh fa-5x color-green web-to-browser-sync-data"></i> <h3 class='data-text'>Sync Now</h3>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="tbl-name-class"></div>
+                                <div class="progress hide">
+                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="panel panel-default panel-block panel-title-block login-page">
 						<div class="panel-body">
 							<div class="form-group">
 								<div class="tbl-name-class"></div>
@@ -149,14 +170,27 @@
 								<button type="button" class="btn-login btn btn-primary form-control">LOGIN</button>
 							</div>
 						</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12 text-center">
+                                    <i class="fa fa-refresh fa-5x color-green web-to-browser-sync-data"></i> <h3 class='data-text'>Sync Now</h3>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="tbl-name-class"></div>
+                                <div class="progress hide">
+                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</form>
-
-				<div class="form-group text-center">
-					<button type="button" class="btn btn-primary web-to-browser-sync-data">WEB TO BROWSER SYNC</button>
-					<button type="button" class="btn btn-primary drop-table">DROP ALL TABLE</button>
-					<!-- <button type="button" class="btn btn-primary create-table">CREATE ALL TABLE</button> -->
-				</div>
+				<!-- <div class="form-group text-center"> -->
+					<!-- <button type="button" class="btn btn-primary web-to-browser-sync-data">WEB TO BROWSER SYNC</button> -->
+					<!-- <button type="button" class="btn btn-primary drop-table">DROP ALL TABLE</button> -->
+				    <!-- <button type="button" class="btn btn-primary create-table">CREATE ALL TABLE</button> -->
+				<!-- </div> -->
 			</div>
 		</div> </div>
      <div id="global_modal" class="modal fade" role="dialog" >
@@ -304,15 +338,15 @@
 	function submit_done(data)
 	{
 		if(data.status == "success-login")
-	{
-	toastr.success("Success");
-	location.href = "/tablet/dashboard";
-	}
-	else if(data.status == "error")
-	{
-	toastr.warning(data.status_message);
-	$(data.target).html(data.view);
-	}
+    	{
+    	toastr.success("Success");
+    	location.href = "/tablet/dashboard";
+    	}
+    	else if(data.status == "error")
+    	{
+    	toastr.warning(data.status_message);
+    	$(data.target).html(data.view);
+    	}
 	}
 </script>
 <script type="text/javascript" src="public/assets/tablet/create_table.js"></script>

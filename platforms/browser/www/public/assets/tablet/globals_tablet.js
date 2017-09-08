@@ -19,7 +19,6 @@ function forget_session(label)
 {
     sessionStorage.setItem(label, '');
 }
-global_sync();
 
 /**
  * Agent Logout
@@ -77,7 +76,7 @@ function query_create_all_table(callback)
     query[14] = "CREATE TABLE IF NOT EXISTS tbl_position (position_id INTEGER PRIMARY KEY AUTOINCREMENT, position_name VARCHAR(255)  NOT NULL, daily_rate decimal(8,2) NOT NULL, position_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', position_code VARCHAR(255)  NOT NULL, position_shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[15] = "CREATE TABLE IF NOT EXISTS tbl_truck (truck_id INTEGER PRIMARY KEY AUTOINCREMENT, plate_number VARCHAR(255)  NOT NULL, warehouse_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', truck_model VARCHAR(255)  NOT NULL, truck_kilogram decimal(8,2) NOT NULL, truck_shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
     /*EMPLOYEE INFO*/
-    query[16] = "CREATE TABLE IF NOT EXISTS tbl_employee (employee_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_id INTEGER  NOT NULL,  warehouse_id INTEGER  NOT NULL, first_name VARCHAR(255)  NOT NULL, middle_name VARCHAR(255)  NOT NULL, last_name VARCHAR(255)  NOT NULL, gender VARCHAR(255)  NOT NULL, email VARCHAR(255)  NOT NULL, username VARCHAR(255)  NOT NULL,  password text  NOT NULL, b_day DATE NOT NULL, position_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'old' NULL)";
+    query[16] = "CREATE TABLE IF NOT EXISTS tbl_employee (employee_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_id INTEGER  NOT NULL,  warehouse_id INTEGER  NOT NULL, first_name VARCHAR(255)  NOT NULL, middle_name VARCHAR(255)  NOT NULL, last_name VARCHAR(255)  NOT NULL, gender VARCHAR(255)  NOT NULL, email VARCHAR(255)  NOT NULL, username VARCHAR(255)  NOT NULL,  password text  NOT NULL, b_day DATE NOT NULL, position_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[17] = "CREATE TABLE IF NOT EXISTS tbl_image (image_id INTEGER PRIMARY KEY AUTOINCREMENT, image_path VARCHAR(255)  NOT NULL, image_key VARCHAR(255)  NOT NULL,  image_shop INTEGER  NOT NULL, image_reason VARCHAR(255)  NOT NULL default 'product', image_reason_id INTEGER NOT NULL, image_date_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[18] = "CREATE TABLE IF NOT EXISTS tbl_item ( item_id INTEGER PRIMARY KEY AUTOINCREMENT, item_name VARCHAR(255)  NOT NULL, item_sku VARCHAR(255)  NOT NULL, item_sales_information VARCHAR(255) NOT NULL, item_purchasing_information VARCHAR(255)  NOT NULL,  item_img VARCHAR(255)  NOT NULL, item_quantity INTEGER NOT NULL, item_reorder_point INTEGER NOT NULL, item_price REAL NOT NULL, item_cost REAL NOT NULL, item_sale_to_customer TINYINT NOT NULL, item_purchase_from_supplier TINYINT NOT NULL,  item_type_id INTEGER  NOT NULL, item_category_id INTEGER  NOT NULL, item_asset_account_id INTEGER  default NULL,  item_income_account_id INTEGER  default NULL, item_expense_account_id INTEGER  default NULL, item_date_tracked DATETIME default NULL, item_date_created DATETIME NOT NULL, item_date_archived DATETIME default NULL, archived TINYINT NOT NULL,  shop_id INTEGER  NOT NULL, item_barcode VARCHAR(255)  NOT NULL, has_serial_number TINYINT NOT NULL default '0',  item_measurement_id INTEGER  default NULL, item_vendor_id INTEGER NOT NULL default '0', item_manufacturer_id INTEGER  default NULL, packing_size VARCHAR(255)  NOT NULL, item_code VARCHAR(255)  NOT NULL, item_show_in_mlm INTEGER NOT NULL default '0', promo_price REAL NOT NULL, start_promo_date date NOT NULL, end_promo_date date NOT NULL, bundle_group TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
     query[19] = "CREATE TABLE IF NOT EXISTS tbl_inventory_serial_number (serial_id INTEGER PRIMARY KEY AUTOINCREMENT, serial_inventory_id INTEGER  NOT NULL, item_id INTEGER  NOT NULL, serial_number VARCHAR(255)  NOT NULL, serial_created DATETIME NOT NULL,  item_count INTEGER NOT NULL, item_consumed TINYINT NOT NULL, sold TINYINT NOT NULL default '0', consume_source VARCHAR(255)  default NULL, consume_source_id INTEGER NOT NULL default '0', serial_has_been_credit VARCHAR(255)  default NULL,  serial_has_been_debit VARCHAR(255) default NULL, created_at DATETIME, updated_at DATETIME)";
@@ -89,15 +88,18 @@ function query_create_all_table(callback)
     query[25] = "CREATE TABLE IF NOT EXISTS tbl_journal_entry (je_id INTEGER PRIMARY KEY AUTOINCREMENT, je_shop_id INTEGER  NOT NULL,  je_reference_module VARCHAR(255)  NOT NULL, je_reference_id INTEGER NOT NULL, je_entry_date DATETIME NOT NULL, je_remarks text  NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00')";
     query[26] = "CREATE TABLE IF NOT EXISTS tbl_journal_entry_line (jline_id INTEGER PRIMARY KEY AUTOINCREMENT, jline_je_id INTEGER  NOT NULL,  jline_name_id INTEGER NOT NULL, jline_name_reference VARCHAR(255)  NOT NULL, jline_item_id INTEGER  NOT NULL,  jline_account_id INTEGER  NOT NULL, jline_type VARCHAR(255)  NOT NULL, jline_amount REAL NOT NULL, jline_description text  NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00', jline_warehouse_id INTEGER NOT NULL default '0')";
     query[27] = "CREATE TABLE IF NOT EXISTS tbl_sir (sir_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_warehouse_id INTEGER NOT NULL,  truck_id INTEGER  NOT NULL, shop_id INTEGER  NOT NULL, sales_agent_id INTEGER  NOT NULL, date_created DATE NOT NULL, archived TINYINT NOT NULL default '0', lof_status TINYINT NOT NULL default '0', sir_status TINYINT NOT NULL, is_sync TINYINT NOT NULL default '0', ilr_status TINYINT NOT NULL default '0', rejection_reason TEXT NOT NULL, agent_collection REAL NOT NULL, agent_collection_remarks TEXT NOT NULL, reload_sir INTEGER NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
-    query[28] = "CREATE TABLE IF NOT EXISTS tbl_manual_invoice (manual_invoice_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, inv_id INTEGER  NOT NULL, manual_invoice_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
-    query[29] = "CREATE TABLE IF NOT EXISTS tbl_manual_receive_payment ( manual_receive_payment_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER NOT NULL, rp_id INTEGER NOT NULL, sir_id INTEGER NOT NULL, rp_date DATETIME NOT NULL,  is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    /*TABLET TRANSACTION*/
+    query[28] = "CREATE TABLE IF NOT EXISTS tbl_manual_invoice (manual_invoice_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, inv_id INTEGER  NOT NULL, manual_invoice_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[29] = "CREATE TABLE IF NOT EXISTS tbl_manual_receive_payment ( manual_receive_payment_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER NOT NULL, rp_id INTEGER NOT NULL, sir_id INTEGER NOT NULL, rp_date DATETIME NOT NULL,  is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+
     query[30] = "CREATE TABLE IF NOT EXISTS tbl_manufacturer (manufacturer_id INTEGER PRIMARY KEY AUTOINCREMENT, manufacturer_name VARCHAR(255)  NOT NULL, manufacturer_address VARCHAR(255)  NOT NULL, phone_number VARCHAR(255)  NOT NULL, email_address VARCHAR(255)  NOT NULL, website text  NOT NULL, date_created DATETIME NOT NULL, date_updated DATETIME NOT NULL, archived TINYINT NOT NULL default '0', manufacturer_shop_id INTEGER  NOT NULL, manufacturer_fname VARCHAR(255)  NOT NULL,  manufacturer_mname VARCHAR(255)  NOT NULL, manufacturer_lname VARCHAR(255)  NOT NULL, manufacturer_image INTEGER default NULL, created_at DATETIME, updated_at DATETIME)";
     /*RECEIVE PAYMENT*/
-    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NOT NULL, rp_customer_id INTEGER NOT NULL, rp_ar_account INTEGER NOT NULL, rp_date date NOT NULL, rp_total_amount REAL(8,2) NOT NULL, rp_payment_method VARCHAR(255)  NOT NULL, rp_memo text  NOT NULL, date_created DATETIME NOT NULL, rp_ref_name VARCHAR(255)  NOT NULL, rp_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'old' NULL)";
+    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NOT NULL, rp_customer_id INTEGER NOT NULL, rp_ar_account INTEGER NOT NULL, rp_date date NOT NULL, rp_total_amount REAL(8,2) NOT NULL, rp_payment_method VARCHAR(255)  NOT NULL, rp_memo text  NOT NULL, date_created DATETIME NOT NULL, rp_ref_name VARCHAR(255)  NOT NULL, rp_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NOT NULL, rpline_reference_name VARCHAR(255)  NOT NULL, rpline_reference_id INTEGER NOT NULL, rpline_amount REAL(8,2) NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[33] = "CREATE TABLE IF NOT EXISTS tbl_settings ( settings_id INTEGER PRIMARY KEY AUTOINCREMENT, settings_key VARCHAR(255)  NOT NULL, settings_value longtext , settings_setup_done TINYINT NOT NULL default '0', shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[34] = "CREATE TABLE IF NOT EXISTS tbl_sir_cm_item (s_cm_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sc_sir_id INTEGER  NOT NULL, sc_item_id INTEGER NOT NULL, sc_item_qty INTEGER NOT NULL, sc_physical_count INTEGER NOT NULL, sc_item_price REAL NOT NULL, sc_status INTEGER NOT NULL, sc_is_updated TINYINT NOT NULL, sc_infos REAL NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NOT NULL, inventory_sir_id INTEGER  NOT NULL, sir_inventory_count INTEGER NOT NULL, sir_inventory_ref_name VARCHAR(255)  NOT NULL, sir_inventory_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, is_bundled_item TINYINT)";
+    /*SIR INVENTORY*/
+    query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NOT NULL, inventory_sir_id INTEGER  NOT NULL, sir_inventory_count INTEGER NOT NULL, sir_inventory_ref_name VARCHAR(255)  NOT NULL, sir_inventory_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, is_bundled_item TINYINT, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[36] = "CREATE TABLE IF NOT EXISTS tbl_sir_item ( sir_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL,  item_id INTEGER  NOT NULL, item_qty INTEGER NOT NULL, archived TINYINT NOT NULL default '0', related_um_type VARCHAR(255)  NOT NULL, total_issued_qty INTEGER NOT NULL default '0', um_qty INTEGER NOT NULL, sold_qty INTEGER NOT NULL, remaining_qty INTEGER NOT NULL, physical_count INTEGER NOT NULL, status VARCHAR(255)  NOT NULL, loss_amount decimal(8,2) NOT NULL, sir_item_price REAL NOT NULL, is_updated TINYINT NOT NULL default '0', infos REAL NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
     query[37] = "CREATE TABLE IF NOT EXISTS tbl_sir_sales_report (sir_sales_report_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER NOT NULL, report_data TEXT NOT NULL, report_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[38] = "CREATE TABLE IF NOT EXISTS tbl_terms (terms_id INTEGER PRIMARY KEY AUTOINCREMENT, terms_shop_id INTEGER NOT NULL,  terms_name VARCHAR(255)  NOT NULL, terms_no_of_days INTEGER NOT NULL , archived TINYINT NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00')";
@@ -105,7 +107,8 @@ function query_create_all_table(callback)
     query[40] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement ( um_id INTEGER PRIMARY KEY AUTOINCREMENT, um_shop INTEGER  NOT NULL, um_name VARCHAR(255)  NOT NULL, is_multi TINYINT NOT NULL, um_date_created DATETIME NOT NULL, um_archived TINYINT NOT NULL, um_type INTEGER  NOT NULL, parent_basis_um INTEGER NOT NULL default '0', um_item_id INTEGER NOT NULL default '0',  um_n_base INTEGER NOT NULL, um_base INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[41] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement_multi (multi_id INTEGER PRIMARY KEY AUTOINCREMENT, multi_um_id INTEGER  NOT NULL, multi_name VARCHAR(255)  NOT NULL, multi_conversion_ratio REAL NOT NULL, multi_sequence TINYINT NOT NULL,  unit_qty INTEGER NOT NULL, multi_abbrev VARCHAR(255)  NOT NULL, is_base TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
     query[42] = "CREATE TABLE IF NOT EXISTS tbl_user ( user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_email VARCHAR(255)  NOT NULL, user_level INTEGER NOT NULL, user_first_name VARCHAR(255)  NOT NULL, user_last_name VARCHAR(255)  NOT NULL, user_contact_number VARCHAR(255)  NOT NULL, user_password text  NOT NULL, user_date_created DATETIME NOT NULL default '1000-01-01 00:00:00', user_last_active_date DATETIME NOT NULL default '1000-01-01 00:00:00', user_shop INTEGER  NOT NULL,  IsWalkin TINYINT NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, cm_id INTEGER NOT NULL, manual_cm_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    /*TABLET TRANSACTION-cm*/
+    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, cm_id INTEGER NOT NULL, manual_cm_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NOT NULL, default_sublevel INTEGER NOT NULL, default_balance REAL NOT NULL, default_open_balance REAL NOT NULL, default_open_balance_date date NOT NULL, is_tax_account TINYINT NOT NULL, account_tax_code_id INTEGER NOT NULL, default_for_code VARCHAR(255) , account_protected TINYINT NOT NULL,created_at DATETIME, updated_at DATETIME)";
     query[45] = "CREATE TABLE IF NOT EXISTS tbl_timestamp (timestamp_id INTEGER PRIMARY KEY AUTOINCREMENT, table_name VARCHAR(255), timestamp DATETIME)";
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
@@ -193,7 +196,7 @@ function get_shop_id(callback)
         {
             if(results.rows.length <= 0)
             {
-                alert("Some error occurred. Currently not logged in.")
+                console.log("Some error occurred. Currently not logged in.")
             }
             else
             {
@@ -232,7 +235,8 @@ function get_sir_id(callback)
         {
             if(results.rows.length <= 0)
             {
-                alert("Some error occurred. Currently not logged in.")
+                console.log("Some error occurred. Currently not logged in.")
+                callback(0);
             }
             else
             {
@@ -1165,7 +1169,8 @@ function get_rem_qty_count(sir_id, item_id, callback)
                     'AND sir_inventory_ref_name != "credit_memo"';
         tx.executeSql(query, [], function(tx, results)
         {
-            if(results.rows[0]['remaining_qty'] != null)
+            console.log(results.rows[0]['remaining_qty'])
+            if(results.rows[0]['remaining_qty'])
             {
                 callback(results.rows[0]['remaining_qty']);
             }
@@ -1373,8 +1378,10 @@ function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
     {
         var query = 'SELECT sum(sir_inventory_count) as current_qty FROM tbl_sir_inventory WHERE inventory_sir_id = ' + sir_id + ' ' + 
                     'AND sir_item_id = ' + item_id;
+
         tx.executeSql(query, [], function(tx, dtrow_sir_inventory)
         {
+            console.log(dtrow_sir_inventory);
             var sir_inventory = dtrow_sir_inventory.rows[0]['current_qty'];
             get_inv_qty(item_id, invoice_id, function(inv_qty)
             {
@@ -1549,42 +1556,41 @@ function insert_log(customer_id, transaction_name, transaction_id, transaction_a
             data['transaction_name'] = transaction_name;
             data['transaction_id'] = transaction_id;
             data['transaction_amount'] = transaction_amount;
-            console.log(record_id);
-            if(record_id == 0)
-            {
-                db.transaction(function (tx) 
-                {  
-                    var insert_query = 'INSERT INTO tbl_invoice_log (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
-                                       'VALUES ('+shop_id+', '+data['customer_id']+',"'+
-                                        data['transaction_name']+'",'+
-                                        data['transaction_id']+','+
-                                        data['transaction_amount']+',"'+
-                                        get_date_now()+'")';
-                    tx.executeSql(insert_query, [], function(tx, results)
-                    {
-                        callback(results.insertId);
-                    }, 
-                    onError);
-                });
-            }
-            else
-            {
-                db.transaction(function (tx) 
-                {  
-                    var update_query = 'UPDATE tbl_invoice_log SET (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
+
+            db.transaction(function (tx) 
+            {  
+                var query = 'UPDATE tbl_invoice_log SET (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
                                        '= ('+shop_id+', '+data['customer_id']+',"'+
                                         data['transaction_name']+'",'+
                                         data['transaction_id']+','+
                                         data['transaction_amount']+',"'+
                                         get_date_now()+'") ' +
                                         'WHERE record_id = ' + record_id;
-                    tx.executeSql(update_query, [], function(tx, results)
+
+                if(record_id == 0)
+                {
+                    query = 'INSERT INTO tbl_invoice_log (shop_id, transaction_customer_id, transaction_name, transaction_id, transaction_amount, date_created)' +
+                                   'VALUES ('+shop_id+', '+data['customer_id']+',"'+
+                                    data['transaction_name']+'",'+
+                                    data['transaction_id']+','+
+                                    data['transaction_amount']+',"'+
+                                    get_date_now()+'")';
+                }
+                console.log(query)
+                tx.executeSql(query, [], function(tx, results)
+                {
+                    if(record_id == 0)
+                    {
+                        callback(results.insertId);
+                    }
+                    else
                     {
                         callback(record_id);
-                    }, 
-                    onError);
-                });
-            }            
+                    }
+                }, 
+                onError);
+
+            });        
         });
     });
 }
@@ -2636,6 +2642,7 @@ function insert_rp_submit(customer_info, insertline, callback)
                     var rp_id = results.insertId;
                     insert_rpline(rp_id, insertline, function(result_line)
                     {
+                        insert_payment_reference(customer_info['rp_ref_name'],customer_info['rp_ref_id'], rp_id);
                         if(rp_id != 0)
                         {
                             insert_log(customer_info['rp_customer_id'], 'receive_payment', rp_id, -(customer_info['rp_total_amount']), function(record_id)
@@ -2656,6 +2663,22 @@ function insert_rp_submit(customer_info, insertline, callback)
             });
         });
     });
+}
+function insert_payment_reference(ref_name, ref_id, rp_id)
+{
+    if(ref_name == 'credit_memo')
+    {
+        db.transaction(function(tx)
+        {
+            var update_row_query = 'UPDATE tbl_credit_memo SET (cm_type, cm_used_ref_name, cm_used_ref_id)'+
+                                   '= (1,"receive_payment", '+ rp_id+') WHERE cm_id = ' + ref_id;
+            tx.executeSql(update_row_query, [], function(tx, results)
+            {
+                console.log('success_test');
+            },
+            onError);
+        });
+    }
 }
 function insert_rpline(rp_id, insertline, callback)
 {
@@ -3002,14 +3025,14 @@ function number_format(number)
     return (n.join("."));
 }
 
-function global_sync()
+function global_sync(type = '')
 {
     get_sir_id(function(sir_id)
     {
         //tbl_manual_invoice
         //tbl_manual_credit_memo
         //tbl_manual_rp
-        //tbl_sir <x>
+        //tbl_sir
         //tbl_sir_item <x>
         //tbl_sir_inventory
         //tbl_sir_cm_item <x>
@@ -3030,48 +3053,229 @@ function global_sync()
             data['invoice'] = {};
             data['credit_memo'] = {};
             data['receive_payment'] = {};
-            var ctr_length = logs.length;
+            data['sir_inventory'] = {};
+            data['manual_inv'] = {};
+            data['manual_rp'] = {};
+            data['manual_cm'] = {};
+            data['sir_data'] = {};
+            var ctr_length = count(logs);
             var ctr = 0;
-            $.each(logs, function(key, value)
+
+            get_other_transaction(function(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data)
             {
-                get_invoice_data(value['transaction_id'], function(inv, invline, cmline)
+                data['sir_inventory'] = sir_inventory;
+                data['manual_inv'] = manual_inv;
+                data['manual_rp'] = manual_rp;
+                data['manual_cm'] = manual_cm;
+                data['sir_data'] = sir_data;
+                // console.log(data);
+                if(ctr_length != 0)
                 {
-                    get_cm_data(value['transaction_id'], function(cm, cmline)
+                    $.each(logs, function(key, value)
                     {
-                        get_paid_rp_data(value['transaction_id'], function(rp, rpline)
+                        get_invoice_data(value['transaction_id'], function(inv, invline, cmline)
                         {
-                            ctr++;
-                            if(value['transaction_name'] == 'invoice')
+                            get_cm_data(value['transaction_id'], function(cm, cmline)
                             {
-                                data['invoice'][value['transaction_id']] = {};
-                                data['invoice'][value['transaction_id']]['inv'] = inv;
-                                data['invoice'][value['transaction_id']]['invline'] = invline;
-                            }
-                            if(value['transaction_name'] == 'sales_receipt')
-                            {
-                                data['invoice'][value['transaction_id']] = {};
-                                data['invoice'][value['transaction_id']]['inv'] = inv;
-                                data['invoice'][value['transaction_id']]['invline'] = invline;                                
-                            }
-                            if(value['transaction_name'] == 'credit_memo')
-                            {
-                                data['credit_memo'][value['transaction_id']] = {};
-                                data['credit_memo'][value['transaction_id']]['cm'] = cm;
-                                data['credit_memo'][value['transaction_id']]['cmline'] = cmline;                                
-                            }
-                            if(value['transaction_name'] == 'receive_payment')
-                            {
-                                data['receive_payment'][value['transaction_id']] = {};
-                                data['receive_payment'][value['transaction_id']]['rp'] = rp;
-                                data['receive_payment'][value['transaction_id']]['rpline'] = rpline;                                
-                            }
-                            if(ctr == ctr_length)
-                            {
-                                console.log(data);
-                            }
+                                get_paid_rp_data(value['transaction_id'], function(rp, rpline)
+                                {
+                                    ctr++;
+                                    if(value['transaction_name'] == 'invoice')
+                                    {
+                                        data['invoice'][value['transaction_id']] = {};
+                                        data['invoice'][value['transaction_id']]['inv'] = inv;
+                                        data['invoice'][value['transaction_id']]['invline'] = invline;
+                                    }
+                                    if(value['transaction_name'] == 'sales_receipt')
+                                    {
+                                        data['invoice'][value['transaction_id']] = {};
+                                        data['invoice'][value['transaction_id']]['inv'] = inv;
+                                        data['invoice'][value['transaction_id']]['invline'] = invline;                                
+                                    }
+                                    if(value['transaction_name'] == 'credit_memo')
+                                    {
+                                        data['credit_memo'][value['transaction_id']] = {};
+                                        data['credit_memo'][value['transaction_id']]['cm'] = cm;
+                                        data['credit_memo'][value['transaction_id']]['cmline'] = cmline;                                
+                                    }
+                                    if(value['transaction_name'] == 'receive_payment')
+                                    {
+                                        data['receive_payment'][value['transaction_id']] = {};
+                                        data['receive_payment'][value['transaction_id']]['rp'] = rp;
+                                        data['receive_payment'][value['transaction_id']]['rpline'] = rpline;                                
+                                    }
+
+                                    if(ctr == ctr_length)
+                                    {
+                                        get_sir_id(function(sir_id)
+                                        {
+                                            var all_data = JSON.stringify(data);
+                                            // location.href = "http://digimahouse.dev/tablet/get_data/" + JSON.stringify(all_data) + '/'+sir_id;
+                                            // $('.sync-out').unbind('click');
+                                            // $('.sync-out').bind('click', function()
+                                            // {
+                                                $.ajax(
+                                                {
+                                                    url: 'http://digimahouse.com/tablet/get_data',
+                                                    type : "POST",
+                                                    crossDomain : true,
+                                                    dataType: "json",
+                                                    data : { getdata : all_data, sir_id : sir_id, sync_type : type},
+                                                    success : function(res)
+                                                    {
+                                                        if(res)
+                                                        {
+                                                            db.transaction(function(tx)
+                                                            {
+                                                                var delete_query = 'DELETE FROM tbl_timestamp';
+                                                                tx.executeSql(delete_query, [], function(txt2,res)
+                                                                {
+                                                                    var delete_query_agent = 'DELETE FROM tbl_agent_logon';
+                                                                    tx.executeSql(delete_query_agent, [], function(txt22,res2)
+                                                                    {
+                                                                        toastr.success('Successfully Sync');
+                                                                        setInterval(function()
+                                                                        {
+                                                                            location.href = '/login.html';
+                                                                        },2000);
+                                                                    });
+                                                                });
+                                                            });
+                                                        }
+                                                    },
+                                                    error : function()
+                                                    {
+                                                        alert('Please make sure you are connected to the internet');
+                                                    }
+                                                });
+                                            // });                                    
+                                        });
+                                    }
+                                });
+                            });
                         });
+                    });                        
+                }
+                else
+                {
+                    $.ajax(
+                    {
+                        url: 'http://digimahouse.com/tablet/get_data',
+                        type : "POST",
+                        crossDomain : true,
+                        dataType: "json",
+                        data : { getdata : JSON.stringify(data), sir_id : sir_id, sync_type : type},
+                        success : function(res)
+                        {
+                            if(res)
+                            {
+                                db.transaction(function(tx)
+                                {
+                                    var delete_query = 'DELETE FROM tbl_timestamp';
+                                    tx.executeSql(delete_query, [], function(txt2,res)
+                                    {
+                                        var delete_query_agent = 'DELETE FROM tbl_agent_logon';
+                                        tx.executeSql(delete_query_agent, [], function(txt22,res2)
+                                        {
+                                            toastr.success('Successfully Sync');
+                                            setInterval(function()
+                                            {
+                                                location.href = '/login.html';
+                                            },2000);
+                                        });
+                                    });
+                                });
+                            }
+                        },
+                        error : function()
+                        {
+                            alert('Please make sure you are connected to the internet');
+                        }
+                    });
+                }
+            });
+        });
+    });
+}
+function get_other_transaction(callback)
+{
+    get_data_manual_transaction('tbl_manual_receive_payment', function(manual_rp)
+    {
+        get_data_manual_transaction('tbl_manual_credit_memo', function(manual_cm)
+        {
+            get_data_manual_transaction('tbl_manual_invoice', function(manual_inv)
+            {
+                get_data_sir_inventory(function(sir_inventory)
+                {
+                    get_data_sir(function(sir_data)
+                    {
+                        callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data);
                     });
                 });
+            });
+        });
+    });
+}
+function get_data_sir_inventory(callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM tbl_sir_inventory ' +
+                               'WHERE inventory_sir_id = '+sir_id +
+                               ' AND get_status = "new"';
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                callback(results.rows);
+            });
+        });
+    });
+}
+function get_data_sir(callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM tbl_sir ' +
+                               'WHERE sir_id = '+sir_id ;
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows[0]);
+                }
+                else
+                {
+                    var res = {};
+                    callback(res);
+                }
+            });
+        });
+    });
+
+}
+function get_data_manual_transaction(tbl_name, callback)
+{
+    get_sir_id(function(sir_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM ' + tbl_name +
+                               ' WHERE sir_id = '+sir_id + 
+                               ' AND get_status = "new"';
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows);
+                }
+                else
+                {
+                    var res = {};
+                    callback(res);
+                }
             });
         });
     });
@@ -3093,10 +3297,41 @@ function select_all_logs(callback)
                 }
                 else
                 {
-                    alert("Please try again!");
+                    var res = {};
+                    callback(res);
                 }
             },
             onError);
+        });
+    });
+}
+get_timestamp();
+function get_timestamp()
+{
+    get_last_timestamp(function(ctr)
+    {
+        if(ctr == 0)
+        {
+           $('.loading-page').removeClass('hidden');
+           $('.login-page').addClass('hidden');
+        }
+    });
+}
+function get_last_timestamp(callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query = 'SELECT count(timestamp_id) as ctr FROM tbl_timestamp'; 
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows[0]['ctr']);
+            }
+            else
+            {
+                callback(0)
+            }
         });
     });
 }
