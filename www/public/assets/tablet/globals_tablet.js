@@ -2911,36 +2911,84 @@ function get_payment_method(callback)
 
     });
 }
-function print_function()
+
+function createFile(dirEntry, fileName, isAppend, content) 
 {
-    /**
-     * Checks if the printer service is available (iOS)
-     * or if printer services are installed and enabled (Android).
-     *
-     * @param {Function} callback
-     *      A callback function
-     * @param {Object} scope
-     *      Optional scope of the callback
-     *      Defaults to: window
-     */
-    cordova.plugins.printer.check(function (available, count) {
-        alert(available ? 'Found ' + count + ' services' : 'No');
-        /**
-         * Displays system interface for selecting a printer.
-         *
-         * @param {Function} callback
-         *      A callback function
-         */
-        cordova.plugins.printer.pick(function (uri) {
-            alert(uri ? uri : 'Canceled');
-            var page = location.href;
-            cordova.plugins.printer.print(page, 'invoice_print.html');
-        });
-        
+    // Creates a new file or returns the file if it already exists.
+    dirEntry.getFile(fileName, {create: true, exclusive: false}, function(fileEntry) 
+    {
+
+        writeFile(fileEntry, content, isAppend);
+
+    }, function(e)
+    {
+        alert(e);
     });
 
-    // $('.print-btn').addClass('hidden');
-    // window.print();
+}
+
+function writeFile(fileEntry, dataObj) {
+    // Create a FileWriter object for our FileEntry (log.txt).
+    fileEntry.createWriter(function (fileWriter) {
+
+        fileWriter.onwriteend = function() {
+            console.log("Successful file write...");
+            readFile(fileEntry);
+            // cordova.InAppBrowser.open(fileEntry.fullPath, '_system', 'location=yes');
+        };
+
+        fileWriter.onerror = function (e) {
+            console.log("Failed file write: " + e.toString());
+        };
+
+        // If data object is not passed in,
+        // create a new Blob instead.
+        if (!dataObj) {
+            dataObj = new Blob(['some file data'], { type: 'text/plain' });
+        }
+
+        fileWriter.write(dataObj);
+    });
+}
+
+function readFile(fileEntry) {
+
+    fileEntry.file(function (file) {
+        var reader = new FileReader();
+
+        reader.onloadend = function() {
+            console.log("Successful file read: " + this.result);
+            // displayFileData(fileEntry.fullPath + ": " + this.result);
+        };
+
+        reader.readAsText(file);
+
+    }, function(e)
+    {
+        alert(e);
+    });
+}
+
+function print_function()
+{
+    try
+    {
+        window.resolveLocalFileSystemURL(cordova.file.externalCacheDirectory, function (dirEntry) 
+        {
+            console.log('file system open: ' + dirEntry.name);
+            var isAppend = true;
+            createFile(dirEntry, "fileToAppend.html", isAppend, $("#print_html").html());
+            $("#print_html").css("transform", "scale(2,2)");
+            cordova.InAppBrowser.open(dirEntry.nativeURL+"fileToAppend.html", '_system', 'location=yes');
+        }, function(e)
+        {
+            alert(e);
+        });
+    }
+    catch(err)
+    {
+        alert(err.message);
+    }
 }
 function roundNumber(number) 
 {
