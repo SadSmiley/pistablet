@@ -58,58 +58,58 @@ function query_create_all_table(callback)
 {
     var query = [];
 
-    query[1] = "CREATE TABLE IF NOT EXISTS tbl_audit_trail ( audit_trail_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, remarks TEXT, old_data  NOT NULL, new_data NOT NULL, created_at DATETIME, updated_at DATETIME, source VARCHAR(255),source_id INTEGER, audit_shop_id INTEGER)";
-    query[2] = "CREATE TABLE IF NOT EXISTS tbl_shop(shop_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_key VARCHAR(255) NOT NULL, shop_date_created DATETIME NOT NULL default '1000-01-01 00:00:00', shop_date_expiration DATETIME NOT NULL default '1000-01-01 00:00:00',shop_last_active_date DATETIME NOT NULL default '1000-01-01 00:00:00',shop_status VARCHAR(50) NOT NULL default 'trial', shop_country INTEGER NOT NULL,shop_city VARCHAR(255) NOT NULL, shop_zip VARCHAR(255) NOT NULL, shop_street_address VARCHAR(255) NOT NULL,shop_contact VARCHAR(255) NOT NULL,url TEXT ,shop_domain VARCHAR(255) NOT NULL default 'unset_yet',shop_theme VARCHAR(255) NOT NULL default 'default',shop_theme_color VARCHAR(255) NOT NULL default 'gray',member_layout VARCHAR(255) NOT NULL default 'default',shop_wallet_tours INTEGER NOT NULL default '0', shop_wallet_tours_uri VARCHAR(255) default NULL,shop_merchant_school INTEGER NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
-    query[3] = "CREATE TABLE IF NOT EXISTS tbl_category (type_id INTEGER PRIMARY KEY AUTOINCREMENT, type_name VARCHAR(255) NOT NULL, type_parent_id INTEGER NOT NULL, type_sub_level TINYINT NOT NULL,type_shop INTEGER NOT NULL, type_category VARCHAR(255) NOT NULL default 'inventory', type_date_created DATETIME NOT NULL,archived TINYINT NOT NULL,is_mts TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
-    query[4] = "CREATE TABLE IF NOT EXISTS tbl_chart_account_type (chart_type_id INTEGER PRIMARY KEY AUTOINCREMENT,  chart_type_name VARCHAR(255) NOT NULL, chart_type_description VARCHAR(1000) NOT NULL, has_open_balance TINYINT NOT NULL, chart_type_category TINYINT NOT NULL, normal_balance VARCHAR(255) NOT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[1] = "CREATE TABLE IF NOT EXISTS tbl_audit_trail ( audit_trail_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, remarks TEXT, old_data  NULL, new_data NULL, created_at DATETIME, updated_at DATETIME, source VARCHAR(255),source_id INTEGER, audit_shop_id INTEGER)";
+    query[2] = "CREATE TABLE IF NOT EXISTS tbl_shop(shop_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_key VARCHAR(255) NULL, shop_date_created DATETIME NULL default '1000-01-01 00:00:00', shop_date_expiration DATETIME NULL default '1000-01-01 00:00:00',shop_last_active_date DATETIME NULL default '1000-01-01 00:00:00',shop_status VARCHAR(50) NULL default 'trial', shop_country INTEGER NULL,shop_city VARCHAR(255) NULL, shop_zip VARCHAR(255) NULL, shop_street_address VARCHAR(255) NULL,shop_contact VARCHAR(255) NULL,url TEXT ,shop_domain VARCHAR(255) NULL default 'unset_yet',shop_theme VARCHAR(255) NULL default 'default',shop_theme_color VARCHAR(255) NULL default 'gray',member_layout VARCHAR(255) NULL default 'default',shop_wallet_tours INTEGER NULL default '0', shop_wallet_tours_uri VARCHAR(255) default NULL,shop_merchant_school INTEGER NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    query[3] = "CREATE TABLE IF NOT EXISTS tbl_category (type_id INTEGER PRIMARY KEY AUTOINCREMENT, type_name VARCHAR(255) NULL, type_parent_id INTEGER NULL, type_sub_level TINYINT NULL,type_shop INTEGER NULL, type_category VARCHAR(255) NULL default 'inventory', type_date_created DATETIME NULL,archived TINYINT NULL,is_mts TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    query[4] = "CREATE TABLE IF NOT EXISTS tbl_chart_account_type (chart_type_id INTEGER PRIMARY KEY AUTOINCREMENT,  chart_type_name VARCHAR(255) NULL, chart_type_description VARCHAR(1000) NULL, has_open_balance TINYINT NULL, chart_type_category TINYINT NULL, normal_balance VARCHAR(255) NULL, created_at DATETIME, updated_at DATETIME)";
     query[5] = "CREATE TABLE IF NOT EXISTS tbl_chart_of_account (account_id INTEGER PRIMARY KEY AUTOINCREMENT,  account_shop_id INTEGER, account_type_id INTEGER,account_number VARCHAR(255), account_name VARCHAR(255), account_full_name VARCHAR(255), account_description VARCHAR(255), account_parent_id INTEGER NULl, account_sublevel INTEGER, account_balance REAL, account_open_balance REAL, account_open_balance_date DATE, is_tax_account TINYINT, account_tax_code_id INTEGER, archived TINYINT, account_timecreated DATETIME, account_protected TINYINT, account_code VARCHAR(255), created_at DATETIME, updated_at DATETIME)";
-    query[6] = "CREATE TABLE IF NOT EXISTS tbl_country (country_id INTEGER PRIMARY KEY AUTOINCREMENT, country_code VARCHAR(255) NOT NULL, country_name VARCHAR(255) NOT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[6] = "CREATE TABLE IF NOT EXISTS tbl_country (country_id INTEGER PRIMARY KEY AUTOINCREMENT, country_code VARCHAR(255) NULL, country_name VARCHAR(255) NULL, created_at DATETIME, updated_at DATETIME)";
     /*CREDIT MEMO*/
-    query[7] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo (cm_id INTEGER PRIMARY KEY AUTOINCREMENT, cm_customer_id INTEGER NOT NULL, cm_shop_id INTEGER NOT NULL, cm_ar_acccount INTEGER NOT NULL,cm_customer_email VARCHAR(255)  NOT NULL, cm_date date NOT NULL, cm_message VARCHAR(255)  NOT NULL, cm_memo VARCHAR(255)  NOT NULL, cm_amount REAL NOT NULL, date_created DATETIME NOT NULL, cm_type TINYINT NOT NULL default '0', cm_used_ref_name VARCHAR(255) NOT NULL default 'returns', cm_used_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[8] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_line (cmline_id INTEGER PRIMARY KEY AUTOINCREMENT, cmline_cm_id INTEGER  NOT NULL, cmline_service_date datetime NOT NULL, cmline_um INTEGER NOT NULL, cmline_item_id INTEGER NOT NULL, cmline_description VARCHAR(255)  NOT NULL, cmline_qty INTEGER NOT NULL, cmline_rate REAL NOT NULL, cmline_amount REAL NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[9] = "CREATE TABLE IF NOT EXISTS tbl_customer (customer_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER  NOT NULL, country_id INTEGER NOT NULL, title_name VARCHAR(100)  NOT NULL, first_name VARCHAR(255)  NOT NULL, middle_name VARCHAR(255)  NOT NULL, last_name VARCHAR(255)  NOT NULL, suffix_name VARCHAR(100)  NOT NULL, email VARCHAR(255)  NOT NULL, password text  NOT NULL, company VARCHAR(255)  default NULL, b_day date NOT NULL default '0000-00-00', profile VARCHAR(255)  default NULL, IsWalkin TINYINT NOT NULL, created_date date default NULL, archived TINYINT NOT NULL, ismlm INTEGER NOT NULL default '0', mlm_username VARCHAR(255)  default NULL, tin_number VARCHAR(255)  default NULL,  is_corporate TINYINT NOT NULL default '0', approved TINYINT NOT NULL default '1', created_at DATETIME, updated_at DATETIME)";
-    query[10] = "CREATE TABLE IF NOT EXISTS tbl_customer_address (customer_address_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NOT NULL, country_id INTEGER  NOT NULL, customer_state VARCHAR(255)  NOT NULL, customer_city VARCHAR(255)  NOT NULL,  customer_zipcode VARCHAR(255)  NOT NULL, customer_street text  NOT NULL, purpose VARCHAR(255)  NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[11] = "CREATE TABLE IF NOT EXISTS tbl_customer_attachment (customer_attachment_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NOT NULL, customer_attachment_path text  NOT NULL, customer_attachment_name VARCHAR(255)  NOT NULL, customer_attachment_extension VARCHAR(255)  NOT NULL, mime_type VARCHAR(255)  NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[7] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo (cm_id INTEGER PRIMARY KEY AUTOINCREMENT, cm_customer_id INTEGER NULL, cm_shop_id INTEGER NULL, cm_ar_acccount INTEGER NULL,cm_customer_email VARCHAR(255)  NULL, cm_date date NULL, cm_message VARCHAR(255)  NULL, cm_memo VARCHAR(255)  NULL, cm_amount REAL NULL, date_created DATETIME NULL, cm_type TINYINT NULL default '0', cm_used_ref_name VARCHAR(255) NULL default 'returns', cm_used_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[8] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_line (cmline_id INTEGER PRIMARY KEY AUTOINCREMENT, cmline_cm_id INTEGER  NULL, cmline_service_date datetime NULL, cmline_um INTEGER NULL, cmline_item_id INTEGER NULL, cmline_description VARCHAR(255)  NULL, cmline_qty INTEGER NULL, cmline_rate REAL NULL, cmline_amount REAL NULL, created_at DATETIME, updated_at DATETIME)";
+    query[9] = "CREATE TABLE IF NOT EXISTS tbl_customer (customer_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER  NULL, country_id INTEGER NULL, title_name VARCHAR(100)  NULL, first_name VARCHAR(255)  NULL, middle_name VARCHAR(255)  NULL, last_name VARCHAR(255)  NULL, suffix_name VARCHAR(100)  NULL, email VARCHAR(255)  NULL, password text  NULL, company VARCHAR(255)  default NULL, b_day date NULL default '0000-00-00', profile VARCHAR(255)  default NULL, IsWalkin TINYINT NULL, created_date date default NULL, archived TINYINT NULL, ismlm INTEGER NULL default '0', mlm_username VARCHAR(255)  default NULL, tin_number VARCHAR(255)  default NULL,  is_corporate TINYINT NULL default '0', approved TINYINT NULL default '1', created_at DATETIME, updated_at DATETIME, customer_phone VARCHAR(255) NULL, customer_mobile VARCHAR(255) NULL, customer_fax VARCHAR(255) NULL, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[10] = "CREATE TABLE IF NOT EXISTS tbl_customer_address (customer_address_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, country_id INTEGER  NULL, customer_state VARCHAR(255)  NULL, customer_city VARCHAR(255)  NULL,  customer_zipcode VARCHAR(255)  NULL, customer_street text  NULL, purpose VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[11] = "CREATE TABLE IF NOT EXISTS tbl_customer_attachment (customer_attachment_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, customer_attachment_path text  NULL, customer_attachment_name VARCHAR(255)  NULL, customer_attachment_extension VARCHAR(255)  NULL, mime_type VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
     /*INVOICE*/
-    query[12] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice (inv_id INTEGER PRIMARY KEY AUTOINCREMENT, new_inv_id INTEGER NOT NULL, inv_shop_id INTEGER NOT NULL, inv_customer_id INTEGER NOT NULL, inv_customer_email VARCHAR(255)  NOT NULL, inv_customer_billing_address VARCHAR(255)  NOT NULL, inv_terms_id TINYINT NOT NULL, inv_date DATE NOT NULL, inv_due_date DATE NOT NULL, inv_message VARCHAR(255)  NOT NULL, inv_memo VARCHAR(255)  NOT NULL, inv_discount_type VARCHAR(255)  NOT NULL, inv_discount_value INTEGER NOT NULL, ewt REAL NOT NULL, taxable TINYINT NOT NULL, inv_subtotal_price REAL NOT NULL,  inv_overall_price REAL NOT NULL, inv_payment_applied REAL NOT NULL, inv_is_paid TINYINT NOT NULL, inv_custom_field_id INTEGER NOT NULL, date_created DATETIME NOT NULL, credit_memo_id INTEGER NOT NULL default '0', is_sales_receipt TINYINT NOT NULL, sale_receipt_cash_account INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255)  DEFAULT 'new' NULL)"; 
-    query[13] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice_line (invline_id INTEGER PRIMARY KEY AUTOINCREMENT, invline_inv_id INTEGER  NOT NULL, invline_service_date DATE NOT NULL, invline_item_id INTEGER NOT NULL, invline_description VARCHAR(255)  NOT NULL, invline_um INTEGER NOT NULL, invline_qty INTEGER NOT NULL, invline_rate REAL NOT NULL, taxable TINYINT NOT NULL, invline_discount REAL NOT NULL, invline_discount_type VARCHAR(255) NOT NULL, invline_discount_remark VARCHAR(255) NOT NULL, invline_amount REAL NOT NULL, date_created DATETIME NOT NULL, invline_ref_name VARCHAR(255)  NOT NULL, invline_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[14] = "CREATE TABLE IF NOT EXISTS tbl_position (position_id INTEGER PRIMARY KEY AUTOINCREMENT, position_name VARCHAR(255)  NOT NULL, daily_rate decimal(8,2) NOT NULL, position_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', position_code VARCHAR(255)  NOT NULL, position_shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[15] = "CREATE TABLE IF NOT EXISTS tbl_truck (truck_id INTEGER PRIMARY KEY AUTOINCREMENT, plate_number VARCHAR(255)  NOT NULL, warehouse_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', truck_model VARCHAR(255)  NOT NULL, truck_kilogram decimal(8,2) NOT NULL, truck_shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[12] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice (inv_id INTEGER PRIMARY KEY AUTOINCREMENT, new_inv_id INTEGER NULL, inv_shop_id INTEGER NULL, inv_customer_id INTEGER NULL, inv_customer_email VARCHAR(255)  NULL, inv_customer_billing_address VARCHAR(255)  NULL, inv_terms_id TINYINT NULL, inv_date DATE NULL, inv_due_date DATE NULL, inv_message VARCHAR(255)  NULL, inv_memo VARCHAR(255)  NULL, inv_discount_type VARCHAR(255)  NULL, inv_discount_value INTEGER NULL, ewt REAL NULL, taxable TINYINT NULL, inv_subtotal_price REAL NULL,  inv_overall_price REAL NULL, inv_payment_applied REAL NULL, inv_is_paid TINYINT NULL, inv_custom_field_id INTEGER NULL, date_created DATETIME NULL, credit_memo_id INTEGER NULL default '0', is_sales_receipt TINYINT NULL, sale_receipt_cash_account INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255)  DEFAULT 'new' NULL)"; 
+    query[13] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice_line (invline_id INTEGER PRIMARY KEY AUTOINCREMENT, invline_inv_id INTEGER  NULL, invline_service_date DATE NULL, invline_item_id INTEGER NULL, invline_description VARCHAR(255)  NULL, invline_um INTEGER NULL, invline_qty INTEGER NULL, invline_rate REAL NULL, taxable TINYINT NULL, invline_discount REAL NULL, invline_discount_type VARCHAR(255) NULL, invline_discount_remark VARCHAR(255) NULL, invline_amount REAL NULL, date_created DATETIME NULL, invline_ref_name VARCHAR(255)  NULL, invline_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME)";
+    query[14] = "CREATE TABLE IF NOT EXISTS tbl_position (position_id INTEGER PRIMARY KEY AUTOINCREMENT, position_name VARCHAR(255)  NULL, daily_rate decimal(8,2) NULL, position_created DATETIME NULL, archived TINYINT NULL default '0', position_code VARCHAR(255)  NULL, position_shop_id INTEGER  NULL, created_at DATETIME, updated_at DATETIME)";
+    query[15] = "CREATE TABLE IF NOT EXISTS tbl_truck (truck_id INTEGER PRIMARY KEY AUTOINCREMENT, plate_number VARCHAR(255)  NULL, warehouse_id INTEGER  NULL, date_created DATETIME NULL, archived TINYINT NULL default '0', truck_model VARCHAR(255)  NULL, truck_kilogram decimal(8,2) NULL, truck_shop_id INTEGER  NULL, created_at DATETIME, updated_at DATETIME)";
     /*EMPLOYEE INFO*/
-    query[16] = "CREATE TABLE IF NOT EXISTS tbl_employee (employee_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_id INTEGER  NOT NULL,  warehouse_id INTEGER  NOT NULL, first_name VARCHAR(255)  NOT NULL, middle_name VARCHAR(255)  NOT NULL, last_name VARCHAR(255)  NOT NULL, gender VARCHAR(255)  NOT NULL, email VARCHAR(255)  NOT NULL, username VARCHAR(255)  NOT NULL,  password text  NOT NULL, b_day DATE NOT NULL, position_id INTEGER  NOT NULL, date_created DATETIME NOT NULL, archived TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[17] = "CREATE TABLE IF NOT EXISTS tbl_image (image_id INTEGER PRIMARY KEY AUTOINCREMENT, image_path VARCHAR(255)  NOT NULL, image_key VARCHAR(255)  NOT NULL,  image_shop INTEGER  NOT NULL, image_reason VARCHAR(255)  NOT NULL default 'product', image_reason_id INTEGER NOT NULL, image_date_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[18] = "CREATE TABLE IF NOT EXISTS tbl_item ( item_id INTEGER PRIMARY KEY AUTOINCREMENT, item_name VARCHAR(255)  NOT NULL, item_sku VARCHAR(255)  NOT NULL, item_sales_information VARCHAR(255) NOT NULL, item_purchasing_information VARCHAR(255)  NOT NULL,  item_img VARCHAR(255)  NOT NULL, item_quantity INTEGER NOT NULL, item_reorder_point INTEGER NOT NULL, item_price REAL NOT NULL, item_cost REAL NOT NULL, item_sale_to_customer TINYINT NOT NULL, item_purchase_from_supplier TINYINT NOT NULL,  item_type_id INTEGER  NOT NULL, item_category_id INTEGER  NOT NULL, item_asset_account_id INTEGER  default NULL,  item_income_account_id INTEGER  default NULL, item_expense_account_id INTEGER  default NULL, item_date_tracked DATETIME default NULL, item_date_created DATETIME NOT NULL, item_date_archived DATETIME default NULL, archived TINYINT NOT NULL,  shop_id INTEGER  NOT NULL, item_barcode VARCHAR(255)  NOT NULL, has_serial_number TINYINT NOT NULL default '0',  item_measurement_id INTEGER  default NULL, item_vendor_id INTEGER NOT NULL default '0', item_manufacturer_id INTEGER  default NULL, packing_size VARCHAR(255)  NOT NULL, item_code VARCHAR(255)  NOT NULL, item_show_in_mlm INTEGER NOT NULL default '0', promo_price REAL NOT NULL, start_promo_date date NOT NULL, end_promo_date date NOT NULL, bundle_group TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
-    query[19] = "CREATE TABLE IF NOT EXISTS tbl_inventory_serial_number (serial_id INTEGER PRIMARY KEY AUTOINCREMENT, serial_inventory_id INTEGER  NOT NULL, item_id INTEGER  NOT NULL, serial_number VARCHAR(255)  NOT NULL, serial_created DATETIME NOT NULL,  item_count INTEGER NOT NULL, item_consumed TINYINT NOT NULL, sold TINYINT NOT NULL default '0', consume_source VARCHAR(255)  default NULL, consume_source_id INTEGER NOT NULL default '0', serial_has_been_credit VARCHAR(255)  default NULL,  serial_has_been_debit VARCHAR(255) default NULL, created_at DATETIME, updated_at DATETIME)";
-    query[20] = "CREATE TABLE IF NOT EXISTS tbl_inventory_slip (inventory_slip_id INTEGER PRIMARY KEY AUTOINCREMENT,  inventory_slip_id_sibling INTEGER NOT NULL default '0', inventory_reason VARCHAR(255)  NOT NULL, warehouse_id INTEGER NOT NULL, inventory_remarks text  NOT NULL, inventory_slip_date DATETIME NOT NULL, archived TINYINT NOT NULL,  inventory_slip_shop_id INTEGER NOT NULL, slip_user_id INTEGER NOT NULL, inventory_slip_status VARCHAR(255)  NOT NULL,  inventroy_source_reason VARCHAR(255)  NOT NULL, inventory_source_id INTEGER NOT NULL, inventory_source_name VARCHAR(255)  NOT NULL, inventory_slip_consume_refill VARCHAR(255)  NOT NULL, inventory_slip_consume_cause VARCHAR(255)  NOT NULL,  inventory_slip_consumer_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[21] = "CREATE TABLE IF NOT EXISTS tbl_item_bundle (bundle_id INTEGER PRIMARY KEY AUTOINCREMENT, bundle_bundle_id INTEGER  NOT NULL,  bundle_item_id INTEGER  NOT NULL, bundle_um_id INTEGER  NOT NULL, bundle_qty REAL(8,2) NOT NULL, bundle_display_components REAL(8,2) NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[22] = "CREATE TABLE IF NOT EXISTS tbl_item_discount (item_discount_id INTEGER PRIMARY KEY AUTOINCREMENT, discount_item_id INTEGER  NOT NULL, item_discount_value REAL NOT NULL, item_discount_type VARCHAR(255)  NOT NULL default 'fixed',  item_discount_remark VARCHAR(255)  NOT NULL, item_discount_date_start DATETIME NOT NULL, item_discount_date_end DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[23] = "CREATE TABLE IF NOT EXISTS tbl_item_multiple_price (multiprice_id INTEGER PRIMARY KEY AUTOINCREMENT,  multiprice_item_id INTEGER  NOT NULL, multiprice_qty INTEGER NOT NULL, multiprice_price REAL NOT NULL, date_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[24] = "CREATE TABLE IF NOT EXISTS tbl_item_type ( item_type_id INTEGER PRIMARY KEY AUTOINCREMENT, item_type_name VARCHAR(255)  NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[25] = "CREATE TABLE IF NOT EXISTS tbl_journal_entry (je_id INTEGER PRIMARY KEY AUTOINCREMENT, je_shop_id INTEGER  NOT NULL,  je_reference_module VARCHAR(255)  NOT NULL, je_reference_id INTEGER NOT NULL, je_entry_date DATETIME NOT NULL, je_remarks text  NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00')";
-    query[26] = "CREATE TABLE IF NOT EXISTS tbl_journal_entry_line (jline_id INTEGER PRIMARY KEY AUTOINCREMENT, jline_je_id INTEGER  NOT NULL,  jline_name_id INTEGER NOT NULL, jline_name_reference VARCHAR(255)  NOT NULL, jline_item_id INTEGER  NOT NULL,  jline_account_id INTEGER  NOT NULL, jline_type VARCHAR(255)  NOT NULL, jline_amount REAL NOT NULL, jline_description text  NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00', jline_warehouse_id INTEGER NOT NULL default '0')";
-    query[27] = "CREATE TABLE IF NOT EXISTS tbl_sir (sir_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_warehouse_id INTEGER NOT NULL,  truck_id INTEGER  NOT NULL, shop_id INTEGER  NOT NULL, sales_agent_id INTEGER  NOT NULL, date_created DATE NOT NULL, archived TINYINT NOT NULL default '0', lof_status TINYINT NOT NULL default '0', sir_status TINYINT NOT NULL, is_sync TINYINT NOT NULL default '0', ilr_status TINYINT NOT NULL default '0', rejection_reason TEXT NOT NULL, agent_collection REAL NOT NULL, agent_collection_remarks TEXT NOT NULL, reload_sir INTEGER NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    query[16] = "CREATE TABLE IF NOT EXISTS tbl_employee (employee_id INTEGER PRIMARY KEY AUTOINCREMENT,shop_id INTEGER  NULL,  warehouse_id INTEGER  NULL, first_name VARCHAR(255)  NULL, middle_name VARCHAR(255)  NULL, last_name VARCHAR(255)  NULL, gender VARCHAR(255)  NULL, email VARCHAR(255)  NULL, username VARCHAR(255)  NULL,  password text  NULL, b_day DATE NULL, position_id INTEGER  NULL, date_created DATETIME NULL, archived TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[17] = "CREATE TABLE IF NOT EXISTS tbl_image (image_id INTEGER PRIMARY KEY AUTOINCREMENT, image_path VARCHAR(255)  NULL, image_key VARCHAR(255)  NULL,  image_shop INTEGER  NULL, image_reason VARCHAR(255)  NULL default 'product', image_reason_id INTEGER NULL, image_date_created DATETIME NULL, created_at DATETIME, updated_at DATETIME)";
+    query[18] = "CREATE TABLE IF NOT EXISTS tbl_item ( item_id INTEGER PRIMARY KEY AUTOINCREMENT, item_name VARCHAR(255)  NULL, item_sku VARCHAR(255)  NULL, item_sales_information VARCHAR(255) NULL, item_purchasing_information VARCHAR(255)  NULL,  item_img VARCHAR(255)  NULL, item_quantity INTEGER NULL, item_reorder_point INTEGER NULL, item_price REAL NULL, item_cost REAL NULL, item_sale_to_customer TINYINT NULL, item_purchase_from_supplier TINYINT NULL,  item_type_id INTEGER  NULL, item_category_id INTEGER  NULL, item_asset_account_id INTEGER  default NULL,  item_income_account_id INTEGER  default NULL, item_expense_account_id INTEGER  default NULL, item_date_tracked DATETIME default NULL, item_date_created DATETIME NULL, item_date_archived DATETIME default NULL, archived TINYINT NULL,  shop_id INTEGER  NULL, item_barcode VARCHAR(255)  NULL, has_serial_number TINYINT NULL default '0',  item_measurement_id INTEGER  default NULL, item_vendor_id INTEGER NULL default '0', item_manufacturer_id INTEGER  default NULL, packing_size VARCHAR(255)  NULL, item_code VARCHAR(255)  NULL, item_show_in_mlm INTEGER NULL default '0', promo_price REAL NULL, start_promo_date date NULL, end_promo_date date NULL, bundle_group TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    query[19] = "CREATE TABLE IF NOT EXISTS tbl_inventory_serial_number (serial_id INTEGER PRIMARY KEY AUTOINCREMENT, serial_inventory_id INTEGER  NULL, item_id INTEGER  NULL, serial_number VARCHAR(255)  NULL, serial_created DATETIME NULL,  item_count INTEGER NULL, item_consumed TINYINT NULL, sold TINYINT NULL default '0', consume_source VARCHAR(255)  default NULL, consume_source_id INTEGER NULL default '0', serial_has_been_credit VARCHAR(255)  default NULL,  serial_has_been_debit VARCHAR(255) default NULL, created_at DATETIME, updated_at DATETIME)";
+    query[20] = "CREATE TABLE IF NOT EXISTS tbl_inventory_slip (inventory_slip_id INTEGER PRIMARY KEY AUTOINCREMENT,  inventory_slip_id_sibling INTEGER NULL default '0', inventory_reason VARCHAR(255)  NULL, warehouse_id INTEGER NULL, inventory_remarks text  NULL, inventory_slip_date DATETIME NULL, archived TINYINT NULL,  inventory_slip_shop_id INTEGER NULL, slip_user_id INTEGER NULL, inventory_slip_status VARCHAR(255)  NULL,  inventroy_source_reason VARCHAR(255)  NULL, inventory_source_id INTEGER NULL, inventory_source_name VARCHAR(255)  NULL, inventory_slip_consume_refill VARCHAR(255)  NULL, inventory_slip_consume_cause VARCHAR(255)  NULL,  inventory_slip_consumer_id INTEGER NULL, created_at DATETIME, updated_at DATETIME)";
+    query[21] = "CREATE TABLE IF NOT EXISTS tbl_item_bundle (bundle_id INTEGER PRIMARY KEY AUTOINCREMENT, bundle_bundle_id INTEGER  NULL,  bundle_item_id INTEGER  NULL, bundle_um_id INTEGER  NULL, bundle_qty REAL(8,2) NULL, bundle_display_components REAL(8,2) NULL, created_at DATETIME, updated_at DATETIME)";
+    query[22] = "CREATE TABLE IF NOT EXISTS tbl_item_discount (item_discount_id INTEGER PRIMARY KEY AUTOINCREMENT, discount_item_id INTEGER  NULL, item_discount_value REAL NULL, item_discount_type VARCHAR(255)  NULL default 'fixed',  item_discount_remark VARCHAR(255)  NULL, item_discount_date_start DATETIME NULL, item_discount_date_end DATETIME NULL, created_at DATETIME, updated_at DATETIME)";
+    query[23] = "CREATE TABLE IF NOT EXISTS tbl_item_multiple_price (multiprice_id INTEGER PRIMARY KEY AUTOINCREMENT,  multiprice_item_id INTEGER  NULL, multiprice_qty INTEGER NULL, multiprice_price REAL NULL, date_created DATETIME NULL, created_at DATETIME, updated_at DATETIME)";
+    query[24] = "CREATE TABLE IF NOT EXISTS tbl_item_type ( item_type_id INTEGER PRIMARY KEY AUTOINCREMENT, item_type_name VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[25] = "CREATE TABLE IF NOT EXISTS tbl_journal_entry (je_id INTEGER PRIMARY KEY AUTOINCREMENT, je_shop_id INTEGER  NULL,  je_reference_module VARCHAR(255)  NULL, je_reference_id INTEGER NULL, je_entry_date DATETIME NULL, je_remarks text  NULL, created_at DATETIME NULL default '0000-00-00 00:00:00', updated_at DATETIME NULL default '0000-00-00 00:00:00')";
+    query[26] = "CREATE TABLE IF NOT EXISTS tbl_journal_entry_line (jline_id INTEGER PRIMARY KEY AUTOINCREMENT, jline_je_id INTEGER  NULL,  jline_name_id INTEGER NULL, jline_name_reference VARCHAR(255)  NULL, jline_item_id INTEGER  NULL,  jline_account_id INTEGER  NULL, jline_type VARCHAR(255)  NULL, jline_amount REAL NULL, jline_description text  NULL, created_at DATETIME NULL default '0000-00-00 00:00:00', updated_at DATETIME NULL default '0000-00-00 00:00:00', jline_warehouse_id INTEGER NULL default '0')";
+    query[27] = "CREATE TABLE IF NOT EXISTS tbl_sir (sir_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_warehouse_id INTEGER NULL,  truck_id INTEGER  NULL, shop_id INTEGER  NULL, sales_agent_id INTEGER  NULL, date_created DATE NULL, archived TINYINT NULL default '0', lof_status TINYINT NULL default '0', sir_status TINYINT NULL, is_sync TINYINT NULL default '0', ilr_status TINYINT NULL default '0', rejection_reason TEXT NULL, agent_collection REAL NULL, agent_collection_remarks TEXT NULL, reload_sir INTEGER NULL default '0', created_at DATETIME, updated_at DATETIME)";
     /*TABLET TRANSACTION*/
-    query[28] = "CREATE TABLE IF NOT EXISTS tbl_manual_invoice (manual_invoice_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, inv_id INTEGER  NOT NULL, manual_invoice_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[29] = "CREATE TABLE IF NOT EXISTS tbl_manual_receive_payment ( manual_receive_payment_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER NOT NULL, rp_id INTEGER NOT NULL, sir_id INTEGER NOT NULL, rp_date DATETIME NOT NULL,  is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[28] = "CREATE TABLE IF NOT EXISTS tbl_manual_invoice (manual_invoice_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NULL, inv_id INTEGER  NULL, manual_invoice_date DATETIME NULL, is_sync TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[29] = "CREATE TABLE IF NOT EXISTS tbl_manual_receive_payment ( manual_receive_payment_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER NULL, rp_id INTEGER NULL, sir_id INTEGER NULL, rp_date DATETIME NULL,  is_sync TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
 
-    query[30] = "CREATE TABLE IF NOT EXISTS tbl_manufacturer (manufacturer_id INTEGER PRIMARY KEY AUTOINCREMENT, manufacturer_name VARCHAR(255)  NOT NULL, manufacturer_address VARCHAR(255)  NOT NULL, phone_number VARCHAR(255)  NOT NULL, email_address VARCHAR(255)  NOT NULL, website text  NOT NULL, date_created DATETIME NOT NULL, date_updated DATETIME NOT NULL, archived TINYINT NOT NULL default '0', manufacturer_shop_id INTEGER  NOT NULL, manufacturer_fname VARCHAR(255)  NOT NULL,  manufacturer_mname VARCHAR(255)  NOT NULL, manufacturer_lname VARCHAR(255)  NOT NULL, manufacturer_image INTEGER default NULL, created_at DATETIME, updated_at DATETIME)";
+    query[30] = "CREATE TABLE IF NOT EXISTS tbl_manufacturer (manufacturer_id INTEGER PRIMARY KEY AUTOINCREMENT, manufacturer_name VARCHAR(255)  NULL, manufacturer_address VARCHAR(255)  NULL, phone_number VARCHAR(255)  NULL, email_address VARCHAR(255)  NULL, website text  NULL, date_created DATETIME NULL, date_updated DATETIME NULL, archived TINYINT NULL default '0', manufacturer_shop_id INTEGER  NULL, manufacturer_fname VARCHAR(255)  NULL,  manufacturer_mname VARCHAR(255)  NULL, manufacturer_lname VARCHAR(255)  NULL, manufacturer_image INTEGER default NULL, created_at DATETIME, updated_at DATETIME)";
     /*RECEIVE PAYMENT*/
-    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NOT NULL, rp_customer_id INTEGER NOT NULL, rp_ar_account INTEGER NOT NULL, rp_date date NOT NULL, rp_total_amount REAL(8,2) NOT NULL, rp_payment_method VARCHAR(255)  NOT NULL, rp_memo text  NOT NULL, date_created DATETIME NOT NULL, rp_ref_name VARCHAR(255)  NOT NULL, rp_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NOT NULL, rpline_reference_name VARCHAR(255)  NOT NULL, rpline_reference_id INTEGER NOT NULL, rpline_amount REAL(8,2) NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[33] = "CREATE TABLE IF NOT EXISTS tbl_settings ( settings_id INTEGER PRIMARY KEY AUTOINCREMENT, settings_key VARCHAR(255)  NOT NULL, settings_value longtext , settings_setup_done TINYINT NOT NULL default '0', shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[34] = "CREATE TABLE IF NOT EXISTS tbl_sir_cm_item (s_cm_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sc_sir_id INTEGER  NOT NULL, sc_item_id INTEGER NOT NULL, sc_item_qty INTEGER NOT NULL, sc_physical_count INTEGER NOT NULL, sc_item_price REAL NOT NULL, sc_status INTEGER NOT NULL, sc_is_updated TINYINT NOT NULL, sc_infos REAL NOT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NULL, rp_customer_id INTEGER NULL, rp_ar_account INTEGER NULL, rp_date date NULL, rp_total_amount REAL(8,2) NULL, rp_payment_method VARCHAR(255)  NULL, rp_memo text  NULL, date_created DATETIME NULL, rp_ref_name VARCHAR(255)  NULL, rp_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NULL, rpline_reference_name VARCHAR(255)  NULL, rpline_reference_id INTEGER NULL, rpline_amount REAL(8,2) NULL, created_at DATETIME, updated_at DATETIME)";
+    query[33] = "CREATE TABLE IF NOT EXISTS tbl_settings ( settings_id INTEGER PRIMARY KEY AUTOINCREMENT, settings_key VARCHAR(255)  NULL, settings_value longtext , settings_setup_done TINYINT NULL default '0', shop_id INTEGER  NULL, created_at DATETIME, updated_at DATETIME)";
+    query[34] = "CREATE TABLE IF NOT EXISTS tbl_sir_cm_item (s_cm_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sc_sir_id INTEGER  NULL, sc_item_id INTEGER NULL, sc_item_qty INTEGER NULL, sc_physical_count INTEGER NULL, sc_item_price REAL NULL, sc_status INTEGER NULL, sc_is_updated TINYINT NULL, sc_infos REAL NULL, created_at DATETIME, updated_at DATETIME)";
     /*SIR INVENTORY*/
-    query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NOT NULL, inventory_sir_id INTEGER  NOT NULL, sir_inventory_count INTEGER NOT NULL, sir_inventory_ref_name VARCHAR(255)  NOT NULL, sir_inventory_ref_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME, is_bundled_item TINYINT, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[36] = "CREATE TABLE IF NOT EXISTS tbl_sir_item ( sir_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL,  item_id INTEGER  NOT NULL, item_qty INTEGER NOT NULL, archived TINYINT NOT NULL default '0', related_um_type VARCHAR(255)  NOT NULL, total_issued_qty INTEGER NOT NULL default '0', um_qty INTEGER NOT NULL, sold_qty INTEGER NOT NULL, remaining_qty INTEGER NOT NULL, physical_count INTEGER NOT NULL, status VARCHAR(255)  NOT NULL, loss_amount decimal(8,2) NOT NULL, sir_item_price REAL NOT NULL, is_updated TINYINT NOT NULL default '0', infos REAL NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
-    query[37] = "CREATE TABLE IF NOT EXISTS tbl_sir_sales_report (sir_sales_report_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER NOT NULL, report_data TEXT NOT NULL, report_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[38] = "CREATE TABLE IF NOT EXISTS tbl_terms (terms_id INTEGER PRIMARY KEY AUTOINCREMENT, terms_shop_id INTEGER NOT NULL,  terms_name VARCHAR(255)  NOT NULL, terms_no_of_days INTEGER NOT NULL , archived TINYINT NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00')";
-    query[39] = "CREATE TABLE IF NOT EXISTS tbl_um ( id INTEGER PRIMARY KEY AUTOINCREMENT, um_name VARCHAR(255)  NOT NULL, um_abbrev VARCHAR(255)  NOT NULL, is_based TINYINT NOT NULL, um_shop_id INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[40] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement ( um_id INTEGER PRIMARY KEY AUTOINCREMENT, um_shop INTEGER  NOT NULL, um_name VARCHAR(255)  NOT NULL, is_multi TINYINT NOT NULL, um_date_created DATETIME NOT NULL, um_archived TINYINT NOT NULL, um_type INTEGER  NOT NULL, parent_basis_um INTEGER NOT NULL default '0', um_item_id INTEGER NOT NULL default '0',  um_n_base INTEGER NOT NULL, um_base INTEGER NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[41] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement_multi (multi_id INTEGER PRIMARY KEY AUTOINCREMENT, multi_um_id INTEGER  NOT NULL, multi_name VARCHAR(255)  NOT NULL, multi_conversion_ratio REAL NOT NULL, multi_sequence TINYINT NOT NULL,  unit_qty INTEGER NOT NULL, multi_abbrev VARCHAR(255)  NOT NULL, is_base TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[42] = "CREATE TABLE IF NOT EXISTS tbl_user ( user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_email VARCHAR(255)  NOT NULL, user_level INTEGER NOT NULL, user_first_name VARCHAR(255)  NOT NULL, user_last_name VARCHAR(255)  NOT NULL, user_contact_number VARCHAR(255)  NOT NULL, user_password text  NOT NULL, user_date_created DATETIME NOT NULL default '1000-01-01 00:00:00', user_last_active_date DATETIME NOT NULL default '1000-01-01 00:00:00', user_shop INTEGER  NOT NULL,  IsWalkin TINYINT NOT NULL, archived TINYINT NOT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NULL, inventory_sir_id INTEGER  NULL, sir_inventory_count INTEGER NULL, sir_inventory_ref_name VARCHAR(255)  NULL, sir_inventory_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, is_bundled_item TINYINT, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[36] = "CREATE TABLE IF NOT EXISTS tbl_sir_item ( sir_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NULL,  item_id INTEGER  NULL, item_qty INTEGER NULL, archived TINYINT NULL default '0', related_um_type VARCHAR(255)  NULL, total_issued_qty INTEGER NULL default '0', um_qty INTEGER NULL, sold_qty INTEGER NULL, remaining_qty INTEGER NULL, physical_count INTEGER NULL, status VARCHAR(255)  NULL, loss_amount decimal(8,2) NULL, sir_item_price REAL NULL, is_updated TINYINT NULL default '0', infos REAL NULL default '0', created_at DATETIME, updated_at DATETIME)";
+    query[37] = "CREATE TABLE IF NOT EXISTS tbl_sir_sales_report (sir_sales_report_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER NULL, report_data TEXT NULL, report_created DATETIME NULL, created_at DATETIME, updated_at DATETIME)";
+    query[38] = "CREATE TABLE IF NOT EXISTS tbl_terms (terms_id INTEGER PRIMARY KEY AUTOINCREMENT, terms_shop_id INTEGER NULL,  terms_name VARCHAR(255)  NULL, terms_no_of_days INTEGER NULL , archived TINYINT NULL, created_at DATETIME NULL default '0000-00-00 00:00:00', updated_at DATETIME NULL default '0000-00-00 00:00:00')";
+    query[39] = "CREATE TABLE IF NOT EXISTS tbl_um ( id INTEGER PRIMARY KEY AUTOINCREMENT, um_name VARCHAR(255)  NULL, um_abbrev VARCHAR(255)  NULL, is_based TINYINT NULL, um_shop_id INTEGER NULL, created_at DATETIME, updated_at DATETIME)";
+    query[40] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement ( um_id INTEGER PRIMARY KEY AUTOINCREMENT, um_shop INTEGER  NULL, um_name VARCHAR(255)  NULL, is_multi TINYINT NULL, um_date_created DATETIME NULL, um_archived TINYINT NULL, um_type INTEGER  NULL, parent_basis_um INTEGER NULL default '0', um_item_id INTEGER NULL default '0',  um_n_base INTEGER NULL, um_base INTEGER NULL, created_at DATETIME, updated_at DATETIME)";
+    query[41] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement_multi (multi_id INTEGER PRIMARY KEY AUTOINCREMENT, multi_um_id INTEGER  NULL, multi_name VARCHAR(255)  NULL, multi_conversion_ratio REAL NULL, multi_sequence TINYINT NULL,  unit_qty INTEGER NULL, multi_abbrev VARCHAR(255)  NULL, is_base TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[42] = "CREATE TABLE IF NOT EXISTS tbl_user ( user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_email VARCHAR(255)  NULL, user_level INTEGER NULL, user_first_name VARCHAR(255)  NULL, user_last_name VARCHAR(255)  NULL, user_contact_number VARCHAR(255)  NULL, user_password text  NULL, user_date_created DATETIME NULL default '1000-01-01 00:00:00', user_last_active_date DATETIME NULL default '1000-01-01 00:00:00', user_shop INTEGER  NULL,  IsWalkin TINYINT NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
     /*TABLET TRANSACTION-cm*/
-    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL, cm_id INTEGER NOT NULL, manual_cm_date DATETIME NOT NULL, is_sync TINYINT NOT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NOT NULL, default_sublevel INTEGER NOT NULL, default_balance REAL NOT NULL, default_open_balance REAL NOT NULL, default_open_balance_date date NOT NULL, is_tax_account TINYINT NOT NULL, account_tax_code_id INTEGER NOT NULL, default_for_code VARCHAR(255) , account_protected TINYINT NOT NULL,created_at DATETIME, updated_at DATETIME)";
+    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NULL, cm_id INTEGER NULL, manual_cm_date DATETIME NULL, is_sync TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NULL, default_sublevel INTEGER NULL, default_balance REAL NULL, default_open_balance REAL NULL, default_open_balance_date date NULL, is_tax_account TINYINT NULL, account_tax_code_id INTEGER NULL, default_for_code VARCHAR(255) , account_protected TINYINT NULL,created_at DATETIME, updated_at DATETIME)";
     query[45] = "CREATE TABLE IF NOT EXISTS tbl_timestamp (timestamp_id INTEGER PRIMARY KEY AUTOINCREMENT, table_name VARCHAR(255), timestamp DATETIME)";
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
     query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255), isDefault TINYINT,archived TINYINT)";
@@ -3013,13 +3013,16 @@ function global_sync(type = '')
             var ctr_length = count(logs);
             var ctr = 0;
 
-            get_other_transaction(function(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data)
+            get_other_transaction(function(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address)
             {
                 data['sir_inventory'] = sir_inventory;
                 data['manual_inv'] = manual_inv;
                 data['manual_rp'] = manual_rp;
                 data['manual_cm'] = manual_cm;
                 data['sir_data'] = sir_data;
+                data['agent_data'] = agent_data;
+                data['customer'] = customer;
+                data['customer_address'] = customer_address;
                 // console.log(data);
                 if(ctr_length != 0)
                 {
@@ -3161,10 +3164,104 @@ function get_other_transaction(callback)
                 {
                     get_data_sir(function(sir_data)
                     {
-                        callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data);
+                        get_data_agent(function(agent_data)
+                        {
+                            get_data_customer(function (customer, customer_address)
+                            {
+                                callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address);
+                            });
+                        });
                     });
                 });
             });
+        });
+    });
+}
+function get_data_agent(callback)
+{ 
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = 'SELECT * FROM tbl_invoice_log ' +
+                               'WHERE shop_id = ' + shop_id +
+                               ' AND transaction_name = "agent_update"'; 
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows[0]);
+                }
+                else
+                {
+                    var res = {};
+                    callback(res);
+                }
+            },
+            onError);
+        });
+    });
+}
+function get_data_customer(callback)
+{ 
+    get_customer(function(customer)
+    {
+        get_customer_address(customer, function(customer_address)
+        {
+            callback(customer, customer_address);
+        });        
+    });
+}
+function get_customer_address(customer, callback)
+{
+    db.transaction(function(tx)
+    {
+        var ctr_customer = count(customer);
+        var customer_address = null;
+        var ctr = 0;
+        $.each(customer, function(key, value)
+        {
+            var select_query = 'SELECT * FROM tbl_customer_address ' +
+                               'WHERE customer_id = ' + value['customer_id'] +
+                               ' AND get_status = "new"'; 
+            tx.executeSql(select_query, [], function(tx1, results)
+            {
+                ctr++;
+                if(results.rows.length > 0)
+                {
+                    customer_address[key] = {};
+                    customer_address[key] = results.rows;
+                }
+                if(ctr == ctr_customer)
+                {
+                    callback(customer_address);
+                }
+            });
+        });
+    });
+}
+function get_customer(callback)
+{
+    db.transaction(function(tx)
+    {
+        get_shop_id(function(shop_id)
+        {        
+            var select_query = 'SELECT * FROM tbl_customer ' +
+                               'WHERE shop_id = ' + shop_id +
+                               ' AND get_status = "new"'; 
+            tx.executeSql(select_query, [], function(tx1, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows[0]);
+                }
+                else
+                {
+                    var res = {};
+                    callback(res);
+                }
+            },
+            onError);
         });
     });
 }
@@ -3284,6 +3381,67 @@ function get_last_timestamp(callback)
             {
                 callback(0)
             }
+        });
+    });
+}
+function create_customer_submit(customer_info , callback)
+{
+    get_shop_id(function(shop_id)
+    {
+        db.transaction(function(tx)
+        {
+            var insert_query = 'INSERT INTO tbl_customer (shop_id, country_id, title_name, first_name, '+
+                               'middle_name, last_name, suffix_name, email, company, created_date, created_at, approved, customer_phone, customer_mobile ,customer_fax) VALUES ' +
+                               '('+shop_id+', "420", "'+
+                               customer_info['title']+'","'+
+                               customer_info['first_name']+'","'+
+                               customer_info['middle_name']+'","'+
+                               customer_info['last_name']+'","'+
+                               customer_info['suffix']+'","'+
+                               customer_info['email']+'","'+
+                               customer_info['company']+'","'+
+                               get_date_now()+'","'+
+                               get_date_now()+'", 0,"'+
+                               customer_info['phone']+'","'+
+                               customer_info['mobile']+'","'+
+                               customer_info['fax']+'")'; 
+            tx.executeSql(insert_query, [], function(txs, results)
+            {
+                var customer_id = results.insertId;
+                
+                var insert_query_billing = 'INSERT INTO tbl_customer_address (customer_id, country_id, customer_state, customer_city, '+
+                               'customer_zipcode, customer_street, purpose, created_at) VALUES ' +
+                               '('+customer_id+', 420,"'+
+                               customer_info['billing_state']+'","'+
+                               customer_info['billing_city']+'","'+
+                               customer_info['billing_zipcode']+'","'+
+                               customer_info['billing_street']+'","billing","'+
+                               get_date_now()+'")'; 
+
+                tx.executeSql(insert_query_billing, [], function(txs1, results_billing)
+                {  
+                    var insert_query_shipping = 'INSERT INTO tbl_customer_address (customer_id, country_id, customer_state, customer_city, '+
+                               'customer_zipcode, customer_street, purpose, created_at) VALUES ' +
+                               '('+customer_id+', 420,"'+
+                               customer_info['shipping_state']+'","'+
+                               customer_info['shipping_city']+'","'+
+                               customer_info['shipping_zipcode']+'","'+
+                               customer_info['shipping_street']+'","shipping","'+
+                               get_date_now()+'")'; 
+
+                    tx.executeSql(insert_query_shipping, [], function(txs1, results_shipping)
+                    {
+                        insert_log(customer_id, 'insert_customer', 0 , 0, function(res)
+                        {
+                            callback('success');
+                        });
+                    },
+                    onError); 
+                },
+                onError);
+
+            },
+            onError);
         });
     });
 }

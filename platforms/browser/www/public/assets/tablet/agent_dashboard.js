@@ -491,15 +491,21 @@ function update_agent(agent_id)
 
     db.transaction(function (tx)
     {
-        var query_update = 'UPDATE tbl_employee SET (email, username, password) = ("'+agent_info['email']+'", "'+agent_info['username']+'", "'+agent_info['password']+'") '+
+        var query_update = 'UPDATE tbl_employee SET (email, username, password) = ("'+
+                           agent_info['email']+'", "'+
+                           agent_info['username']+'", "'+
+                           agent_info['password']+'") '+
                            'WHERE employee_id = '+agent_id;
         tx.executeSql(query_update, [], function(txs, results)
         {
-            toastr.success("Success");
-            setInterval(function()
+            insert_log(0, 'agent_update', agent_id, 0, function(res)
             {
-                location.reload();
-            },2000)
+                toastr.success("Success");
+                setInterval(function()
+                {
+                    location.reload();
+                },2000);
+            });
         },
         onError);
     });

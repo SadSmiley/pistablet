@@ -144,7 +144,7 @@
                 <div id="invoice" class="tab-pane fade in active">
                     <div class="form-group">
                         <div class="col-md-4 col-xs-6">
-                          <!--   <a class="btn btn-primary form-control popup" link="/tablet/customer/modalcreatecustomer?stat=not-approved" size="lg">Create Customer</a> -->
+                            <a class="btn btn-primary form-control" onClick="create_customer()">Create Customer</a>
                         </div>
                         <div class="col-md-8 col-xs-6 text-right">
                             <a href="agent_dashboard.html"><< Back to Dashboard</a>
@@ -197,11 +197,207 @@
     </div>
 
 
-          <div id="global_modal" class="modal fade" role="dialog" >
+    <div id="create_customer_modal" class="modal fade " role="dialog" >
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content modal-content-global">
-                
+                <form id="modal_form_sumbit" class="z-index-1000">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title layout-modallarge-title">Create new customer</h4>
+                    </div>
+                    <div class="modal-body modallarge-body-layout background-white">
+                      <div class="form-horizontal">
+                        <div class="form-group">
+                          <div class="col-md-6">
+                            <div class="col-md-2 padding-lr-1">
+                              <label>Title</label>
+                              <input type="text" name="title" class="form-control auto-name title margin-l-0"/>
+                            </div>
+                            <div class="col-md-3 padding-lr-1">
+                              <label>First name</label>
+                              <input type="text" name="first_name" class="form-control auto-name first_name" value="" required/>
+                            </div>
+                            <div class="col-md-3 padding-lr-1">
+                              <label>Middle name</label>
+                              <input type="text" name="middle_name" class="form-control auto-name middle_name"/>
+                            </div>
+                            <div class="col-md-3 padding-lr-1">
+                              <label>Last name</label>
+                              <input type="text" name="last_name" class="form-control auto-name last_name"/>
+                            </div>
+                            <div class="col-md-1 padding-lr-1">
+                              <label>Suffix</label>
+                              <input type="text" name="suffix" class="form-control auto-name suffix"/>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="">Email</label>
+                            <input type="email" name="email" class="form-control"/>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="">Company</label>
+                            <input type="text" name="company" class="form-control">
+                          </div>
+                          <div class="col-md-6">
+                            <div class="col-md-4 padding-lr-1">
+                              <label for="">Phone</label>
+                              <input type="text" name="phone" class="form-control"/>
+                            </div>
+                            <div class="col-md-4 padding-lr-1">
+                              <label for="">Mobile</label>
+                              <input type="text" name="mobile" class="form-control"/>
+                            </div>
+                            <div class="col-md-4 padding-lr-1">
+                              <label for="">Fax</label>
+                              <input type="text" name="fax" class="form-control"/>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="">Display name as</label>
+                            <div class="input-group">
+                              <input type="text" name="display_name_as" class="form-control txt-display-name"/>
+                              <span class="input-group-btn">
+                                <button class="btn display-name-drop-down btn-toggle-custom btn-custom-white-gray" type="button" data-target=".drop-down-display-name" container=""><i class="fa fa-caret-down" aria-hidden="true"></i></button>
+                              </span>
+                            </div>
+                            <div class="custom-drop-down list-group drop-down-display-name">
+                              
+                            </div>
+                            <div class="custom-drop-down"></div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="col-md-4 padding-lr-1">
+                              <label for="">Other</label>
+                              <input type="text" name="other" class="form-control"/>
+                            </div>
+                            <div class="col-md-8 padding-lr-1">
+                              <label for="">Website</label>
+                              <input type="text" name="website" class="form-control"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-md-6">
+                            <label for=""><b>Print on as check as</b></label>&nbsp;
+                            <div class="checkbox display-inline-block"><label for=""><input type="checkbox" name="chck_print_on_as" class="checkbox-toggle-rev check-print-name-as" data-target=".display-name-check" checked="true"/>Use display name</label></div>
+                            <input type="text" name="print_on_as_check_as" class="form-control display-name-check"/>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="checkbox"><label for=""><input type="checkbox" name="chck_is_sub_customer" class="checkbox-toggle" data-target=".sub-customer"/>Is sub-customer</label></div>
+                            <div class="col-md-7 padding-lr-1">
+                              <select class="form-control sub-customer" name="hidden_sub_customer_id">
+                                <option value="0">Select Customer</option>
+                                @foreach($_customer as $customer)
+                                <option value="{{$customer->customer_id}}">{{$customer->first_name.' '.$customer->last_name}}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                            <div class="col-md-5 padding-lr-1">
+                              <select class="form-control sub-customer sub_customer_billing" name="sub_customer_billing">
+                                <option value="Bill with parent">Bill with parent</option>
+                                <option value="Bill this customer">Bill this customer</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div> -->
+                        <div class="form-group">
+                          <div class="col-md-12">
+                            <ul class="nav nav-tabs nav-tabs-custom">
+                              <li class="active"><a data-toggle="tab" href="#address">Address</a></li>
+                             <!--  <li><a data-toggle="tab" href="#notes">Notes</a></li>
+                              <li><a data-toggle="tab" href="#tax-info">Tax info</a></li>
+                              <li><a data-toggle="tab" href="#payment-and-billing">Payment and billing</a></li>
+                              <li><a data-toggle="tab" href="#attachment">Attachment</a></li>
+                              <li><a data-toggle="tab" href="#mlm">MLM</a></li> -->
+                            </ul>
+                            
+                            <div class="tab-content tab-content-custom">
+                              <div id="address" class="tab-pane fade in active">
+                                <br>
+                                <div class="form-horizontal">
+                                  <div class="form-group row clearfix">
+                                    <div class="col-md-6">
+                                      <label for=""><b>Billing address</b></label>
+                                      <div class="form-group">
+                                        <div class="col-md-12">
+                                          <textarea name="billing_street" rows="2" class="form-control billing-address" data-target=".shipping_street" placeholder="Street"></textarea>
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-md-6">
+                                          <input type="text" name="billing_city" class="form-control billing-address" data-target=".shipping_city" placeholder="City/Town">
+                                        </div>
+                                        <div class="col-md-6">
+                                          <input type="text" name="billing_state" class="form-control billing-address" data-target=".shipping_state" placeholder="State">
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-md-6">
+                                          <input type="text" name="billing_zipcode" class="form-control billing-address" data-target=".shipping_zipcode" placeholder="Zip code">
+                                        </div>
+                                        <div class="col-md-6">
+                                          <select disabled class="form-control billing-address" name="billing_country">
+                                                <option value="420">Philippines</option>
+                                          </select>
+                                          <!--<input type="text" name="billing_country" class="form-control billing-address" data-target=".shipping_country" placeholder="Country">-->
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <label for=""><b>Shipping address</b></label>
+                                      <div class="checkbox display-inline-block">
+                                        <label for="">
+                                            <input type="checkbox" name="chk_same_shipping_address" checked="true" class="checkbox-toggle-rev chk_same_shipping_address" data-target=".same-billing"/>Same as billing address
+                                        </label>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-md-12">
+                                          <textarea name="shipping_street" rows="2" class="form-control shipping_street same-billing" placeholder="Street"></textarea>
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-md-6">
+                                          <input type="text" name="shipping_city" class="form-control shipping_city same-billing" placeholder="City/Town">
+                                        </div>
+                                        <div class="col-md-6">
+                                          <input type="text" name="shipping_state" class="form-control shipping_state same-billing" placeholder="State">
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-md-6">
+                                          <input type="text" name="shipping_zipcode" class="form-control shipping_zipcode same-billing" placeholder="Zip code">
+                                        </div>
+                                        <div class="col-md-6">
+                                          <select disabled class="form-control shipping_country same-billing" name="shipping_country">
+                                            <option value="420">Philippines</option>
+                                          </select>
+                                          <!--<input type="text" name="shipping_country" class="form-control shipping_country same-billing" placeholder="Country">-->
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="error-modal text-center">
+                        Error
+                      </div>
+                      
+                      <button type="button" class="btn btn-custom-white " data-dismiss="modal">Cancel</button>
+                      <!--<button type="button" class="btn btn-custom-red-white btn-del-modallarge" data-url="" data-value="">Delete</button>-->
+                      <button class="btn btn-custom-primary btn-save-modallarge" type="button" onClick="save_customer_submit()" data-url="">Save customer</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

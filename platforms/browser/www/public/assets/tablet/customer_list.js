@@ -11,8 +11,24 @@ function customer_list()
 		$(document).ready(function()
 		{
 			document_ready();
+            action_load_billing_change()
 		});
 	}
+    function action_load_billing_change()
+    {
+        $(".billing-address").unbind("change");
+        $(".billing-address").bind("change", function(){
+            var ischecked = $(".chk_same_shipping_address").is(":checked");
+            
+     
+            if(ischecked)
+            {
+                var value = $(this).val();
+                var target = $(this).attr("data-target");
+                $(target).val(value);                
+            }           
+        });
+    }
 	function document_ready()
 	{
 		check_if_have_login();
@@ -86,17 +102,17 @@ function customer_list()
                 var shop_id = results_sir.rows[0]['shop_id'];
                 var query_count_customer = 'SELECT *, sum(transaction_amount) as balance FROM tbl_customer ' +
                                            'LEFT JOIN tbl_invoice_log ON transaction_customer_id = customer_id '+
-                                           'WHERE transaction_name != "credit_memo" AND transaction_name != "sales_receipt" ' + 
+                                           // 'OR transaction_name != "credit_memo" OR transaction_name != "sales_receipt" ' + 
                                            'AND  archived = 0 AND tbl_customer.shop_id = "'+shop_id+'"' + 
                                            'GROUP BY customer_id';
                 tx.executeSql(query_count_customer, [], function(txst, results_customer)
                 {
                     data_result = results_customer.rows;
                     var tr = "";
-                    $(data_result).each(function(key, datarow)
+                    $.each(data_result, function(key, datarow)
                     {   
                         tr += '<tr><td>'+datarow['customer_id']+'</td>';
-                        company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : "" ;
+                        company = datarow['company'] == "" ? datarow['first_name'] +" "+ datarow['last_name'] : datarow['company'] ;
                         tr += '<td>'+company+'</td>';
                         tr += '<td class="text-right">'+ number_format(datarow['balance'])+'</td>';
                         tr += '<td class="text-center">'+
@@ -120,6 +136,35 @@ function customer_list()
         });
     }
   
+}
+function save_customer_submit()
+{
+    var data = {};
+    var values = {};
+
+    $.each($('#modal_form_sumbit').serializeArray(), function(i, field) 
+    {
+        values[field.name] = field.value;
+    });
+
+    // console.log(values);
+
+    create_customer_submit(values, function(res)
+    {
+        if(res)
+        {
+            toastr.success("Success");
+            setInterval(function()
+            {
+                location.reload();
+            },2000)
+        }
+    });
+}
+function create_customer()
+{
+    $("#create_customer_modal").modal('show');
+    $("#create_customer_modal").find(".modal-dialog").addClass("modal-lg");
 }
 function ReplaceNumberWithCommas(yourNumber)
 {
