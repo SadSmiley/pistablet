@@ -3071,7 +3071,6 @@ function global_sync(type = '')
                 data['agent_data'] = agent_data;
                 data['customer'] = customer;
                 data['customer_address'] = customer_address;
-                // console.log(data);
                 if(ctr_length != 0)
                 {
                     $.each(logs, function(key, value)
@@ -3119,7 +3118,7 @@ function global_sync(type = '')
                                             // {
                                                 $.ajax(
                                                 {
-                                                    url: 'http://digimahouse.dev/tablet/get_data',
+                                                    url: 'http://digimahouse.com/tablet/get_data',
                                                     type : "POST",
                                                     crossDomain : true,
                                                     dataType: "json",
@@ -3161,9 +3160,11 @@ function global_sync(type = '')
                 }
                 else
                 {
+                    console.log(data);
+                    console.log(JSON.stringify(data));
                     $.ajax(
                     {
-                        url: 'http://digimahouse.dev/tablet/get_data',
+                        url: 'http://digimahouse.com/tablet/get_data',
                         type : "POST",
                         crossDomain : true,
                         dataType: "json",
@@ -3216,6 +3217,7 @@ function get_other_transaction(callback)
                         {
                             get_data_customer(function (customer, customer_address)
                             {
+                                console.log(customer_address);
                                 callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address);
                             });
                         });
@@ -3242,7 +3244,7 @@ function get_data_agent(callback)
                 }
                 else
                 {
-                    var res = {};
+                    var res = null;
                     callback(res);
                 }
             },
@@ -3275,10 +3277,15 @@ function get_customer_address(customer, callback)
             tx.executeSql(select_query, [], function(tx1, results)
             {
                 ctr++;
+                customer_address[key] = {};
                 if(results.rows.length > 0)
                 {
-                    customer_address[key] = {};
-                    customer_address[key] = results.rows;
+                    customer_address[key]['address'] = {};
+                    $.each(results.rows, function(a, b)
+                    {
+                        customer_address[key]['address'][a] = {};
+                        customer_address[key]['address'][a] = b;
+                    });
                 }
                 if(ctr == ctr_customer)
                 {
@@ -3305,7 +3312,7 @@ function get_customer(callback)
                 }
                 else
                 {
-                    var res = {};
+                    var res = null;
                     callback(res);
                 }
             },
@@ -3345,7 +3352,7 @@ function get_data_sir(callback)
                 }
                 else
                 {
-                    var res = {};
+                    var res = null;
                     callback(res);
                 }
             });
@@ -3370,7 +3377,7 @@ function get_data_manual_transaction(tbl_name, callback)
                 }
                 else
                 {
-                    var res = {};
+                    var res = null;
                     callback(res);
                 }
             });
@@ -3394,7 +3401,7 @@ function select_all_logs(callback)
                 }
                 else
                 {
-                    var res = {};
+                    var res = null;
                     callback(res);
                 }
             },
