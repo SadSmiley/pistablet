@@ -3119,7 +3119,7 @@ function global_sync(type = '')
                                             // {
                                                 $.ajax(
                                                 {
-                                                    url: 'http://digimahouse.com/tablet/get_data',
+                                                    url: 'http://digimahouse.dev/tablet/get_data',
                                                     type : "POST",
                                                     crossDomain : true,
                                                     dataType: "json",
@@ -3163,7 +3163,7 @@ function global_sync(type = '')
                 {
                     $.ajax(
                     {
-                        url: 'http://digimahouse.com/tablet/get_data',
+                        url: 'http://digimahouse.dev/tablet/get_data',
                         type : "POST",
                         crossDomain : true,
                         dataType: "json",
@@ -3261,17 +3261,17 @@ function get_data_customer(callback)
     });
 }
 function get_customer_address(customer, callback)
-{
+{    
     db.transaction(function(tx)
     {
         var ctr_customer = count(customer);
-        var customer_address = null;
+        var customer_address = [];
         var ctr = 0;
         $.each(customer, function(key, value)
         {
-            var select_query = 'SELECT * FROM tbl_customer_address ' +
-                               'WHERE customer_id = ' + value['customer_id'] +
-                               ' AND get_status = "new"'; 
+                var select_query = 'SELECT * FROM tbl_customer_address ' +
+                                   'WHERE customer_id = ' + value['customer_id'] +
+                                   ' AND get_status = "new"'; 
             tx.executeSql(select_query, [], function(tx1, results)
             {
                 ctr++;
@@ -3290,18 +3290,18 @@ function get_customer_address(customer, callback)
 }
 function get_customer(callback)
 {
-    db.transaction(function(tx)
-    {
-        get_shop_id(function(shop_id)
-        {        
-            var select_query = 'SELECT * FROM tbl_customer ' +
+    get_shop_id(function(shop_id)
+    {                   
+        db.transaction(function(tx)
+        {     
+            var select_query_customer = 'SELECT * FROM tbl_customer ' +
                                'WHERE shop_id = ' + shop_id +
-                               ' AND get_status = "new"'; 
-            tx.executeSql(select_query, [], function(tx1, results)
+                               ' AND get_status = "new"';
+            tx.executeSql(select_query_customer, [], function(tx12, results_customer)
             {
-                if(results.rows.length > 0)
+                if(results_customer.rows.length > 0)
                 {
-                    callback(results.rows[0]);
+                    callback(results_customer.rows);
                 }
                 else
                 {
