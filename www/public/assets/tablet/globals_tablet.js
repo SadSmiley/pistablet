@@ -3016,7 +3016,7 @@ function onError(tx, error)
 
 function number_format(number)
 {
-    var yourNumber = (number).toFixed(2);
+    var yourNumber = parseFloat(number).toFixed(2);
     //Seperates the components of the number
     var n= yourNumber.toString().split(".");
     //Comma-fies the first part
@@ -3060,7 +3060,6 @@ function global_sync(type = '')
             data['sir_data'] = {};
             var ctr_length = count(logs);
             var ctr = 0;
-
             get_other_transaction(function(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address)
             {
                 data['sir_inventory'] = sir_inventory;
@@ -3153,6 +3152,10 @@ function global_sync(type = '')
                                             // });                                    
                                         });
                                     }
+                                    else
+                                    {
+                                        alert(123);
+                                    }
                                 });
                             });
                         });
@@ -3217,7 +3220,6 @@ function get_other_transaction(callback)
                         {
                             get_data_customer(function (customer, customer_address)
                             {
-                                console.log(customer_address);
                                 callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address);
                             });
                         });
@@ -3269,30 +3271,44 @@ function get_customer_address(customer, callback)
         var ctr_customer = count(customer);
         var customer_address = [];
         var ctr = 0;
-        $.each(customer, function(key, value)
+        if(ctr_customer > 0)
         {
-                var select_query = 'SELECT * FROM tbl_customer_address ' +
-                                   'WHERE customer_id = ' + value['customer_id'] +
-                                   ' AND get_status = "new"'; 
-            tx.executeSql(select_query, [], function(tx1, results)
+            $.each(customer, function(key, value)
             {
-                ctr++;
-                customer_address[key] = {};
-                if(results.rows.length > 0)
+                    var select_query = 'SELECT * FROM tbl_customer_address ' +
+                                       'WHERE customer_id = ' + value['customer_id'] +
+                                       ' AND get_status = "new"'; 
+                tx.executeSql(select_query, [], function(tx1, results)
                 {
-                    customer_address[key]['address'] = {};
-                    $.each(results.rows, function(a, b)
+                    ctr++;
+                    customer_address[key] = {};
+                    if(results.rows.length > 0)
                     {
-                        customer_address[key]['address'][a] = {};
-                        customer_address[key]['address'][a] = b;
-                    });
-                }
-                if(ctr == ctr_customer)
-                {
-                    callback(customer_address);
-                }
+                        customer_address[key]['address'] = {};
+                        $.each(results.rows, function(a, b)
+                        {
+                            customer_address[key]['address'][a] = {};
+                            customer_address[key]['address'][a] = b;
+                        });
+                    }
+                    if(ctr == ctr_customer)
+                    {
+                        if(count(customer_address) > 0)
+                        {
+                            callback(customer_address);
+                        }
+                        else
+                        {
+                            callback(null);
+                        }
+                    }
+                });
             });
-        });
+        }
+        else
+        {
+            callback(customer_address);
+        }
     });
 }
 function get_customer(callback)
