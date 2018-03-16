@@ -88,6 +88,22 @@ function rp_edit_submit()
                 values["rpline_txn_type"][index] = $(el).val();
             });
         }
+        else if(field.name == "rp_cm_id[]") 
+        {
+            values["rp_cm_id"] = {};
+            $('input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["rp_cm_id"][index] = $(el).val();
+            });
+        }
+        else if(field.name == "rp_cm_amount[]") 
+        {
+            values["rp_cm_amount"] = {};
+            $('input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["rp_cm_amount"][index] = $(el).val();
+            });
+        }
         else
         {
             values[field.name] = field.value;
@@ -106,6 +122,10 @@ function rp_edit_submit()
 
     customer_info['rp_ref_name'] = "";
     customer_info['rp_ref_id'] = 0;
+    
+    customer_info['rp_credit_id'] = values['rp_cm_id'];
+    customer_info['rp_credit_amount'] = values['rp_cm_amount'];
+    
 
     var rp_id =values['rp_id'];
     var payment_line = values['line_is_checked'];

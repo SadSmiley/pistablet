@@ -107,8 +107,7 @@ function query_create_all_table(callback)
     query[41] = "CREATE TABLE IF NOT EXISTS tbl_unit_measurement_multi (multi_id INTEGER PRIMARY KEY AUTOINCREMENT, multi_um_id INTEGER  NULL, multi_name VARCHAR(255)  NULL, multi_conversion_ratio REAL NULL, multi_sequence TINYINT NULL,  unit_qty INTEGER NULL, multi_abbrev VARCHAR(255)  NULL, is_base TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
     query[42] = "CREATE TABLE IF NOT EXISTS tbl_user ( user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_email VARCHAR(255)  NULL, user_level INTEGER NULL, user_first_name VARCHAR(255)  NULL, user_last_name VARCHAR(255)  NULL, user_contact_number VARCHAR(255)  NULL, user_password text  NULL, user_date_created DATETIME NULL default '1000-01-01 00:00:00', user_last_active_date DATETIME NULL default '1000-01-01 00:00:00', user_shop INTEGER  NULL,  IsWalkin TINYINT NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
     /*TABLET TRANSACTION-cm*/
-    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NULL, cm_id INTEGER NULL, manual_cm_date DATETIME NULL, is_sync TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NULL, default_sublevel INTEGER NULL, default_balance REAL NULL, default_open_balance REAL NULL, default_open_balance_date date NULL, is_tax_account TINYINT NULL, account_tax_code_id INTEGER NULL, default_for_code VARCHAR(255) , account_protected TINYINT NULL,created_at DATETIME, updated_at DATETIME)";
+    query[43] = "CREATE TABLE IF NOT EXISTS tbl_manual_credit_memo (manual_cm_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NULL, cm_id INTEGER NULL, manual_cm_date DATETIME NULL, is_sync TINYINT NULL default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";    query[44] = "CREATE TABLE IF NOT EXISTS tbl_default_chart_account (default_id INTEGER PRIMARY KEY AUTOINCREMENT, default_type_id INTEGER, default_number INTEGER, default_name VARCHAR(255), default_description VARCHAR(255) , default_parent_id INTEGER NULL, default_sublevel INTEGER NULL, default_balance REAL NULL, default_open_balance REAL NULL, default_open_balance_date date NULL, is_tax_account TINYINT NULL, account_tax_code_id INTEGER NULL, default_for_code VARCHAR(255) , account_protected TINYINT NULL,created_at DATETIME, updated_at DATETIME)";
     query[45] = "CREATE TABLE IF NOT EXISTS tbl_timestamp (timestamp_id INTEGER PRIMARY KEY AUTOINCREMENT, table_name VARCHAR(255), timestamp DATETIME)";
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
     query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255), isDefault TINYINT,archived TINYINT)";
@@ -2584,6 +2583,9 @@ function update_rp_submit(rp_id, customer_info, insertline, callback)
                 tx.executeSql(update_query, [], function(tx, results)
                 {
                     var delete_query = 'DELETE FROM tbl_receive_payment_line where rpline_rp_id = ' + rp_id;
+                    delete_applied_credits(rp_id);
+                    insert_credits(customer_info['rp_credit_id'], customer_info['rp_credit_amount'], rp_id);
+                    insert_applied_credits(customer_info['rp_credit_id'], customer_info['rp_credit_amount'], rp_id);
                     tx.executeSql(delete_query, [], function(txt2,res)
                     {
                         insert_rpline(rp_id, insertline, function(result_line)
@@ -2604,6 +2606,22 @@ function update_rp_submit(rp_id, customer_info, insertline, callback)
                     onError);
                 },
                 onError);
+            });
+        });
+    });
+}
+
+function delete_applied_credits(rp_id)
+{
+    db.transaction(function(tx)
+    {
+        var delete_query = "DELETE FROM tbl_receive_payment_credit WHERE rp_id = "+rp_id;
+        tx.executeSql(delete_query, [], function(tx, results)
+        {
+            var delete_querycm = "DELETE FROM tbl_credit_memo_applied_payment WHERE applied_ref_id = "+rp_id;
+            tx.executeSql(delete_querycm, [], function(tx, results)
+            {   
+                console.log("delete");
             });
         });
     });
@@ -3353,18 +3371,25 @@ function global_sync(type = '')
 }
 function get_other_transaction(callback)
 {
+                            alert(123);
     get_data_manual_transaction('tbl_manual_receive_payment', function(manual_rp)
     {
+                            alert(456);
         get_data_manual_transaction('tbl_manual_credit_memo', function(manual_cm)
         {
+                            alert(789);
             get_data_manual_transaction('tbl_manual_invoice', function(manual_inv)
             {
+                            alert(987);
                 get_data_sir_inventory(function(sir_inventory)
                 {
+                            alert(654);
                     get_data_sir(function(sir_data)
                     {
+                            alert(321);
                         get_data_agent(function(agent_data)
                         {
+                            alert(174);
                             get_data_customer(function (customer, customer_address)
                             {
                                 callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address);
@@ -3541,7 +3566,7 @@ function get_data_manual_transaction(tbl_name, callback)
                 else
                 {
                     var res = null;
-                    callback(res);
+                    callback([]);
                 }
             });
         });
