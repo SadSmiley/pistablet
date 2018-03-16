@@ -5,7 +5,7 @@ var db = openDatabase("my168shop", "1.0", "Address Book", 200000);
 var query = "";
 var dataset_from_browser = null;
 var global_data = null;
-
+var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -3120,7 +3120,7 @@ function global_sync(type = '')
                                             // {
                                                 $.ajax(
                                                 {
-                                                    url: 'http://pis.digimahouse.test/tablet/get_data',
+                                                    url: $url+'/tablet/get_data',
                                                     type : "POST",
                                                     crossDomain : true,
                                                     dataType: "json",
@@ -3170,7 +3170,7 @@ function global_sync(type = '')
                     console.log(JSON.stringify(data));
                     $.ajax(
                     {
-                        url: 'http://pis.digimahouse.test/tablet/get_data',
+                        url: $url+'/tablet/get_data',
                         type : "POST",
                         crossDomain : true,
                         dataType: "json",

@@ -5,7 +5,7 @@ var table_sync_key = 0;
 var current_table = "";
 var all_tbl_name = [];
 var shop_id = 92;  
-
+var $url = "http://pis.digimahouse.com";
 function sync_data()
 {
 	init();
@@ -240,7 +240,7 @@ function sync_data()
 
         $.ajax(
         {
-            url : "http://pis.digimahouse.test/tablet/sync_data/" + table_name + "/"+ dateNow,
+            url : $url+"/tablet/sync_data/" + table_name + "/"+ dateNow,
             dataType: "json",
             data : {shop_id : shop_id},
             type : "get",
