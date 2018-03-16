@@ -163,6 +163,9 @@
                                  <!--  <div class="col-sm-4">
                                     <button class="btn btn-custom-white btn-sm" data-placement="bottom" data-html="true" id="example" data-content="<form><br><input type='text' class='form-control input-sm' ><br><a style='cursor:pointer' class='pull-left' onclick='$(&quot;#example&quot;).popover(&quot;hide&quot;);'>Cancel</a><a style='cursor:pointer' class='pull-right'>Find</a><br></form>" data-toggle="popover">Find by invoice no.</button>
                                     </div> -->
+                                    <div class="col-sm-9 text-right open-transaction" style="display: none;">
+                                        <h4><a class="click-open-transaction" onClick=""><i class="fa fa-handshake-o"></i> <span class="count-open-transaction">0</span> Available Credits</a></h4>
+                                    </div>
                               </div>
                            </div>
                            <div style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px;">
@@ -361,6 +364,115 @@
          </div>
       </div>
    </div>
+   <!-- MODAL START -->
+    <div id="modal_credit" class="modal fade" role="dialog" >
+      <div class="modal-dialog">
+         <!-- Modal content-->
+         <div class="modal-content modal-content-global">
+           <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4 class="modal-title">All Available Credits</h4>
+          </div>
+          <div class="modal-body clearfix">
+            <div class="row">
+              <div class="clearfix modal-body">
+                  <div class="form-horizontal">
+                      <input type="hidden" name="customer_id" value="{{$customer_id or ''}}">
+                      <div class="form-group">
+                          <h4>Customer Name : Juan Dela Cruz</h4>
+                      </div>
+                      <div class="form-group">
+                          <table class="table table-condensed table-bordered {{$total_credit = 0}} {{$total_applied_credit =0}}">
+                              <thead>
+                                  <tr>
+                                      <th class="text-center"><input type="checkbox" class="check-all-credit" name=""></th>
+                                      <th>Credit Memo Number</th>
+                                      <th>Amount</th>
+                                      <th>Applied</th>
+                                      <th>Amount to Apply</th>
+                                  </tr>
+                              </thead>
+                              <tbody class="">
+                              <tr class="{{$total_credit+= $credit->cm_amount}} {{$total_applied_credit+= $credit->applied_cm_amount}} tr-credit">
+                                  <td class="text-center">
+                                      <input type="checkbox" class="td-credit new-checkbox" value="50" name="apply_credit[cm_id]" data-content="50"  checked>
+                                  </td>
+                                  <td>50</td>
+                                  <td class="text-center">50</td>
+                                  <td class="text-center">0</td>
+                                  <td class="text-center" {{currency('',cm_amount - applied_cm_amount)}}>
+                                      <input type="text" class="form-control compute input-credit-cm text-right" value="0" name="apply_credit_amount[cm_id]">
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td colspan="2" class="text-right"><b> Total</b> </td>
+                                  <td class="text-center"><b> PHP 0.00 </b></td>
+                                  <td class="text-right"><b>PHP 0.00</b></td>
+                                  <td class="text-right"><b class="amount-input-cm"> PHP 0.00</b></td>
+                              </tr>
+                              <tr>
+                                  <td colspan="2" class="text-right"><b style="color:green"> Total Amount to Apply Credit</b> </td>
+                                  <td colspan="3" class="text-right"><b class="total-apply-credit">PHP 0.00</b></td>
+                              </tr>
+                              </tbody>
+                          </table>               
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-def-white btn-custom-white" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary btn-custom-primary" type="submit">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $('body').on('click','.check-all-credit', function()
+            {
+                $('input:checkbox.new-checkbox').not(this).prop('checked', this.checked); 
+                compute_credit();        
+            });
+            $('body').on('click','.td-credit', function()
+            {
+                $(this).prop('checked', this.checked); 
+                compute_credit();        
+            });
+            $('body').on('change','.compute',function()
+            {
+                compute_credit();
+            });
+            compute_credit();
+            function compute_credit()
+            {
+                var total_apply_credit = 0;
+                $(".tr-credit").each(function()
+                {
+                    $chk = $(this).find(".td-credit").is(":checked");
+                    $amount = $(this).find(".input-credit-cm").val();
+                    if($chk)
+                    {
+                        total_apply_credit += parseFloat($(this).find(".input-credit-cm").val());
+                    }
+                });
+                // $('.td-credit').each(function(a, b)
+                // {
+                //     if($(b).is( ":checked" ))
+                //     {
+                //         total_apply_credit += parseFloat($(b).attr('data-content'));
+                //     }
+                // });
+                $('.total-apply-credit').html('PHP '+total_apply_credit.toFixed(2));
+            }   
+        }); 
+    </script>
+   <!-- MODAL END -->
+
+
+
    <div class="settings_checking hide" id="do_not_remove_please"></div>
    <style type="text/css">
       .blink-ctr

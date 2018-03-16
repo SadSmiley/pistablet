@@ -2250,10 +2250,11 @@ function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_
         insert_row['cm_message'] = cm_customer_info['cm_message'];
         insert_row['cm_memo'] = cm_customer_info['cm_memo'];
         insert_row['cm_amount'] = cm_customer_info['cm_amount'];
-        insert_row['cm_type'] = cm_customer_info['cm_type'] == 'returns' ? 0 : cm_customer_info['cm_type'];
+        insert_row['cm_type'] = cm_customer_info['cm_type'];
         insert_row['date_created'] = get_date_now();
         insert_row['created_at'] = get_date_now();
         insert_row['cm_ar_acccount'] = 0;
+        insert_row['cm_status'] = 0;
         insert_row['cm_used_ref_name'] = cm_customer_info['cm_type'];
         insert_row['cm_used_ref_id'] = 0;
 
@@ -2326,10 +2327,11 @@ function update_cm_submit(cm_id, cm_customer_info, cm_item_info, item_returns, i
         insert_row['cm_message'] = cm_customer_info['cm_message'];
         insert_row['cm_memo'] = cm_customer_info['cm_memo'];
         insert_row['cm_amount'] = cm_customer_info['cm_amount'];
-        insert_row['cm_type'] = cm_customer_info['cm_type'] == 'returns' ? 0 : cm_customer_info['cm_type'];
+        insert_row['cm_type'] = cm_customer_info['cm_type'];
         insert_row['date_created'] = get_date_now();
         insert_row['created_at'] = get_date_now();
         insert_row['cm_ar_acccount'] = 0;
+        insert_row['cm_status'] = 0;
         insert_row['cm_used_ref_name'] = cm_customer_info['cm_type'];
         insert_row['cm_used_ref_id'] = 0;
 

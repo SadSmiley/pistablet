@@ -183,6 +183,12 @@ function receive_payment()
 					            onError);
 					        });
 			    		});
+						count_credit(customer_id, function(ctr)
+						{
+							$(".open-transaction").slideDown();
+							$(".count-open-transaction").html(ctr);
+							$(".click-open-transaction").attr("onClick","click_open_transaction("+customer_id+")");
+						});
 	    			}
 	    		});
 		    }
@@ -360,7 +366,32 @@ function receive_payment()
 	}
 
 }
+function count_credit(customer_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_check = 'SELECT * FROM tbl_credit_memo'+
+                          ' WHERE cm_customer_id = '+ customer_id +
+                          ' and cm_type = 1 and cm_used_ref_name = "retain_credit" and cm_status = 0';
 
+        tx.executeSql(query_check, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+            	callback(results.rows.length);
+            }
+            else
+            {
+            	callback(0);
+            }
+        });
+    });
+}
+function click_open_transaction(customer_id)
+{
+	console.log("modal for open transaction here");
+	$("#modal_credit").modal("show");
+}
 function submit_done(data)
 {
 	if(data.status == "success" || data.response_status == "success")

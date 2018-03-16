@@ -482,7 +482,9 @@ function cm_edit_submit()
     customer_info["cm_message"] = values["cm_message"];
     customer_info["cm_memo"] = values["cm_memo"];
     customer_info["cm_amount"] = values["overall_price"];
-    customer_info["cm_type"] = 'returns';
+    customer_info["cm_type"] = 1;
+    customer_info["cm_used_ref_name"] = value['credit_type'];
+    customer_info["cm_status"] = 0;
     // console.log("Customer Info");
     // console.log(customer_info);
     var item_info = {};
@@ -603,6 +605,7 @@ function credit_memo_submit()
     customer_info["cm_amount"] = values["overall_price"];
     customer_info["cm_type"] = 1;
     customer_info["cm_used_ref_name"] = value['credit_type'];
+    customer_info["cm_status"] = 0;
     // console.log("Customer Info");
     // console.log(customer_info);
     var item_info = {};
