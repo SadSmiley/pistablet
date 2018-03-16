@@ -4,7 +4,7 @@ var sync_key = 0;
 var table_sync_key = 0;
 var current_table = "";
 var all_tbl_name = [];
-var shop_id = 70;  
+var shop_id = 92;  
 
 function sync_data()
 {
