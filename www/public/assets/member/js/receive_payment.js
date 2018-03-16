@@ -297,7 +297,6 @@ function receive_payment()
 		$(".amount-to-apply").val($amount);
 		amount_due = parseFloat($amount);
 		$(".amount-apply").html("PHP "+formatMoney($amount));
-		
 		compute_total();
 	}
 

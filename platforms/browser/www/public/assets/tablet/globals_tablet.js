@@ -5,7 +5,7 @@ var db = openDatabase("my168shop", "1.0", "Address Book", 200000);
 var query = "";
 var dataset_from_browser = null;
 var global_data = null;
-var $url = "http://pis.digimahouse.com";
+var $url = "http://pis.digimahouse.test";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -2643,6 +2643,8 @@ function insert_rp_submit(customer_info, insertline, callback)
                 tx.executeSql(insert_query, [], function(tx, results)
                 {
                     var rp_id = results.insertId;
+                    insert_credits(customer_info['rp_credit_id'], customer_info['rp_credit_amount'], rp_id);
+                    insert_applied_credits(customer_info['rp_credit_id'], customer_info['rp_credit_amount'], rp_id);
                     insert_rpline(rp_id, insertline, function(result_line)
                     {
                         insert_payment_reference(customer_info['rp_ref_name'],customer_info['rp_ref_id'], rp_id);
@@ -2666,6 +2668,129 @@ function insert_rp_submit(customer_info, insertline, callback)
             });
         });
     });
+}
+function insert_credits(_rp_credit_id, _rp_credit_amount, rp_id)
+{
+    var ctr = count(_rp_credit_amount);
+    if(ctr > 0)
+    {
+        db.transaction(function(tx)
+        {
+            $.each(_rp_credit_amount, function(key, value)
+            {
+                $ins = [];
+                $ins['rp_id'] = rp_id;
+                $ins['credit_reference_name'] = "credit_memo";
+                $ins['credit_reference_id'] = _rp_credit_id[key];
+                $ins['credit_amount'] = value;
+                $ins['date_created'] = get_date_now();
+                var ins_query = "INSERT INTO tbl_receive_payment_credit (rp_id, credit_reference_name, credit_reference_id, credit_amount, date_created)" +
+                    " VALUES ("+$ins['rp_id']+",'"+$ins['credit_reference_name']+"',"+$ins['credit_reference_id']+","+$ins['credit_amount']+",'"+$ins['date_created']+"')";
+                console.log(ins_query);
+                tx.executeSql(ins_query, [], function(tx, results)
+                {
+                    console.log('success_test');
+                },
+                onError);
+            });
+        });
+    }
+}
+function insert_applied_credits(_rp_credit_id, _rp_credit_amount, rp_id)
+{
+    var ctr = count(_rp_credit_amount);
+    if(ctr > 0)
+    {
+        db.transaction(function(tx)
+        {
+            $.each(_rp_credit_amount, function(key, value)
+            {
+                $ins = [];
+                $ins['cm_id'] = _rp_credit_id[key];
+                $ins['applied_ref_name'] = "receive_payment";
+                $ins['applied_ref_id'] = rp_id;
+                $ins['applied_amount'] = value;
+                $ins['created_at'] = get_date_now();
+                var ins_query = "INSERT INTO tbl_credit_memo_applied_payment (cm_id, applied_ref_name, applied_ref_id, applied_amount, created_at)" +
+                    " VALUES ("+$ins['cm_id']+",'"+$ins['applied_ref_name']+"',"+$ins['applied_ref_id']+","+$ins['applied_amount']+",'"+$ins['created_at']+"')";
+                console.log("appliedcm");
+                console.log(ins_query);
+                tx.executeSql(ins_query, [], function(tx, results)
+                {
+                    console.log('success_test');
+                    update_credit_memo(_rp_credit_id[key]);
+                },
+                onError);
+            });
+        });
+    }
+}
+function update_credit_memo(key)
+{
+    if(key)
+    {
+        get_amount_credit_applied(key, function(applied_amount)
+        {
+            get_amount_credit(key, function(cm_amount)
+            {
+                db.transaction(function(tx)
+                {
+                    if(applied_amount == cm_amount)
+                    {
+                        var update_query = "UPDATE tbl_credit_memo SET cm_status = 1 WHERE cm_id = key";
+                        tx.executeSql(select_query, [], function(tx, results)
+                        {
+                            console.log("success");
+                        });
+                    }
+                });
+            });
+        });
+    }
+}
+function get_amount_credit_applied(key, callback)
+{
+    if(key)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = "SELECT sum('applied_amount') as applied_cm_amount FROM tbl_credit_memo_applied_payment "+
+                                " WHERE cm_id = "+key;
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows[0]['applied_cm_amount']);
+                }
+                else
+                {
+                    callback(0);
+                }
+            });
+        });        
+    }
+}
+function get_amount_credit(key, callback)
+{
+    if(key)
+    {
+        db.transaction(function(tx)
+        {
+            var select_query = "SELECT cm_amount FROM tbl_credit_memo "+
+                                " WHERE cm_id = "+key;
+            tx.executeSql(select_query, [], function(tx, results)
+            {
+                if(results.rows.length > 0)
+                {
+                    callback(results.rows[0]['cm_amount']);
+                }
+                else
+                {
+                    callback(0);
+                }
+            });
+        });        
+    }
 }
 function insert_payment_reference(ref_name, ref_id, rp_id)
 {
