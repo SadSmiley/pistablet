@@ -2792,6 +2792,25 @@ function get_amount_credit(key, callback)
         });        
     }
 }
+function get_applied_credit(rp_id, callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query = "SELECT * FROM tbl_receive_payment_credit "+
+                                " WHERE rp_id = "+rp_id;
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows);
+            }
+            else
+            {
+                callback([]);
+            }
+        });
+    });
+}
 function insert_payment_reference(ref_name, ref_id, rp_id)
 {
     if(ref_name == 'credit_memo')
