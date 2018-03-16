@@ -2,6 +2,8 @@ var receive_payment = new receive_payment();
 var maximum_payment = 0;
 var is_amount_receive_modified = false;
 
+var amount_due = 0;
+var amount_credit = 0;
 function receive_payment()
 {
 	init();
@@ -22,6 +24,7 @@ function receive_payment()
 		action_put_accounting();
 		action_put_payment();
 		test_function();
+		event_button_apply_credit();
 	}
 	function test_function()
 	{
@@ -199,6 +202,10 @@ function receive_payment()
 	{
 		action_initialize_load();
 	}
+	this.formatMoney = function()
+	{
+		formatMoney();
+	}
 
 	function action_initialize_load()
 	{
@@ -288,7 +295,10 @@ function receive_payment()
 	function action_update_apply_amount($amount)
 	{
 		$(".amount-to-apply").val($amount);
-		$(".amount-apply").html("PHP "+formatMoney($amount))
+		amount_due = parseFloat($amount);
+		$(".amount-apply").html("PHP "+formatMoney($amount));
+		
+		compute_total();
 	}
 
 	function action_update_credit_amount($amount)
@@ -345,6 +355,33 @@ function receive_payment()
 		return Number($this.toString().replace(/[^0-9\.]+/g,""));
 	}
 
+	function event_compute_apply_credit()
+	{
+		var total_amount_to_credit = 0;
+		$('.compute-applied-credit').each(function(a, b)
+		{
+			total_amount_to_credit += parseFloat($(this).val());
+		});
+		$('.credit-amount-to-apply').val(total_amount_to_credit);
+		$('.credit-amount').html('PHP ' + formatMoney(total_amount_to_credit));
+
+		amount_credit = total_amount_to_credit;
+		compute_total();
+	}
+	function compute_total()
+	{		
+		$(".applied-total-amount").val(parseFloat(amount_due) - parseFloat(amount_credit));
+		$('.applied-amount').html('PHP ' + parseFloat(parseFloat(amount_due) - parseFloat(amount_credit)));
+		console.log(parseFloat(amount_due) - parseFloat(amount_credit));
+	}
+	this.event_compute_apply_credit = function()
+	{
+		event_compute_apply_credit();
+	}
+	this.compute_total = function()
+	{
+		compute_total();
+	}
 	function formatMoney($this)
 	{
 		var n = formatFloat($this), 
@@ -363,6 +400,52 @@ function receive_payment()
 		{
 			$(".button-action").val($(this).attr("data-action"));
 		})
+	}
+	function event_button_apply_credit()
+	{
+		$("body").on("click", ".remove-credit", function()
+		{
+			$(this).parent().parent().remove();
+			event_compute_apply_credit();
+		});
+		$("body").on("click", ".btn-apply-credit", function()
+		{
+			$credit = $(".tr-credit");
+			$return_data = [];
+			$html = "";
+			$.each($credit, function(key, value)
+			{
+				$parent = $(this);
+				$chk = $parent.find(".checkbox-credit");
+				$amount = $parent.find(".input-credit-cm").val();
+				$(".load-applied-credits").html();
+				if($chk.prop("checked"))
+				{
+					$return_data[key] = [];
+					$return_data[key]['cm_id'] = $chk.val();
+					$return_data[key]['cm_applied_amount'] = $amount;
+
+					$html += '<li class="payment-li" style="list-style: none;">'+
+                      '<div class="form-group row clearfix">'+
+                          '<div class="col-sm-1">' +
+                             '<a href="javascript:" class="remove-credit" credit-id="'+$chk.val()+'"> <i class="fa fa-times-circle" style="color:red"></i></a> ' +
+                             '<input type="hidden" name="rp_cm_id[]" value="'+$chk.val()+'">'+
+                          '</div>'+
+                          '<div class="col-sm-4">'+
+                              $chk.val() +
+                          '</div>'+
+                          '<div class="col-sm-7 text-right">PHP '+
+                              formatMoney($amount) +
+                           '</div>' +
+                             '<input type="hidden" name="rp_cm_amount[]" class="compute-applied-credit" value="'+$amount+'">'+
+                      '</div>' +
+	                '</li>';
+				}
+			});
+			$(".load-applied-credits").html($html);
+			$("#modal_credit").modal("hide");
+			event_compute_apply_credit();
+		});
 	}
 
 }
@@ -387,10 +470,69 @@ function count_credit(customer_id, callback)
         });
     });
 }
+function get_all_credit(customer_id, callback)
+{
+    db.transaction(function (tx)
+    {
+        var query_check = 'SELECT *, sum(applied_amount) as applied_cm_amount, tbl_credit_memo.cm_id as creditmemo_id FROM tbl_credit_memo'+
+        				  ' LEFT JOIN tbl_credit_memo_applied_payment ON tbl_credit_memo_applied_payment.cm_id = tbl_credit_memo.cm_id '+
+                          ' WHERE cm_customer_id = '+ customer_id +
+                          ' and cm_type = 1 and cm_used_ref_name = "retain_credit" and cm_status = 0 GROUP BY tbl_credit_memo.cm_id';
+
+        tx.executeSql(query_check, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+            	callback(results.rows);
+            }
+            else
+            {
+            	callback([]);
+            }
+        });
+    });
+}
 function click_open_transaction(customer_id)
 {
-	console.log("modal for open transaction here");
-	$("#modal_credit").modal("show");
+	get_all_credit(customer_id, function(_credit)
+	{
+		$ctr = count(_credit);
+		$html = "";
+		$(".credit-for-payment").html("");
+		if($ctr > 0)
+		{
+			$total_credit = 0;
+			$total_applied_credit = 0;
+			$.each(_credit, function(key, value)
+			{
+				$total_credit += value['cm_amount'];
+				$total_applied_credit += value['applied_cm_amount'];
+				$applied_cm_amount = value['applied_cm_amount'] ? value['applied_cm_amount'] : 0;
+				$remaining = roundNumber((parseFloat(value['cm_amount'])-parseFloat($applied_cm_amount)));
+				$html +='<tr class="tr-credit">' +
+					   '<td class="text-center">'+
+	                   '<input type="checkbox" class="td-credit new-checkbox checkbox-credit" value='+value['creditmemo_id']+ ' name="apply_credit['+value['creditmemo_id']+']" data-content="50">'+
+	                   '</td>'+
+	                   '<td>'+value['creditmemo_id']+'</td>'+
+	                   '<td class="text-center">'+roundNumber(value['cm_amount'])+'</td>'+
+	                   '<td class="text-center">'+ roundNumber($applied_cm_amount) +'</td>' +
+	                   '<td class="text-center" >'+
+	                   '<input type="text" class="form-control compute input-credit-cm text-right" value="'+$remaining+'" name="apply_credit_amount['+value['creditmemo_id']+']">' +
+	                   '</td>' +
+	                   '</tr>';
+			});
+			$(".cm-total-amount").html("PHP "+ roundNumber($total_credit));
+			$(".cm-total-applied").html("PHP "+ roundNumber($total_applied_credit));
+			$(".amount-input-cm").html("PHP "+roundNumber($total_credit - $total_applied_credit));
+		}
+		else
+		{
+			$html = "<tr><td class='text-center' colspan='5'>NO AVAILABLE CREDIT</td></tr>";
+
+		}
+		$(".credit-for-payment").prepend($html);
+		$("#modal_credit").modal("show");
+	});
 }
 function submit_done(data)
 {
