@@ -4,19 +4,19 @@ var dataset_from_browser = null;
 var sir_id = "";  
 function receive_payment_transaction()
 {
-	init();
+    init();
 
-	function init()
-	{
-		$(document).ready(function()
-		{
-			document_ready();
-		});
-	}
-	function document_ready()
-	{
+    function init()
+    {
+        $(document).ready(function()
+        {
+            document_ready();
+        });
+    }
+    function document_ready()
+    {
 
-	}
+    }
 }
 function rp_edit_submit()
 {
@@ -88,6 +88,22 @@ function rp_edit_submit()
                 values["rpline_txn_type"][index] = $(el).val();
             });
         }
+        else if(field.name == "rp_cm_id[]") 
+        {
+            values["rp_cm_id"] = {};
+            $('input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["rp_cm_id"][index] = $(el).val();
+            });
+        }
+        else if(field.name == "rp_cm_amount[]") 
+        {
+            values["rp_cm_amount"] = {};
+            $('input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["rp_cm_amount"][index] = $(el).val();
+            });
+        }
         else
         {
             values[field.name] = field.value;
@@ -106,6 +122,10 @@ function rp_edit_submit()
 
     customer_info['rp_ref_name'] = "";
     customer_info['rp_ref_id'] = 0;
+    
+    customer_info['rp_credit_id'] = values['rp_cm_id'];
+    customer_info['rp_credit_amount'] = values['rp_cm_amount'];
+    
 
     var rp_id =values['rp_id'];
     var payment_line = values['line_is_checked'];
@@ -144,11 +164,11 @@ function rp_edit_submit()
 }
 function receive_payment_submit()
 {
-	var values = {};
+    var values = {};
 
     $.each($('.form-receive-payment').serializeArray(), function(i, field) 
-    {    	
-    	if(field.name == "line_is_checked[]") 
+    {       
+        if(field.name == "line_is_checked[]") 
         {
             values["line_is_checked"] = {};
             $('.tbody-item input[name="'+field.name+'"]').each(function(index, el) 
@@ -170,7 +190,7 @@ function receive_payment_submit()
             $('.tbody-item input[name="'+field.name+'"]').each(function(index, el) 
             {
                 values["rpline_txn_id"][index] = $(el).val();
-            });        	
+            });         
         }
         else if(field.name == "rpline_reference_name[]") 
         {
@@ -212,6 +232,22 @@ function receive_payment_submit()
                 values["rpline_txn_type"][index] = $(el).val();
             });
         }
+        else if(field.name == "rp_cm_id[]") 
+        {
+            values["rp_cm_id"] = {};
+            $('input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["rp_cm_id"][index] = $(el).val();
+            });
+        }
+        else if(field.name == "rp_cm_amount[]") 
+        {
+            values["rp_cm_amount"] = {};
+            $('input[name="'+field.name+'"]').each(function(index, el) 
+            {
+                values["rp_cm_amount"][index] = $(el).val();
+            });
+        }
         else
         {
             values[field.name] = field.value;
@@ -231,7 +267,9 @@ function receive_payment_submit()
     customer_info['rp_ref_name'] = values['cm_id'] ? 'credit_memo' : '';
     customer_info['rp_ref_id'] = values['cm_id'] ? values['cm_id'] : 0;
 
-    console.log(customer_info);
+    customer_info['rp_credit_id'] = values['rp_cm_id'];
+    customer_info['rp_credit_amount'] = values['rp_cm_amount'];
+    // console.log(customer_info);
     console.log(values);
 
     var payment_line = values['line_is_checked'];
@@ -239,31 +277,31 @@ function receive_payment_submit()
     var insert_line = {};
     if(count(payment_line) > 0)
     {
-    	$.each(payment_line, function(key, val)
-    	{	
-    		if(val == 1)
-    		{	
-    			insert_line[key] 				 = {};
-    			insert_line[key]['rpline_reference_name'] = values['rpline_txn_type'][key];
-    			insert_line[key]['rpline_reference_id'] = values['rpline_txn_id'][key];
-    			insert_line[key]['rpline_amount'] = values['rpline_amount'][key];
-    		}
-    	});
+        $.each(payment_line, function(key, val)
+        {   
+            if(val == 1)
+            {   
+                insert_line[key]                 = {};
+                insert_line[key]['rpline_reference_name'] = values['rpline_txn_type'][key];
+                insert_line[key]['rpline_reference_id'] = values['rpline_txn_id'][key];
+                insert_line[key]['rpline_amount'] = values['rpline_amount'][key];
+            }
+        });
     }
 
     insert_rp_submit(customer_info, insert_line, function(rp_id)
     {
-    	insert_manual_rp(rp_id, function(res)
-    	{
-    		if(res == "success")
-    		{
-    			toastr.success("Success");
-    			setInterval(function()
-    			{
-    				location.reload();
-    			},2000)
-    		}
-    	});
+        insert_manual_rp(rp_id, function(res)
+        {
+            if(res == "success")
+            {
+                toastr.success("Success");
+                setInterval(function()
+                {
+                    location.reload();
+                },2000)
+            }
+        });
     });
 
 }
