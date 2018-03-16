@@ -139,6 +139,19 @@
                        <div class="tab-content panel-body form-horizontal tablet-container">
                             <div id="invoice" class="tab-pane fade in active">
                                <div class="form-group">
+                                    <div class="col-md-12 text-center">
+                                        <label class="radio-inline">
+                                          <input type="radio" name="credit_type" checked value="retain_credit">Retain as Available Credit
+                                        </label>
+                                        <label class="radio-inline hidden">
+                                          <input type="radio" name="credit_type">Give A Refund
+                                        </label>
+                                        <label class="radio-inline">
+                                          <input type="radio" name="credit_type" value="apply">Apply to Invoice
+                                        </label>
+                                    </div>
+                               </div>
+                               <div class="form-group">
                                     <div class="col-md-12">
                                         <input type="hidden" class="form-control input-sm customer-email" name="cm_customer_email" placeholder="E-Mail (Separate E-Mails with comma)"  value=""/>
                                         <select class="form-control droplist-customer customer-select-list input-sm pull-left" name="cm_customer_id" data-placeholder="Select a Customer" required>

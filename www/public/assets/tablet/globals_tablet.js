@@ -68,8 +68,7 @@ function query_create_all_table(callback)
     query[7] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo (cm_id INTEGER PRIMARY KEY AUTOINCREMENT, cm_customer_id INTEGER NULL, cm_shop_id INTEGER NULL, cm_ar_acccount INTEGER NULL,cm_customer_email VARCHAR(255)  NULL, cm_date date NULL, cm_message VARCHAR(255)  NULL, cm_memo VARCHAR(255)  NULL, cm_amount REAL NULL, date_created DATETIME NULL, cm_type TINYINT NULL default '0', cm_used_ref_name VARCHAR(255) NULL default 'returns', cm_used_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[8] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_line (cmline_id INTEGER PRIMARY KEY AUTOINCREMENT, cmline_cm_id INTEGER  NULL, cmline_service_date datetime NULL, cmline_um INTEGER NULL, cmline_item_id INTEGER NULL, cmline_description VARCHAR(255)  NULL, cmline_qty INTEGER NULL, cmline_rate REAL NULL, cmline_amount REAL NULL, created_at DATETIME, updated_at DATETIME)";
     query[9] = "CREATE TABLE IF NOT EXISTS tbl_customer (customer_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER  NULL, country_id INTEGER NULL, title_name VARCHAR(100)  NULL, first_name VARCHAR(255)  NULL, middle_name VARCHAR(255)  NULL, last_name VARCHAR(255)  NULL, suffix_name VARCHAR(100)  NULL, email VARCHAR(255)  NULL, password text  NULL, company VARCHAR(255)  default NULL, b_day date NULL default '0000-00-00', profile VARCHAR(255)  default NULL, IsWalkin TINYINT NULL, created_date date default NULL, archived TINYINT NULL, ismlm INTEGER NULL default '0', mlm_username VARCHAR(255)  default NULL, tin_number VARCHAR(255)  default NULL,  is_corporate TINYINT NULL default '0', approved TINYINT NULL default '1', created_at DATETIME, updated_at DATETIME, customer_phone VARCHAR(255) NULL, customer_mobile VARCHAR(255) NULL, customer_fax VARCHAR(255) NULL, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[10] = "CREATE TABLE IF NOT EXISTS tbl_customer_address (customer_address_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, country_id INTEGER  NULL, customer_state VARCHAR(255)  NULL, customer_city VARCHAR(255)  NULL,  customer_zipcode VARCHAR(255)  NULL, customer_street text  NULL, purpose VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
-    query[11] = "CREATE TABLE IF NOT EXISTS tbl_customer_attachment (customer_attachment_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, customer_attachment_path text  NULL, customer_attachment_name VARCHAR(255)  NULL, customer_attachment_extension VARCHAR(255)  NULL, mime_type VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
+    query[10] = "CREATE TABLE IF NOT EXISTS tbl_customer_address (customer_address_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, country_id INTEGER  NULL, customer_state VARCHAR(255)  NULL, customer_city VARCHAR(255)  NULL,  customer_zipcode VARCHAR(255)  NULL, customer_street text  NULL, purpose VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";    query[11] = "CREATE TABLE IF NOT EXISTS tbl_customer_attachment (customer_attachment_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, customer_attachment_path text  NULL, customer_attachment_name VARCHAR(255)  NULL, customer_attachment_extension VARCHAR(255)  NULL, mime_type VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
     /*INVOICE*/
     query[12] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice (inv_id INTEGER PRIMARY KEY AUTOINCREMENT, new_inv_id INTEGER NULL, inv_shop_id INTEGER NULL, inv_customer_id INTEGER NULL, inv_customer_email VARCHAR(255)  NULL, inv_customer_billing_address VARCHAR(255)  NULL, inv_terms_id TINYINT NULL, inv_date DATE NULL, inv_due_date DATE NULL, inv_message VARCHAR(255)  NULL, inv_memo VARCHAR(255)  NULL, inv_discount_type VARCHAR(255)  NULL, inv_discount_value INTEGER NULL, ewt REAL NULL, taxable TINYINT NULL, inv_subtotal_price REAL NULL,  inv_overall_price REAL NULL, inv_payment_applied REAL NULL, inv_is_paid TINYINT NULL, inv_custom_field_id INTEGER NULL, date_created DATETIME NULL, credit_memo_id INTEGER NULL default '0', is_sales_receipt TINYINT NULL, sale_receipt_cash_account INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255)  DEFAULT 'new' NULL)"; 
     query[13] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice_line (invline_id INTEGER PRIMARY KEY AUTOINCREMENT, invline_inv_id INTEGER  NULL, invline_service_date DATE NULL, invline_item_id INTEGER NULL, invline_description VARCHAR(255)  NULL, invline_um INTEGER NULL, invline_qty INTEGER NULL, invline_rate REAL NULL, taxable TINYINT NULL, invline_discount REAL NULL, invline_discount_type VARCHAR(255) NULL, invline_discount_remark VARCHAR(255) NULL, invline_amount REAL NULL, date_created DATETIME NULL, invline_ref_name VARCHAR(255)  NULL, invline_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME)";
@@ -114,6 +113,8 @@ function query_create_all_table(callback)
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
     query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255), isDefault TINYINT,archived TINYINT)";
     query[48] = "CREATE TABLE IF NOT EXISTS tbl_invoice_log (record_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, transaction_customer_id INTEGER, transaction_name VARCHAR(255) NULL, transaction_id INTEGER NULL, transaction_amount REAL NULL, date_created DATETIME NULL)";
+    query[49] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_applied_payment (id INTEGER PRIMARY KEY AUTOINCREMENT, cm_id INTEGER, applied_ref_name VARCHAR(255) NULL, applied_ref_id INTEGER NULL, applied_amount REAL NULL, created_at DATETIME NULL)";
+    query[50] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_credit (rp_credit_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_id INTEGER, credit_reference_name VARCHAR(255) NULL, credit_reference_id INTEGER NULL, credit_amount REAL NULL, date_created DATETIME NULL)";
 
     var total = query.length;
     var ctr = 1;
@@ -3117,7 +3118,7 @@ function global_sync(type = '')
                                             // {
                                                 $.ajax(
                                                 {
-                                                    url: 'http://digimahouse.com/tablet/get_data',
+                                                    url: 'http://pis.digimahouse.test/tablet/get_data',
                                                     type : "POST",
                                                     crossDomain : true,
                                                     dataType: "json",
@@ -3154,7 +3155,7 @@ function global_sync(type = '')
                                     }
                                     else
                                     {
-                                        alert(123);
+                                        alert("You have no any transaction to sync");
                                     }
                                 });
                             });
@@ -3167,7 +3168,7 @@ function global_sync(type = '')
                     console.log(JSON.stringify(data));
                     $.ajax(
                     {
-                        url: 'http://digimahouse.com/tablet/get_data',
+                        url: 'http://pis.digimahouse.test/tablet/get_data',
                         type : "POST",
                         crossDomain : true,
                         dataType: "json",

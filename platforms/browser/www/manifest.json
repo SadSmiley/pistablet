@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "PIS Tablet",
+  "short_name": "PIS Tablet",
+  "version": "com.digimawebsolutions.pis",
+  "description": "Exclusive Application for Digimahouse PIS",
+  "author": "Digima Web Solutions",
+  "icons": [],
+  "start_url": "index.html"
+}
