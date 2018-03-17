@@ -4,8 +4,8 @@ var sync_key = 0;
 var table_sync_key = 0;
 var current_table = "";
 var all_tbl_name = [];
-var shop_id = 92;  
-var $url = "http://pis.digimahouse.com";
+var shop_id = 70;  
+var $url = "http://pis.digimahouse.test";
 function sync_data()
 {
 	init();
@@ -397,7 +397,7 @@ function sync_data()
         query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NOT NULL, rpline_reference_name VARCHAR(255)  NOT NULL, rpline_reference_id INTEGER NOT NULL, rpline_amount REAL(8,2) NOT NULL, created_at DATETIME, updated_at DATETIME)";
         query[33] = "CREATE TABLE IF NOT EXISTS tbl_settings ( settings_id INTEGER PRIMARY KEY AUTOINCREMENT, settings_key VARCHAR(255)  NOT NULL, settings_value longtext , settings_setup_done TINYINT NOT NULL default '0', shop_id INTEGER  NOT NULL, created_at DATETIME, updated_at DATETIME)";
         query[34] = "CREATE TABLE IF NOT EXISTS tbl_sir_cm_item (s_cm_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sc_sir_id INTEGER  NOT NULL, sc_item_id INTEGER NOT NULL, sc_item_qty INTEGER NOT NULL, sc_physical_count INTEGER NOT NULL, sc_item_price REAL NOT NULL, sc_status INTEGER NOT NULL, sc_is_updated TINYINT NOT NULL, sc_infos REAL NOT NULL, created_at DATETIME, updated_at DATETIME)";
-    query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NULL, inventory_sir_id INTEGER  NULL, sir_inventory_count INTEGER NULL, sir_inventory_ref_name VARCHAR(255)  NULL, sir_inventory_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, is_bundled_item TINYINT, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+        query[35] = "CREATE TABLE IF NOT EXISTS tbl_sir_inventory ( sir_inventory_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_item_id INTEGER  NULL, inventory_sir_id INTEGER  NULL, sir_inventory_count INTEGER NULL, sir_inventory_ref_name VARCHAR(255)  NULL, sir_inventory_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, is_bundled_item TINYINT, get_status VARCHAR(255) DEFAULT 'new' NULL)";
         query[36] = "CREATE TABLE IF NOT EXISTS tbl_sir_item ( sir_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER  NOT NULL,  item_id INTEGER  NOT NULL, item_qty INTEGER NOT NULL, archived TINYINT NOT NULL default '0', related_um_type VARCHAR(255)  NOT NULL, total_issued_qty INTEGER NOT NULL default '0', um_qty INTEGER NOT NULL, sold_qty INTEGER NOT NULL, remaining_qty INTEGER NOT NULL, physical_count INTEGER NOT NULL, status VARCHAR(255)  NOT NULL, loss_amount decimal(8,2) NOT NULL, sir_item_price REAL NOT NULL, is_updated TINYINT NOT NULL default '0', infos REAL NOT NULL default '0', created_at DATETIME, updated_at DATETIME)";
         query[37] = "CREATE TABLE IF NOT EXISTS tbl_sir_sales_report (sir_sales_report_id INTEGER PRIMARY KEY AUTOINCREMENT, sir_id INTEGER NOT NULL, report_data TEXT NOT NULL, report_created DATETIME NOT NULL, created_at DATETIME, updated_at DATETIME)";
         query[38] = "CREATE TABLE IF NOT EXISTS tbl_terms (terms_id INTEGER PRIMARY KEY AUTOINCREMENT, terms_shop_id INTEGER NOT NULL,  terms_name VARCHAR(255)  NOT NULL, terms_no_of_days INTEGER NOT NULL , archived TINYINT NOT NULL, created_at DATETIME NOT NULL default '0000-00-00 00:00:00', updated_at DATETIME NOT NULL default '0000-00-00 00:00:00')";
@@ -411,8 +411,8 @@ function sync_data()
         query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
         query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255), isDefault TINYINT,archived TINYINT)";
         query[48] = "CREATE TABLE IF NOT EXISTS tbl_invoice_log (record_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, transaction_customer_id INTEGER, transaction_name VARCHAR(255) NULL, transaction_id INTEGER NULL, transaction_amount REAL NULL, date_created DATETIME NULL)";
-        query[49] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_applied_payment (id INTEGER PRIMARY KEY AUTOINCREMENT, cm_id INTEGER, applied_ref_name VARCHAR(255) NULL, applied_ref_id INTEGER NULL, applied_amount REAL NULL, created_at DATETIME NULL)";
-        query[50] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_credit (rp_credit_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_id INTEGER, credit_reference_name VARCHAR(255) NULL, credit_reference_id INTEGER NULL, credit_amount REAL NULL, date_created DATETIME NULL)";
+        query[49] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_applied_payment (id INTEGER PRIMARY KEY AUTOINCREMENT, cm_id INTEGER, applied_ref_name VARCHAR(255) NULL, applied_ref_id INTEGER NULL, applied_amount REAL NULL, created_at DATETIME NULL, get_status VARCHAR(255) default 'new' NULL)";
+        query[50] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_credit (rp_credit_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_id INTEGER, credit_reference_name VARCHAR(255) NULL, credit_reference_id INTEGER NULL, credit_amount REAL NULL, date_created DATETIME NULL, get_status VARCHAR(255) default 'new' NULL)";
 
         onload_create_table(query);
 	}

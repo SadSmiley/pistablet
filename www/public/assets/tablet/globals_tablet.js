@@ -5,7 +5,7 @@ var db = openDatabase("my168shop", "1.0", "Address Book", 200000);
 var query = "";
 var dataset_from_browser = null;
 var global_data = null;
-var $url = "http://pis.digimahouse.com";
+var $url = "http://pis.digimahouse.test";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -113,8 +113,8 @@ function query_create_all_table(callback)
     query[46] = "CREATE TABLE IF NOT EXISTS tbl_agent_logon (login_id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id INTEGER, selected_sir INTEGER NULL, date_login DATETIME)";
     query[47] = "CREATE TABLE IF NOT EXISTS tbl_payment_method (payment_method_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, payment_name VARCHAR(255), isDefault TINYINT,archived TINYINT)";
     query[48] = "CREATE TABLE IF NOT EXISTS tbl_invoice_log (record_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER, transaction_customer_id INTEGER, transaction_name VARCHAR(255) NULL, transaction_id INTEGER NULL, transaction_amount REAL NULL, date_created DATETIME NULL)";
-    query[49] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_applied_payment (id INTEGER PRIMARY KEY AUTOINCREMENT, cm_id INTEGER, applied_ref_name VARCHAR(255) NULL, applied_ref_id INTEGER NULL, applied_amount REAL NULL, created_at DATETIME NULL)";
-    query[50] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_credit (rp_credit_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_id INTEGER, credit_reference_name VARCHAR(255) NULL, credit_reference_id INTEGER NULL, credit_amount REAL NULL, date_created DATETIME NULL)";
+    query[49] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_applied_payment (id INTEGER PRIMARY KEY AUTOINCREMENT, cm_id INTEGER, applied_ref_name VARCHAR(255) NULL, applied_ref_id INTEGER NULL, applied_amount REAL NULL, created_at DATETIME NULL, get_status VARCHAR(255) default 'new' NULL)";
+    query[50] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_credit (rp_credit_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_id INTEGER, credit_reference_name VARCHAR(255) NULL, credit_reference_id INTEGER NULL, credit_amount REAL NULL, date_created DATETIME NULL, get_status VARCHAR(255) default 'new' NULL)";
 
     var total = query.length;
     var ctr = 1;
@@ -2768,9 +2768,11 @@ function update_credit_memo(key)
             {
                 db.transaction(function(tx)
                 {
+                    console.log("applied "+applied_amount);
+                    console.log("cm "+cm_amount);
                     if(applied_amount == cm_amount)
                     {
-                        var update_query = "UPDATE tbl_credit_memo SET cm_status = 1 WHERE cm_id = key";
+                        var update_query = "UPDATE tbl_credit_memo SET cm_status = 1 WHERE cm_id = "+key;
                         tx.executeSql(update_query, [], function(tx, results)
                         {
                             console.log("success");
@@ -2787,7 +2789,7 @@ function get_amount_credit_applied(key, callback)
     {
         db.transaction(function(tx)
         {
-            var select_query = "SELECT sum('applied_amount') as applied_cm_amount FROM tbl_credit_memo_applied_payment "+
+            var select_query = "SELECT sum(applied_amount) as applied_cm_amount FROM tbl_credit_memo_applied_payment "+
                                 " WHERE cm_id = "+key;
             tx.executeSql(select_query, [], function(tx, results)
             {
@@ -3240,7 +3242,7 @@ function global_sync(type = '')
             data['sir_data'] = {};
             var ctr_length = count(logs);
             var ctr = 0;
-            get_other_transaction(function(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address)
+            get_other_transaction(function(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address, cm_applied, rp_applied)
             {
                 data['sir_inventory'] = sir_inventory;
                 data['manual_inv'] = manual_inv;
@@ -3249,6 +3251,8 @@ function global_sync(type = '')
                 data['sir_data'] = sir_data;
                 data['agent_data'] = agent_data;
                 data['customer'] = customer;
+                data['cm_applied'] = cm_applied;
+                data['rp_applied'] = rp_applied;
                 data['customer_address'] = customer_address;
                 if(ctr_length != 0)
                 {
@@ -3334,7 +3338,7 @@ function global_sync(type = '')
                                     }
                                     else
                                     {
-                                        alert("You have no any transaction to sync");
+                                        // alert("You have no any transaction to sync");
                                     }
                                 });
                             });
@@ -3400,12 +3404,58 @@ function get_other_transaction(callback)
                         {
                             get_data_customer(function (customer, customer_address)
                             {
-                                callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address);
+                                get_cm_applied(function(cm_applied)
+                                {
+                                    get_rp_applied(function(rp_applied)
+                                    {
+                                        callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address, cm_applied, rp_applied);
+                                    });
+                                });
                             });
                         });
                     });
                 });
             });
+        });
+    });
+}
+function get_cm_applied(callback)
+{ 
+    db.transaction(function(tx)
+    {
+        var select_query = 'SELECT * FROM tbl_credit_memo_applied_payment ' +
+                           'WHERE get_status = "new"'; 
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows);
+            }
+            else
+            {
+                var res = null;
+                callback(res);
+            }
+        });
+    });
+}
+function get_rp_applied(callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query = 'SELECT * FROM tbl_receive_payment_credit ' +
+                           'WHERE get_status = "new"'; 
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows);
+            }
+            else
+            {
+                var res = null;
+                callback(res);
+            }
         });
     });
 }
