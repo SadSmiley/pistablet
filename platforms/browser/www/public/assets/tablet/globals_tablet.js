@@ -5,7 +5,7 @@ var db = openDatabase("my168shop", "1.0", "Address Book", 200000);
 var query = "";
 var dataset_from_browser = null;
 var global_data = null;
-var $url = "http://pis.digimahouse.test";
+var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -65,7 +65,7 @@ function query_create_all_table(callback)
     query[5] = "CREATE TABLE IF NOT EXISTS tbl_chart_of_account (account_id INTEGER PRIMARY KEY AUTOINCREMENT,  account_shop_id INTEGER, account_type_id INTEGER,account_number VARCHAR(255), account_name VARCHAR(255), account_full_name VARCHAR(255), account_description VARCHAR(255), account_parent_id INTEGER NULl, account_sublevel INTEGER, account_balance REAL, account_open_balance REAL, account_open_balance_date DATE, is_tax_account TINYINT, account_tax_code_id INTEGER, archived TINYINT, account_timecreated DATETIME, account_protected TINYINT, account_code VARCHAR(255), created_at DATETIME, updated_at DATETIME)";
     query[6] = "CREATE TABLE IF NOT EXISTS tbl_country (country_id INTEGER PRIMARY KEY AUTOINCREMENT, country_code VARCHAR(255) NULL, country_name VARCHAR(255) NULL, created_at DATETIME, updated_at DATETIME)";
     /*CREDIT MEMO*/
-    query[7] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo (cm_id INTEGER PRIMARY KEY AUTOINCREMENT, cm_customer_id INTEGER NULL, cm_shop_id INTEGER NULL, cm_ar_acccount INTEGER NULL,cm_customer_email VARCHAR(255)  NULL, cm_date date NULL, cm_message VARCHAR(255)  NULL, cm_memo VARCHAR(255)  NULL, cm_amount REAL NULL, date_created DATETIME NULL, cm_type TINYINT NULL default '0', cm_used_ref_name VARCHAR(255) NULL default 'returns', cm_used_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[7] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo (cm_id INTEGER PRIMARY KEY AUTOINCREMENT, cm_customer_id INTEGER NOT NULL, cm_shop_id INTEGER NOT NULL, cm_ar_acccount INTEGER NOT NULL,cm_customer_email VARCHAR(255)  NOT NULL, cm_date date NOT NULL, cm_message VARCHAR(255)  NOT NULL, cm_memo VARCHAR(255)  NOT NULL, cm_amount REAL NOT NULL, date_created DATETIME NOT NULL, cm_type TINYINT NOT NULL default '0', cm_used_ref_name VARCHAR(255) NOT NULL default 'returns', cm_used_ref_id INTEGER NOT NULL, cm_status TINYINT default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[8] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_line (cmline_id INTEGER PRIMARY KEY AUTOINCREMENT, cmline_cm_id INTEGER  NULL, cmline_service_date datetime NULL, cmline_um INTEGER NULL, cmline_item_id INTEGER NULL, cmline_description VARCHAR(255)  NULL, cmline_qty INTEGER NULL, cmline_rate REAL NULL, cmline_amount REAL NULL, created_at DATETIME, updated_at DATETIME)";
     query[9] = "CREATE TABLE IF NOT EXISTS tbl_customer (customer_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER  NULL, country_id INTEGER NULL, title_name VARCHAR(100)  NULL, first_name VARCHAR(255)  NULL, middle_name VARCHAR(255)  NULL, last_name VARCHAR(255)  NULL, suffix_name VARCHAR(100)  NULL, email VARCHAR(255)  NULL, password text  NULL, company VARCHAR(255)  default NULL, b_day date NULL default '0000-00-00', profile VARCHAR(255)  default NULL, IsWalkin TINYINT NULL, created_date date default NULL, archived TINYINT NULL, ismlm INTEGER NULL default '0', mlm_username VARCHAR(255)  default NULL, tin_number VARCHAR(255)  default NULL,  is_corporate TINYINT NULL default '0', approved TINYINT NULL default '1', created_at DATETIME, updated_at DATETIME, customer_phone VARCHAR(255) NULL, customer_mobile VARCHAR(255) NULL, customer_fax VARCHAR(255) NULL, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[10] = "CREATE TABLE IF NOT EXISTS tbl_customer_address (customer_address_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, country_id INTEGER  NULL, customer_state VARCHAR(255)  NULL, customer_city VARCHAR(255)  NULL,  customer_zipcode VARCHAR(255)  NULL, customer_street text  NULL, purpose VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";    query[11] = "CREATE TABLE IF NOT EXISTS tbl_customer_attachment (customer_attachment_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, customer_attachment_path text  NULL, customer_attachment_name VARCHAR(255)  NULL, customer_attachment_extension VARCHAR(255)  NULL, mime_type VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
@@ -2255,7 +2255,7 @@ function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_
         insert_row['created_at'] = get_date_now();
         insert_row['cm_ar_acccount'] = 0;
         insert_row['cm_status'] = 0;
-        insert_row['cm_used_ref_name'] = cm_customer_info['cm_type'];
+        insert_row['cm_used_ref_name'] = cm_customer_info['cm_used_ref_name'];
         insert_row['cm_used_ref_id'] = 0;
 
         db.transaction(function(tx)
@@ -2744,6 +2744,20 @@ function insert_applied_credits(_rp_credit_id, _rp_credit_amount, rp_id)
         });
     }
 }
+function update_cm_refname(cm_id, refname = '', callback)
+{
+    if(refname)
+    {
+        db.transaction(function(tx)
+        {
+            var update_query = "UPDATE tbl_credit_memo SET cm_used_ref_name = '"+refname+"' WHERE cm_id = "+cm_id;
+            tx.executeSql(update_query, [], function(tx, results)
+            {
+                callback("success");
+            });
+        });
+    }
+}
 function update_credit_memo(key)
 {
     if(key)
@@ -2757,7 +2771,7 @@ function update_credit_memo(key)
                     if(applied_amount == cm_amount)
                     {
                         var update_query = "UPDATE tbl_credit_memo SET cm_status = 1 WHERE cm_id = key";
-                        tx.executeSql(select_query, [], function(tx, results)
+                        tx.executeSql(update_query, [], function(tx, results)
                         {
                             console.log("success");
                         });
@@ -3372,25 +3386,18 @@ function global_sync(type = '')
 }
 function get_other_transaction(callback)
 {
-                            alert(123);
     get_data_manual_transaction('tbl_manual_receive_payment', function(manual_rp)
     {
-                            alert(456);
         get_data_manual_transaction('tbl_manual_credit_memo', function(manual_cm)
         {
-                            alert(789);
             get_data_manual_transaction('tbl_manual_invoice', function(manual_inv)
             {
-                            alert(987);
                 get_data_sir_inventory(function(sir_inventory)
                 {
-                            alert(654);
                     get_data_sir(function(sir_data)
                     {
-                            alert(321);
                         get_data_agent(function(agent_data)
                         {
-                            alert(174);
                             get_data_customer(function (customer, customer_address)
                             {
                                 callback(sir_inventory, manual_inv, manual_rp, manual_cm, sir_data, agent_data, customer, customer_address);

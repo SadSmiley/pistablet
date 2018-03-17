@@ -604,10 +604,10 @@ function credit_memo_submit()
     customer_info["cm_memo"] = values["cm_memo"];
     customer_info["cm_amount"] = values["overall_price"];
     customer_info["cm_type"] = 1;
-    customer_info["cm_used_ref_name"] = value['credit_type'];
+    customer_info["cm_used_ref_name"] = values['credit_type'];
     customer_info["cm_status"] = 0;
     // console.log("Customer Info");
-    // console.log(customer_info);
+    console.log(customer_info["cm_used_ref_name"]);
     var item_info = {};
     var _items = values["cmline_item_id"];
     if(_items)
@@ -643,7 +643,17 @@ function credit_memo_submit()
                     insert_manual_cm(cm_id, function(result_update)
                     {
                         toastr.success("Success");
-                        cm_type_modal(cm_id);
+                        if(customer_info["cm_used_ref_name"] == 'apply')
+                        {
+                          apply_to_invoice("invoice_tablet", cm_id);
+                        }
+                        else
+                        {
+                            setInterval(function()
+                            {
+                                location.reload();
+                            },2000);
+                        }
                     })
                 }
             });
@@ -1015,6 +1025,10 @@ function apply_to_invoice(type, cm_id)
                         if (results.rows.length <= 0) 
                         {
                             $('.tbody-item').html(append_default);
+                            update_cm_refname(cm_id, "retain_credit", function(res)
+                            {
+                                location.reload();                           
+                            });
                         }
                         else
                         {
@@ -1029,6 +1043,23 @@ function apply_to_invoice(type, cm_id)
                             $('.cm-id').val(cm_id);
                             
                             $('.tbody-item').html('');
+                            $('.load-applied-credits').html('');
+                            $html = '<li class="payment-li" style="list-style: none;">'+
+                              '<div class="form-group row clearfix">'+
+                                  '<div class="col-sm-1">' +
+                                     '<a href="javascript:" class="remove-credit" credit-id="'+cm_id+'"> <i class="fa fa-times-circle" style="color:red"></i></a> ' +
+                                     '<input type="hidden" name="rp_cm_id[]" value="'+cm_id+'">'+
+                                  '</div>'+
+                                  '<div class="col-sm-4">'+
+                                      cm_id +
+                                  '</div>'+
+                                  '<div class="col-sm-5 text-right">PHP '+
+                                      cm['cm_amount'] +
+                                   '</div>' +
+                                     '<input type="hidden" name="rp_cm_amount[]" class="compute-applied-credit" value="'+cm['cm_amount']+'">'+
+                              '</div>' +
+                              '</li>';
+                            $('.load-applied-credits').html($html);
                             var ctr = 0;
                             var total_amount = 0;
                             $.each(results.rows, function(index, val) 
@@ -1064,6 +1095,8 @@ function apply_to_invoice(type, cm_id)
 
                                     $('.tbody-item').append(append);
                                     $('.amount-to-apply').val(total_amount);
+                                    $(".credit-amount-to-apply").val(cm['cm_amount']);
+                                    $(".credit-amount").val(cm['cm_amount']);
                                     $('.amount-apply').html(total_amount);
                                 });                                
                             });
