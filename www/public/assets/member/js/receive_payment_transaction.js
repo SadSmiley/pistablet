@@ -162,6 +162,13 @@ function rp_edit_submit()
     });
 
 }
+function cancel_rp_submit(cm_id)
+{
+    update_cm_refname(cm_id, "retain_credit", function(res)
+    {
+        location.reload();                           
+    });
+}
 function receive_payment_submit()
 {
     var values = {};

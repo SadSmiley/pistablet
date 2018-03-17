@@ -1098,6 +1098,7 @@ function apply_to_invoice(type, cm_id)
                                     $(".credit-amount-to-apply").val(cm['cm_amount']);
                                     $(".credit-amount").val(cm['cm_amount']);
                                     $('.amount-apply').html(total_amount);
+                                    $(".btn-cancel-rp-submit").attr("onClick","cancel_rp_submit("+cm_id+")")
                                 });                                
                             });
                         }                           
