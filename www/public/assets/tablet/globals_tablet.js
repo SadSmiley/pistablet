@@ -5,7 +5,7 @@ var db = openDatabase("my168shop", "1.0", "Address Book", 200000);
 var query = "";
 var dataset_from_browser = null;
 var global_data = null;
-var $url = "http://pis.digimahouse.test";
+var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);

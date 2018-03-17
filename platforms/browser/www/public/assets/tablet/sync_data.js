@@ -4,8 +4,8 @@ var sync_key = 0;
 var table_sync_key = 0;
 var current_table = "";
 var all_tbl_name = [];
-var shop_id = 70;  
-var $url = "http://pis.digimahouse.test";
+var shop_id = 92;  
+var $url = "http://pis.digimahouse.com";
 function sync_data()
 {
 	init();
