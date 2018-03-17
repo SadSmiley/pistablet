@@ -1413,6 +1413,7 @@ function get_inv_qty(item_id,invoice_id,  callback)
         var query = 'SELECT sum(sir_inventory_count) as inv_qty FROM tbl_sir_inventory WHERE sir_inventory_ref_name = "invoice" ' + 
                     ' AND sir_item_id = ' + item_id +
                     ' AND sir_inventory_ref_id = ' + invoice_id;
+                    console.log(query);
         tx.executeSql(query, [], function(tx, dtrow_inv_inventory)
         {
             if(dtrow_inv_inventory.rows[0]['inv_qty'])
@@ -1998,6 +1999,11 @@ function edit_invoice(inv_id)
     set_session('inv_id',inv_id);
     location.href = '../agent_transaction/invoice/invoice_transaction.html';
 }
+function edit_sales_receipt(inv_id)
+{
+    set_session('inv_id',inv_id);
+    location.href = '../agent_transaction/sales_receipt/sales_receipt_transaction.html';
+}
 function view_invoice(inv_id)
 {
     set_session('inv_id_print',inv_id);
@@ -2099,7 +2105,7 @@ function update_invoice_submit(invoice_id, customer_info, item_info, callback)
                         update_inv['inv_customer_billing_address']  = customer_info['inv_customer_billing_address'];
                         update_inv['inv_terms_id']                  = customer_info['inv_terms_id'];
                         update_inv['inv_date']                      = customer_info['inv_date'];
-                        update_inv['inv_due_date']                  = customer_info['inv_due_date'];
+                        update_inv['inv_due_date']                  = customer_info['is_sales_receipt'] == 1 ? customer_info['inv_date'] : customer_info['inv_due_date'] ;
                         update_inv['inv_subtotal_price']            = subtotal;
                         update_inv['ewt']                           = customer_info['ewt'];
                         update_inv['inv_discount_type']             = customer_info['inv_discount_type'];

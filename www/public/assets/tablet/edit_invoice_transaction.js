@@ -56,8 +56,13 @@ function check_if_edit_invoice()
                                     $(".customer-select-list").val(inv['inv_customer_id']).change();
                                     $('.inv-customer-billing').html(inv['inv_customer_billing_address']);
                                     $(".droplist-terms").val(inv['inv_terms_id']).change();
-                                    $(".inv-date-input").val(inv['inv_date']);
                                     $(".inv-due-date-input").val(inv['inv_due_date']);
+                                    if(inv['is_sales_receipt'] == 1)
+                                    {
+                                        $(".droplist-terms").addClass("hidden");
+                                        $(".inv-due-date-input").addClass("hidden");
+                                    }
+                                    $(".inv-date-input").val(inv['inv_date']);
                                     $('.inv-message').val(inv['inv_message']);
                                     $('.inv-memo').val(inv['inv_memo']);
                                     $('.sub-total').html(inv['inv_subtotal_price']);

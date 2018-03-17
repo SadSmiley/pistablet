@@ -575,7 +575,6 @@ function invoice_edit_submit()
     // customer_info["is_sales_receipt"] = values['is_sales_receipt'];
     // customer_info["inv_is_paid"] = values["inv_is_paid"];
 
-    console.log(values);
     invoice_id = values['invoice_id'];
     var _items = values["invline_item_id"];
 
@@ -849,7 +848,7 @@ function invoice_submit()
     customer_info["inv_customer_billing_address"] = values["inv_customer_billing_address"];
     customer_info["new_invoice_id"] = values["new_invoice_id"];
     customer_info["inv_terms_id"] = values["inv_terms_id"];
-    customer_info["inv_due_date"] = values["inv_due_date"];
+    customer_info["inv_due_date"] = values['is_sales_receipt'] == 1 ? customer_info["inv_date"] : values["inv_due_date"];
     customer_info["subtotal_price"] = values["subtotal_price"];
     customer_info["overall_price"] = values["overall_price"];
     customer_info["overall_price_with_return"] = values["overall_price_with_return"];
