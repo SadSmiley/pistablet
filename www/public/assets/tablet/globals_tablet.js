@@ -1726,6 +1726,7 @@ function insert_inv_line(invoice_id, item_info, callback)
 {
     // console.log(item_info);
     var ctr_item_info = count(item_info);
+    console.log("ctr_item_info "+ctr_item_info);
     var ctr = 0;
     $.each(item_info, function(key, value)
     {
@@ -1866,6 +1867,8 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
     {
         convert_array_item_info(item_info, function(new_item)
         {
+            console.log("item_info");
+            console.log(item_info);
             var insert_row = {};
             var ctr_item_info = count(item_info);
             var ctr = 0;
@@ -1874,6 +1877,8 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
             {
                 sign = -1;
             }
+            console.log("new_item");
+            console.log(new_item);
             $.each(new_item, function(key, value)
             {
                 get_item_bundle(value['item_id'], function(bundle_item)
@@ -1914,24 +1919,30 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
                     else
                     {     
                         ctr++;                   
-                        db.transaction(function(tx)
-                        {
-                            insert_row = {};
-                            insert_row['inventory_sir_id'] = sir_id;
-                            insert_row['sir_item_id'] = value['item_id'];
-                            insert_row['sir_inventory_count'] = value['qty'] * sign;
-                            insert_row['sir_inventory_ref_name'] = ref_name;
-                            insert_row['sir_inventory_ref_id'] = ref_id;
-                            insert_row['created_at'] = get_date_now();
-                            insert_row['is_bundled_item'] = 0;
 
-                            var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at,is_bundled_item)' +
-                                         'VALUES ('+insert_row['inventory_sir_id']+','+insert_row['sir_item_id']+','+insert_row['sir_inventory_count']+',"'+insert_row['sir_inventory_ref_name']+'",'+insert_row['sir_inventory_ref_id']+',"'+insert_row['created_at']+'",'+insert_row['is_bundled_item']+')';
-                            
-                            tx.executeSql(insert_row, [], function(tx, results)
+                        check_if_inserted(value['item_id'], ref_name, ref_id, sir_id, function(ctr_inserted)
+                        {
+                            if(ctr_inserted <= 0)
                             {
-                            },
-                            onError);
+                                db.transaction(function(tx)
+                                {
+                                    insert_row = {};
+                                    insert_row['inventory_sir_id'] = sir_id;
+                                    insert_row['sir_item_id'] = value['item_id'];
+                                    insert_row['sir_inventory_count'] = value['qty'] * sign;
+                                    insert_row['sir_inventory_ref_name'] = ref_name;
+                                    insert_row['sir_inventory_ref_id'] = ref_id;
+                                    insert_row['created_at'] = get_date_now();
+                                    insert_row['is_bundled_item'] = 0;
+
+                                    var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at,is_bundled_item) ' +
+                                                 ' VALUES ('+insert_row['inventory_sir_id']+','+insert_row['sir_item_id']+','+insert_row['sir_inventory_count']+',"'+insert_row['sir_inventory_ref_name']+'",'+insert_row['sir_inventory_ref_id']+',"'+insert_row['created_at']+'",'+insert_row['is_bundled_item']+')';
+                                    tx.executeSql(insert_row, [], function(tx, results)
+                                    {
+                                    },
+                                    onError);
+                                });
+                            }
                         });
                     }
 
@@ -1944,6 +1955,20 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
         });
     });
 }
+function check_if_inserted(item_id, refname, ref_id, sir_id, callback)
+{         
+    db.transaction(function(tx)
+    {
+        var select_query = "SELECT * FROM tbl_sir_inventory WHERE inventory_sir_id = "+ sir_id + " and sir_item_id = "+item_id 
+                            + " and sir_inventory_ref_name = '"+refname +"'"
+                            + " and sir_inventory_ref_id = "+ref_id 
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            callback(results.rows.length);
+        },
+        onError);
+    });
+}
 function convert_array_item_info(item_info, callback)
 {
     var ctr_item_info = count(item_info);
@@ -1951,10 +1976,10 @@ function convert_array_item_info(item_info, callback)
     var new_item = {};
     $.each(item_info, function(key, value)
     {
-        ctr++;
         /* Function here */
         get_um_qty(value['um'], function(um_qty)
         {
+            ctr++;
             new_item[key] = {};
             new_item[key]['item_id'] = value['item_id'];
             new_item[key]['qty'] = um_qty * value['quantity'];
