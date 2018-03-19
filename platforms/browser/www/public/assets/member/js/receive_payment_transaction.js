@@ -277,10 +277,11 @@ function receive_payment_submit()
     customer_info['rp_credit_id'] = values['rp_cm_id'];
     customer_info['rp_credit_amount'] = values['rp_cm_amount'];
     // console.log(customer_info);
-    console.log(values);
 
     var payment_line = values['line_is_checked'];
 
+    console.log(payment_line);
+    console.log(count(payment_line));
     var insert_line = {};
     if(count(payment_line) > 0)
     {
@@ -294,21 +295,32 @@ function receive_payment_submit()
                 insert_line[key]['rpline_amount'] = values['rpline_amount'][key];
             }
         });
+        if(count(insert_line) > 0)
+        {
+            insert_rp_submit(customer_info, insert_line, function(rp_id)
+            {
+                insert_manual_rp(rp_id, function(res)
+                {
+                    if(res == "success")
+                    {
+                        toastr.success("Success");
+                        setInterval(function()
+                        {
+                            location.reload();
+                        },2000)
+                    }
+                });
+            });
+        }
+        else
+        {
+            toastr.warning("Please select customer & then select the invoice");
+        }
+    }
+    else
+    {
+        toastr.warning("Please select customer");
     }
 
-    insert_rp_submit(customer_info, insert_line, function(rp_id)
-    {
-        insert_manual_rp(rp_id, function(res)
-        {
-            if(res == "success")
-            {
-                toastr.success("Success");
-                setInterval(function()
-                {
-                    location.reload();
-                },2000)
-            }
-        });
-    });
 
 }
