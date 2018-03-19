@@ -5,6 +5,9 @@ var db = openDatabase("my168shop", "1.0", "Address Book", 200000);
 var query = "";
 var dataset_from_browser = null;
 var global_data = null;
+// FOR LOCAL TEST
+// var $url = "http://pis.digimahouse.test";
+// FOR LIVE TEST
 var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
@@ -67,7 +70,7 @@ function query_create_all_table(callback)
     /*CREDIT MEMO*/
     query[7] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo (cm_id INTEGER PRIMARY KEY AUTOINCREMENT, cm_customer_id INTEGER NOT NULL, cm_shop_id INTEGER NOT NULL, cm_ar_acccount INTEGER NOT NULL,cm_customer_email VARCHAR(255)  NOT NULL, cm_date date NOT NULL, cm_message VARCHAR(255)  NOT NULL, cm_memo VARCHAR(255)  NOT NULL, cm_amount REAL NOT NULL, date_created DATETIME NOT NULL, cm_type TINYINT NOT NULL default '0', cm_used_ref_name VARCHAR(255) NOT NULL default 'returns', cm_used_ref_id INTEGER NOT NULL, cm_status TINYINT default '0', created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[8] = "CREATE TABLE IF NOT EXISTS tbl_credit_memo_line (cmline_id INTEGER PRIMARY KEY AUTOINCREMENT, cmline_cm_id INTEGER  NULL, cmline_service_date datetime NULL, cmline_um INTEGER NULL, cmline_item_id INTEGER NULL, cmline_description VARCHAR(255)  NULL, cmline_qty INTEGER NULL, cmline_rate REAL NULL, cmline_amount REAL NULL, created_at DATETIME, updated_at DATETIME)";
-    query[9] = "CREATE TABLE IF NOT EXISTS tbl_customer (customer_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER  NULL, country_id INTEGER NULL, title_name VARCHAR(100)  NULL, first_name VARCHAR(255)  NULL, middle_name VARCHAR(255)  NULL, last_name VARCHAR(255)  NULL, suffix_name VARCHAR(100)  NULL, email VARCHAR(255)  NULL, password text  NULL, company VARCHAR(255)  default NULL, b_day date NULL default '0000-00-00', profile VARCHAR(255)  default NULL, IsWalkin TINYINT NULL, created_date date default NULL, archived TINYINT NULL, ismlm INTEGER NULL default '0', mlm_username VARCHAR(255)  default NULL, tin_number VARCHAR(255)  default NULL,  is_corporate TINYINT NULL default '0', approved TINYINT NULL default '1', created_at DATETIME, updated_at DATETIME, customer_phone VARCHAR(255) NULL, customer_mobile VARCHAR(255) NULL, customer_fax VARCHAR(255) NULL, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[9] = "CREATE TABLE IF NOT EXISTS tbl_customer (customer_id INTEGER PRIMARY KEY AUTOINCREMENT, shop_id INTEGER  NOT NULL, country_id INTEGER NOT NULL, title_name VARCHAR(100)  NOT NULL, first_name VARCHAR(255)  NOT NULL, middle_name VARCHAR(255)  NOT NULL, last_name VARCHAR(255)  NOT NULL, suffix_name VARCHAR(100)  NOT NULL, email VARCHAR(255)  NOT NULL, password text NULL, company VARCHAR(255)  default NULL, b_day date NULL default '0000-00-00', profile VARCHAR(255)  default NULL, IsWalkin TINYINT NULL, created_date date default NULL, archived TINYINT default '0', ismlm INTEGER default '0', mlm_username VARCHAR(255)  default NULL, tin_number VARCHAR(255)  default NULL,  is_corporate TINYINT NOT NULL default '0', approved TINYINT NOT NULL default '1', created_at DATETIME, updated_at DATETIME, customer_phone VARCHAR(255) NULL,customer_mobile VARCHAR(255) NULL,customer_fax VARCHAR(255) NULL, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[10] = "CREATE TABLE IF NOT EXISTS tbl_customer_address (customer_address_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, country_id INTEGER  NULL, customer_state VARCHAR(255)  NULL, customer_city VARCHAR(255)  NULL,  customer_zipcode VARCHAR(255)  NULL, customer_street text  NULL, purpose VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";    query[11] = "CREATE TABLE IF NOT EXISTS tbl_customer_attachment (customer_attachment_id INTEGER PRIMARY KEY AUTOINCREMENT, customer_id INTEGER  NULL, customer_attachment_path text  NULL, customer_attachment_name VARCHAR(255)  NULL, customer_attachment_extension VARCHAR(255)  NULL, mime_type VARCHAR(255)  NULL, archived TINYINT NULL, created_at DATETIME, updated_at DATETIME)";
     /*INVOICE*/
     query[12] = "CREATE TABLE IF NOT EXISTS tbl_customer_invoice (inv_id INTEGER PRIMARY KEY AUTOINCREMENT, new_inv_id INTEGER NULL, inv_shop_id INTEGER NULL, inv_customer_id INTEGER NULL, inv_customer_email VARCHAR(255)  NULL, inv_customer_billing_address VARCHAR(255)  NULL, inv_terms_id TINYINT NULL, inv_date DATE NULL, inv_due_date DATE NULL, inv_message VARCHAR(255)  NULL, inv_memo VARCHAR(255)  NULL, inv_discount_type VARCHAR(255)  NULL, inv_discount_value INTEGER NULL, ewt REAL NULL, taxable TINYINT NULL, inv_subtotal_price REAL NULL,  inv_overall_price REAL NULL, inv_payment_applied REAL NULL, inv_is_paid TINYINT NULL, inv_custom_field_id INTEGER NULL, date_created DATETIME NULL, credit_memo_id INTEGER NULL default '0', is_sales_receipt TINYINT NULL, sale_receipt_cash_account INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255)  DEFAULT 'new' NULL)"; 
@@ -1578,7 +1581,6 @@ function insert_log(customer_id, transaction_name, transaction_id, transaction_a
                                     data['transaction_amount']+',"'+
                                     get_date_now()+'")';
                 }
-                console.log(query)
                 tx.executeSql(query, [], function(tx, results)
                 {
                     if(record_id == 0)
@@ -1690,7 +1692,7 @@ function insert_invoice_submit(customer_info, item_info, callback)
                                            insert_inv['inv_payment_applied']+', '+
                                            insert_inv['inv_is_paid']+', "'+
                                            insert_inv['created_at']+'")';
-                            console.log(insert_row);
+                            
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                                var invoice_id = results.insertId;
@@ -1820,6 +1822,7 @@ function insert_manual_invoice(invoice_id, callback)
             insert_row['created_at'] = get_date_now();
             var insert_row_query = 'INSERT INTO tbl_manual_invoice (sir_id, inv_id, manual_invoice_date, created_at) ' +
                              ' VALUES ('+insert_row['sir_id']+', '+insert_row['inv_id']+',"'+insert_row['manual_invoice_date']+'", "'+insert_row['created_at']+'")';
+            
             tx.executeSql(insert_row_query, [], function(tx, results)
             {
                 if(results.insertId > 0)
@@ -1924,6 +1927,7 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
 
                             var insert_row = 'INSERT INTO tbl_sir_inventory (inventory_sir_id, sir_item_id, sir_inventory_count, sir_inventory_ref_name,sir_inventory_ref_id,created_at,is_bundled_item)' +
                                          'VALUES ('+insert_row['inventory_sir_id']+','+insert_row['sir_item_id']+','+insert_row['sir_inventory_count']+',"'+insert_row['sir_inventory_ref_name']+'",'+insert_row['sir_inventory_ref_id']+',"'+insert_row['created_at']+'",'+insert_row['is_bundled_item']+')';
+                            
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                             },
@@ -2256,7 +2260,7 @@ function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_
         insert_row['cm_message'] = cm_customer_info['cm_message'];
         insert_row['cm_memo'] = cm_customer_info['cm_memo'];
         insert_row['cm_amount'] = cm_customer_info['cm_amount'];
-        insert_row['cm_type'] = cm_customer_info['cm_type'];
+        insert_row['cm_type'] = cm_customer_info['cm_type'] == "returns" ? 1 : 1;
         insert_row['date_created'] = get_date_now();
         insert_row['created_at'] = get_date_now();
         insert_row['cm_ar_acccount'] = 0;
@@ -3318,19 +3322,26 @@ function global_sync(type = '')
                                                         {
                                                             db.transaction(function(tx)
                                                             {
-                                                                var delete_query = 'DELETE FROM tbl_timestamp';
-                                                                tx.executeSql(delete_query, [], function(txt2,res)
+                                                                if(type == 'confirm')
                                                                 {
-                                                                    var delete_query_agent = 'DELETE FROM tbl_agent_logon';
-                                                                    tx.executeSql(delete_query_agent, [], function(txt22,res2)
+                                                                    location.href = "agent/agent_dashboard.html"; 
+                                                                }
+                                                                else
+                                                                {
+                                                                    var delete_query = 'DELETE FROM tbl_timestamp';
+                                                                    tx.executeSql(delete_query, [], function(txt2,res)
                                                                     {
-                                                                        toastr.success('Successfully Sync');
-                                                                        setInterval(function()
+                                                                        var delete_query_agent = 'DELETE FROM tbl_agent_logon';
+                                                                        tx.executeSql(delete_query_agent, [], function(txt22,res2)
                                                                         {
-                                                                            location.href = '/login.html';
-                                                                        },2000);
+                                                                            toastr.success('Successfully Sync');
+                                                                            setInterval(function()
+                                                                            {
+                                                                                location.href = '/login.html';
+                                                                            },2000);
+                                                                        });
                                                                     });
-                                                                });
+                                                                }
                                                             });
                                                         }
                                                     },
@@ -3368,19 +3379,26 @@ function global_sync(type = '')
                             {
                                 db.transaction(function(tx)
                                 {
-                                    var delete_query = 'DELETE FROM tbl_timestamp';
-                                    tx.executeSql(delete_query, [], function(txt2,res)
+                                    if(type == 'confirm')
                                     {
-                                        var delete_query_agent = 'DELETE FROM tbl_agent_logon';
-                                        tx.executeSql(delete_query_agent, [], function(txt22,res2)
+                                        location.href = "agent/agent_dashboard.html"; 
+                                    }
+                                    else
+                                    {
+                                        var delete_query = 'DELETE FROM tbl_timestamp';
+                                        tx.executeSql(delete_query, [], function(txt2,res)
                                         {
-                                            toastr.success('Successfully Sync');
-                                            setInterval(function()
+                                            var delete_query_agent = 'DELETE FROM tbl_agent_logon';
+                                            tx.executeSql(delete_query_agent, [], function(txt22,res2)
                                             {
-                                                location.href = '/login.html';
-                                            },2000);
+                                                toastr.success('Successfully Sync');
+                                                setInterval(function()
+                                                {
+                                                    location.href = '/login.html';
+                                                },2000);
+                                            });
                                         });
-                                    });
+                                    }
                                 });
                             }
                         },
@@ -3698,7 +3716,7 @@ function create_customer_submit(customer_info , callback)
         db.transaction(function(tx)
         {
             var insert_query = 'INSERT INTO tbl_customer (shop_id, country_id, title_name, first_name, '+
-                               'middle_name, last_name, suffix_name, email, company, created_date, created_at, approved, customer_phone, customer_mobile ,customer_fax) VALUES ' +
+                               'middle_name, last_name, suffix_name, email, password, IsWalkin, archived, ismlm, company, created_date, created_at, approved, customer_phone, customer_mobile ,customer_fax) VALUES ' +
                                '('+shop_id+', "420", "'+
                                customer_info['title']+'","'+
                                customer_info['first_name']+'","'+
@@ -3706,12 +3724,14 @@ function create_customer_submit(customer_info , callback)
                                customer_info['last_name']+'","'+
                                customer_info['suffix']+'","'+
                                customer_info['email']+'","'+
+                               'none",0,0,0,"'+
                                customer_info['company']+'","'+
                                get_date_now()+'","'+
                                get_date_now()+'", 0,"'+
                                customer_info['phone']+'","'+
                                customer_info['mobile']+'","'+
                                customer_info['fax']+'")'; 
+            console.log(insert_query);
             tx.executeSql(insert_query, [], function(txs, results)
             {
                 var customer_id = results.insertId;

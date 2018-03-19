@@ -166,7 +166,7 @@ function confirm_lof_action(sir_id,action)
 
             if(action == "confirm")
             {
-            	location.href = "agent/agent_dashboard.html"; 
+                global_sync("confirm");
             }
             else if(action == "reject")
             {
