@@ -8,7 +8,7 @@ var all_tbl_name = [];
 // var shop_id = 70;  
 // var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var shop_id = 93;  
+var shop_id = 92;   
 var $url = "http://pis.digimahouse.com";
 function sync_data()
 {

@@ -6,9 +6,9 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 // FOR LOCAL TEST
-var $url = "http://pis.digimahouse.test";
+// var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-// var $url = "http://pis.digimahouse.com";
+var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -3362,7 +3362,7 @@ function global_sync(type = '')
                                                                             toastr.success('Successfully Sync');
                                                                             setInterval(function()
                                                                             {
-                                                                                location.href = '/login.html';
+                                                                                location.href = '../login.html';
                                                                             },2000);
                                                                         });
                                                                     });
@@ -3419,7 +3419,7 @@ function global_sync(type = '')
                                                 toastr.success('Successfully Sync');
                                                 setInterval(function()
                                                 {
-                                                    location.href = '/login.html';
+                                                    location.href = '../login.html';
                                                 },2000);
                                             });
                                         });

@@ -3362,7 +3362,7 @@ function global_sync(type = '')
                                                                             toastr.success('Successfully Sync');
                                                                             setInterval(function()
                                                                             {
-                                                                                location.href = '/login.html';
+                                                                                location.href = '../login.html';
                                                                             },2000);
                                                                         });
                                                                     });
@@ -3419,7 +3419,7 @@ function global_sync(type = '')
                                                 toastr.success('Successfully Sync');
                                                 setInterval(function()
                                                 {
-                                                    location.href = '/login.html';
+                                                    location.href = '../login.html';
                                                 },2000);
                                             });
                                         });
