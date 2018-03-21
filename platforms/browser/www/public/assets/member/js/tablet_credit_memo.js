@@ -77,7 +77,7 @@ function tablet_credit_memo()
 		$(".tablet-add-item").bind("click",function()
 		{
 			$(".item-list-"+$(".tablet-item-id").val()).remove();
-
+			
 			$("#global_modal").modal("toggle");
 			$(".div-item-list").append(global_tablet_html);
 			$item_table = $(".div-item-list .item-table:last");

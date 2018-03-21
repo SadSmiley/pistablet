@@ -96,6 +96,7 @@ function credit_memo_transaction()
             var query_cm_item = 'SELECT * FROM tbl_item LEFT JOIN tbl_unit_measurement_multi ON tbl_unit_measurement_multi.multi_um_id = tbl_item.item_measurement_id  WHERE tbl_item.item_id = "'+item_id+'"';
             tx.executeSql(query_cm_item, [], function(txs, results_item_cm)
             {
+                console.log(results_item_cm);
                 var datarow = results_item_cm.rows;
                 var item_row = results_item_cm.rows[0];
 
