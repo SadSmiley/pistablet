@@ -2767,8 +2767,6 @@ function insert_applied_credits(_rp_credit_id, _rp_credit_amount, rp_id)
                 $ins['created_at'] = get_date_now();
                 var ins_query = "INSERT INTO tbl_credit_memo_applied_payment (cm_id, applied_ref_name, applied_ref_id, applied_amount, created_at)" +
                     " VALUES ("+$ins['cm_id']+",'"+$ins['applied_ref_name']+"',"+$ins['applied_ref_id']+","+$ins['applied_amount']+",'"+$ins['created_at']+"')";
-                console.log("appliedcm");
-                console.log(ins_query);
                 tx.executeSql(ins_query, [], function(tx, results)
                 {
                     console.log('success_test');

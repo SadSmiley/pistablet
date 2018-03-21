@@ -5,10 +5,10 @@ var table_sync_key = 0;
 var current_table = "";
 var all_tbl_name = [];
 // FOR LOCAL TEST
-// var shop_id = 70;  
+var shop_id = 70;  
 var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var shop_id = 92;   
+// var shop_id = 92;   
 // var $url = "http://pis.digimahouse.com";
 function sync_data()
 {
