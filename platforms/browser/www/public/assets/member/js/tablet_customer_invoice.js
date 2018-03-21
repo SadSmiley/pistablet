@@ -630,6 +630,7 @@ function tablet_customer_invoice()
 			onChangeValue: function()
 			{
 				$(".customer-email").val($(this).find("option:selected").attr("email"));
+				$(".customer-address").val($(this).find("option:selected").attr("address"));
 				// load_all_estimate($(this).val());
 			}
 		});

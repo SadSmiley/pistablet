@@ -336,7 +336,7 @@ function invoice_transaction()
                 $(".new-invoice-id").val(results_id.rows[0]['new_inv_id'] + 1);
             });
 
-            var query_select_customer = 'SELECT * FROM tbl_customer WHERE archived = "0" and shop_id = "'+shop_id+'"';
+            var query_select_customer = 'SELECT *, tbl_customer.customer_id as rcustomer_id FROM tbl_customer LEFT JOIN tbl_customer_address ON tbl_customer.customer_id = tbl_customer_address.customer_id WHERE tbl_customer.archived = "0" and shop_id = "'+shop_id+'" GROUP BY tbl_customer.customer_id';
             tx.executeSql(query_select_customer, [], function(txs, results_customer)
             {
                 var data_result = results_customer.rows;
@@ -344,7 +344,7 @@ function invoice_transaction()
                 $(data_result).each(function(key, datarow)
                 {
                     var customer_name = datarow['company'] != "" ? datarow['company'] : datarow['first_name'] +" "+datarow['middle_name']+" "+datarow['last_name']; 
-                    option += '<option value="'+datarow['customer_id']+'" email="'+datarow['customer_id']+'">'+customer_name+'</option>';
+                    option += '<option value="'+datarow['rcustomer_id']+'" address="'+datarow['customer_street']+" "+datarow['customer_city']+'"  email="'+datarow['email']+'">'+customer_name+'</option>';
                 });
                 $(".customer-select-list").html(option).globalDropList("reload");
             });
