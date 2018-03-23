@@ -96,7 +96,7 @@ function query_create_all_table(callback)
 
     query[30] = "CREATE TABLE IF NOT EXISTS tbl_manufacturer (manufacturer_id INTEGER PRIMARY KEY AUTOINCREMENT, manufacturer_name VARCHAR(255)  NULL, manufacturer_address VARCHAR(255)  NULL, phone_number VARCHAR(255)  NULL, email_address VARCHAR(255)  NULL, website text  NULL, date_created DATETIME NULL, date_updated DATETIME NULL, archived TINYINT NULL default '0', manufacturer_shop_id INTEGER  NULL, manufacturer_fname VARCHAR(255)  NULL,  manufacturer_mname VARCHAR(255)  NULL, manufacturer_lname VARCHAR(255)  NULL, manufacturer_image INTEGER default NULL, created_at DATETIME, updated_at DATETIME)";
     /*RECEIVE PAYMENT*/
-    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NULL, rp_customer_id INTEGER NULL, rp_ar_account INTEGER NULL, rp_date date NULL, rp_total_amount REAL(8,2) NULL, rp_payment_method VARCHAR(255)  NULL, rp_memo text  NULL, date_created DATETIME NULL, rp_ref_name VARCHAR(255)  NULL, rp_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
+    query[31] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment (rp_id INTEGER PRIMARY KEY AUTOINCREMENT, rp_shop_id INTEGER NULL, rp_customer_id INTEGER NULL, rp_ar_account INTEGER NULL, rp_date date NULL, rp_total_amount REAL(8,2) NULL, rp_payment_method VARCHAR(255)  NULL, rp_payment_ref_no VARCHAR(255)  NULL, rp_memo text  NULL, date_created DATETIME NULL, rp_ref_name VARCHAR(255)  NULL, rp_ref_id INTEGER NULL, created_at DATETIME, updated_at DATETIME, get_status VARCHAR(255) DEFAULT 'new' NULL)";
     query[32] = "CREATE TABLE IF NOT EXISTS tbl_receive_payment_line ( rpline_id INTEGER PRIMARY KEY AUTOINCREMENT, rpline_rp_id INTEGER  NULL, rpline_reference_name VARCHAR(255)  NULL, rpline_reference_id INTEGER NULL, rpline_amount REAL(8,2) NULL, created_at DATETIME, updated_at DATETIME)";
     query[33] = "CREATE TABLE IF NOT EXISTS tbl_settings ( settings_id INTEGER PRIMARY KEY AUTOINCREMENT, settings_key VARCHAR(255)  NULL, settings_value longtext , settings_setup_done TINYINT NULL default '0', shop_id INTEGER  NULL, created_at DATETIME, updated_at DATETIME)";
     query[34] = "CREATE TABLE IF NOT EXISTS tbl_sir_cm_item (s_cm_item_id INTEGER PRIMARY KEY AUTOINCREMENT, sc_sir_id INTEGER  NULL, sc_item_id INTEGER NULL, sc_item_qty INTEGER NULL, sc_physical_count INTEGER NULL, sc_item_price REAL NULL, sc_status INTEGER NULL, sc_is_updated TINYINT NULL, sc_infos REAL NULL, created_at DATETIME, updated_at DATETIME)";
@@ -2511,6 +2511,7 @@ function get_paid_rp_data(rp_id, callback)
         {
             /* SELECT DATA IN RP */
             var select_rp = 'SELECT * FROM tbl_receive_payment '+
+                            'LEFT JOIN tbl_payment_method ON payment_method_id = rp_payment_method ' +
                             'LEFT JOIN tbl_customer ON customer_id = rp_customer_id ' +
                             'WHERE rp_id = ' + rp_id;
             tx.executeSql(select_rp, [], function(txs, results)
@@ -2521,6 +2522,7 @@ function get_paid_rp_data(rp_id, callback)
 
                     var select_rpline = 'SELECT * FROM tbl_receive_payment_line ' +
                                         'LEFT JOIN tbl_customer_invoice ON inv_id = rpline_reference_id ' +
+                                        'LEFT JOIN tbl_credit_memo ON credit_memo_id = cm_id ' +
                                         'WHERE rpline_reference_name = "invoice" '+
                                         'AND rpline_rp_id = ' + rp_id +
                                         ' GROUP BY inv_id';
@@ -3472,6 +3474,26 @@ function get_cm_applied(callback)
     {
         var select_query = 'SELECT * FROM tbl_credit_memo_applied_payment ' +
                            'WHERE get_status = "new"'; 
+        tx.executeSql(select_query, [], function(tx, results)
+        {
+            if(results.rows.length > 0)
+            {
+                callback(results.rows);
+            }
+            else
+            {
+                var res = null;
+                callback(res);
+            }
+        });
+    });
+}
+function get_applied_credits(rp_id , callback)
+{
+    db.transaction(function(tx)
+    {
+        var select_query = 'SELECT * FROM tbl_receive_payment_credit ' +
+                           'WHERE rp_id = '+rp_id; 
         tx.executeSql(select_query, [], function(tx, results)
         {
             if(results.rows.length > 0)

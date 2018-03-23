@@ -90,6 +90,12 @@
                                 <span class="rp-date"></span><br>                              
                             </td>
                         </tr>
+                        <tr>
+                            <td width="50%">
+                                <strong>PAYMENT TYPE : </strong><br>
+                                <span class="payment-type"></span>
+                            </td>
+                        </tr>
                     </table>
         		</div>
 
@@ -97,15 +103,35 @@
         			<thead style="border: 1px solid #000">
                         <tr>
             				<th>Payment For: </th>
-            				<th class="text-center">AMOUNT</th>
+                            <th class="text-center">AMOUNT</th>
+            				<th class="text-center">CASH AMOUNT</th>
+                            <th class="text-center">RETURN EMPTIES</th>
+                            <th class="text-center">PAID AMOUNT</th>
                         </tr>
         			</thead>
         			<tbody class="rp-itemline">
 
         			</tbody>
         		</table>
-        		<div class="row pull-right" style="margin-right: 10px">
-        			<h3 style="font-style: bold" class="rp-overall-total"></h3>
+
+                <br>
+                <br>
+                <span>Applied Credit</span>
+                <table width="100%" >
+                    <thead style="border: 1px solid #000">
+                        <tr>
+                            <th>References </th>
+                            <th class="text-center">AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody class="rp-applied">
+
+                    </tbody>
+                </table>
+        		<div class="row text-right" style="margin-right: 10px">
+                    <h5 style="font-style: bold" class="rp-cash-total"></h5>
+                    <h5 style="font-style: bold" class="rp-applied-total"></h5>
+        			<h5 style="font-style: bold" class="rp-overall-total"></h5>
         		</div>
             </div>
             <div class="row whole-page-rp text-center" style="margin-top: 50px ">
