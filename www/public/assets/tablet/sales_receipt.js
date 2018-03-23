@@ -101,7 +101,7 @@ function sales_receipt()
                     tr += '<td>'+ReplaceNumberWithCommas((inv_total_amount).toFixed(2))+'</td>';
                     tr += '<td class="text-center"><div class="btn-group">'+
                           '<button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button>'+
-                          '<ul class="dropdown-menu dropdown-menu-custom">'+
+                          '<ul class="dropdown-menu dropdown-menu-custom" style="left:auto;right:0">'+
                           '<li><a onClick="edit_sales_receipt('+datarow['inv_id']+')">Edit Invoice</a></li>'+
                           ' <li><a onClick="view_invoice('+datarow['inv_id']+')">View Receipt</a></li></ul></div></td>';
                     tr += '</tr>';

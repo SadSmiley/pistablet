@@ -95,7 +95,7 @@ function receive_payment_list()
                     tr += '<td class="text-center">'+
                           '<div class="btn-group">'+
                           '<button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button>'+
-                          '<ul class="dropdown-menu dropdown-menu-custom">'+
+                          '<ul class="dropdown-menu dropdown-menu-custom" style="left:auto;right:0">'+
                           '<li><a onClick="edit_rp('+datarow['rp_id']+')">Edit Payment</a></il>'+
                           '<li><a onClick="view_rp('+datarow['rp_id']+')">Payment Receipt</a></il>'+
                           '</ul></div></td>'

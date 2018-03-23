@@ -95,7 +95,7 @@ function credit_memo_list()
                     tr += '<td>'+ReplaceNumberWithCommas("Php "+(datarow['cm_amount']).toFixed(2))+'</td>';
                     tr += '<td class="text-center"><div class="btn-group">'+
                           '<button type="button" class="btn btn-sm btn-custom-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action <span class="caret"></span></button>'+
-                          '<ul class="dropdown-menu dropdown-menu-custom">'+
+                          '<ul class="dropdown-menu dropdown-menu-custom" style="left:auto;right:0">'+
                           '<li><a onClick="edit_credit_memo('+datarow['cm_id']+')">Edit CM</a></li>'+
                           '<li><a onClick="view_credit_memo('+datarow['cm_id']+')">View CM</a></li>'+
                           '</ul></div></td>';

@@ -163,11 +163,11 @@ function tablet_customer_invoice()
 				$item_table.find(".item-disc").html($(".tablet-item-disc").val());
 			}
 			var tax = 0;
-			$item_table.find(".item-taxable").html("Non-Taxable");
+			// $item_table.find(".item-taxable").html("Non-Taxable");
 			if($(".tablet-item-taxable").is(":checked"))
 			{
 				tax = 1;
-				$item_table.find(".item-taxable").html("Taxable");
+				// $item_table.find(".item-taxable").html("Taxable");
 			}
 			$item_table.find(".item-desc").html($(".tablet-item-desc").val());
 
