@@ -356,26 +356,49 @@ function tablet_customer_invoice()
 
         var qty = tablet_item_qty;
         /* CHECK THE DISCOUNT */
-        if(tablet_item_disc)
-        {
-	        if(tablet_item_disc.indexOf('%') >= 0)
-	        {
-	            $(".tablet-item-disc").val(tablet_item_disc.substring(0, tablet_item_disc.indexOf("%") + 1));
-	            tablet_item_disc = (parseFloat(tablet_item_disc.substring(0, tablet_item_disc.indexOf('%'))) / 100) * (action_return_to_number(tablet_item_rate) * action_return_to_number(qty));
-	        }
-	        else if(tablet_item_disc == "" || tablet_item_disc == null)
-	        {
-	            tablet_item_disc = 0;
-	        }
-	        else
-	        {
-	            tablet_item_disc = parseFloat(tablet_item_disc);
-	        }        	
-        }
-        else
-        {
-        	tablet_item_disc = 0;
-        }
+        if (tablet_item_disc.indexOf('/') >= 0)
+		{
+			var split_tablet_item_disc = tablet_item_disc.split('/');
+			var main_rate      = tablet_item_rate * qty;
+
+			$.each(split_tablet_item_disc, function(index, val) 
+			{
+				console.log(val + " - tablet_item_disc");
+
+				if(val.indexOf('%') >= 0)
+				{
+					console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+					main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+					console.log(main_rate);
+				}
+				else if(val == "" || val == null)	
+				{
+					main_rate -= 0;
+				}
+				else
+				{
+					main_rate -= parseFloat(val);
+				}
+			});
+
+			tablet_item_disc = (tablet_item_rate * qty) - main_rate;
+		}
+		else
+		{
+			if(tablet_item_disc.indexOf('%') >= 0)
+			{
+				$(this).find(".txt-tablet_item_disc").val(tablet_item_disc.substring(0, tablet_item_disc.indexOf("%") + 1));
+				tablet_item_disc = (parseFloat(tablet_item_disc.substring(0, tablet_item_disc.indexOf('%'))) / 100) * (action_return_to_number(tablet_item_rate) * action_return_to_number(qty));
+			}
+			else if(tablet_item_disc == "" || tablet_item_disc == null)	
+			{
+				tablet_item_disc = 0;
+			}
+			else
+			{
+				tablet_item_disc = parseFloat(tablet_item_disc);
+			}
+		}
         // tablet_item_disc = 0;
         /* RETURN TO NUMBER IF THERE IS COMMA */
         var rate        = action_return_to_number(tablet_item_rate);
@@ -414,12 +437,41 @@ function tablet_customer_invoice()
 				}
 
 				/* CHECK THE DISCOUNT */
+				if (discount.indexOf('/') >= 0)
+			{
+				var split_discount = discount.split('/');
+				var main_rate      = rate * qty;
+
+				$.each(split_discount, function(index, val) 
+				{
+					console.log(val + " - Discount");
+
+					if(val.indexOf('%') >= 0)
+					{
+						console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+						main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+						console.log(main_rate);
+					}
+					else if(val == "" || val == null)	
+					{
+						main_rate -= 0;
+					}
+					else
+					{
+						main_rate -= parseFloat(val);
+					}
+				});
+
+				discount = (rate * qty) - main_rate;
+			}
+			else
+			{
 				if(discount.indexOf('%') >= 0)
 				{
-					$(this).find(".input-item-disc").val(discount.substring(0, discount.indexOf("%") + 1));
+					$(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
 					discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (action_return_to_number(rate) * action_return_to_number(qty));
 				}
-				else if(discount == "" || discount == null)
+				else if(discount == "" || discount == null)	
 				{
 					discount = 0;
 				}
@@ -427,6 +479,7 @@ function tablet_customer_invoice()
 				{
 					discount = parseFloat(discount);
 				}
+			}
 
 				/* RETURN TO NUMBER IF THERE IS COMMA */
 				qty 		= action_return_to_number(qty);
