@@ -6,9 +6,9 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 // FOR LOCAL TEST
-// var $url = "http://pis.digimahouse.test";
+var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.com";
+// var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -1347,18 +1347,14 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
         {
             if(bundle_item.length > 0)
             {
-                $.each(bundle_item, function(a,b)
+                check_bundle_qty(bundle_item, function(return_data)
                 {
-                    var count = bundle_item.length;
-                    get_sir_inventory(sir_id, b['bundle_item_id'], b['bundle_um_id'], b['bundle_qty'],0, function(return_value)
+                    ctr++;
+                    if(ctr == count_item)
                     {
-                        return_data += return_value;
-                        if((a + 1) == count)
-                        {
-                            callback(return_data)
-                        }
-                    });
-                });
+                       callback(return_data);
+                    }
+                });               
             }
             else
             {
@@ -1368,13 +1364,29 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
                     return_data += return_value;
                     if(ctr == count_item)
                     {     
-                       callback(return_data)
+                       callback(return_data);
                     }
                 });
             }
         });
     });
 
+}
+function check_bundle_qty(bundle_item, callback)
+{
+    var return_data = 0;
+    $.each(bundle_item, function(a,b)
+    {
+        var count = bundle_item.length;
+        get_sir_inventory(sir_id, b['bundle_item_id'], b['bundle_um_id'], b['bundle_qty'],0, function(return_value)
+        {
+            return_data += return_value;
+            if(parseFloat(a+1) == count)
+            {
+                callback(return_data);
+            }
+        });
+    });
 }
 function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
 {

@@ -868,7 +868,6 @@ function invoice_submit()
     var cm_item_info = {};
 
     var ctr_item = count(values["invline_item_id"]);
-
     if(ctr_item > 0)
     {
         check_sir_qty(values['sir_id'],_items,values,0,'', function(return_value)
@@ -926,8 +925,8 @@ function invoice_submit()
                                 }
                             });
                         }
-                    }
-                   
+                    } 
+
                     insert_invoice_submit(customer_info, item_info, function(invoice_id)
                     {
                         insert_manual_invoice(invoice_id, function(return_value)
