@@ -131,35 +131,42 @@ function rp_edit_submit()
     var payment_line = values['line_is_checked'];
 
     var insert_line = {};
-    if(count(payment_line) > 0)
+    if(customer_info['rp_ar_account'])
     {
-        $.each(payment_line, function(key, val)
-        {   
-            if(val == 1)
+        if(count(payment_line) > 0)
+        {
+            $.each(payment_line, function(key, val)
             {   
-                insert_line[key]                 = {};
-                insert_line[key]['rpline_reference_name'] = values['rpline_txn_type'][key];
-                insert_line[key]['rpline_reference_id'] = values['rpline_txn_id'][key];
-                insert_line[key]['rpline_amount'] = values['rpline_amount'][key];
+                if(val == 1)
+                {   
+                    insert_line[key]                 = {};
+                    insert_line[key]['rpline_reference_name'] = values['rpline_txn_type'][key];
+                    insert_line[key]['rpline_reference_id'] = values['rpline_txn_id'][key];
+                    insert_line[key]['rpline_amount'] = values['rpline_amount'][key];
+                }
+            });
+        }
+        
+        update_rp_submit(rp_id, customer_info, insert_line, function(rp_id)
+        {
+            if(rp_id != 0)
+            {
+                toastr.success("Success");
+                setInterval(function()
+                {
+                    location.reload();
+                },2000)            
+            }
+            else
+            {
+                alert("Something wen't wrong!");
             }
         });
     }
-    
-    update_rp_submit(rp_id, customer_info, insert_line, function(rp_id)
+    else
     {
-        if(rp_id != 0)
-        {
-            toastr.success("Success");
-            setInterval(function()
-            {
-                location.reload();
-            },2000)            
-        }
-        else
-        {
-            alert("Something wen't wrong!");
-        }
-    });
+        toastr.warning("Please Account to deposit payment");
+    }
 
 }
 function cancel_rp_submit(cm_id)
@@ -283,44 +290,50 @@ function receive_payment_submit()
     console.log(payment_line);
     console.log(count(payment_line));
     var insert_line = {};
-    if(count(payment_line) > 0)
+    if(customer_info['rp_ar_account'])
     {
-        $.each(payment_line, function(key, val)
-        {   
-            if(val == 1)
-            {   
-                insert_line[key]                 = {};
-                insert_line[key]['rpline_reference_name'] = values['rpline_txn_type'][key];
-                insert_line[key]['rpline_reference_id'] = values['rpline_txn_id'][key];
-                insert_line[key]['rpline_amount'] = values['rpline_amount'][key];
-            }
-        });
-        if(count(insert_line) > 0)
+        if(count(payment_line) > 0)
         {
-            insert_rp_submit(customer_info, insert_line, function(rp_id)
-            {
-                insert_manual_rp(rp_id, function(res)
-                {
-                    if(res == "success")
-                    {
-                        toastr.success("Success");
-                        setInterval(function()
-                        {
-                            location.reload();
-                        },2000)
-                    }
-                });
+            $.each(payment_line, function(key, val)
+            {   
+                if(val == 1)
+                {   
+                    insert_line[key]                 = {};
+                    insert_line[key]['rpline_reference_name'] = values['rpline_txn_type'][key];
+                    insert_line[key]['rpline_reference_id'] = values['rpline_txn_id'][key];
+                    insert_line[key]['rpline_amount'] = values['rpline_amount'][key];
+                }
             });
+            if(count(insert_line) > 0)
+            {
+                insert_rp_submit(customer_info, insert_line, function(rp_id)
+                {
+                    insert_manual_rp(rp_id, function(res)
+                    {
+                        if(res == "success")
+                        {
+                            toastr.success("Success");
+                            setInterval(function()
+                            {
+                                location.reload();
+                            },2000)
+                        }
+                    });
+                });
+            }
+            else
+            {
+                toastr.warning("Please select customer & then select the invoice");
+            }
         }
         else
         {
-            toastr.warning("Please select customer & then select the invoice");
+            toastr.warning("Please select customer");
         }
     }
     else
     {
-        toastr.warning("Please select customer");
+        toastr.warning("Please Account to deposit payment");
     }
-
 
 }
