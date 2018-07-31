@@ -28,6 +28,27 @@ function invoice_print()
 			}
 		});
 	}
+	function action_add_comma(number)
+	{
+		number += '';
+		if(number == ''){
+			return '';
+		}
+
+		else{
+			return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+	}
+	function action_return_to_number(number = '')
+	{
+		number += '';
+		number = number.replace(/,/g, "");
+		if(number == "" || number == null || isNaN(number)){
+			number = 0;
+		}
+		
+		return parseFloat(number);
+	}
 	function load_data(inv_id)
 	{
 		get_invoice_data(inv_id, function(inv, _invline, _cmline)
@@ -57,6 +78,8 @@ function invoice_print()
 	        var tr_total = "";
 	        var taxable_amount = 0;
 	        var ctr_inv = 0;
+	        var inv_line_disc = '';
+
 	        
 	        $.each(_invline, function(key, val)
 	        {
@@ -65,10 +88,10 @@ function invoice_print()
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
 	        		var inv_line_disc_val = val['invline_discount'];
-	        		
+	   				var inv_line_disc = inv_line_disc_val;
+
 	        		if(val['invline_discount_type'] == 'percent')
 	        		{
-
 		        		if (inv_line_disc_val.indexOf('/') >= 0)
 						{
 							var split_inv_line_disc_val = inv_line_disc_val.split('/');
@@ -94,16 +117,21 @@ function invoice_print()
 								}
 							});
 
-							inv_line_disc_val = (val['invline_rate'] * val['invline_qty']) - main_rate;
+							inv_line_disc_val = action_return_to_number((val['invline_rate'] * val['invline_qty']) - main_rate).toFixed(2);
 						}
+	        		}
+	        		else
+	        		{
+	        			inv_line_disc = action_return_to_number(val['invline_discount']).toFixed(2);
+	        			inv_line_disc_val = inv_line_disc;
 	        		}
 
 		        	tr = '<tr>' +
 						  '<td>'+val['item_name']+'</td>'+
 						  '<td class="text-center">'+um_view+'</td>' +
-						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
-						  '<td style="text-align: right;">'+(val['invline_discount'])+'</td>' +
-						  '<td style="text-align: right;">'+ inv_line_disc_val.toFixed(2) +'</td>' +
+						  '<td style="text-align: right;">'+(val['invline_rate']).toFixed(2)+'</td>' +
+						  '<td style="text-align: right;">'+inv_line_disc +'</td>' +
+						  '<td style="text-align: right;">'+inv_line_disc_val +'</td>' +
 						  '<td style="text-align: right;">'+(val['invline_amount']).toFixed(2)+'</td>' +
 						'</tr>';
 					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)

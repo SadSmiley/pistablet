@@ -170,7 +170,7 @@ function tablet_customer_invoice()
 				// $item_table.find(".item-taxable").html("Taxable");
 			}
 			$item_table.find(".item-desc").html($(".tablet-item-desc").val());
-
+			
 			//PUT VALUE TO INPUT
 			$item_table.find(".input-item-id").val($(".tablet-item-id").val());
 			$item_table.find(".input-item-amount").val($(".tablet-item-amount").html());

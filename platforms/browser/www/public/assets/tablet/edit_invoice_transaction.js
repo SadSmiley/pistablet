@@ -92,6 +92,7 @@ function check_if_edit_invoice()
                                             $(".div-item-list .item-table:last .inv-item").attr("item_id", value['invline_item_id']);
                                             $(".div-item-list .item-table:last .inv-item").attr("sir_id", sir_id);
 
+
                                             //PUT VALUE TO LABEL
                                             $item_table.find(".item-name").html(value['item_name']);
                                             $item_table.find(".item-rate").html((value['invline_rate']).toFixed(2));
