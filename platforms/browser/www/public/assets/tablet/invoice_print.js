@@ -57,17 +57,54 @@ function invoice_print()
 	        var tr_total = "";
 	        var taxable_amount = 0;
 	        var ctr_inv = 0;
+	        
 	        $.each(_invline, function(key, val)
 	        {
 	        	ctr_inv++;
 	        	var total_qty = val['unit_qty'] * val['invline_qty'];
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
+	        		var inv_line_disc_val = val['invline_discount'];
+	        		
+	        		if(val['invline_discount_type'] == 'percent')
+	        		{
+
+		        		if (inv_line_disc_val.indexOf('/') >= 0)
+						{
+							var split_inv_line_disc_val = inv_line_disc_val.split('/');
+							var main_rate      = val['invline_rate'] * val['invline_qty'];
+
+							$.each(split_inv_line_disc_val, function(index, val) 
+							{
+								console.log(val + " - inv_line_disc_val");
+
+								if(val.indexOf('%') >= 0)
+								{
+									console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+									main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+									console.log(main_rate);
+								}
+								else if(val == "" || val == null)	
+								{
+									main_rate -= 0;
+								}
+								else
+								{
+									main_rate -= parseFloat(val);
+								}
+							});
+
+							inv_line_disc_val = (val['invline_rate'] * val['invline_qty']) - main_rate;
+						}
+	        		}
+
 		        	tr = '<tr>' +
 						  '<td>'+val['item_name']+'</td>'+
 						  '<td class="text-center">'+um_view+'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
-						  '<td style="text-align: center;">'+(val['invline_amount']).toFixed(2)+'</td>' +
+						  '<td style="text-align: right;">'+(val['invline_discount'])+'</td>' +
+						  '<td style="text-align: right;">'+ inv_line_disc_val.toFixed(2) +'</td>' +
+						  '<td style="text-align: right;">'+(val['invline_amount']).toFixed(2)+'</td>' +
 						'</tr>';
 					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)
 					{
@@ -83,7 +120,7 @@ function invoice_print()
 	        });
 
 			tr_total += '<tr>' +
-				  '<td colspan="2"></td>' +
+				  '<td colspan="4"></td>' +
 				  '<td  style="text-align: left;font-weight: bold">SUBTOTAL</td>' + 
 			 	  '<td style="text-align: right; font-weight: bold">'+(inv['inv_subtotal_price']).toFixed(2)+'</td>' +
 				  '</tr>';
@@ -91,7 +128,7 @@ function invoice_print()
 			if(inv['ewt'] != 0)
 			{
 				tr_total += '<tr>' + 
-							'<td colspan="2"></td>' + 
+							'<td colspan="4"></td>' + 
 							'<td style="text-align: left;font-weight: bold">EWT ('+ (inv['ewt'] * 100) +' %)</td>'+
 							'<td style="text-align: right; font-weight: bold">'+ (inv['ewt'] * inv['inv_subtotal_price'])+'</td>'+
 							'</tr>';
@@ -107,7 +144,7 @@ function invoice_print()
 				}
 
 				tr_total += '<tr>' + 
-							'<td colspan="2"></td>' +
+							'<td colspan="4"></td>' +
 							'<td  style="text-align: left;font-weight: bold">Discount '+ sign_disc+'</td>'+
 							'<td style="text-align: right; font-weight: bold">'+(disc_val).toFixed(2)+'</td>'+
 							'</tr>';
@@ -121,7 +158,7 @@ function invoice_print()
 							'</tr>';
 			}
 			tr_total += '<tr class="">'+
-						'<td colspan="2"></td>' + 
+						'<td colspan="4"></td>' + 
 						'<td style="text-align: left;font-weight: bold">INVOICE TOTAL</td>'+
 						'<td style="text-align: right; font-weight: bold">'+(inv['inv_overall_price']).toFixed(2)+'</td>'+
 						'</tr>';
@@ -151,14 +188,16 @@ function invoice_print()
 										       '<td>'+ val['item_name'] +'</td>'+
 										       '<td style="text-align: center;">'+um_view+'</td>' +
 										       '<td style="text-align: center;">'+ (val['cmline_rate']).toFixed(2)+'</td>' +
-										       '<td style="text-align: center;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
+										       '<td></td>'+
+										       '<td></td>'+
+										       '<td style="text-align: right;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
 											   '</tr>';
 
 						$('.inv-itemline').append(cm_item_row_line);
 						if(ctr == _cmline.length)
 						{
 							var cm_item_row_2 = '<tr>' +
-										   '<td colspan="2"></td>' +
+										   '<td colspan="4"></td>' +
 										   '<td style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>' +
 									       '<td style="text-align: right; font-weight: bold">'+(cm_amount).toFixed(2)+'</td>'+
 										   '</tr>';					
