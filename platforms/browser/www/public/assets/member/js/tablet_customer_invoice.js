@@ -36,6 +36,12 @@ function tablet_customer_invoice()
 
 				action_general_compute();
 		});
+		$(document).on("click", ".btn-cm-remove", function(e){
+			
+				$(this).parent().parent().remove();
+
+				action_general_compute();
+		});
 	}
 	function action_initialize()
 	{

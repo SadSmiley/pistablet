@@ -23,6 +23,8 @@ function check_if_edit_invoice()
                             {
                                 get_all_cm_item(function(cm_item)
                                 {
+                                    console.log(inv);
+                                    console.log(_cmline);
 
                                     var option = "";
                                     $.each(customer_list, function(key, datarow)
@@ -127,6 +129,7 @@ function check_if_edit_invoice()
                                         });
                                         if(_cmline.length > 0)
                                         {
+                                            //$(".returns-check").prop("checked", true);
                                             $.each(_cmline, function(key_cm, value_cm)
                                             {
                                                 if(value_cm['cmline_item_id'])
