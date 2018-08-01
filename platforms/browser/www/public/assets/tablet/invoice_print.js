@@ -90,38 +90,42 @@ function invoice_print()
 	        	{
 	        		var inv_line_disc_val = val['invline_discount'];
 	   				var inv_line_disc = inv_line_disc_val;
-	   				alert(inv_line_disc);
+					var main_rate      = val['invline_rate'] * val['invline_qty'];
+					
+	        		if (inv_line_disc_val.indexOf('/') >= 0)
+					{
+						var split_inv_line_disc_val = inv_line_disc_val.split('/');
 
-	        		if(val['invline_discount_type'] == 'percent')
-	        		{
-		        		if (inv_line_disc_val.indexOf('/') >= 0)
+						$.each(split_inv_line_disc_val, function(index, val) 
 						{
-							var split_inv_line_disc_val = inv_line_disc_val.split('/');
-							var main_rate      = val['invline_rate'] * val['invline_qty'];
+							console.log(val + " - inv_line_disc_val");
 
-							$.each(split_inv_line_disc_val, function(index, val) 
+							if(val.indexOf('%') >= 0)
 							{
-								console.log(val + " - inv_line_disc_val");
+								console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+								main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+								console.log(main_rate);
+							}
+							else if(val == "" || val == null)	
+							{
+								main_rate -= 0;
+							}
+							else
+							{
+								main_rate -= parseFloat(val);
+							}
+						});
 
-								if(val.indexOf('%') >= 0)
-								{
-									console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
-									main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
-									console.log(main_rate);
-								}
-								else if(val == "" || val == null)	
-								{
-									main_rate -= 0;
-								}
-								else
-								{
-									main_rate -= parseFloat(val);
-								}
-							});
+						inv_line_disc_val = action_return_to_number((val['invline_rate'] * val['invline_qty']) - main_rate).toFixed(2);
+					}
+					else if(inv_line_disc_val.indexOf('%') >= 0)
+			        {
+			            console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(inv_line_disc_val.replace("%", ""))) / 100));
+						main_rate = parseFloat(main_rate) * ((100-parseFloat(inv_line_disc_val.replace("%", ""))) / 100);
+						console.log(main_rate);
 
-							inv_line_disc_val = action_return_to_number((val['invline_rate'] * val['invline_qty']) - main_rate).toFixed(2);
-						}
-	        		}
+			            inv_line_disc_val = action_return_to_number((val['invline_rate'] * val['invline_qty']) - main_rate).toFixed(2);
+			        }
 	        		else
 	        		{
 	        			inv_line_disc = action_return_to_number(val['invline_discount']).toFixed(2);
