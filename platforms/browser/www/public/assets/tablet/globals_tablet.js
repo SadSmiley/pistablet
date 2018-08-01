@@ -1734,6 +1734,16 @@ function insert_invoice_submit(customer_info, item_info, callback)
         });
     });
 }
+function action_return_to_number(number = '')
+{
+    number += '';
+    number = number.replace(/,/g, "");
+    if(number == "" || number == null || isNaN(number)){
+        number = 0;
+    }
+    
+    return parseFloat(number);
+}
 function insert_inv_line(invoice_id, item_info, callback)
 {
     // console.log(item_info);
@@ -1742,17 +1752,57 @@ function insert_inv_line(invoice_id, item_info, callback)
     var ctr = 0;
     $.each(item_info, function(key, value)
     {
+        console.log(value);
         /* DISCOUNT PER LINE */
-        var discount = value['discount'];
+
+        var inv_line_disc_val = value['discount'];
+        var inv_line_disc = inv_line_disc_val;
+        var inv_line_disc_type = 'percent';
+        if (inv_line_disc_val.indexOf('/') >= 0)
+        {
+            var split_inv_line_disc_val = inv_line_disc_val.split('/');
+            var main_rate      = value['rate'] * value['quantity'];
+
+            $.each(split_inv_line_disc_val, function(index, val) 
+            {
+                console.log(val + " - inv_line_disc_val");
+
+                if(val.indexOf('%') >= 0)
+                {
+
+                    console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+                    main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+                    console.log(main_rate);
+                }
+                else if(val == "" || val == null)   
+                {
+                    main_rate -= 0;
+                }
+                else
+                {
+                    main_rate -= parseFloat(val);
+                }
+            });
+
+            inv_line_disc_val = action_return_to_number((value['rate'] * value['quantity']) - main_rate).toFixed(2);
+        }
+        else
+        {
+            discount_type = 'fixed';
+            inv_line_disc = action_return_to_number(value['discount']).toFixed(2);
+            inv_line_disc_val = inv_line_disc;
+        }
+
+        /*var discount = value['discount'];
         var discount_type = 'fixed';
         if(discount.indexOf('%') >= 0)
         {
+
             discount_type = 'percent';
             discount      = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(value['rate']) * roundNumber(value['quantity']));
-        }
-
+        }*/
         /* Amount Per Line */
-        var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - discount;
+        var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - inv_line_disc_val;
 
         var insert_line = {};
         insert_line['invline_inv_id']             = invoice_id; 
@@ -1763,7 +1813,7 @@ function insert_inv_line(invoice_id, item_info, callback)
         insert_line['invline_qty']                = value['quantity'];
         insert_line['invline_rate']               = value['rate'];
         insert_line['invline_discount']           = value['discount'];
-        insert_line['invline_discount_type']      = discount_type;
+        insert_line['invline_discount_type']      = inv_line_disc_type;
         insert_line['invline_discount_remark']    = value['discount_remark'];
         insert_line['taxable']                    = value['taxable'];
         insert_line['invline_ref_name']           = value['ref_name'] == "" ? 'none' : value['ref_name'];

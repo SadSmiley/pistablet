@@ -83,12 +83,14 @@ function invoice_print()
 	        
 	        $.each(_invline, function(key, val)
 	        {
+	        	console.log(val);
 	        	ctr_inv++;
 	        	var total_qty = val['unit_qty'] * val['invline_qty'];
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
 	        		var inv_line_disc_val = val['invline_discount'];
 	   				var inv_line_disc = inv_line_disc_val;
+	   				alert(inv_line_disc);
 
 	        		if(val['invline_discount_type'] == 'percent')
 	        		{
