@@ -621,7 +621,7 @@ function invoice_edit_submit()
                             }
                         });
                     }
-                    if(values['returns'] != 'returns')
+                    if(values['returns'] == 'returns')
                     {
                         if(_cm_items)
                         {
