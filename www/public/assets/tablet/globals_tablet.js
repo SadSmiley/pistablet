@@ -2392,14 +2392,16 @@ function update_cm_submit(cm_id, cm_customer_info, cm_item_info, item_returns, i
                                + insert_row['cm_date'] + '","'
                                + insert_row['cm_message'] + '","'
                                + insert_row['cm_memo'] + '",'
-                               + insert_row['cm_amount'] + ','
-                               + insert_row['cm_type'] + ',"'
+                               + insert_row['cm_amount'] + ',"'
+                               + insert_row['cm_type'] + '","'
                                + insert_row['date_created'] + '","'
                                + insert_row['created_at'] + '",'
                                + insert_row['cm_ar_acccount'] + ',"'
                                + insert_row['cm_used_ref_name'] + '",'
                                + insert_row['cm_used_ref_id'] 
                                +') ' + 'WHERE cm_id = ' + cm_id;
+
+            console.log(insert_query);
             tx.executeSql(insert_query, [], function(tx, results)
             {
                 var delete_query = 'DELETE FROM tbl_credit_memo_line where cmline_cm_id = ' + cm_id;

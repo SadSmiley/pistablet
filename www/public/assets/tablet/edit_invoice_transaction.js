@@ -78,7 +78,8 @@ function check_if_edit_invoice()
 
                                     if(inv['credit_memo_id'] != 0)
                                     {
-                                        $(".cm-returns").attr('checked');
+                                        $(".cm-returns").prop('checked', true);
+                                        $(".returns-check").prop('checked', true);
                                     }
 
                                     get_sir_id(function(sir_id)
