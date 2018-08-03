@@ -54,7 +54,6 @@ function check_if_edit_invoice()
 
                                     $('.new-invoice-id').val(inv['new_inv_id']);
                                     $(".customer-select-list").val(inv['inv_customer_id']).change();
-                                    $('.inv-customer-billing').html(inv['inv_customer_billing_address']);
                                     $(".droplist-terms").val(inv['inv_terms_id']).change();
                                     $(".inv-due-date-input").val(inv['inv_due_date']);
                                     if(inv['is_sales_receipt'] == 1)
@@ -65,6 +64,7 @@ function check_if_edit_invoice()
                                     $(".inv-date-input").val(inv['inv_date']);
                                     $('.inv-message').val(inv['inv_message']);
                                     $('.inv-memo').val(inv['inv_memo']);
+                                    $('.txt-billing').html(inv['inv_customer_billing_address']);
                                     $('.sub-total').html(inv['inv_subtotal_price']);
                                     $('.inv-ewt').val(inv['ewt']);
                                     $('.ewt-total').html(inv['ewt']);
@@ -75,11 +75,11 @@ function check_if_edit_invoice()
                                     $('.cm-id').val(inv['credit_memo_id']);
                                     
                                     $('.is-sales-receipt').attr('value',inv['is_sales_receipt']);
-
                                     if(inv['credit_memo_id'] != 0)
                                     {
                                         $(".cm-returns").prop('checked', true);
                                         $(".returns-check").prop('checked', true);
+                                        $(".returns-class").css("display","block");
                                     }
 
                                     get_sir_id(function(sir_id)
