@@ -359,7 +359,7 @@ function click_action_update(action)
                                 '</div>'+
                                 '<div class="modal-footer">'+
                                 '<div class="col-md-6 col-xs-6">'+
-                                '<button type="button" onClick="global_sync(`reload`)" btn-action-type="reload" class="sync-out btn btn-custom-blue form-control">Yes</button>'+
+                                '<button type="button" onClick="global_sync(`reload`)" btn-action-type="reload" class="sync-out btn btn-custom-blue btn-reload-action form-control">Yes</button>'+
                                 '</div> '+
                                 '<div class="col-md-6 col-xs-6">'+
                                 '<button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
@@ -376,7 +376,7 @@ function click_action_update(action)
                         ' </div> ' +
                         ' <div class="modal-footer"> '+ 
                         '<div class="col-md-6 col-xs-6"> ' +
-                        '<button type="button" onClick="global_sync(`close`)" btn-action-type="close" class="btn btn-custom-blue form-control">Yes</button>'+
+                        '<button type="button" onClick="global_sync(`close`)" btn-action-type="close" class="btn btn-custom-blue btn-reload-action form-control">Yes</button>'+
                         '</div>  <div class="col-md-6 col-xs-6"><button data-dismiss="modal" class="btn btn-def-white btn-custom-white form-control">No</button></div></div>';
             }
 

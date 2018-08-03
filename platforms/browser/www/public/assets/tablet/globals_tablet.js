@@ -8,7 +8,7 @@ var global_data = null;
 // FOR LOCAL TEST
 // var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.test";
+var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -3258,6 +3258,9 @@ function number_format(number)
 
 function global_sync(type = '')
 {
+    $(".btn-reload-action").css("color","#00000");
+    $(".btn-reload-action").html("Submitting data. Please wait...");
+    $(".btn-reload-action").attr("disabled","true");
     get_sir_id(function(sir_id)
     {
         //tbl_manual_invoice
