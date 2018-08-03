@@ -1734,16 +1734,6 @@ function insert_invoice_submit(customer_info, item_info, callback)
         });
     });
 }
-function action_return_to_number(number = '')
-{
-    number += '';
-    number = number.replace(/,/g, "");
-    if(number == "" || number == null || isNaN(number)){
-        number = 0;
-    }
-    
-    return parseFloat(number);
-}
 function insert_inv_line(invoice_id, item_info, callback)
 {
     // console.log(item_info);
@@ -1752,65 +1742,17 @@ function insert_inv_line(invoice_id, item_info, callback)
     var ctr = 0;
     $.each(item_info, function(key, value)
     {
-        console.log(value);
         /* DISCOUNT PER LINE */
-
-        var inv_line_disc_val = value['discount'];
-        var inv_line_disc = inv_line_disc_val;
-        var inv_line_disc_type = 'percent';
-        var main_rate      = value['rate'] * value['quantity'];
-        if (inv_line_disc_val.indexOf('/') >= 0)
-        {
-            var split_inv_line_disc_val = inv_line_disc_val.split('/');
-
-            $.each(split_inv_line_disc_val, function(index, val) 
-            {
-                console.log(val + " - inv_line_disc_val");
-
-                if(val.indexOf('%') >= 0)
-                {
-
-                    console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
-                    main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
-                    console.log(main_rate);
-                }
-                else if(val == "" || val == null)   
-                {
-                    main_rate -= 0;
-                }
-                else
-                {
-                    main_rate -= parseFloat(val);
-                }
-            });
-
-            inv_line_disc_val = action_return_to_number((value['rate'] * value['quantity']) - main_rate).toFixed(2);
-        }
-        else if(inv_line_disc_val.indexOf('%') >= 0)
-        {
-            console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(inv_line_disc_val.replace("%", ""))) / 100));
-            main_rate = parseFloat(main_rate) * ((100-parseFloat(inv_line_disc_val.replace("%", ""))) / 100);
-            console.log(main_rate);
-
-            inv_line_disc_val = action_return_to_number((value['rate'] * value['quantity']) - main_rate).toFixed(2);
-        }
-        else
-        {
-            inv_line_disc_type = 'fixed';
-            inv_line_disc = action_return_to_number(value['discount']).toFixed(2);
-            inv_line_disc_val = inv_line_disc;
-        }
-
-        /*var discount = value['discount'];
+        var discount = value['discount'];
         var discount_type = 'fixed';
         if(discount.indexOf('%') >= 0)
         {
-
             discount_type = 'percent';
             discount      = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(value['rate']) * roundNumber(value['quantity']));
-        }*/
+        }
+
         /* Amount Per Line */
-        var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - inv_line_disc_val;
+        var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - discount;
 
         var insert_line = {};
         insert_line['invline_inv_id']             = invoice_id; 
@@ -1821,7 +1763,7 @@ function insert_inv_line(invoice_id, item_info, callback)
         insert_line['invline_qty']                = value['quantity'];
         insert_line['invline_rate']               = value['rate'];
         insert_line['invline_discount']           = value['discount'];
-        insert_line['invline_discount_type']      = inv_line_disc_type;
+        insert_line['invline_discount_type']      = discount_type;
         insert_line['invline_discount_remark']    = value['discount_remark'];
         insert_line['taxable']                    = value['taxable'];
         insert_line['invline_ref_name']           = value['ref_name'] == "" ? 'none' : value['ref_name'];
@@ -2224,26 +2166,7 @@ function update_invoice_submit(invoice_id, customer_info, item_info, callback)
                        db.transaction(function (tx) 
                        {  
                             var update_row = 'UPDATE tbl_customer_invoice SET (new_inv_id, inv_shop_id, inv_customer_id, inv_customer_email, inv_customer_billing_address, inv_terms_id, inv_date, inv_due_date, inv_message, inv_memo, inv_discount_type, inv_discount_value, ewt, taxable, inv_subtotal_price,  inv_overall_price, date_created, inv_custom_field_id, created_at) ' + 
-                                '= ('+
-                                update_inv['new_inv_id']+', '+
-                                update_inv['inv_shop_id']+', '+
-                                update_inv['inv_customer_id']+', "'+
-                                update_inv['inv_customer_email']+'", "'+
-                                update_inv['inv_customer_billing_address']+'", '+
-                                update_inv['inv_terms_id']+', "'+
-                                update_inv['inv_date']+'", "'+
-                                update_inv['inv_due_date']+'", "'+
-                                update_inv['inv_message']+'", "'+
-                                update_inv['inv_memo']+'", "'+
-                                update_inv['inv_discount_type']+'", '+
-                                update_inv['inv_discount_value']+', '+
-                                update_inv['ewt']+', '+
-                                update_inv['taxable']+', '+
-                                update_inv['inv_subtotal_price']+', '+
-                                update_inv['inv_overall_price']+', "'+
-                                update_inv['date_created']+'", '+
-                                update_inv['inv_custom_field_id']+', "'+
-                                update_inv['created_at']+'") '+
+                                '= ('+update_inv['new_inv_id']+', '+update_inv['inv_shop_id']+', '+update_inv['inv_customer_id']+', "'+update_inv['inv_customer_email']+'", "'+update_inv['inv_customer_billing_address']+'", '+update_inv['inv_terms_id']+', "'+update_inv['inv_date']+'", "'+update_inv['inv_due_date']+'", "'+update_inv['inv_message']+'", "'+update_inv['inv_memo']+'", "'+update_inv['inv_discount_type']+'", '+update_inv['inv_discount_value']+', '+update_inv['ewt']+', '+update_inv['taxable']+', '+update_inv['inv_subtotal_price']+', '+update_inv['inv_overall_price']+', "'+update_inv['date_created']+'", '+update_inv['inv_custom_field_id']+', "'+update_inv['created_at']+'") '+
                                 'WHERE inv_id = ' + invoice_id ;
                             tx.executeSql(update_row, [], function(txt, results)
                             {

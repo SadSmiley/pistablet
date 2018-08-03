@@ -67,6 +67,8 @@ function invoice_print()
 						  '<td>'+val['item_name']+'</td>'+
 						  '<td class="text-center">'+um_view+'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
+						  '<td style="text-align: center;">'+val['invline_discount']+'</td>' +
+						  '<td style="text-align: center;">'+(parseFloat((val['invline_rate']).toFixed(2)) - parseFloat((val['invline_amount']).toFixed(2))).toFixed(2) +'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_amount']).toFixed(2)+'</td>' +
 						'</tr>';
 					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)
@@ -83,7 +85,7 @@ function invoice_print()
 	        });
 
 			tr_total += '<tr>' +
-				  '<td colspan="2"></td>' +
+				  '<td colspan="4"></td>' +
 				  '<td  style="text-align: left;font-weight: bold">SUBTOTAL</td>' + 
 			 	  '<td style="text-align: right; font-weight: bold">'+(inv['inv_subtotal_price']).toFixed(2)+'</td>' +
 				  '</tr>';
@@ -91,23 +93,23 @@ function invoice_print()
 			if(inv['ewt'] != 0)
 			{
 				tr_total += '<tr>' + 
-							'<td colspan="2"></td>' + 
+							'<td colspan="4"></td>' + 
 							'<td style="text-align: left;font-weight: bold">EWT ('+ (inv['ewt'] * 100) +' %)</td>'+
 							'<td style="text-align: right; font-weight: bold">'+ (inv['ewt'] * inv['inv_subtotal_price'])+'</td>'+
 							'</tr>';
 			}
-			var sign_disc = '';
+			var sign_disc = 'P ' + inv['inv_discount_value'];
 			var disc_val = inv['inv_discount_value'];
 			if(inv['inv_discount_value'] != 0)
 			{
 				if(inv['inv_discount_type'] == 'percent')
 				{
-					sign_disc = '%'; 
+					sign_disc = inv['inv_discount_value'] + ' %'; 
 					disc_val = inv['inv_discount_value']/100 * inv['inv_subtotal_price'];
 				}
 
 				tr_total += '<tr>' + 
-							'<td colspan="2"></td>' +
+							'<td colspan="4"></td>' +
 							'<td  style="text-align: left;font-weight: bold">Discount '+ sign_disc+'</td>'+
 							'<td style="text-align: right; font-weight: bold">'+(disc_val).toFixed(2)+'</td>'+
 							'</tr>';
@@ -115,13 +117,13 @@ function invoice_print()
 			if(inv['taxable'] != 0)
 			{
 				tr_total += '<tr>' + 
-							'<td colspan="2" ></td>' +
+							'<td colspan="4" ></td>' +
 							'<td style="text-align: left;font-weight: bold">Vat (12%)</td>'+
 							'<td style="text-align: right; font-weight: bold">'+(taxable_amount * (12/100)).toFixed(2)+'</td>' +
 							'</tr>';
 			}
 			tr_total += '<tr class="">'+
-						'<td colspan="2"></td>' + 
+						'<td colspan="4"></td>' + 
 						'<td style="text-align: left;font-weight: bold">INVOICE TOTAL</td>'+
 						'<td style="text-align: right; font-weight: bold">'+(inv['inv_overall_price']).toFixed(2)+'</td>'+
 						'</tr>';
@@ -133,7 +135,7 @@ function invoice_print()
 			if(_cmline.length > 0)
 			{
 				cm_item_row += '<tr>' + 
-							'<td colspan="4">' + 
+							'<td colspan="6">' + 
 							'<strong>RETURNS</strong>' +
 							'</td>' +
 							'</tr>';
@@ -151,14 +153,14 @@ function invoice_print()
 										       '<td>'+ val['item_name'] +'</td>'+
 										       '<td style="text-align: center;">'+um_view+'</td>' +
 										       '<td style="text-align: center;">'+ (val['cmline_rate']).toFixed(2)+'</td>' +
-										       '<td style="text-align: center;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
+										       '<td colspan="3" style="text-align: right;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
 											   '</tr>';
 
 						$('.inv-itemline').append(cm_item_row_line);
 						if(ctr == _cmline.length)
 						{
 							var cm_item_row_2 = '<tr>' +
-										   '<td colspan="2"></td>' +
+										   '<td colspan="4"></td>' +
 										   '<td style="text-align: left;font-weight: bold">RETURNS SUBTOTAL</td>' +
 									       '<td style="text-align: right; font-weight: bold">'+(cm_amount).toFixed(2)+'</td>'+
 										   '</tr>';					

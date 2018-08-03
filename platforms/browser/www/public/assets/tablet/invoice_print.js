@@ -28,27 +28,6 @@ function invoice_print()
 			}
 		});
 	}
-	function action_add_comma(number)
-	{
-		number += '';
-		if(number == ''){
-			return '';
-		}
-
-		else{
-			return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
-	}
-	function action_return_to_number(number = '')
-	{
-		number += '';
-		number = number.replace(/,/g, "");
-		if(number == "" || number == null || isNaN(number)){
-			number = 0;
-		}
-		
-		return parseFloat(number);
-	}
 	function load_data(inv_id)
 	{
 		get_invoice_data(inv_id, function(inv, _invline, _cmline)
@@ -78,67 +57,19 @@ function invoice_print()
 	        var tr_total = "";
 	        var taxable_amount = 0;
 	        var ctr_inv = 0;
-	        var inv_line_disc = '';
-
-	        
 	        $.each(_invline, function(key, val)
 	        {
-	        	console.log(val);
 	        	ctr_inv++;
 	        	var total_qty = val['unit_qty'] * val['invline_qty'];
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
-	        		var inv_line_disc_val = val['invline_discount'];
-	   				var inv_line_disc = inv_line_disc_val;
-					var main_rate      = val['invline_rate'] * val['invline_qty'];
-					
-	        		if (inv_line_disc_val.indexOf('/') >= 0)
-					{
-						var split_inv_line_disc_val = inv_line_disc_val.split('/');
-
-						$.each(split_inv_line_disc_val, function(index, val) 
-						{
-							console.log(val + " - inv_line_disc_val");
-
-							if(val.indexOf('%') >= 0)
-							{
-								console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
-								main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
-								console.log(main_rate);
-							}
-							else if(val == "" || val == null)	
-							{
-								main_rate -= 0;
-							}
-							else
-							{
-								main_rate -= parseFloat(val);
-							}
-						});
-
-						inv_line_disc_val = action_return_to_number((val['invline_rate'] * val['invline_qty']) - main_rate).toFixed(2);
-					}
-					else if(inv_line_disc_val.indexOf('%') >= 0)
-			        {
-			            console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(inv_line_disc_val.replace("%", ""))) / 100));
-						main_rate = parseFloat(main_rate) * ((100-parseFloat(inv_line_disc_val.replace("%", ""))) / 100);
-						console.log(main_rate);
-
-			            inv_line_disc_val = action_return_to_number((val['invline_rate'] * val['invline_qty']) - main_rate).toFixed(2);
-			        }
-	        		else
-	        		{
-	        			inv_line_disc = action_return_to_number(val['invline_discount']).toFixed(2);
-	        			inv_line_disc_val = inv_line_disc;
-	        		}
-
 		        	tr = '<tr>' +
 						  '<td>'+val['item_name']+'</td>'+
 						  '<td class="text-center">'+um_view+'</td>' +
-						  '<td style="text-align: right;">'+(val['invline_rate']).toFixed(2)+'</td>' +
-						  '<td style="text-align: right;">'+inv_line_disc +'</td>' +
-						  '<td style="text-align: right;">'+inv_line_disc_val +'</td>' +
-						  '<td style="text-align: right;">'+(val['invline_amount']).toFixed(2)+'</td>' +
+						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
+						  '<td style="text-align: center;">'+val['invline_discount']+'</td>' +
+						  '<td style="text-align: center;">'+(parseFloat((val['invline_rate']).toFixed(2)) - parseFloat((val['invline_amount']).toFixed(2))).toFixed(2) +'</td>' +
+						  '<td style="text-align: center;">'+(val['invline_amount']).toFixed(2)+'</td>' +
 						'</tr>';
 					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)
 					{
@@ -167,13 +98,13 @@ function invoice_print()
 							'<td style="text-align: right; font-weight: bold">'+ (inv['ewt'] * inv['inv_subtotal_price'])+'</td>'+
 							'</tr>';
 			}
-			var sign_disc = '';
+			var sign_disc = 'P ' + inv['inv_discount_value'];
 			var disc_val = inv['inv_discount_value'];
 			if(inv['inv_discount_value'] != 0)
 			{
 				if(inv['inv_discount_type'] == 'percent')
 				{
-					sign_disc = '%'; 
+					sign_disc = inv['inv_discount_value'] + ' %'; 
 					disc_val = inv['inv_discount_value']/100 * inv['inv_subtotal_price'];
 				}
 
@@ -186,7 +117,7 @@ function invoice_print()
 			if(inv['taxable'] != 0)
 			{
 				tr_total += '<tr>' + 
-							'<td colspan="2" ></td>' +
+							'<td colspan="4" ></td>' +
 							'<td style="text-align: left;font-weight: bold">Vat (12%)</td>'+
 							'<td style="text-align: right; font-weight: bold">'+(taxable_amount * (12/100)).toFixed(2)+'</td>' +
 							'</tr>';
@@ -204,7 +135,7 @@ function invoice_print()
 			if(_cmline.length > 0)
 			{
 				cm_item_row += '<tr>' + 
-							'<td colspan="4">' + 
+							'<td colspan="6">' + 
 							'<strong>RETURNS</strong>' +
 							'</td>' +
 							'</tr>';
@@ -222,9 +153,7 @@ function invoice_print()
 										       '<td>'+ val['item_name'] +'</td>'+
 										       '<td style="text-align: center;">'+um_view+'</td>' +
 										       '<td style="text-align: center;">'+ (val['cmline_rate']).toFixed(2)+'</td>' +
-										       '<td></td>'+
-										       '<td></td>'+
-										       '<td style="text-align: right;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
+										       '<td colspan="3" style="text-align: right;">'+ (val['cmline_amount']).toFixed(2)+'</td>' +
 											   '</tr>';
 
 						$('.inv-itemline').append(cm_item_row_line);

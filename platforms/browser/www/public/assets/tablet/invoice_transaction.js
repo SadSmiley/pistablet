@@ -621,6 +621,7 @@ function invoice_edit_submit()
                             }
                         });
                     }
+
                     if(values['returns'] == 'returns')
                     {
                         if(_cm_items)
@@ -925,6 +926,7 @@ function invoice_submit()
                             });
                         }
                     } 
+
                     insert_invoice_submit(customer_info, item_info, function(invoice_id)
                     {
                         insert_manual_invoice(invoice_id, function(return_value)

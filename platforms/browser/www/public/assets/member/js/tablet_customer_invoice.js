@@ -36,12 +36,6 @@ function tablet_customer_invoice()
 
 				action_general_compute();
 		});
-		$(document).on("click", ".btn-cm-remove", function(e){
-			
-				$(this).parent().parent().remove();
-
-				action_general_compute();
-		});
 	}
 	function action_initialize()
 	{
@@ -176,7 +170,7 @@ function tablet_customer_invoice()
 				// $item_table.find(".item-taxable").html("Taxable");
 			}
 			$item_table.find(".item-desc").html($(".tablet-item-desc").val());
-			
+
 			//PUT VALUE TO INPUT
 			$item_table.find(".input-item-id").val($(".tablet-item-id").val());
 			$item_table.find(".input-item-amount").val($(".tablet-item-amount").html());
@@ -408,7 +402,7 @@ function tablet_customer_invoice()
         // tablet_item_disc = 0;
         /* RETURN TO NUMBER IF THERE IS COMMA */
         var rate        = action_return_to_number(tablet_item_rate);
-        var discount    = action_return_to_number(tablet_item_disc) //commented by eden * qty;
+        var discount    = action_return_to_number(tablet_item_disc) * qty;
 
         // console.log(qty+" * "+ rate + " - " + discount)
         total = ((qty * rate) - discount).toFixed(2);
@@ -490,7 +484,7 @@ function tablet_customer_invoice()
 				/* RETURN TO NUMBER IF THERE IS COMMA */
 				qty 		= action_return_to_number(qty);
 				rate 		= action_return_to_number(rate);
-				discount 	= action_return_to_number(discount) //commented by eden * qty;
+				discount 	= action_return_to_number(discount) * qty;
 
 				var total_per_tr = ((qty * rate) - discount).toFixed(2);
 
