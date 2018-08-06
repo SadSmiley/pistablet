@@ -1745,12 +1745,57 @@ function insert_inv_line(invoice_id, item_info, callback)
         /* DISCOUNT PER LINE */
         var discount = value['discount'];
         var discount_type = 'fixed';
-        if(discount.indexOf('%') >= 0)
+        if (discount.indexOf('/') >= 0)
+        {
+            discount_type = 'percent';
+
+            var split_discount = discount.split('/');
+            var main_rate      = value['rate'] * value['quantity'];
+
+            $.each(split_discount, function(index, val) 
+            {
+                console.log(val + " - Discount");
+
+                if(val.indexOf('%') >= 0)
+                {
+                    console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+                    main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+                    console.log(main_rate);
+                }
+                else if(val == "" || val == null)   
+                {
+                    main_rate -= 0;
+                }
+                else
+                {
+                    main_rate -= parseFloat(val);
+                }
+            });
+
+            discount = (value['rate'] * value['quantity']) - main_rate;
+        }
+        else if(discount.indexOf('%') >= 0)
+        {
+            discount_type = 'percent';
+            $(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
+            discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(value['rate']) * roundNumber(value['quantity']));
+        }
+        else if(discount == "" || discount == null) 
+        {
+            discount = 0;
+        }
+        else
+        {
+            discount = parseFloat(discount);
+        }
+
+        /*if(discount.indexOf('%') >= 0)
         {
             discount_type = 'percent';
             discount      = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(value['rate']) * roundNumber(value['quantity']));
-        }
-
+        }*/
+        //var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - discount;
+        
         /* Amount Per Line */
         var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - discount;
 

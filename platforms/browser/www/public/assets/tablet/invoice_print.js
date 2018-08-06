@@ -61,6 +61,54 @@ function invoice_print()
 	        {
 	        	ctr_inv++;
 	        	var total_qty = val['unit_qty'] * val['invline_qty'];
+
+	        	var discount = val['invline_discount'];
+		        var discount_type = val['invline_discount_type'];
+		        
+		        if(discount_type == 'percent')
+		        {	
+			        var main_rate      = val['invline_rate'] * val['invline_qty'];
+			        if(discount.indexOf('/') >= 0)
+			        {
+			            var split_discount = discount.split('/');
+			            $.each(split_discount, function(index, val) 
+			            {
+			                console.log(val + " - Discount");
+
+			                if(val.indexOf('%') >= 0)
+			                {
+			                    console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+			                    main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+			                    console.log(main_rate);
+			                }
+			                else if(val == "" || val == null)   
+			                {
+			                    main_rate -= 0;
+			                }
+			                else
+			                {
+			                    main_rate -= parseFloat(val);
+			                }
+			            });
+			            discount = (val['invline_rate'] * val['invline_qty']) - main_rate;
+			        }
+			        else if(discount.indexOf('%') >= 0)
+			        {
+			            $(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
+			            discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(val['invline_rate']) * roundNumber(val['invline_qty']));
+			        }
+		        }
+		        else
+		        {
+		        	if(discount == "" || discount == null) 
+			        {
+			            discount = 0;
+			        }
+			        else
+			        {
+			            discount = parseFloat(discount);
+			        }
+		        }
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
 		        	tr = '<tr>' +
@@ -68,7 +116,7 @@ function invoice_print()
 						  '<td class="text-center">'+um_view+'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
 						  '<td style="text-align: center;">'+val['invline_discount']+'</td>' +
-						  '<td style="text-align: center;">'+(parseFloat((val['invline_rate']).toFixed(2)) - parseFloat((val['invline_amount']).toFixed(2))).toFixed(2) +'</td>' +
+						  '<td style="text-align: center;">'+discount.toFixed(2) +'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_amount']).toFixed(2)+'</td>' +
 						'</tr>';
 					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)
