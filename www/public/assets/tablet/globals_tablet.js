@@ -8,7 +8,7 @@ var global_data = null;
 // FOR LOCAL TEST
 // var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.com";
+var $url = "http://pis.digimahouse.test";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
