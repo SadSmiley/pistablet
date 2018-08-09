@@ -8,7 +8,7 @@ var global_data = null;
 // FOR LOCAL TEST
 // var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.test";
+var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -1745,12 +1745,58 @@ function insert_inv_line(invoice_id, item_info, callback)
         /* DISCOUNT PER LINE */
         var discount = value['discount'];
         var discount_type = 'fixed';
-        if(discount.indexOf('%') >= 0)
+        /*if(discount.indexOf('%') >= 0)
         {
             discount_type = 'percent';
             discount      = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(value['rate']) * roundNumber(value['quantity']));
         }
+*/
 
+            if (discount.indexOf('/') >= 0)
+            {
+                var discount_type = 'percent';
+                var split_discount = discount.split('/');
+                var main_rate      = value['rate'] * value['quantity'];
+
+                $.each(split_discount, function(index, val) 
+                {
+                    console.log(val + " - Discount");
+
+                    if(val.indexOf('%') >= 0)
+                    {
+                        console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+                        main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+                        console.log(main_rate);
+                    }
+                    else if(val == "" || val == null)   
+                    {
+                        main_rate -= 0;
+                    }
+                    else
+                    {
+                        main_rate -= parseFloat(val);
+                    }
+                });
+
+                discount = (value['rate'] * value['quantity']) - main_rate;
+            }
+            else
+            {
+                var discount_type = 'percent';
+                if(discount.indexOf('%') >= 0)
+                {
+                    $(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
+                    discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (action_return_to_number(value['rate']) * action_return_to_number(value['quantity']));
+                }
+                else if(discount == "" || discount == null) 
+                {
+                    discount = 0;
+                }
+                else
+                {
+                    discount = parseFloat(discount);
+                }
+            }
         /* Amount Per Line */
         var amount = (roundNumber(value['rate']) * roundNumber(value['quantity'])) - discount;
 
@@ -1821,6 +1867,16 @@ function insert_inv_line(invoice_id, item_info, callback)
         });
     });
 
+}
+function action_return_to_number(number = '')
+{
+    number += '';
+    number = number.replace(/,/g, "");
+    if(number == "" || number == null || isNaN(number)){
+        number = 0;
+    }
+    
+    return parseFloat(number);
 }
 function insert_manual_invoice(invoice_id, callback)
 {

@@ -438,48 +438,48 @@ function tablet_customer_invoice()
 
 				/* CHECK THE DISCOUNT */
 				if (discount.indexOf('/') >= 0)
-			{
-				var split_discount = discount.split('/');
-				var main_rate      = rate * qty;
-
-				$.each(split_discount, function(index, val) 
 				{
-					console.log(val + " - Discount");
+					var split_discount = discount.split('/');
+					var main_rate      = rate * qty;
 
-					if(val.indexOf('%') >= 0)
+					$.each(split_discount, function(index, val) 
 					{
-						console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
-						main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
-						console.log(main_rate);
-					}
-					else if(val == "" || val == null)	
-					{
-						main_rate -= 0;
-					}
-					else
-					{
-						main_rate -= parseFloat(val);
-					}
-				});
+						console.log(val + " - Discount");
 
-				discount = (rate * qty) - main_rate;
-			}
-			else
-			{
-				if(discount.indexOf('%') >= 0)
-				{
-					$(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
-					discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (action_return_to_number(rate) * action_return_to_number(qty));
-				}
-				else if(discount == "" || discount == null)	
-				{
-					discount = 0;
+						if(val.indexOf('%') >= 0)
+						{
+							console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+							main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+							console.log(main_rate);
+						}
+						else if(val == "" || val == null)	
+						{
+							main_rate -= 0;
+						}
+						else
+						{
+							main_rate -= parseFloat(val);
+						}
+					});
+
+					discount = (rate * qty) - main_rate;
 				}
 				else
 				{
-					discount = parseFloat(discount);
+					if(discount.indexOf('%') >= 0)
+					{
+						$(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
+						discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (action_return_to_number(rate) * action_return_to_number(qty));
+					}
+					else if(discount == "" || discount == null)	
+					{
+						discount = 0;
+					}
+					else
+					{
+						discount = parseFloat(discount);
+					}
 				}
-			}
 
 				/* RETURN TO NUMBER IF THERE IS COMMA */
 				qty 		= action_return_to_number(qty);

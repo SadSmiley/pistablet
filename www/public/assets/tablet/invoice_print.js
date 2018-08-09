@@ -90,25 +90,20 @@ function invoice_print()
 			                    main_rate -= parseFloat(val);
 			                }
 			            });
-			            discount = (val['invline_rate'] * val['invline_qty']) - main_rate;
+			            discount = (val['invline_rate'] * val['invline_qty']) - main_rate.toFixed(2);
 			        }
 			        else if(discount.indexOf('%') >= 0)
 			        {
 			            $(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
 			            discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (roundNumber(val['invline_rate']) * roundNumber(val['invline_qty']));
+			        	discount = discount.toFixed(2);
 			        }
 		        }
 		        else
 		        {
-		        	if(discount == "" || discount == null) 
-			        {
-			            discount = 0;
-			        }
-			        else
-			        {
-			            discount = parseFloat(discount);
-			        }
+			         discount = (val['invline_discount']).toFixed(2);
 		        }
+
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
 		        	tr = '<tr>' +
@@ -116,7 +111,7 @@ function invoice_print()
 						  '<td class="text-center">'+um_view+'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
 						  '<td style="text-align: center;">'+val['invline_discount']+'</td>' +
-						  '<td style="text-align: center;">'+discount.toFixed(2) +'</td>' +
+						  '<td style="text-align: center;">'+discount +'</td>' +
 						  '<td style="text-align: center;">'+(val['invline_amount']).toFixed(2)+'</td>' +
 						'</tr>';
 					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)
