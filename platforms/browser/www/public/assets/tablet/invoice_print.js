@@ -28,6 +28,27 @@ function invoice_print()
 			}
 		});
 	}
+	function action_add_comma(number)
+	{
+		number += '';
+		if(number == ''){
+			return '';
+		}
+
+		else{
+			return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+	}
+	function action_return_to_number(number = '')
+	{
+		number += '';
+		number = number.replace(/,/g, "");
+		if(number == "" || number == null || isNaN(number)){
+			number = 0;
+		}
+		
+		return parseFloat(number);
+	}
 	function load_data(inv_id)
 	{
 		get_invoice_data(inv_id, function(inv, _invline, _cmline)
@@ -90,7 +111,8 @@ function invoice_print()
 			                    main_rate -= parseFloat(val);
 			                }
 			            });
-			            discount = (val['invline_rate'] * val['invline_qty']) - main_rate.toFixed(2);
+			            discount = (val['invline_rate'] * val['invline_qty']) - main_rate;
+			            discount = discount.toFixed(2);
 			        }
 			        else if(discount.indexOf('%') >= 0)
 			        {
@@ -99,20 +121,16 @@ function invoice_print()
 			        	discount = discount.toFixed(2);
 			        }
 		        }
-		        else
-		        {
-			         discount = (val['invline_discount']).toFixed(2);
-		        }
-
 	        	unit_measurement_view(total_qty, val['invline_item_id'], val['invline_um'], function(um_view)
 	        	{
+
 		        	tr = '<tr>' +
 						  '<td>'+val['item_name']+'</td>'+
 						  '<td class="text-center">'+um_view+'</td>' +
-						  '<td style="text-align: center;">'+(val['invline_rate']).toFixed(2)+'</td>' +
+						  '<td style="text-align: center;">'+action_add_comma(val['invline_rate'].toFixed(2))+'</td>' +
 						  '<td style="text-align: center;">'+val['invline_discount']+'</td>' +
-						  '<td style="text-align: center;">'+discount +'</td>' +
-						  '<td style="text-align: center;">'+(val['invline_amount']).toFixed(2)+'</td>' +
+						  '<td style="text-align: center;">'+action_add_comma(discount) +'</td>' +
+						  '<td style="text-align: center;">'+action_add_comma(val['invline_amount'].toFixed(2))+'</td>' +
 						'</tr>';
 					if(inv['inv_is_paid'] == 1 && ctr_inv == _invline.length)
 					{
@@ -130,7 +148,7 @@ function invoice_print()
 			tr_total += '<tr>' +
 				  '<td colspan="4"></td>' +
 				  '<td  style="text-align: left;font-weight: bold">SUBTOTAL</td>' + 
-			 	  '<td style="text-align: right; font-weight: bold">'+(inv['inv_subtotal_price']).toFixed(2)+'</td>' +
+			 	  '<td style="text-align: right; font-weight: bold">'+action_add_comma((inv['inv_subtotal_price']).toFixed(2))+'</td>' +
 				  '</tr>';
 
 			if(inv['ewt'] != 0)
@@ -154,7 +172,7 @@ function invoice_print()
 				tr_total += '<tr>' + 
 							'<td colspan="4"></td>' +
 							'<td  style="text-align: left;font-weight: bold">Discount '+ sign_disc+'</td>'+
-							'<td style="text-align: right; font-weight: bold">'+(disc_val).toFixed(2)+'</td>'+
+							'<td style="text-align: right; font-weight: bold">'+action_add_comma((disc_val).toFixed(2))+'</td>'+
 							'</tr>';
 			}
 			if(inv['taxable'] != 0)
@@ -162,13 +180,13 @@ function invoice_print()
 				tr_total += '<tr>' + 
 							'<td colspan="4" ></td>' +
 							'<td style="text-align: left;font-weight: bold">Vat (12%)</td>'+
-							'<td style="text-align: right; font-weight: bold">'+(taxable_amount * (12/100)).toFixed(2)+'</td>' +
+							'<td style="text-align: right; font-weight: bold">'+action_add_comma((taxable_amount * (12/100)).toFixed(2))+'</td>' +
 							'</tr>';
 			}
 			tr_total += '<tr class="">'+
 						'<td colspan="4"></td>' + 
 						'<td style="text-align: left;font-weight: bold">INVOICE TOTAL</td>'+
-						'<td style="text-align: right; font-weight: bold">'+(inv['inv_overall_price']).toFixed(2)+'</td>'+
+						'<td style="text-align: right; font-weight: bold">'+action_add_comma((inv['inv_overall_price']).toFixed(2))+'</td>'+
 						'</tr>';
 
 	        $('.inv-itemline').append(tr_total);

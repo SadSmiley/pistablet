@@ -541,7 +541,6 @@ function tablet_customer_invoice()
 		{
 			discount_txt = 0;
 		}
-
 		discount_total = discount_txt;
 
 		if(discount_selection == 'percent')

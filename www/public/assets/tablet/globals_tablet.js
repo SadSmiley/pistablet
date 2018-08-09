@@ -3571,6 +3571,7 @@ function get_applied_credits(rp_id , callback)
         {
             if(results.rows.length > 0)
             {
+                console.log(results.rows);
                 callback(results.rows);
             }
             else

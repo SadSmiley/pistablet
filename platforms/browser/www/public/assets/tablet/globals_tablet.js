@@ -3569,8 +3569,11 @@ function get_applied_credits(rp_id , callback)
                            'WHERE rp_id = '+rp_id; 
         tx.executeSql(select_query, [], function(tx, results)
         {
+            console.log(123);
+            console.log(results);
             if(results.rows.length > 0)
             {
+
                 callback(results.rows);
             }
             else
