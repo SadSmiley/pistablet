@@ -68,7 +68,7 @@ function check_if_edit_invoice()
                                     $('.sub-total').html(inv['inv_subtotal_price']);
                                     $('.inv-ewt').val(inv['ewt']);
                                     $('.ewt-total').html(inv['ewt']);
-                                    $('.inv-disc-type').val(inv['inv_discount_type']);
+                                    $('.inv-disc-type').val(inv['inv_discount_type']).change();
                                     $('.inv-tax').val(inv['taxable']);
                                     $('.inv-disc-val').val(inv['inv_discount_value']);
                                     $('.inv-id').val(inv['inv_id']);
