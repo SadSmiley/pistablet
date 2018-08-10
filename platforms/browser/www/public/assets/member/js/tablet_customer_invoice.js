@@ -92,46 +92,54 @@ function tablet_customer_invoice()
 		$(".cm.tablet-add-item").unbind("click");
 		$(".cm.tablet-add-item").bind("click",function()
 		{
-			$(".cm.item-list-"+$(".cm.tablet-item-id").val()).remove();
-			$("#global_modal").modal("toggle");
-			$(".cm-div-item-list").append(global_cm_tablet_html);
-			$item_table = $(".cm-div-item-list .cm.item-table:last");
-			
-			$(".cm-div-item-list .cm.item-table:last").addClass("item-list-"+$(".cm.tablet-item-id").val());
-			$(".cm-div-item-list .cm.item-table:last .cm-item").attr("item_id",$(".cm.tablet-item-id").val());
-			$(".cm-div-item-list .cm.item-table:last .cm-item").attr("sir_id",$(".cm.tablet-sir-id").val());
-			
-			//PUT VALUE TO LABEL
-			$item_table.find(".item-cm-name").html($(".cm.tablet-item-name").html());
-			$item_table.find(".item-cm-rate").html($(".cm.tablet-item-rate").val());
-			$item_table.find(".item-cm-um").html($(".cm.tablet-item-um").find("option:selected").attr("abbrev"));
-			$item_table.find(".item-cm-amount").html($(".cm.tablet-item-amount").html());
-			$item_table.find(".item-cm-qty").html($(".cm.tablet-item-qty").val());
+			if($(".cm.tablet-item-um").val())
+			{
+				$(".cm.item-list-"+$(".cm.tablet-item-id").val()).remove();
+				$("#global_modal").modal("toggle");
+				$(".cm-div-item-list").append(global_cm_tablet_html);
+				$item_table = $(".cm-div-item-list .cm.item-table:last");
+				
+				$(".cm-div-item-list .cm.item-table:last").addClass("item-list-"+$(".cm.tablet-item-id").val());
+				$(".cm-div-item-list .cm.item-table:last .cm-item").attr("item_id",$(".cm.tablet-item-id").val());
+				$(".cm-div-item-list .cm.item-table:last .cm-item").attr("sir_id",$(".cm.tablet-sir-id").val());
+				
+				//PUT VALUE TO LABEL
+				$item_table.find(".item-cm-name").html($(".cm.tablet-item-name").html());
+				$item_table.find(".item-cm-rate").html($(".cm.tablet-item-rate").val());
+				$item_table.find(".item-cm-um").html($(".cm.tablet-item-um").find("option:selected").attr("abbrev"));
+				$item_table.find(".item-cm-amount").html($(".cm.tablet-item-amount").html());
+				$item_table.find(".item-cm-qty").html($(".cm.tablet-item-qty").val());
 
-			// if($(".cm.tablet-item-disc").val())
-			// {
-			// 	$item_table.find(".disc-content").removeClass("hidden");	
-			// 	$item_table.find(".item-disc").html($(".cm.tablet-item-disc").val());
-			// }
-			// var tax = 0;
-			// $item_table.find(".item-taxable").html("Non-Taxable");
-			// if($(".tablet-item-taxable").is(":checked"))
-			// {
-			// 	tax = 1;
-			// 	$item_table.find(".item-taxable").html("Taxable");
-			// }
-			$item_table.find(".item-cm-desc").html($(".cm.tablet-item-desc").val());
+				// if($(".cm.tablet-item-disc").val())
+				// {
+				// 	$item_table.find(".disc-content").removeClass("hidden");	
+				// 	$item_table.find(".item-disc").html($(".cm.tablet-item-disc").val());
+				// }
+				// var tax = 0;
+				// $item_table.find(".item-taxable").html("Non-Taxable");
+				// if($(".tablet-item-taxable").is(":checked"))
+				// {
+				// 	tax = 1;
+				// 	$item_table.find(".item-taxable").html("Taxable");
+				// }
+				$item_table.find(".item-cm-desc").html($(".cm.tablet-item-desc").val());
 
-			//PUT VALUE TO INPUT
-			$item_table.find(".cm.input-item-id").val($(".cm.tablet-item-id").val());
-			$item_table.find(".cm.input-item-amount").val($(".cm.tablet-item-amount").html());
-			$item_table.find(".cm.input-item-rate").val($(".cm.tablet-item-rate").val());
-			$item_table.find(".cm.input-item-remarks").val($(".cm.tablet-item-remark").val());
-			$item_table.find(".cm.input-item-qty").val($(".cm.tablet-item-qty").val());
-			$item_table.find(".cm.input-item-um").val($(".cm.tablet-item-um").val());
-			$item_table.find(".cm.input-item-desc").val($(".cm.tablet-item-desc").val());
+				//PUT VALUE TO INPUT
+				$item_table.find(".cm.input-item-id").val($(".cm.tablet-item-id").val());
+				$item_table.find(".cm.input-item-amount").val($(".cm.tablet-item-amount").html());
+				$item_table.find(".cm.input-item-rate").val($(".cm.tablet-item-rate").val());
+				$item_table.find(".cm.input-item-remarks").val($(".cm.tablet-item-remark").val());
+				$item_table.find(".cm.input-item-qty").val($(".cm.tablet-item-qty").val());
+				$item_table.find(".cm.input-item-um").val($(".cm.tablet-item-um").val());
+				$item_table.find(".cm.input-item-desc").val($(".cm.tablet-item-desc").val());
 
-			action_general_compute();
+				action_general_compute();
+				
+			}
+			else
+			{
+				alert("Please select UM for empties");
+			}
 
 		});
 	}

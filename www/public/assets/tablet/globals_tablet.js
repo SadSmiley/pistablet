@@ -1704,7 +1704,6 @@ function insert_invoice_submit(customer_info, item_info, callback)
                                            insert_inv['inv_payment_applied']+', '+
                                            insert_inv['inv_is_paid']+', "'+
                                            insert_inv['created_at']+'")';
-                            
                             tx.executeSql(insert_row, [], function(tx, results)
                             {
                                var invoice_id = results.insertId;
@@ -2586,6 +2585,7 @@ function get_paid_rp_data(rp_id, callback)
                             'WHERE rp_id = ' + rp_id;
             tx.executeSql(select_rp, [], function(txs, results)
             {
+                console.log(results.rows);
                 if(results.rows.length > 0)
                 {
                     var rp = results.rows[0];
@@ -3571,7 +3571,6 @@ function get_applied_credits(rp_id , callback)
         {
             if(results.rows.length > 0)
             {
-                console.log(results.rows);
                 callback(results.rows);
             }
             else

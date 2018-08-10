@@ -34,9 +34,6 @@ function rp_print()
 		{
 			get_applied_credits(rp_id, function(rp_applied)
 			{
-		    	console.log(rp);
-		    	console.log(_rpline);
-
 		        $('.rp-customer-name').html(rp['company'] == "" ? rp['first_name'] + " " + rp['middle_name']+ " " + rp['last_name'] : rp['company']);
 		        $('.rp-id-print').html(rp['rp_id']);
 		        $('.rp-date').html(rp['rp_date']);
@@ -53,20 +50,29 @@ function rp_print()
 		        			  '<td>Credit Sales # '+val['new_inv_id']+' ('+val['inv_date']+')</td>' +
 		        			  '<td class="text-right">'+ (number_format(val['inv_overall_price'])) +'</td>' +
 		        			  '<td class="text-right">'+ (number_format(val['rpline_amount'] - val['cm_amount'] )) +'</td>' +
-		        			  '<td class="text-right">'+ (number_format(val['cm_amount'] )) +'</td>' +
+		        			  '<td class="text-right">'+ (number_format(val['cm_amount'] != null ? val['cm_amount'] : 0)) +'</td>' +
 		        			  '<td class="text-right">'+ (number_format(val['rpline_amount'] )) +'</td>' +
 		        			  '</tr>';
 		        	$total_cash += val['rpline_amount'];
 		        });
 		        var tr_rowapplied = "";
-		        $.each(rp_applied, function(keya, valapp)
+		        if(count(rp_applied) > 0)
+		        {
+			        $.each(rp_applied, function(keya, valapp)
+			        {
+			        	tr_rowapplied += '<tr>'+
+			        			  '<td>Credit Memo # '+valapp['credit_reference_id']+'</td>' +
+			        			  '<td class="text-right">'+ (number_format(valapp['credit_amount'])) +'</td>' +
+			        			  '</tr>';
+			        	$total_applied += valapp['credit_amount'];
+			        });
+		        }
+		        else
 		        {
 		        	tr_rowapplied += '<tr>'+
-		        			  '<td>Credit Memo # '+valapp['credit_reference_id']+'</td>' +
-		        			  '<td class="text-right">'+ (number_format(valapp['credit_amount'])) +'</td>' +
-		        			  '</tr>';
-		        	$total_applied += valapp['credit_amount'];
-		        });
+			        			  '<td colspan="2" class="text-center">No Credit applied</td>' +
+			        			  '</tr>';
+		        }
 
 		        $('.rp-itemline').prepend(tr_row);
 		        $('.rp-applied').prepend(tr_rowapplied);
