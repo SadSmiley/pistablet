@@ -355,7 +355,7 @@ function receive_payment_submit()
     }
     else
     {
-        toastr.warning("Please Account to deposit payment");
+        toastr.warning("Please select Account to deposit payment");
         enabled_save_btn();
     }
 
