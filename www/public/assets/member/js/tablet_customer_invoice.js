@@ -30,7 +30,13 @@ function tablet_customer_invoice()
 	}
 	function action_click_remove()
 	{
-		$(document).on("click", ".btn-remove", function(e){
+		$("body").on("click", ".btn-remove", function(e){
+			
+				$(this).parent().parent().remove();
+
+				action_general_compute();
+		});
+		$("body").on("click", ".btn-cm-remove", function(e){
 			
 				$(this).parent().parent().remove();
 
@@ -104,6 +110,8 @@ function tablet_customer_invoice()
 				$(".cm-div-item-list .cm.item-table:last .cm-item").attr("sir_id",$(".cm.tablet-sir-id").val());
 				
 				//PUT VALUE TO LABEL
+				$item_table.find(".edit-item-cm").attr("item_id",$(".cm.tablet-item-id").val());
+				$item_table.find(".edit-item-cm").attr("sir_id",$(".cm.tablet-sir-id").val());
 				$item_table.find(".item-cm-name").html($(".cm.tablet-item-name").html());
 				$item_table.find(".item-cm-rate").html($(".cm.tablet-item-rate").val());
 				$item_table.find(".item-cm-um").html($(".cm.tablet-item-um").find("option:selected").attr("abbrev"));
@@ -159,6 +167,8 @@ function tablet_customer_invoice()
 			$(".div-item-list .item-table:last .inv-item").attr("sir_id", $(".inv.tablet-sir-id").val());
 
 			//PUT VALUE TO LABEL
+			$item_table.find(".edit-item-inv").attr("item_id",$(".tablet-item-id").val());
+			$item_table.find(".edit-item-inv").attr("sir_id",$(".inv.tablet-sir-id").val());
 			$item_table.find(".item-name").html($(".tablet-item-name").html());
 			$item_table.find(".item-rate").html($(".tablet-item-rate").val());
 			$item_table.find(".item-um").html($(".tablet-item-um").find("option:selected").attr("abbrev"));
@@ -364,49 +374,52 @@ function tablet_customer_invoice()
 
         var qty = tablet_item_qty;
         /* CHECK THE DISCOUNT */
-        if (tablet_item_disc.indexOf('/') >= 0)
-		{
-			var split_tablet_item_disc = tablet_item_disc.split('/');
-			var main_rate      = tablet_item_rate * qty;
-
-			$.each(split_tablet_item_disc, function(index, val) 
+        if(tablet_item_disc)
+        {
+	        if (tablet_item_disc.indexOf('/') >= 0)
 			{
-				console.log(val + " - tablet_item_disc");
+				var split_tablet_item_disc = tablet_item_disc.split('/');
+				var main_rate      = tablet_item_rate * qty;
 
-				if(val.indexOf('%') >= 0)
+				$.each(split_tablet_item_disc, function(index, val) 
 				{
-					console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
-					main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
-					console.log(main_rate);
-				}
-				else if(val == "" || val == null)	
-				{
-					main_rate -= 0;
-				}
-				else
-				{
-					main_rate -= parseFloat(val);
-				}
-			});
+					console.log(val + " - tablet_item_disc");
 
-			tablet_item_disc = (tablet_item_rate * qty) - main_rate;
-		}
-		else
-		{
-			if(tablet_item_disc.indexOf('%') >= 0)
-			{
-				$(this).find(".txt-tablet_item_disc").val(tablet_item_disc.substring(0, tablet_item_disc.indexOf("%") + 1));
-				tablet_item_disc = (parseFloat(tablet_item_disc.substring(0, tablet_item_disc.indexOf('%'))) / 100) * (action_return_to_number(tablet_item_rate) * action_return_to_number(qty));
-			}
-			else if(tablet_item_disc == "" || tablet_item_disc == null)	
-			{
-				tablet_item_disc = 0;
+					if(val.indexOf('%') >= 0)
+					{
+						console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+						main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+						console.log(main_rate);
+					}
+					else if(val == "" || val == null)	
+					{
+						main_rate -= 0;
+					}
+					else
+					{
+						main_rate -= parseFloat(val);
+					}
+				});
+
+				tablet_item_disc = (tablet_item_rate * qty) - main_rate;
 			}
 			else
 			{
-				tablet_item_disc = parseFloat(tablet_item_disc);
+				if(tablet_item_disc.indexOf('%') >= 0)
+				{
+					$(this).find(".txt-tablet_item_disc").val(tablet_item_disc.substring(0, tablet_item_disc.indexOf("%") + 1));
+					tablet_item_disc = (parseFloat(tablet_item_disc.substring(0, tablet_item_disc.indexOf('%'))) / 100) * (action_return_to_number(tablet_item_rate) * action_return_to_number(qty));
+				}
+				else if(tablet_item_disc == "" || tablet_item_disc == null)	
+				{
+					tablet_item_disc = 0;
+				}
+				else
+				{
+					tablet_item_disc = parseFloat(tablet_item_disc);
+				}
 			}
-		}
+        }
         // tablet_item_disc = 0;
         /* RETURN TO NUMBER IF THERE IS COMMA */
         var rate        = action_return_to_number(tablet_item_rate);
@@ -445,47 +458,50 @@ function tablet_customer_invoice()
 				}
 
 				/* CHECK THE DISCOUNT */
-				if (discount.indexOf('/') >= 0)
+				if(discount)
 				{
-					var split_discount = discount.split('/');
-					var main_rate      = rate * qty;
-
-					$.each(split_discount, function(index, val) 
+					if(discount.indexOf('/') >= 0)
 					{
-						console.log(val + " - Discount");
+						var split_discount = discount.split('/');
+						var main_rate      = rate * qty;
 
-						if(val.indexOf('%') >= 0)
+						$.each(split_discount, function(index, val) 
 						{
-							console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
-							main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
-							console.log(main_rate);
-						}
-						else if(val == "" || val == null)	
-						{
-							main_rate -= 0;
-						}
-						else
-						{
-							main_rate -= parseFloat(val);
-						}
-					});
+							console.log(val + " - Discount");
 
-					discount = (rate * qty) - main_rate;
-				}
-				else
-				{
-					if(discount.indexOf('%') >= 0)
-					{
-						$(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
-						discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (action_return_to_number(rate) * action_return_to_number(qty));
-					}
-					else if(discount == "" || discount == null)	
-					{
-						discount = 0;
+							if(val.indexOf('%') >= 0)
+							{
+								console.log(parseFloat(main_rate) + " - " + ((100-parseFloat(val.replace("%", ""))) / 100));
+								main_rate = parseFloat(main_rate) * ((100-parseFloat(val.replace("%", ""))) / 100);
+								console.log(main_rate);
+							}
+							else if(val == "" || val == null)	
+							{
+								main_rate -= 0;
+							}
+							else
+							{
+								main_rate -= parseFloat(val);
+							}
+						});
+
+						discount = (rate * qty) - main_rate;
 					}
 					else
 					{
-						discount = parseFloat(discount);
+						if(discount.indexOf('%') >= 0)
+						{
+							$(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
+							discount = (parseFloat(discount.substring(0, discount.indexOf('%'))) / 100) * (action_return_to_number(rate) * action_return_to_number(qty));
+						}
+						else if(discount == "" || discount == null)	
+						{
+							discount = 0;
+						}
+						else
+						{
+							discount = parseFloat(discount);
+						}
 					}
 				}
 

@@ -6,9 +6,9 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 // FOR LOCAL TEST
-// var $url = "http://pis.digimahouse.test";
+var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.com";
+// var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -2351,7 +2351,7 @@ function insert_cm_submit(cm_customer_info, cm_item_info, item_returns, invoice_
         insert_row['cm_date'] = cm_customer_info['cm_date'];
         insert_row['cm_message'] = cm_customer_info['cm_message'];
         insert_row['cm_memo'] = cm_customer_info['cm_memo'];
-        insert_row['cm_amount'] = cm_customer_info['cm_amount'];
+        insert_row['cm_amount'] = (cm_customer_info['cm_amount']).replace(",","");
         insert_row['cm_type'] = cm_customer_info['cm_type'] == "returns" ? 1 : 1;
         insert_row['date_created'] = get_date_now();
         insert_row['created_at'] = get_date_now();
@@ -2428,7 +2428,7 @@ function update_cm_submit(cm_id, cm_customer_info, cm_item_info, item_returns, i
         insert_row['cm_date'] = cm_customer_info['cm_date'];
         insert_row['cm_message'] = cm_customer_info['cm_message'];
         insert_row['cm_memo'] = cm_customer_info['cm_memo'];
-        insert_row['cm_amount'] = cm_customer_info['cm_amount'];
+        insert_row['cm_amount'] = (cm_customer_info['cm_amount']).replace(",","");
         insert_row['cm_type'] = cm_customer_info['cm_type'];
         insert_row['date_created'] = get_date_now();
         insert_row['created_at'] = get_date_now();
@@ -2541,8 +2541,8 @@ function insert_cm_line(cm_id, cm_item_info, callback)
         insertline_cm[key]['cmline_item_id'] = value['item_id'];
         insertline_cm[key]['cmline_description'] = value['item_description'];
         insertline_cm[key]['cmline_qty'] = value['quantity'];
-        insertline_cm[key]['cmline_rate'] = value['rate'];
-        insertline_cm[key]['cmline_amount'] = value['amount'];
+        insertline_cm[key]['cmline_rate'] = (value['rate']).replace(",","");
+        insertline_cm[key]['cmline_amount'] = (value['amount']).replace(",","");
         insertline_cm[key]['created_at'] = get_date_now();
         db.transaction(function(tx)
         {

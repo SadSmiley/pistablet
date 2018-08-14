@@ -400,7 +400,7 @@ function credit_memo_transaction()
     }
     function edit_cm_item()
     {
-        $("body").on("click", ".edit-cm-item.cm-item", function()
+        $("body").on("click", ".edit-item-cm.cmline", function()
         {
             var item_id = $(this).attr("item_id");
             var sir_id = $(this).attr("sir_id");

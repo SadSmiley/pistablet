@@ -393,7 +393,7 @@ function invoice_transaction()
     }
     function edit_inv_item()
     {
-        $("body").on("click", ".edit-inv-item.inv-item", function()
+        $("body").on("click", ".edit-item-inv.invline", function()
         {
             var item_id = $(this).attr("item_id");
             var sir_id = $(this).attr("sir_id");
@@ -403,7 +403,7 @@ function invoice_transaction()
     }
     function edit_cm_item()
     {
-        $("body").on("click", ".edit-cm-item.cm-item", function()
+        $("body").on("click", ".edit-item-cm.cmline", function()
         {
             var item_id = $(this).attr("item_id");
             var sir_id = $(this).attr("sir_id");

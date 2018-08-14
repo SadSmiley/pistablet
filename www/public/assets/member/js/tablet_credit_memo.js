@@ -87,6 +87,9 @@ function tablet_credit_memo()
 			$(".div-item-list .item-table:last .cm-item").attr("sir_id",$(".tablet-sir-id").val());
 
 			//PUT VALUE TO LABEL
+			$item_table.find(".edit-item-cm").attr("item_id",$(".tablet-item-id").val());
+			$item_table.find(".edit-item-cm").attr("sir_id",$(".tablet-sir-id").val());
+
 			$item_table.find(".item-name").html($(".tablet-item-name").html());
 			$item_table.find(".item-rate").html($(".tablet-item-rate").val());
 			$item_table.find(".item-um").html($(".tablet-item-um").find("option:selected").attr("abbrev"));
