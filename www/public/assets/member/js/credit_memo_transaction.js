@@ -409,6 +409,22 @@ function credit_memo_transaction()
         });
     }
 }
+function disabled_save_btn()
+{
+    $.each($(".cm-edit-btn"), function()
+    {
+        $(this).html("Saving...");
+        $(this).attr("disabled", "true");
+    });
+}
+function enabled_save_btn()
+{
+    $.each($(".cm-edit-btn"), function()
+    {
+        $(this).html("Save");
+        $(this).removeAttr("disabled");
+    });
+}
 function cm_edit_submit()
 {
 
@@ -418,6 +434,7 @@ function cm_edit_submit()
     var data = {};
     var values = {};
 
+    disabled_save_btn();
     $.each($('.form-to-submit-transfer').serializeArray(), function(i, field) 
     {
         if (field.name == "cmline_amount[]") 
@@ -529,6 +546,7 @@ function cm_edit_submit()
     else
     {
         toastr.warning("Please Select Item");
+        enabled_save_btn();
     }
 
 }
@@ -540,6 +558,7 @@ function credit_memo_submit()
     var data = {};
     var values = {};
 
+    disabled_save_btn();
     $.each($('.form-to-submit-transfer').serializeArray(), function(i, field) 
     {
         if (field.name == "cmline_amount[]") 
@@ -663,6 +682,7 @@ function credit_memo_submit()
     else
     {
         toastr.warning("Please Select Item");
+        enabled_save_btn();
     }
 
 

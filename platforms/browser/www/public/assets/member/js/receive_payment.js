@@ -448,6 +448,8 @@ function receive_payment()
 	}
 
 }
+
+
 function count_credit(customer_id, callback)
 {
     db.transaction(function (tx)

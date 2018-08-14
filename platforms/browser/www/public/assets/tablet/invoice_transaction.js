@@ -414,12 +414,13 @@ function invoice_transaction()
 }
 function invoice_edit_submit()
 {
-     var ctr = 0;
+    var ctr = 0;
     var status = null;
     var status_message = null;
     var data = {};
     var values = {};
 
+    disabled_save_btn();
     $.each($('.form-invoice').serializeArray(), function(i, field) 
     {
        if (field.name == "invline_item_id[]") 
@@ -595,6 +596,7 @@ function invoice_edit_submit()
                 if(return_value >= 1)
                 {
                     toastr.warning("Check item quantity. The item order is greater than to our stocks");     
+                    enabled_save_btn();
                 }
                 else
                 {
@@ -697,6 +699,7 @@ function invoice_edit_submit()
     else
     {
         toastr.warning("Please Select Item"); 
+        enabled_save_btn();
     }
 }
 function invoice_submit()
@@ -706,6 +709,7 @@ function invoice_submit()
     var status_message = null;
     var data = {};
     var values = {};
+    disabled_save_btn();
     $.each($('.form-invoice').serializeArray(), function(i, field) 
     {
        if (field.name == "invline_item_id[]") 
@@ -877,7 +881,8 @@ function invoice_submit()
                 /* CHECK IF QUANTITY IS MORE THAN THE STOCKS (1 >= 1) = true; 0 = false */
                 if(return_value >= 1)
                 {
-                    toastr.warning("Check item quantity. The item order is greater than to our stocks");     
+                    toastr.warning("Check item quantity. The item order is greater than to our stocks");    
+                    enabled_save_btn(); 
                 }
                 else
                 {
@@ -969,7 +974,24 @@ function invoice_submit()
     else
     {
         toastr.warning("Please Select Item"); 
+        enabled_save_btn();
     }
+}
+function disabled_save_btn()
+{
+    $.each($(".inv-save-btn"), function()
+    {
+        $(this).html("Saving...");
+        $(this).attr("disabled", "true");
+    });
+}
+function enabled_save_btn()
+{
+    $.each($(".inv-save-btn"), function()
+    {
+        $(this).html("Save");
+        $(this).removeAttr("disabled");
+    });
 }
 function ReplaceNumberWithCommas(yourNumber)
 {

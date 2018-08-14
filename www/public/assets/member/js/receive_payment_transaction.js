@@ -18,10 +18,27 @@ function receive_payment_transaction()
 
     }
 }
+
+function disabled_save_btn()
+{
+    $.each($(".rp-save-btn"), function()
+    {
+        $(this).html("Saving...");
+        $(this).attr("disabled", "true");
+    });
+}
+function enabled_save_btn()
+{
+    $.each($(".rp-save-btn"), function()
+    {
+        $(this).html("Save");
+        $(this).removeAttr("disabled");
+    });
+}
 function rp_edit_submit()
 {
     var values = {};
-
+    disabled_save_btn();
     $.each($('.form-receive-payment').serializeArray(), function(i, field) 
     {       
         if(field.name == "line_is_checked[]") 
@@ -160,12 +177,14 @@ function rp_edit_submit()
             else
             {
                 alert("Something wen't wrong!");
+                enabled_save_btn()
             }
         });
     }
     else
     {
         toastr.warning("Please Account to deposit payment");
+        enabled_save_btn();
     }
 
 }
@@ -180,6 +199,7 @@ function receive_payment_submit()
 {
     var values = {};
 
+    disabled_save_btn();
     $.each($('.form-receive-payment').serializeArray(), function(i, field) 
     {       
         if(field.name == "line_is_checked[]") 
@@ -324,16 +344,19 @@ function receive_payment_submit()
             else
             {
                 toastr.warning("Please select customer & then select the invoice");
+                enabled_save_btn();
             }
         }
         else
         {
             toastr.warning("Please select customer");
+            enabled_save_btn();
         }
     }
     else
     {
         toastr.warning("Please Account to deposit payment");
+        enabled_save_btn();
     }
 
 }
