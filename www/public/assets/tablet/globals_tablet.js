@@ -8,7 +8,7 @@ var global_data = null;
 // FOR LOCAL TEST
 // var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.com";
+var $url = "http://pis.digimahouse.test";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -1347,7 +1347,7 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
         {
             if(bundle_item.length > 0)
             {
-                check_bundle_qty(bundle_item, function(return_data)
+                check_bundle_qty(bundle_item, _values['invline_qty'][key].replace(',',""), invoice_id, function(return_data)
                 {
                     ctr++;
                     if(ctr == count_item)
@@ -1372,13 +1372,13 @@ function check_sir_qty(sir_id, _item_id, _values, invoice_id, invoice_table, cal
     });
 
 }
-function check_bundle_qty(bundle_item, callback)
+function check_bundle_qty(bundle_item, in_qty, invoice_id, callback)
 {
     var return_data = 0;
     $.each(bundle_item, function(a,b)
     {
         var count = bundle_item.length;
-        get_sir_inventory(sir_id, b['bundle_item_id'], b['bundle_um_id'], b['bundle_qty'],0, function(return_value)
+        get_sir_inventory(sir_id, b['bundle_item_id'], b['bundle_um_id'], b['bundle_qty'] * in_qty ,invoice_id , function(return_value)
         {
             return_data += return_value;
             if(parseFloat(a+1) == count)
@@ -1394,7 +1394,7 @@ function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
     {
         var query = 'SELECT sum(sir_inventory_count) as current_qty FROM tbl_sir_inventory WHERE inventory_sir_id = ' + sir_id + ' ' + 
                     'AND sir_item_id = ' + item_id;
-
+        // alert(item_id);
         tx.executeSql(query, [], function(tx, dtrow_sir_inventory)
         {
             console.log(dtrow_sir_inventory);
@@ -1406,7 +1406,6 @@ function get_sir_inventory(sir_id, item_id, um, qty, invoice_id, callback)
                 get_um_qty(um, function(unit_qty)
                 {
                     var new_invoice_qty = unit_qty * qty;
-
                     if(new_invoice_qty > item_count)
                     {
                         callback(1);

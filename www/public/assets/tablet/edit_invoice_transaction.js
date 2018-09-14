@@ -93,6 +93,9 @@ function check_if_edit_invoice()
                                             $(".div-item-list .item-table:last .inv-item").attr("item_id", value['invline_item_id']);
                                             $(".div-item-list .item-table:last .inv-item").attr("sir_id", sir_id);
 
+                                            $(".div-item-list .item-table:last .edit-item-inv.invline").attr("item_id", value['invline_item_id']);
+                                            $(".div-item-list .item-table:last .edit-item-inv.invline").attr("sir_id", sir_id);
+
                                             //PUT VALUE TO LABEL
                                             $item_table.find(".item-name").html(value['item_name']);
                                             $item_table.find(".item-rate").html((value['invline_rate']).toFixed(2));
@@ -137,6 +140,9 @@ function check_if_edit_invoice()
                                                     $(".cm-div-item-list .cm.item-table:last").addClass("item-list-"+value_cm['cmline_item_id']);
                                                     $(".cm-div-item-list .cm.item-table:last .cm-item").attr("item_id",value_cm['cmline_item_id']);
                                                     $(".cm-div-item-list .cm.item-table:last .cm-item").attr("sir_id",sir_id);
+
+                                                    $(".cm-div-item-list .cm.item-table:last .edit-item-cm.cmline").attr("item_id",value_cm['cmline_item_id']);
+                                                    $(".cm-div-item-list .cm.item-table:last .edit-item-cm.cmline").attr("sir_id",sir_id);
                                                     
                                                     //PUT VALUE TO LABEL
                                                     $item_table.find(".item-cm-name").html(value_cm['item_name']);

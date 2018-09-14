@@ -198,7 +198,6 @@ function invoice_transaction()
             tx.executeSql(query_item, [], function(txs, results_item)
             {
                 var datarow = results_item.rows[0];
-
                 // related_um_type
                 var query_um = 'SELECT * FROM tbl_unit_measurement_multi where multi_id = "'+datarow['related_um_type']+'"';
                 tx.executeSql(query_um, [], function(txs, results_um)
