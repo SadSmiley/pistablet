@@ -213,11 +213,14 @@ function invoice_transaction()
                         tx.executeSql(query_um_multi, [], function(txs, results_um_multi)
                         {
                             $new_item_price = datarow['sir_item_price'];
-                            console.log(item_discount);
-                            console.log(get_date_now() +" >= "+ item_discount['item_discount_date_start'] +" && "+ get_date_now() +" <= "+ item_discount['item_discount_date_end']);
-                            if(get_date_now() >= item_discount['item_discount_date_start'] && get_date_now() <= item_discount['item_discount_date_end'])
+                            if(item_discount)
                             {
-                                $new_item_price = item_discount['item_discount_value'];
+                                console.log(item_discount);
+                                console.log(get_date_now() +" >= "+ item_discount['item_discount_date_start'] +" && "+ get_date_now() +" <= "+ item_discount['item_discount_date_end']);
+                                if(get_date_now() >= item_discount['item_discount_date_start'] && get_date_now() <= item_discount['item_discount_date_end'])
+                                {
+                                    $new_item_price = item_discount['item_discount_value'];
+                                }
                             }
                             var datarow_um_multi = results_um_multi.rows;
 
