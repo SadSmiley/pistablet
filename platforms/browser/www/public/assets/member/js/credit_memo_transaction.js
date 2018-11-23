@@ -359,6 +359,7 @@ function credit_memo_transaction()
                 $(".droplist-terms").html(option).globalDropList("reload");
                 $(".inv-date-input").val((today.getMonth()+1) + "/" + today.getDate() + "/" +today.getFullYear());
                 $(".inv-due-date-input").val((today.getMonth()+1) + "/" + today.getDate() + "/" +today.getFullYear());
+                $(".cm-date").val((today.getMonth()+1) + "/" + today.getDate() + "/" +today.getFullYear());
             });
 
             var query_sir_item = 'SELECT * FROM tbl_item where archived = 0 AND shop_id = '+shop_id;
