@@ -306,7 +306,7 @@ function invoice_transaction()
                             modal_content += '</div>';
                             modal_content += '</div>';
                             modal_content += '<div class="form-group clearfix row">';
-                            modal_content += '<div class="col-xs-12">';
+                            modal_content += '<div class="col-xs-12 hidden">';
                             modal_content += '<label><input type="checkbox" name="taxable" class="tablet-item-taxable"> <span>Taxable</span></label>';
                             modal_content += '</div>';
                             modal_content += '</div>';

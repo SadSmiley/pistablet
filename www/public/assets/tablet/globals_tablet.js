@@ -6,9 +6,9 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 // FOR LOCAL TEST
-// var $url = "http://pis.digimahouse.test";
+var $url = "http://pis.digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.com";
+// var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -1752,7 +1752,7 @@ function insert_inv_line(invoice_id, item_info, callback)
 
             if (discount.indexOf('/') >= 0)
             {
-                var discount_type = 'percent';
+                discount_type = 'percent';
                 var split_discount = discount.split('/');
                 var main_rate      = value['rate'] * value['quantity'];
 
@@ -1780,7 +1780,7 @@ function insert_inv_line(invoice_id, item_info, callback)
             }
             else
             {
-                var discount_type = 'percent';
+                discount_type = 'percent';
                 if(discount.indexOf('%') >= 0)
                 {
                     $(this).find(".txt-discount").val(discount.substring(0, discount.indexOf("%") + 1));
