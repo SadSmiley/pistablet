@@ -6,9 +6,9 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 // FOR LOCAL TEST
-var $url = "http://digimahouse.test";
+// var $url = "http://digimahouse.test";
 // FOR LIVE TEST
-// var $url = "http://pis.digimahouse.com";
+var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
