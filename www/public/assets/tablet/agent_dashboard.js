@@ -181,6 +181,7 @@ function ReplaceNumberWithCommas(yourNumber)
 }
 function click_action(action)
 {
+
 	db.transaction(function (tx)
     {
     	var query_check = 'SELECT selected_sir FROM tbl_agent_logon LIMIT 1';            
@@ -241,8 +242,6 @@ function click_action(action)
                                         '</div>'+
                                         '<div class="modal-footer"></div>';
 
-
-                        
                         $.each(sir_item_row, function(a,b)
                         {
                             get_item_bundle(b['item_id'], function(bundle_item)
@@ -251,6 +250,7 @@ function click_action(action)
                                 var ctr_bundle = 0;
                                 if(count(bundle_item) > 0)
                                 {
+                                    // console.table(bundle_item);
                                     $.each(bundle_item, function(key, val)
                                     {
                                         get_um_qty(val['bundle_um_id'], function(um_qty)
@@ -262,9 +262,12 @@ function click_action(action)
                                                     ctr_bundle++;
                                                     var bundle_qty = um_qty * val['bundle_qty'];
                                                     var issued_bundle_qty_item = (issued_um_qty * b['item_qty']) * bundle_qty;
-                                                    var rem_qty = (issued_bundle_qty_item - total_sold_bundle_qty) / bundle_qty;
+                                                    var rem_item = issued_bundle_qty_item - total_sold_bundle_qty;
+                                                    var b_qty = bundle_qty > 0 ? bundle_qty : 1;
+                                                    var rem_qty = rem_item / b_qty;
+                                                    console.log(b['item_qty'] +" - "+ rem_qty);
                                                     var sold_bundle_qty = b['item_qty'] - rem_qty;
-
+                                                    // console.log(a);
                                                     if(bundle_item.length == ctr_bundle)
                                                     {
                                                         unit_measurement_view(Math.round(rem_qty), b['item_id'], b['related_um_type'], function(rem_qty_um)

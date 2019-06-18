@@ -347,7 +347,7 @@ function invoice_transaction()
             var query_check = 'SELECT * FROM tbl_customer_invoice where inv_shop_id = "'+shop_id+'" ORDER BY new_inv_id DESC LIMIT 1';
             tx.executeSql(query_check, [], function(txs, results_id)
             {
-                $(".new-invoice-id").val(results_id.rows[0]['new_inv_id'] + 1);
+                $(".new-invoice-id").val(typeof results_id.rows[0] !== 'undefined' ? results_id.rows[0]['new_inv_id'] + 1 : 1);
             });
 
             var query_select_customer = 'SELECT *, tbl_customer.customer_id as rcustomer_id FROM tbl_customer LEFT JOIN tbl_customer_address ON tbl_customer.customer_id = tbl_customer_address.customer_id WHERE tbl_customer.archived = "0" and shop_id = "'+shop_id+'" GROUP BY tbl_customer.customer_id';

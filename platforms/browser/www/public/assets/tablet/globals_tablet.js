@@ -6,9 +6,9 @@ var query = "";
 var dataset_from_browser = null;
 var global_data = null;
 // FOR LOCAL TEST
-// var $url = "http://pis.digimahouse.test";
+var $url = "http://digimahouse.test";
 // FOR LIVE TEST
-var $url = "http://pis.digimahouse.com";
+// var $url = "http://pis.digimahouse.com";
 function get_session(label, callback)
 {
     var return_value = sessionStorage.getItem(label);
@@ -1330,7 +1330,7 @@ function get_um_qty(um_id, callback)
             }
             else
             {
-                callback(0);
+                callback(1);
             }
         },
         onError);
@@ -1933,8 +1933,8 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
     {
         convert_array_item_info(item_info, function(new_item)
         {
-            console.log("item_info");
-            console.log(item_info);
+            // console.log("item_info");
+            // console.log(item_info);
             var insert_row = {};
             var ctr_item_info = count(item_info);
             var ctr = 0;
@@ -1943,8 +1943,6 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
             {
                 sign = -1;
             }
-            console.log("new_item");
-            console.log(new_item);
             $.each(new_item, function(key, value)
             {
                 get_item_bundle(value['item_id'], function(bundle_item)
@@ -1959,7 +1957,8 @@ function insert_sir_inventory(item_info, ref_name, ref_id, callback)
                                 insert_row = {};
                                 insert_row['inventory_sir_id'] = sir_id;
                                 insert_row['sir_item_id'] = value_bundle['bundle_item_id'];
-                                insert_row['sir_inventory_count'] = (value['qty'] * value_bundle['bundle_um_qty']) * sign;
+                                var value_bundle_um_qty = value_bundle['bundle_um_qty'] != null ? value_bundle['bundle_um_qty'] : 1;
+                                insert_row['sir_inventory_count'] = (value['qty'] * value_bundle_um_qty) * sign;
                                 insert_row['sir_inventory_ref_name'] = ref_name;
                                 insert_row['sir_inventory_ref_id'] = ref_id;
                                 insert_row['created_at'] = get_date_now();
